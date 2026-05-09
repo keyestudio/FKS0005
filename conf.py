@@ -17,21 +17,20 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'keyestudio WiKi'
-copyright = 'keyestudio , WiKi'
-author = 'keyestudio WiKi'
-copyright = 'Shenzhen keyestudio Technology Co., Ltd'
+project = '科易互动机器人'
+author = 'keyes'
+copyright = 'Shenzhen KEYES DIY ROBOT co., Ltd.'
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['myst_parser','sphinx_copybutton']
+extensions = ['myst_parser','sphinx_copybutton','sphinxcontrib.mermaid']
+myst_fence_as_directive = ["mermaid"]
 
 source_suffix = {
     '.rst': 'restructuredtext',
-    '.txt': 'markdown',
     '.md': 'markdown',
 }
 
@@ -65,7 +64,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_book_theme'
+html_theme_options = {
+  "show_toc_level": 3,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

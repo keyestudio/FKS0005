@@ -1,0 +1,43 @@
+=========
+4. MakeCode Tutorial
+=========
+
+4.1 MakeCode Development Environment
+=========
+
+.. toctree::
+    :maxdepth: 1
+
+    MakeCode Development Environment
+
+
+4.2 Projects
+=========
+
+
+.. toctree::
+    :maxdepth: 1
+
+    Projects/Project 01
+    Projects/Project 02
+    Projects/Project 03
+    Projects/Project 04
+    Projects/Project 05
+    Projects/Project 06
+    Projects/Project 07
+    Projects/Project 08
+    Projects/Project 09
+
+  
+4.3 Troubleshooting
+=========
+
+.. toctree::
+    :maxdepth: 1
+
+    Troubleshooting
+    
+
+
+
+    

@@ -1,23 +1,12 @@
 
 .. toctree::
    :maxdepth: 3
-   :caption: 产品编码 文档的项目名称
+   :caption: FKS005  Keyestudio Kit-Keyestudio Micro:bit Smart Game Controier Kit formicro:bit
 
-   README.md
-   docs/产品介绍
-   docs/产品安装
-   docs/驱动安装
-   docs/Arduino/Arduino
-   docs/KidsBlock/KidsBlock
-   docs/Mixly/Mixly
-   docs/问题解答
+   Download/Codes and Libraries Download
+   Product Introduction/2.Product Introduction
+   Product Installation/3.Product Installation
+   MakeCode_Tutorial/4.MakeCode_Tutorial
+   MicroPython_Tutorial/5.MicroPython_Tutorial
 
-
-
-
-
-
-
-
-
-
+   

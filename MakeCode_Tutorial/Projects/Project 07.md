@@ -56,8 +56,8 @@ The signal is sent as shown in the figure:
 
 **Parameters:**
 
-- Operating voltage: DC 4.2V~5V 
-- Operating current: (Max)2.5mA@5V
+- Operating voltage: DC 3V~5V 
+- Operating current: (Max)2.5mA
 - Maximum power: 0.0125W
 - Temperature range: -25 ~ +60°C (±2℃)
 - Humidity range: 5 ~ 95%RH(Accuracy around 25C° is ±5%RH)
@@ -73,7 +73,7 @@ OLED delivers exceptional advantages such as rich color reproduction, high contr
 
 **Parameters:**
 
-- Operating voltage: DC 4.2V - 5V
+- Operating voltage: DC 3V - 5V
 - Operating current: 30mA
 - Interface: Pin with a spacing of 2.54mm
 - Communication mode: I2C communication

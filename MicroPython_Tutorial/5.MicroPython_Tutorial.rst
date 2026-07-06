@@ -8,7 +8,7 @@
 .. toctree::
     :maxdepth: 1
 
-    Thonny Thonny Development Environment
+    Thonny Development Environment
 
 
 5.2 Projekte

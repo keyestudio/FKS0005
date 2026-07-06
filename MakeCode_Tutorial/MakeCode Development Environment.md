@@ -1,235 +1,237 @@
-## 4.1.1 Informazioni su MakeCode
+## 4.1.1 À propos de MakeCode
 
-⚠️ **I seguenti passaggi sono eseguiti sul sistema operativo Windows. Se si utilizza un altro sistema operativo, possono essere presi come riferimento. Qui sono dimostrati su Google Chrome / Microsoft Edge.**
+⚠️ **Les étapes suivantes sont effectuées sous le système d'exploitation Windows. Si vous utilisez un autre système d'exploitation, vous pouvez vous en servir comme référence. Les démonstrations ci‑dessous sont effectuées avec Google Chrome / Microsoft Edge.**
 
-**Ambiente di Programmazione MakeCode:**
+**Environnement de programmation MakeCode :**
 
-Aprire la [versione online dell'editor MakeCode](https://makecode.microbit.org/#editor).
+Ouvrez la [version en ligne de l'éditeur MakeCode](https://makecode.microbit.org/#editor).
 
-Interfaccia principale di MakeCode:
+MakeCode main interface:
 
 ![Img](./media/A637.png)
 
-Ci sono blocchi “**all'avvio**” e “**per sempre**” nell'area di modifica del codice. Quando l'alimentazione è collegata o resettata, “all'avvio” significa che il codice nel blocco viene eseguito una sola volta, mentre “per sempre” implica che il codice viene eseguito ciclicamente.
+Il y a des blocs “**on start**” et “**forever**” dans la zone d'édition du code. Lorsque l'alimentation est branchée ou que la carte est réinitialisée, “on start” signifie que le code dans le bloc s'exécute une seule fois, tandis que “forever” implique que le code s'exécute en boucle.
 
-Clicca “**JS JavaScript**” per vedere il codice JavaScript:
+Cliquez sur “**JS JavaScript**” pour voir le code JavaScript:
 
 ![Img](./media/A754.png)
 
-Oppure clicca “**Python**” per passare al codice Python:
+Ou cliquez sur “**Python**” pour basculer vers le code Python:
 
 ![Img](./media/A814.png)
 
-**Impostazioni della lingua:**
+**Paramètres de langue :**
 
 ![Img](./media/Animation-3.gif)
 
-Passaggi:
+Étapes :
 
-Passaggio 1: Clicca il pulsante delle impostazioni ![Img](./media/A806.png).
+Étape 1 : Cliquez sur le bouton des paramètres ![Img](./media/A806.png).
 
 ![Img](./media/A301.png)
 
-Passaggio 2: Clicca “Language”.
+Étape 2 : Cliquez sur “Langue”.
 
 ![Img](./media/A302.png)
 
-Passaggio 3: Seleziona la lingua desiderata. Qui la impostiamo su “English”.
+Étape 3 : Sélectionnez la langue souhaitée. Ici nous la réglons sur “Anglais”.
 
 ![Img](./media/A303.png)
 
-## 4.1.2 Libreria di Estensione Makecode
+## 4.1.2 Bibliothèque d'extensions MakeCode
 
-### 4.1.2.1 Aggiungi Libreria
+### 4.1.2.1 Ajouter une bibliothèque
 
-⚠️ **Forniamo file di codice (.hex) per ogni progetto, quindi puoi caricarli direttamente nell'editor MakeCode. Oppure, se lo desideri, puoi anche costruire blocchi di codice da solo. Nota che le librerie sono necessarie quando li costruisci manualmente.**
+⚠️ **Nous fournissons des fichiers de code (.hex) pour chaque projet, vous pouvez donc les charger directement dans l'éditeur MakeCode. Sinon, si vous le souhaitez, vous pouvez aussi construire les blocs de code vous‑même. Notez que des bibliothèques sont nécessaires si vous les construisez manuellement.**
 
-⚠️ **<span style="color: rgb(255, 76, 65);">Nota:</span>** Copia e incolla il link nella casella di ricerca: `https://github.com/keyestudio2019/pxt-creative-inventors-kit-master.git`.
+⚠️ **<span style="color: rgb(255, 76, 65);">Remarque :</span>** Copiez-collez le lien dans la zone de recherche : `https://github.com/keyestudio2019/pxt-creative-inventors-kit-master.git`.
 
 ![Img](./media/Animation-4.gif)
 
-Passaggi:
+Étapes :
 
-1\. Clicca ![Img](./media/A806.png) per selezionare “**Extensions**”.
+1\. Cliquez sur ![Img](./media/A806.png) pour sélectionner “**Extensions**”.
 
 ![Img](./media/A842.png)
 
-Oppure clicca “**Extensions**” sopra i blocchi **Advanced**.
+Ou cliquez sur “**Extensions**” au‑dessus des blocs **Avancés**.
 
 ![Img](./media/A900.png)
 
-2\. Cerca parole chiave o incolla il link GitHub.
+2\. Recherchez des mots‑clés ou collez le lien GitHub.
 
 ![Img](./media/A909.png)
 
-3\. Qui inseriamo l'URL: `https://github.com/keyestudio2019/KEYES-Smart-Gamepad-master.git` nella casella di ricerca e clicchiamo ![Img](./media/A3257.png), e carichiamo l'estensione di “**Smart-Gamepad**”.
+3\. Ici nous saisissons l'URL : `https://github.com/keyestudio2019/KEYES-Smart-Gamepad-master.git` dans la zone de recherche et cliquons sur ![Img](./media/A3257.png), puis chargeons l'extension “**Smart-Gamepad**”.
 
 ![Img](./media/A306.png)
 
-4\. Caricamento:
+4\. Chargement :
 
 ![Img](./media/A3316.png)
 
-5\. Caricato:
+5\. Chargée :
 
 ![Img](./media/A335.png)
 
-### 4.1.2.2 Aggiorna/Elimina Libreria
+### 4.1.2.2 Mettre à jour/Supprimer une bibliothèque
 
-⚠️ **Generalmente, non è necessario rimuovere le librerie, a meno che non siano più richieste.**
+⚠️ **En général, il n'est pas nécessaire de supprimer des bibliothèques, sauf si elles ne sont pas requises.**
 
 ![Img](./media/Animation-4.gif)
 
-Passaggi:
+Étapes :
 
-1\. Clicca “**JavaScript**” per passare ai codici testuali.
+1\. Cliquez sur “**JavaScript**” pour passer au code texte.
 
 ![Img](./media/A724.png)
 
-2\. Clicca “**Explorer**”.
+2\. Cliquez sur “**Explorer**”.
 
 ![Img](./media/A749.png)
 
-3\. Trova “**Smart-Gamepad**” e clicca l'icona del cestino ![Img](./media/A813.png) per rimuoverlo.
+3\. Trouvez “**Smart-Gamepad**” et cliquez sur la corbeille ![Img](./media/A813.png) pour la supprimer.
 
 ![Img](./media/A824.png)
 
-4\. “**Remove it**”.
+4\. « **Supprimer** ».
 
 ![Img](./media/A727.png)
 
-## 4.1.3 Programma MakeCode
+## 4.1.3 Programme MakeCode
 
-### 4.1.3.1 Importa Programma in MakeCode
+### 4.1.3.1 Importer un programme dans MakeCode
 
-Prendiamo come esempio il progetto “**heartbeat**”.
+Nous prenons le projet “**heatbeat**” comme exemple.
 
 ![Img](./media/Animation-2.gif)
 
-Passaggi:
+Étapes :
 
-1\. Collega la scheda micro:bit al tuo computer tramite cavo micro USB.
+1\. Connectez la carte micro:bit à votre ordinateur via un câble micro USB.
 
 ![Img](./media/A800.png)
 
-Quando la micro:bit è accesa, l'indicatore LED rosso sul retro si illuminerà.
+Lorsque la micro:bit est sous tension, la LED rouge à l'arrière s'allumera.
 
-Sulla scheda micro:bit, c'è un indicatore LED giallo che lampeggerà quando la scheda comunica con il tuo computer tramite micro USB.
+Sur la carte micro:bit, une LED jaune clignotera lorsque la carte communiquera avec votre ordinateur via micro USB. 
 
-Apri Finder (Mac) / Dispositivi e unità (Windows), e vedrai un'unità USB chiamata "MICROBIT". Nota però che non è un disco comune!
+Ouvrez Finder (Mac) / Devices and drives (Windows), et vous verrez un lecteur USB nommé "MICROBIT". Notez toutefois qu'il ne s'agit pas d'un disque ordinaire !
 
 ![Img](./media/A849.png)
 
-2\. Clicca “**Import**”:
+2\. Cliquez sur « **Importer** » :
 
 ![Img](./media/A956.png)
 
-3\. E seleziona “**Import File...**”.
+3\. Puis sélectionnez « **Importer un fichier...** ».
 
 ![Img](./media/A042.png)
 
-4\. “**Choose File**” per aprire il file di cui hai bisogno.
+4\. « **Choisir un fichier** » pour ouvrir le fichier nécessaire.
 
 ![Img](./media/A06.png)
 
-5\. Qui scegliamo “**heartbeat.hex**”.
+5\. Ici nous choisissons « **heartbeat.hex** ».
 
 ![Img](./media/A28.png)
 
-6\. “**Go ahead √**”.
+6\. « **Continuer √** ».
 
 ![Img](./media/A149.png)
 
-Oppure puoi trascinare direttamente il file hex nell'interfaccia principale di Makecode:
+Ou vous pouvez glisser directement le fichier hex vers l'interface principale de MakeCode :
 
 ![Img](./media/A202.png)
 
-7\. Importato:
+7\. Importé :
 
 ![Img](./media/A217.png)
 
-### 4.1.3.2 Scarica Codice (WebUSB)
+### 4.1.3.2 Télécharger le code (WebUSB)
 
-Per browser come **Google Chrome/Microsoft Edge**, il loro WebUSB consente l'accesso diretto al dispositivo hardware micro USB tramite pagina web online. Clicca “Connect Device” per accoppiare il dispositivo. Dopodiché, clicca “**Download**” per caricare il codice sulla scheda micro:bit.
+Pour des navigateurs comme **Google Chrome/Microsoft Edge**, leur WebUSB permet un accès direct au périphérique matériel micro USB via une page web. Cliquez sur « Connecter l'appareil » pour appareiller le périphérique. Ensuite, cliquez sur « **Télécharger** » pour charger le code sur la carte micro:bit.
 
 ![Img](./media/Animation.gif)
 
-Passaggi:
+Étapes :
 
-#### 4.1.3.2.1 Accoppia dispositivo
+#### 4.1.3.2.1 Apparier l'appareil
 
-1\. Collega la scheda micro:bit al tuo computer tramite cavo micro USB.
+1\. Connectez la carte micro:bit à votre ordinateur via un câble micro USB.
 
 ![Img](./media/A951.png)
 
-2\. Clicca i tre puntini “**...**” dietro “**Download**” e seleziona “**Connect device**”.
+2\. Cliquez sur les trois points “**...**” derrière « **Télécharger** » et sélectionnez « **Connecter l'appareil** ».
 
 ![Img](./media/A028.png)
 
-3\. “**Next**”.
+3\. « **Suivant** ».
 
 ![Img](./media/A046.png)
 
-4\. “**Pair**”.
+4\. « **Appairer** ».
 
 ![Img](./media/A104.png)
 
-5\. Connetti a un “**Device**” e “**Connect**”.
+5\. Connectez‑vous à un « **Périphérique** » et cliquez sur « **Connecter** ». 
 
 ![Img](./media/A127.png)
 
-6\. “**Done**” e connesso.
+6\. « **Terminé** » et connecté.
 
 ![Img](./media/A144.png)
 
-#### 4.1.3.2.2 Scarica codice
+#### 4.1.3.2.2 Télécharger le code
 
-Dopo la connessione, clicca “**Download**” e il codice verrà scaricato sulla scheda micro:bit, e ![Img](./media/A212.png) diventa ![Img](./media/A220.png).
+Après connexion, cliquez sur « **Télécharger** » et le code sera transféré sur la carte micro:bit, et ![Img](./media/A212.png) devient  ![Img](./media/A220.png).
 
 ![Img](./media/A232.png)
 
-⚠️ **Suggerimenti**
+⚠️ **Conseils**
 
-Se non c'è nessun dispositivo da accoppiare nell'interfaccia, consulta la [risoluzione dei problemi del dispositivo-webusb](https://makecode.microbit.org/device/usb/webusb/troubleshoot).
+Si aucun appareil n'apparaît pour l'appairage dans l'interface, veuillez consulter [device-webusb-troubleshoot](https://makecode.microbit.org/device/usb/webusb/troubleshoot).
 
-Se il firmware della micro:bit richiede un aggiornamento, consulta [come aggiornare il firmware](https://microbit.org/guide/firmware/).
+Si le firmware de la micro:bit nécessite une mise à jour, consultez [how-to-update-the-firmware](https://microbit.org/guide/firmware/).
 
-### 4.1.3.3 Scarica Codice (senza WebUSB)
+### 4.1.3.3 Télécharger le code (sans WebUSB)
 
-1\. Collega la scheda micro:bit al tuo computer tramite cavo micro USB.
+1\. Connectez la carte micro:bit à votre ordinateur via un câble micro USB.
 
 ![Img](./media/A800.png)
 
-Quando la micro:bit è accesa, l'indicatore LED rosso sul retro si illuminerà.
+Lorsque la micro:bit est sous tension, la LED rouge à l'arrière s'allumera.
 
-Sulla scheda micro:bit, c'è un indicatore LED giallo che lampeggerà quando la scheda comunica con il tuo computer tramite micro USB.
+Sur la carte micro:bit, une LED jaune clignotera lorsque la carte communiquera avec votre ordinateur via micro USB. 
 
-Apri Finder (Mac) / Dispositivi e unità (Windows), e vedrai un'unità USB chiamata "MICROBIT". Nota però che non è un disco comune!
+Ouvrez Finder (Mac) / Devices and drives (Windows), et vous verrez un lecteur USB nommé "MICROBIT". Notez toutefois qu'il ne s'agit pas d'un disque ordinaire !
 
 ![Img](./media/A849.png)
 
-2\. Per i browser, carica il codice sulla scheda micro:bit come segue:
+2\. Pour les navigateurs, veuillez charger le code sur la carte micro:bit comme suit :
 
 ![Img](./media/Animations-1.gif)
 
-Passaggi:
+Étapes :
 
-① Clicca il pulsante “**Download**” e verrà scaricato un file “**.hex**”, che può essere letto dalla scheda micro:bit. Dopodiché, copialo e incollalo sulla scheda.
+① Cliquez sur le bouton « **Télécharger** » et un fichier « **.hex** » sera téléchargé, lisible par la carte micro:bit. Ensuite, copiez‑le et collez‑le sur la carte. 
 
-Per Windows, puoi “**Invia a→MICROBIT**” e caricare il file “**.hex**” sulla scheda micro:bit. Durante questo processo, l'indicatore giallo sul retro della scheda lampeggerà. Una volta completato il caricamento, l'indicatore rimarrà acceso.
+Pour Windows, vous pouvez « **Envoyer vers→MICROBIT** » et charger le fichier « **.hex** » sur la carte micro:bit. Pendant ce processus, la LED jaune à l'arrière de la carte clignotera. Une fois le chargement terminé, la LED reste allumée.
 
 ![Img](./media/A319.png)
 
 ![Img](./media/A449.png)
 
-Oppure puoi trascinare direttamente il file “**.hex**” su MICROBIT:
+Ou vous pouvez glisser directement le fichier « **.hex** » sur le MICROBIT :
 
 ![Img](./media/A341.png)
 
 ![Img](./media/A345.png)
 
-② Dopodiché, collega la scheda micro:bit al computer tramite cavo micro USB e accendila, e vedrai la matrice LED 5x5 a bordo mostrare ripetutamente ![Img](./media/A903.png) e ![Img](./media/A910.png).
+② Après cela, connectez la carte micro:bit à l'ordinateur via le câble micro USB et mettez‑la sous tension ; vous verrez la matrice LED 5 x 5 à bord afficher successivement ![Img](./media/A903.png) et ![Img](./media/A910.png).
 
 ![Img](./media/A22.png)
 
-⚠️ Durante ogni programmazione, il disco MICROBIT si espellerà e tornerà automaticamente, e i file **.hex** che hai copiato su di esso non verranno visualizzati. Questo perché la scheda micro:bit riceve ed esegue solo l'ultimo programma caricato anziché memorizzarli.
+
+
+⚠️ Lors de chaque programmation, le lecteur MICROBIT s'éjectera automatiquement puis reviendra, et les fichiers **.hex** que vous y avez copiés ne s'afficheront pas. En effet, la carte micro:bit ne reçoit et n'exécute que le dernier programme envoyé et ne les stocke pas.

@@ -1,96 +1,96 @@
-### 4.2.8 Indovina il Numero
+### 4.2.8 Deviner le nombre
 
-#### 4.2.8.1 Panoramica
+#### 4.2.8.1 Vue d'ensemble
 
 ![Img](./media/top1.png)
 
-In questo progetto, giochiamo a un gioco di indovinazione del numero con una scheda Micro:bit, una scheda di controllo gamepad e un display OLED. Quando il numero corretto viene indovinato, l'OLED visualizza "Great!!!"; se l'ipotesi è troppo alta o troppo bassa, mostra rispettivamente "To High!"/"To Low!", insieme all'intervallo corrispondente di numeri possibili.
+Dans ce projet, nous jouons à un jeu de devinette de nombre avec une carte micro:bit, une carte de contrôle gamepad et un écran OLED. Lorsqu'on devine le bon nombre, l'OLED affiche "Génial !!!" ; si la supposition est trop haute ou trop basse, il affiche respectivement "Trop haut !" / "Trop bas !", ainsi que la plage correspondante des nombres possibles.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.8.2 Conoscenza dei Componenti
+#### 4.2.8.2 Connaissances des composants
 
-Questo progetto utilizza lo stesso display OLED del Progetto 07. Si prega di fare riferimento alla sezione 4.2.7.2 per la conoscenza dei suoi componenti.
+Ce projet utilise le même écran OLED que le Projet 07. Veuillez vous référer à la section 4.2.7.2 pour ses connaissances sur les composants.
 
-#### 4.2.8.3 Parti Richieste
+#### 4.2.8.3 Pièces requises
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 | **Batteria AAA** (auto-fornita) ×4 |
+| **micro:bit V2 board** (fourni par l'utilisateur) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 |**AAA battery** (fourni par l'utilisateur) ×4 |
 |![Img](./media/OLED.png)|![Img](./media/7008.png)||
-|**Display OLED** (auto-fornito)×1 |**Cavo DuPont F-F**(auto-fornito) x4||
+|**OLED display** (fourni par l'utilisateur)×1 |**F-F DuPont wire**(fourni par l'utilisateur) x4||
 
-#### 4.2.8.4 Schema di Cablaggio
+#### 4.2.8.4 Schéma de câblage
 
 ![Img](./media/jiexian8.png)
 
-**Dopo aver cablato come mostrato sopra, inserisci la micro:bit nello slot sulla scheda di controllo del gamepad.**
+**Après avoir câblé comme montré ci-dessus, insérez la micro:bit dans la fente de la carte de contrôle gamepad.**
 
-| Display OLED | Scheda di controllo gamepad micro:bit | Pin scheda micro:bit |
+| OLED display | micro:bit gamepad control board | micro:bit board pin |
 | :--: | :--: | :--: |
-| GND | GND | GND |
-| VCC | 3V | 3V |
-| SDA | SDA | P20 |
-| SCL | SCL | P19 |
+| GND |  GND | GND |
+| VCC |  3V | 3V |
+| SDA |  SDA | P20 |
+| SCL |  SCL | P19 |
 
-#### 4.2.8.5 Flusso del Codice
+#### 4.2.8.5 Flux du code
 
 ![Img](./media/8001.png)
 
-#### 4.2.8.6 Codice di Test
+#### 4.2.8.6 Code de test
 
-⚠️ **Nota che qui è inclusa la libreria OLED, quindi dobbiamo importare: https://github.com/keyestudio/pxt-environment-kit-master**.
+⚠️ **Remarque : la bibliothèque OLED est incluse ici, nous devons donc importer : https://github.com/keyestudio/pxt-environment-kit-master**.
 
-**Codice completo:**
+**Code complet :**
 
 ![Img](./media/8002.png)
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Inizializza il bit flag di aggiornamento dello schermo, imposta la variabile mode a 0 (0-prontezza di gioco, 1-gioco in corso) e inizializza la visualizzazione dello schermo OLED.
+① Initialiser le bit du drapeau de mise à jour de l'écran, définir la variable mode à 0 (0 - prêt du jeu, 1 - jeu en cours), et initialiser l'écran OLED.
 
 ![Img](./media/8003.png)
 
-② Durante la preparazione del gioco, imposta l'intervallo di ipotesi, il valore di ipotesi iniziale, il valore target e l'ipotesi.
+② Pendant la préparation du jeu, définir la plage de devinettes, la valeur initiale de l'estimation, la valeur cible et l'estimation.
 
 ![Img](./media/8004.png)
 
-③ Aggiorna l'intervallo di valori e il valore di ipotesi sull'OLED. Visualizza i prompt corrispondenti quando il bit flag dello stato del risultato cambia: "To High!" quando state=1; "To Low!" quando state=2; e "Great!!!" quando state=3.
+③ Mettre à jour la plage de valeurs et la valeur d'estimation sur l'OLED. Afficher les invites correspondantes lorsque le bit de drapeau d'état du résultat change : "Trop haut !" lorsque state=1 ; "Trop bas !" lorsque state=2 ; et "Génial !!!" lorsque state=3.
 
-E imposta la modalità sulla prontezza di gioco e attendi 1000 millisecondi (1s).
+Et définir le mode sur prêt du jeu et attendre 1000 millisecondes (1 s).
 
 ![Img](./media/8005.png)
 
-④ Premi C e il valore di ipotesi temp+1; se il valore di ipotesi supera il massimo, impostalo come nuovo massimo.
+④ Appuyer sur C pour temp+1 ; si la valeur d'estimation dépasse le maximum, la définir comme nouveau maximum.
 
-Premi E e il valore di ipotesi temp-1; se il valore di ipotesi è inferiore al minimo, impostalo come nuovo minimo.
+Appuyer sur E pour temp-1 ; si la valeur d'estimation est inférieure au minimum, la définir comme nouveau minimum.
 
 ![Img](./media/8006.png)
 
-⑤ Premi D per confrontare il valore di ipotesi con il valore target. Se temp è maggiore, registra il nuovo massimo max2 e inserisci lo Stato 1; se temp è minore, registra il nuovo minimo min2 e inserisci lo Stato 2; se entrambi i valori sono uguali, vai allo Stato 3.
+⑤ Appuyer sur D pour comparer la valeur d'estimation avec la valeur cible. Si temp est plus grand, enregistrer le nouveau maximum max2 et entrer en State 1 ; si temp est plus petit, enregistrer le nouveau minimum min2 et entrer en State 2 ; si les deux valeurs sont égales, aller en State 3.
 
-Infine, aggiorna il display con un ritardo di 1000 millisecondi.
+Enfin, mettre à jour l'affichage avec un délai de 1000 millisecondes.
 
 ![Img](./media/8007.png)
 
-#### 4.2.8.7 Risultato del Test
+#### 4.2.8.7 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
+Après avoir transféré le code, insérez la carte micro:bit dans la fente du gamepad (**piles installées**), et mettez l'interrupteur sur "ON".
 
-Dopo aver caricato il codice, l'OLED si inizializza e mostra l'intervallo di valori di “num: 1 ~ 100” e l'ipotesi iniziale di 50. Puoi premere C per temp+1 (max di 100) o E per temp-1 (min di 1) per cambiare il tuo valore di ipotesi sull'OLED.
+Après le téléchargement du code, l'OLED s'initialise et affiche la plage de valeurs “num : 1 ~ 100” et une estimation initiale de 50. Vous pouvez appuyer sur C pour temp+1 (maximum 100) ou sur E pour temp-1 (minimum 1) afin de changer votre valeur d'estimation sur l'OLED.
 
-Premi D per inviare il tuo valore, e temp verrà confrontato con il valore target casuale. Se temp>value, mostra “To High!” e assegna temp a max2; se temp<value, mostra “To Low!” e assegnalo a min2. Se sei troppo fortunato che temp=value, vedrai “Great!!!” per 1s.
+Appuyez sur D pour soumettre votre valeur, et temp sera comparé à la valeur cible aléatoire. Si temp>value, afficher « Trop haut ! » et assigner temp à max2 ; si temp<value, afficher « Trop bas ! » et l'assigner à min2. Si vous avez la chance que temp=value, vous verrez « Génial !!! » pendant 1 s.
 
-Dopo di che, il gioco verrà resettato e verrà impostato un nuovo valore target. Giochiamo un altro round!
+Après cela, le jeu sera réinitialisé et une nouvelle valeur cible sera définie. Jouons une autre partie !
 
 ![Img](./media/8000.gif)
 
-⚠️ **Il blocco di costruzione nel Risultato del Test non è incluso in questo kit di prodotti.**
+⚠️ **Les blocs de construction montrés dans le Résultat du test ne sont pas inclus dans ce kit produit.**
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation à l'arrière de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

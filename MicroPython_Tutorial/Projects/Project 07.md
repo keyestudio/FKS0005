@@ -1,43 +1,45 @@
-### 5.2.7 Indovina il Numero
+### 5.2.7 Deviner le nombre
 
-#### 5.2.7.1 Panoramica
+#### 5.2.7.1 Aperçu
 
 ![Img](./media/top1.png)
 
-In questo progetto, giochiamo a un gioco di indovinazione del numero con una scheda Micro:bit, una scheda di controllo gamepad e un display OLED. Quando il numero corretto viene indovinato, l'OLED visualizza "Great!!!"; se l'ipotesi è troppo alta o troppo bassa, mostra rispettivamente "To High!"/"To Low!", insieme all'intervallo corrispondente di numeri possibili.
+Dans ce projet, nous jouons à un jeu de devinette de nombre à l'aide d'une carte Micro:bit, d'une carte de contrôle gamepad et d'un OLED display. Lorsque le nombre correct est deviné, l'OLED affiche "Great!!!" ; si la supposition est trop élevée ou trop basse, il affiche respectivement "To High!"/"To Low!", ainsi que la plage correspondante des nombres possibles.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.7.2 Parti Richieste
+#### 5.2.7.2 Pièces requises
 
 | ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 | **Batteria AAA** (auto-fornita) ×4 |
+| **micro:bit V2 board** (fourni par vos soins) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 | **AAA battery** (fourni par vos soins) ×4 |
 |![Img](./media/OLED.png)|![Img](./media/7008.png)||
-|    **Display OLED** (auto-fornito)×1     |   **Cavo DuPont F-F**(auto-fornito) x4    ||
+|    **OLED display** (fourni par vos soins) ×1     |   **F-F DuPont wire** (fourni par vos soins) ×4    ||
 
-#### 5.2.7.3 Schema di Cablaggio
+#### 5.2.7.3 Schéma de câblage
 
 ![Img](./media/jiexian8.png)
 
-**Dopo aver cablato come mostrato sopra, inserisci la micro:bit nello slot sulla scheda di controllo del gamepad.**
+**Après avoir câblé comme indiqué ci-dessus, insérez le micro:bit dans la fente de la carte de contrôle du gamepad.**
 
-| Display OLED | Scheda di controllo gamepad micro:bit | Pin scheda micro:bit |
+| OLED display | micro:bit gamepad control board | micro:bit board pin |
 | :----------: | :-----------------------------: | :-----------------: |
 |     GND      |               GND               |         GND         |
 |     VCC      |               3V                |         3V          |
 |     SDA      |               SDA               |         P20         |
 |     SCL      |               SCL               |         P19         |
 
-#### 5.2.7.4 Flusso del Codice
+#### 5.2.7.4 Flux du code
 
 ![Img](./media/8001.png)
 
-#### 5.2.7.5 Codice di Test
+#### 5.2.7.5 Code de test
 
-⚠️ **Nota che qui è inclusa la libreria OLED, quindi dobbiamo importare: https://github.com/keyestudio/pxt-environment-kit-master**.
+⚠️ **Notez que l'OLED est utilisé ici, donc nous devons importer sa bibliothèque.**
 
-**Codice completo:**
+![Img](./media/t7000.png)
+
+**Code complet :**
 
 ```python
 # Import required libraries
@@ -130,17 +132,17 @@ while True:
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Importa le librerie, inizializza l'OLED, definisci le variabili globali e configura i pin dei pulsanti.
+① Importez les bibliothèques, initialisez l'OLED, définissez les variables globales et configurez les broches des boutons.
 
-Sono richieste tre librerie: `microbit` (per accedere all'hardware Micro:bit), `oled_ssd1306` (per controllare il display OLED collegato), `random` (per generare numeri casuali nel gioco).
+Trois bibliothèques sont nécessaires : `microbit` (pour accéder au matériel Micro:bit), `oled_ssd1306` (pour contrôler l'OLED display connecté), `random` (pour générer des nombres aléatoires dans le jeu).
 
-`initialize()` e `clear_oled()` inizializzano e cancellano l'OLED.
+`initialize()` et `clear_oled()` initialisent et effacent l'OLED.
 
-Una serie di variabili globali sono definite per gestire i parametri dello stato del gioco, inclusi la modalità di gioco (`mode`), l'intervallo numerico (`min_num`, `max_num`), il valore di ipotesi corrente (`current_guess`), il numero target (`target_num`), il feedback del gioco (`state`) e un flag che controlla gli aggiornamenti del display (`update_display`).
+Une série de variables globales est définie pour gérer les paramètres de l'état du jeu, y compris le mode du jeu (`mode`), la plage de nombres (`min_num`, `max_num`), la valeur actuelle devinée (`current_guess`), le nombre cible (`target_num`), le retour du jeu (`state`) et un drapeau contrôlant les mises à jour de l'affichage (`update_display`).
 
-`pin13`, `pin15` e `pin16` sono configurati in modalità pull-up — mantenendo un livello alto quando il pulsante non è premuto e un livello basso quando premuto.
+`pin13`, `pin15` et `pin16` sont configurés en mode pull-up — maintiennent un niveau haut lorsque le bouton n'est pas pressé et bas lorsqu'il est pressé.
 
 ```python
 # Import required libraries
@@ -166,14 +168,13 @@ pin13.set_pull(pin13.PULL_UP)
 pin15.set_pull(pin15.PULL_UP)
 pin16.set_pull(pin16.PULL_UP)
 ```
+② Logique d'initialisation du jeu dans la boucle principale.
 
-② Logica di inizializzazione del gioco nel loop principale.
+C'est le premier bloc logique de la boucle principale du programme, responsable de l'initialisation ou du redémarrage du jeu.
 
-È il primo blocco logico del loop principale del programma, specificamente responsabile dell'inizializzazione o del riavvio del gioco.
+`mode` = `0` : le jeu nécessite une initialisation. Dans ce cas, il réinitialise la plage de devinette à 1–100 et définit la valeur de devinette actuelle à 50. Il utilise `randint(min_num, max_num)` pour générer aléatoirement un entier entre 1 et 100 comme nombre cible (`target_num`).
 
-`mode` = `0` : il gioco richiede l'inizializzazione. In questo caso, resetta l'intervallo di ipotesi a 1–100 e imposta il valore di ipotesi corrente a 50. Utilizza `randint(min_num, max_num)` per generare casualmente un numero intero tra 1 e 100 come numero target (`target_num`).
-
-Quindi, `state` = `0` (stato iniziale) e `mode` = `1` (in esecuzione). E imposta `update_display` su `True` per garantire che l'OLED aggiorni immediatamente le ultime informazioni di gioco durante l'esecuzione.
+Ensuite, `state` = `0` (état initial) et `mode` = `1` (en cours). Et il définit `update_display` sur `True` pour garantir que l'OLED affiche immédiatement les dernières informations du jeu pendant l'exécution.
 
 ```python
 while True:
@@ -187,19 +188,18 @@ while True:
         mode = 1  # Switch to running mode
         update_display = True
 ```
+③ Gestion des entrées des boutons et prise de décision selon la supposition.
 
-③ Gestisci gli input dei pulsanti e il processo decisionale basato sull'ipotesi.
+Lorsque le jeu est en fonctionnement (`mode == 1`), il gère les interactions du joueur et la logique du jeu. Il détecte indépendamment les entrées des trois boutons externes :
 
-Quando il gioco è in funzione (`mode == 1`), gestisce le interazioni del giocatore e la logica del gioco. Rileva indipendentemente gli input da tre pulsanti esterni:
+*   **`pin15` est pressé** : (niveau bas détecté) ; `current_guess` + 1. Pour empêcher la valeur de dépasser la plage, il vérifie et limite `current_guess` ≤ `max_num`.
+*   **`pin13` est pressé** : `current_guess` - 1. Il vérifie aussi que `current_guess` ≥ `min_num`.
+*   **`pin16` est pressé** : le joueur soumet la valeur devinée. Elle est comparée avec `target_num` :
+    *   `current_guess` > `target_num` : `state` = `1` (trop grand) et définit la borne maximale `max_num` sur `current_guess`.
+    *   `current_guess` < `target_num` : `state` = `2` (trop petit) et définit la borne minimale `min_num` sur `current_guess`.
+    *   `current_guess` = `target_num` : `state` = `3` (Correct) et définit `mode` à `0` pour préparer la manche suivante.
 
-*   **`pin15` è premuto**: (livello basso rilevato); `current_guess` + 1. Per evitare che il valore superi l'intervallo, controlla e limita `current_guess` < o = `max_num`.
-*   **`pin13` è premuto**: `current_guess` - 1. Controlla anche che `current_guess` non sia maggiore di `min_num`.
-*   **`pin16` è premuto**: Se `pin16` è premuto, significa che il giocatore ha inviato il valore di ipotesi. Verrà confrontato con `target_num`:
-    *   `current_guess` > `target_num` : `state` = `1` (troppo alto) e imposta il massimo dell'intervallo `max_num` su `current_guess`.
-    *   `current_guess` < `target_num `: `state` = `2` (troppo basso) e imposta il minimo `min_num` su `current_guess`.
-    *   `current_guess` = `target_num` : `state` = `3` (Ottimo) e imposta `mode` su `0` per prepararsi al round successivo.
-
-Dopo ogni pressione del pulsante, `update_display` viene impostato su `True` per aggiornare l'OLED, con un ritardo di 50ms per l'anti-jitter.
+Après chaque appui de bouton, `update_display` est mis à `True` pour mettre à jour l'OLED, avec un délai de 50 ms pour anti-rebond.
 
 ```python
     # 2. Game running logic
@@ -232,16 +232,15 @@ Dopo ogni pressione del pulsante, `update_display` viene impostato su `True` per
             update_display = True
             sleep(50)  # Debounce delay
 ```
+④ Logique de mise à jour de l'OLED.
 
-④ Logica di aggiornamento dell'OLED.
+Elle affiche l'état et les informations courantes du jeu sur l'OLED. Elle s'exécute uniquement lorsque `update_display` = `True` afin d'éviter des rafraîchissements inutiles.
 
-Visualizza lo stato e le informazioni attuali del gioco sull'OLED. Viene eseguito solo quando `update_display` = `True` per evitare aggiornamenti non necessari.
+Chaque exécution appelle d'abord `clear_oled()` pour effacer l'affichage. La plage de devinette actuelle (par ex. "num:1~100") apparaît sur la première ligne. La devinette actuelle du joueur (`current_guess`) est affichée sur la troisième ligne.
 
-Ogni esecuzione chiama prima `clear_oled()` per cancellare il display. L'intervallo di ipotesi corrente (ad esempio, "num:1~100") appare sulla prima riga. L'ipotesi corrente del giocatore (`current_guess`) viene visualizzata sulla terza riga.
+Selon `state`, le message de retour correspondant ("TO High", "TO Low", ou "Great!!!") apparaît sur la cinquième ligne.
 
-Basandosi su `state`, il messaggio di feedback corrispondente ("TO High," "TO Low," o "Great!!!") appare sulla quinta riga.
-
-Dopo aver completato tutte le visualizzazioni, `update_display` viene resettato su `False` per essere pronto ad aggiornare la prossima modifica dello stato del gioco.
+Après avoir effectué toutes les affichages, `update_display` est remis à `False` pour être prêt à mettre à jour au prochain changement d'état du jeu.
 
 ```python
         # 3. Update OLED display (only when needed)
@@ -262,12 +261,11 @@ Dopo aver completato tutte le visualizzazioni, `update_display` viene resettato 
             # Reset update flag
             update_display = False
 ```
+⑤ Gestion des délais après une bonne réponse.
 
-⑤ Gestisci i ritardi dopo le ipotesi corrette.
+Cette partie s'exécute uniquement lorsque le joueur devine correctement le nombre cible (`state == 3`). Ensuite, une pause de 1000 ms (1 s) est effectuée pour permettre aux joueurs de voir "Great!!!".
 
-Viene eseguito solo quando il giocatore indovina correttamente il numero target (`state == 3`). Quindi, mette in pausa per 1000ms (1s) affinché i giocatori controllino il "Great!!!".
-
-Quindi, `state` viene resettato a `0`. Poiché `mode` è già stato resettato a `0`, in caso di ipotesi corretta, il gioco ripartirà dall'inizializzazione.
+Puis, `state` est réinitialisé à `0`. Comme `mode` a déjà été remis à `0`, après une bonne réponse le jeu redémarrera depuis l'initialisation.
 
 ```python
     # 4. Delay after correct guess to show message
@@ -276,22 +274,22 @@ Quindi, `state` viene resettato a `0`. Poiché `mode` è già stato resettato a 
         state = 0
 ```
 
-#### 5.2.7.6 Risultato del Test
+#### 5.2.7.6 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
+Après avoir flashé le code, insérez la carte micro:bit dans la fente du gamepad (**batteries installées**), et mettez l'interrupteur de celui-ci sur "ON".
 
-Dopo aver caricato il codice, l'OLED si inizializza e mostra l'intervallo di valori di “num: 1 ~ 100” e l'ipotesi iniziale di 50. Puoi premere C per temp+1 (max di 100) o E per temp-1 (min di 1) per cambiare il tuo valore di ipotesi sull'OLED.
+Après l'upload du code, l'OLED s'initialise et affiche la plage de valeurs "num: 1 ~ 100" et la devinette initiale de 50. Vous pouvez appuyer sur C pour augmenter la valeur devinée de +1 (jusqu'à 100) ou sur E pour diminuer la valeur devinée de -1 (jusqu'à 1) afin de changer la valeur affichée sur l'OLED.
 
-Premi D per inviare il tuo valore, e temp verrà confrontato con il valore target casuale. Se temp>value, mostra “To High!” e assegna temp a max_num; se temp<value, mostra “To Low!” e assegnale a min_num. Se sei troppo fortunato che temp=value, vedrai “Great!!!” per 1s.
+Appuyez sur D pour soumettre votre valeur ; la devinette sera comparée avec la valeur cible aléatoire. Si la devinette > valeur, affiche "To High!" et assigne la devinette à max_num ; si la devinette < valeur, affiche "To Low!" et l'assigne à min_num. Si par chance la devinette = valeur, vous verrez "Great!!!" pendant 1 seconde.
 
-Dopo di che, il gioco verrà resettato e verrà impostato un nuovo valore target. Giochiamo un altro round!
+Ensuite, le jeu sera réinitialisé et une nouvelle valeur cible sera définie. Rejouez une autre manche !
 
 ![Img](./media/t7000.gif)
 
-⚠️ **Il blocco di costruzione nel Risultato del Test non è incluso in questo kit di prodotti.**
+⚠️ **Les blocs de construction montrés dans Résultat du test ne sont pas inclus dans ce kit de produit.**
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, appuyez sur le bouton reset à l'arrière de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

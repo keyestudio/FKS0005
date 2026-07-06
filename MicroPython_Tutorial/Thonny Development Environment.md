@@ -1,77 +1,77 @@
-## 5.1 Ambiente di Sviluppo Thonny
+## 5.1 Thonny Development Environment
 
-**Prima di programmare, è necessario effettuare alcune importanti preparazioni.**
+**Avant de programmer, vous devez effectuer quelques préparatifs importants.**
 
-### 5.1.1 Installa Thonny
+### 5.1.1 Install Thonny
 
-Thonny è una piattaforma software gratuita e open source con dimensioni ridotte, interfaccia semplice, funzionamento semplice e funzioni ricche. È un IDE Python adatto ai principianti. In questo tutorial, useremo questo IDE per sviluppare un ESP32. Thonny supporta più sistemi operativi tra cui Windows, Mac OS, Linux.
+Thonny est un logiciel libre et open source de petite taille, avec une interface simple, une utilisation facile et des fonctionnalités riches. C'est un IDE Python adapté aux débutants. Dans ce tutoriel, nous utilisons cet IDE pour développer un ESP32. Thonny prend en charge plusieurs systèmes d'exploitation, y compris Windows, Mac OS, Linux.
 
-**1. Scarica Thonny**
+**1. Download Thonny**
 
-(1) Accedi al sito web: [https://thonny.org](https://thonny.org) per scaricare l'ultima versione di Thonny. Altre versioni potrebbero non essere compatibili con le funzioni microbit.
-(2) Libreria di codice open-source Thonny: [https://github.com/thonny/thonny](https://github.com/thonny/thonny).
+(1)  Rendez-vous sur le site : [https://thonny.org](https://thonny.org) pour télécharger la dernière version de Thonny. D'autres versions peuvent ne pas être compatibles avec les fonctions micro:bit.  
+(2)  Bibliothèque de code open-source de Thonny : [https://github.com/thonny/thonny](https://github.com/thonny/thonny).
 
-Scarica quella del tuo sistema operativo.
+Veuillez télécharger la version correspondant à votre système d'exploitation.
 
 | OS | Download |
 | :-- | :-- |
 | MAC OS： | https://github.com/thonny/thonny/releases/download/v4.1.7/thonny-4.1.7.pkg|
 | Windows： | https://github.com/thonny/thonny/releases/download/v4.1.7/thonny-4.1.7.exe|
 
-| OS | Metodo | Comando |
+| OS | Method          | Command |
 | :-- |---------|--------------|
-| Linux | Pacchetto binario | `bash <(wget -O - https://thonny.org/installer-for-linux)` |
-| | Con pip | `pip3 install thonny` |
-| | Pacchetti distro | Debian/Ubuntu：`sudo apt install thonny`<br>Fedora：`sudo dnf install thonny` |
+| Linux | Binary bundle | `bash <(wget -O - https://thonny.org/installer-for-linux)` |
+|       | With pip | `pip3 install thonny` |
+|       | Distro packages | Debian/Ubuntu：`sudo apt install thonny`<br>Fedora：`sudo dnf install thonny` |
 
 ![Img](./media/t001.png)
 
-**2. Sistema Windows**
+**2. Windows System**
 
-A. L'icona di Thonny scaricata è la seguente:
+A. L'icône Thonny téléchargée est la suivante :
 
 ![Img](./media/t002.png)
 
-B. Fai doppio clic su “thonny-4.1.7.exe” e seleziona la modalità di installazione. Qui scegliamo “Install for all users”.
+B. Double-cliquez sur “thonny-4.1.7.exe” et choisissez le mode d'installation. Ici nous choisissons «Install for all users».
 
 ![Img](./media/t003.png)
 
-C. Puoi anche continuare a selezionare “Next” per completare l'installazione.
+C. Vous pouvez aussi continuer à cliquer sur «Next» pour terminer l'installation.
 
 ![Img](./media/t004.png)
 
 ![Img](./media/t005.png)
 
 
-D. Se desideri modificare il percorso di installazione di Thonny, fai clic su “Browse...” per selezionare un nuovo percorso. In caso contrario, continua a fare clic su “Next”.
+D. Si vous souhaitez changer le chemin d'installation de Thonny, cliquez sur «Browse...» pour sélectionner un nouveau chemin. Sinon, continuez à cliquer sur «Next».
 
 ![Img](./media/t006.png)
 
 ![Img](./media/t007.png)
 
-E. Spunta “Create desktop icon”, vedrai Thonny sul tuo desktop.
+E. Cochez «Create desktop icon», vous verrez Thonny sur votre bureau.
 
 ![Img](./media/t008.png)
 
-F. “Install”.
+F. «Install».
 
 ![Img](./media/t009.png)
 
-G. Attendi un po' ma non fare clic su “Cancel”.
+G. Patientez un moment et ne cliquez pas sur «Cancel».
 
 ![Img](./media/t010.png)
 
-H. Quando vedi l'interfaccia di successo, fai clic su “Finish”.
+H. Lorsque vous voyez l'interface de succès, cliquez sur «Finish».
 
 ![Img](./media/t011.png)
 
-I. Puoi vedere l'icona sul tuo desktop se hai spuntato “Create desktop icon”:
+I. Vous pouvez voir l'icône sur votre bureau si vous avez coché «Create desktop icon» :
 
 ![Img](./media/t011.png)                    
 
-### 5.1.2 Impostazioni Base di Thonny
+### 5.1.2 Thonny Basic Settings
 
-A. Fai doppio clic su Thonny, scegli la lingua e le impostazioni iniziali e fai clic su “Let’s go!”.
+A. Double-cliquez sur Thonny, choisissez la langue et les paramètres initiaux puis cliquez sur «Let’s go!».
 
 ![Img](./media/t013.png)
 
@@ -79,7 +79,7 @@ A. Fai doppio clic su Thonny, scegli la lingua e le impostazioni iniziali e fai 
 
 ![Img](./media/t015.png)
 
-B. Fai clic su “**View**”→“**File**” e “**Shell**”.
+B. Cliquez sur “**View**” → “**File**” et “**Shell**”.
 
 ![Img](./media/t016.png)
 
@@ -87,67 +87,67 @@ B. Fai clic su “**View**”→“**File**” e “**Shell**”.
 
 ![Img](./media/t018.png)
 
-### 5.1.3 Carica Firmware Micropython (Importante)
+### 5.1.3 Burn Micropython Firmware(Important)
 
-Per eseguire un programma Python sulla scheda Micro:bit, dobbiamo prima caricarvi il firmware.
+Pour exécuter un programme Python sur la carte Micro:bit, il faut d'abord y flasher le micrologiciel.
 
-**Carica il firmware Micropython:**
+**Flasher le micrologiciel MicroPython :**
 
-Collega il Micro:bit al tuo PC con un cavo USB.
+Connectez le Micro:bit à votre PC avec un câble USB.
 
 ![Img](./media/A800.png)
 
-Assicurati che il driver sia stato installato correttamente e che la porta COM possa essere identificata correttamente. Apri “**Gestione Dispositivi**” ed espandi “**Porte**”.
+Assurez-vous que le pilote est installé correctement et que le port COM est bien reconnu. Ouvrez le «**Device Manager**» et développez «**Ports**».
 
 ![Img](./media/t019.png)
 
-Il numero della porta COM può variare a seconda dei computer.
+Le numéro du port COM peut varier selon les ordinateurs.
 
-Apri Thonny, fai clic su “**run**” e “**Configure interpreter...**”
+Ouvrez Thonny, cliquez sur «**run**» et «**Configure interpreter...**»
 
 ![Img](./media/t020.png)
 
-Seleziona “Micropython (BBC micro:bit)” e “mbeb Serial Port @ COM16” nel suo interprete, e fai clic su “Install or update firmware”.
+Sélectionnez “Micropython (BBC micro:bit)” et “mbeb Serial Port @ COM16” dans son interpréteur, puis cliquez sur «Install or update firmware».
 
 ![Img](./media/t021.png)
 
-E vedrai quanto segue. Imposta “Target volume” su “MICROBIT”, “MicroPython family” su “nRF52”, “variant” su “BBC micro:bit v2 (original simplifiled API)”, “version” su “2.1.2”, e poi “Install”.
+Et vous verrez les éléments suivants. Définissez “Target volume” sur “MICROBIT”, “MicroPython family” sur “nRF52”, “variant” sur “BBC micro:bit v2 (original simplifiled API)”, “version” sur “2.1.2”, puis cliquez sur «Install».
 
-Se il firmware non si installa, premi il pulsante di reset sul Micro:bit e fai clic su “Install”.
+Si l'installation du micrologiciel échoue, appuyez sur le bouton de réinitialisation du Micro:bit, puis cliquez sur «Install».
 
 ![Img](./media/t022.png)
 
-Dopodiché, fai clic su “Close” e “OK”.
+Après cela, cliquez sur «Close» puis sur «OK».
 
 ![Img](./media/t023.png)
 
-Chiudi tutte le finestre e torna alla pagina principale e fai clic sull'icona “STOP”:
+Fermez toutes les fenêtres et retournez à la page principale puis cliquez sur l'icône «STOP» :
 
 ![Img](./media/t024.png)
 
-### 5.1.4 Carica Codice
+### 5.1.4 Upload Code
 
-**Esegui il codice di test (online)**
+**Run the test code(online)**
 
-Il Micro:bit esegue il codice online quando deve essere collegato al computer. Gli utenti possono programmare e debuggare programmi con Thonny.
+Le Micro:bit exécute le code en ligne lorsqu'il est connecté à l'ordinateur. Les utilisateurs peuvent programmer et déboguer les programmes avec Thonny.
 
-Apri Thonny e fai clic su "**Open**".
+Ouvrez Thonny et cliquez sur "**Open**".
 
 ![Img](./media/t025.png)
 
-Quando si apre una nuova finestra, apri ".\MicroPython_Resource\Codes\Heart beat", seleziona “heartbeat&ZeroWidthSpace;.py”, e fai clic su “Run current script” (se vengono segnalati errori, fai clic prima su ![Img](./media/t027.png) e poi su “Run current script”), e vedrai un cuore che batte sul Micro:bit.
+Lorsque une nouvelle fenêtre apparaît, ouvrez ".\MicroPython_Resource\Codes\Heart beat", sélectionnez “heartbeat&ZeroWidthSpace;.py”, et cliquez sur «Run current script» (si une erreur apparaît, cliquez d'abord sur ![Img](./media/t027.png) puis sur «Run current script»), et vous verrez un cœur battre sur le Micro:bit.
 
 ![Img](./media/t026.png)
 
-Nota: Quando lo esegui online, se premi il pulsante di reset, il codice non verrà eseguito di nuovo. Se vuoi che venga eseguito dopo il reset, fai riferimento alle istruzioni di esecuzione offline qui sotto.
+Note : Lors de l'exécution en ligne, si vous appuyez sur le bouton de réinitialisation, le code ne sera pas exécuté de nouveau. Si vous souhaitez qu'il s'exécute après une réinitialisation, veuillez vous référer aux instructions d'exécution hors ligne ci-dessous.
 
-**Esegui il codice di test (offline)**
+**Run the test code(offline)**
 
-Dopo aver resettato Micro:bit, esegui prima il file main.py nella directory root.
+Après avoir réinitialisé le Micro:bit, exécutez d'abord le fichier main.py à la racine.
 
-Pertanto, il nome del file che carichiamo sul Micro:bit deve essere cambiato in main.py se vogliamo che esegua il codice dopo il reset. Quindi, carica il file, premi il pulsante di reset, e il codice verrà comunque eseguito.
+Par conséquent, le nom de fichier que nous téléversons sur le Micro:bit doit être changé en main.py si nous voulons qu'il s'exécute après la réinitialisation. Ensuite, téléversez le fichier, appuyez sur le bouton de réinitialisation, et le code sera toujours exécuté.
 
-Qui prendiamo heartbeat.py come esempio. Seleziona **heartbeat&ZeroWidthSpace;.py** per "**rinominarlo**" in main.py, e fai clic su "**OK**". Ora puoi scegliere di “**Upload to micro:bit**”.
+Ici nous prenons heartbeat.py comme exemple. Sélectionnez **heartbeat&ZeroWidthSpace;.py** pour le «rename» en main.py, puis cliquez sur «OK». Maintenant vous pouvez choisir de «Upload to micro:bit».
 
 ![Img](./media/t028.png)
 
@@ -155,18 +155,18 @@ Qui prendiamo heartbeat.py come esempio. Seleziona **heartbeat&ZeroWidthSpace;.p
 
 ![Img](./media/t030.png)
 
-Premi il pulsante Reset e vedrai il cuore che batte sul Micro:bit.
+Appuyez sur le bouton de réinitialisation et vous verrez le cœur battre sur le Micro:bit.
 
-Se vuoi eseguire altro codice (non librerie), devi prima cambiare il suo nome in main&ZeroWidthSpace;.py prima di caricarlo.
+Si vous souhaitez exécuter un autre code (pas des bibliothèques), vous devez d'abord renommer son fichier en main&ZeroWidthSpace;.py avant de le téléverser.
 
-Per quanto riguarda le librerie, fai clic destro per “Upload to micro:bit” direttamente (a volte il caricamento potrebbe fallire a causa delle dimensioni troppo grandi della libreria. Quindi devi semplificarla o eliminare quelle inutilizzate).
+Pour les bibliothèques, faites un clic droit et sélectionnez directement «Upload to micro:bit» (Parfois le téléversement peut échouer en raison d'une taille trop importante de la bibliothèque. Dans ce cas, vous devez la simplifier ou supprimer les éléments inutiles).
 
-### 5.1.5 Altre Operazioni Comuni
+### 5.1.5 Other Common Operations
 
-**Elimina file sotto Micro:bit**
+**Delete file under Micro:bit**
 
-In “micro:bit”, seleziona “main&ZeroWidthSpace;.py” per “Delete”, e verrà rimosso.
+Dans «micro:bit», sélectionnez «main&ZeroWidthSpace;.py» puis «Delete», et il sera supprimé.
 
 ![Img](./media/t031.png)
 
-La stessa procedura si applica quando si eliminano altri file.
+La même procédure s'applique pour la suppression d'autres fichiers.

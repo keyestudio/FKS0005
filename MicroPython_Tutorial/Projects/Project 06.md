@@ -1,436 +1,704 @@
-### 5.2.6 Sasso-Carta-Forbici
+### 5.2.6 Pierre-Papier-Ciseaux
 
-#### 5.2.6.1 Panoramica
+#### 5.2.6.1 Aperçu
 
 ![Img](./media/top1.png)
 
-Qui, giochiamo a sasso-carta-forbici tramite comunicazione wireless di micro:bit. I giocatori selezionano la loro mossa (sasso, carta o forbici) tramite i pulsanti, con scambio di dati tra i dispositivi. Il gioco segue il meglio di tre; se tutti e tre i round finiscono in parità o vittoria-sconfitta-parità, viene attivata una quarta partita.
+Ici, jouons au pierre-papier-ciseaux par communication sans fil entre deux micro:bit. Les joueurs sélectionnent leur coup (pierre, papier ou ciseaux) via les boutons, avec échange de données entre les appareils. Le jeu se joue en meilleur des trois ; si les trois manches se terminent toutes par des égalités ou par un cas victoire-défaite-nul, une quatrième manche est déclenchée.
 
-Ogni risultato viene visualizzato sulla matrice micro:bit (W per vittoria, L per sconfitta, = per parità) e rivelato dalle luci RGB (verde per vittoria, rosso per sconfitta, giallo per parità) sul pin P8. Al completamento di un round, i due dispositivi resettano tutti i dati e le luci, preparandosi per la partita successiva.
+Chaque résultat est affiché sur la matrice du micro:bit (W pour victoire, L pour défaite, = pour nul) et révélé par les lumières RGB (vert pour victoire, rouge pour défaite, jaune pour nul) sur le pin P8. À la fin d’une manche, les deux appareils réinitialisent toutes les données et les lumières, se préparant pour la manche suivante.
 
-Il gameplay integra perfettamente l'interazione wireless con il combattimento multi-round.
+Le gameplay intègre de manière transparente l’interaction sans fil avec des affrontements multi-manches.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.6.2 Conoscenza dei Componenti
+#### 5.2.6.2 Connaissances des composants
 
-Questo progetto utilizza la stessa comunicazione wireless Microbit, LED RGB SK6812 e pulsanti del Progetto 06. Si prega di fare riferimento alla sezione 4.2.6.2 per la conoscenza dei suoi componenti.
+![Img](./media/2top.png)
 
-#### 5.2.6.3 Parti Richieste
+**Microbit wireless communication**
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+![Img](./media/6001.png)
+
+La carte micro:bit intègre deux capacités de communication sans fil pratiques : **2.4GHz radio** et **low-power Bluetooth (BLE)**. Cependant, elles ne peuvent pas être utilisées simultanément.
+
+La première ne nécessite pas d’appairage et prend en charge jusqu’à 255 paquets indépendants pour minimiser les interférences, avec une portée de communication de 10–30 mètres, permettant une transmission rapide de données numériques et de chaînes. Tandis que la seconde est principalement utilisée pour l’appariement avec des smartphones, tablettes et autres appareils intelligents pour des applications IoT telles que le téléversement de données capteurs et le contrôle à distance via une application mobile.
+
+Elles élargissent les possibilités créatives de développement du micro:bit.
+
+#### 5.2.6.3 Pièces requises
+
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×2 | **Smart Gamepad micro:bit** (assemblato) ×2 | **Batteria AAA** (auto-fornita) ×8 |
+| **micro:bit V2 board** (self-provided) ×2 | **micro:bit Smart Gamepad** (assembled) ×2 | **AAA battery** (self-provided) ×8 |
 
-#### 5.2.6.4 Flusso del Codice
+#### 5.2.6.4 Flux du code
 
 ![Img](./media/6002.png)
 
-#### 5.2.6.5 Codice di Test
+#### 5.2.6.5 Code de test
 
-**Codice completo:**
+**Code complet :**
+
 
 ```python
 from microbit import *
 import neopixel
 import radio
-import utime
 
-# Variabili globali
-round_num = 1
-my_choice = 0
-your_choice = 0
+# Global Variables
+round2 = 1
+check = 1
+me = 0
+you = 0
 wins = 0
-losses = 0
+loses = 0
 draws = 0
-game_results = []
+gameResults = []
+strip = None
 
-# Configurazione dei NeoPixel (collegati a P8, 4 LED)
-np = neopixel.NeoPixel(pin8, 4)
+pin13.set_pull(pin13.PULL_UP)
+pin15.set_pull(pin15.PULL_UP)
+pin16.set_pull(pin16.PULL_UP)
+# Initialize LED strip (4 LEDs, connected to pin P8)
+strip = neopixel.NeoPixel(pin8, 4)
 
-# Configura i pin dei pulsanti
-pin13.set_pull(pin13.PULL_UP) # Pulsante D (Carta)
-pin15.set_pull(pin15.PULL_UP) # Pulsante C (Forbici)
-pin16.set_pull(pin16.PULL_UP) # Pulsante E (Sasso)
-
-# Funzione per resettare lo stato del gioco
-def reset_game_state():
-    global my_choice, your_choice, round_num, wins, losses, draws, game_results
-    my_choice = 0
-    your_choice = 0
-    round_num = 1
+# Reset game state
+def resetGame():
+    global me, you, round2, wins, loses, draws, gameResults, check
+    me = 0
+    you = 0
+    round2 = 1
     wins = 0
-    losses = 0
+    loses = 0
     draws = 0
-    game_results = []
-    clear_lights()
+    gameResults = []
+    check = 1
+    resetLights()
     display.show(Image.HEART)
 
-# Funzione per spegnere tutti i LED
-def clear_lights():
-    for i in range(len(np)):
-        np[i] = (0, 0, 0)
-    np.show()
+# Receive opponent's choice via radio
+def on_received_message(receivedMsg):
+    global you
+    if you == 0:
+        # Convert string to integer if needed
+        if isinstance(receivedMsg, str) and receivedMsg in ['1', '2', '3']:
+            you = int(receivedMsg)
+        # Use directly if it's an integer
+        elif isinstance(receivedMsg, int) and receivedMsg in [1, 2, 3]:
+            you = receivedMsg
 
-# Funzione per mostrare il risultato del round sui LED
-def show_round_result_lights(round_index, result):
-    if round_index < len(np):
-        if result == 1: # Vittoria: Verde
-            np[round_index] = (0, 255, 0)
-        elif result == 0: # Pareggio: Giallo
-            np[round_index] = (255, 255, 0)
-        else: # Sconfitta: Rosso
-            np[round_index] = (255, 0, 0)
-        np.show()
+# Turn off all LEDs
+def resetLights():
+    for i in range(4):
+        strip[i] = (0, 0, 0)  # Off
+    strip.show()
 
-# Funzione per determinare se è necessario un quarto round
-def needs_fourth_round():
-    if draws == 3: # Tutti pareggi
-        return 2 # Quarto round decisivo
-    if wins == 1 and losses == 1 and draws == 1: # Vittoria-sconfitta-pareggio
-        return 1 # Quarto round
-    return 0 # Nessun quarto round
+# Check if a 4th round is needed
+def needFourthRound():
+    # Case 1: All 3 draws -> need 4th round, return 2
+    if wins == 0 and loses == 0 and draws == 3:
+        return 2
+    # Case 2: 1 win, 1 loss, 1 draw -> need 4th round, return 1
+    if wins == 1 and loses == 1 and draws == 1:
+        return 1
+    # No 4th round needed
+    return 0
 
-# Gestore messaggi radio
-def on_received_message(msg):
-    global your_choice
-    if your_choice == 0:
-        try:
-            choice = int(msg)
-            if choice in [1, 2, 3]:
-                your_choice = choice
-        except ValueError:
-            pass
+# Show round result on LED strip
+def showRoundResult(roundNum, result):
+    if roundNum <= 4:
+        if result == 1:
+            # Win: Green
+            strip[roundNum - 1] = (0, 255, 0)
+        elif result == 0:
+            # Draw: Yellow
+            strip[roundNum - 1] = (255, 255, 0)
+        else:
+            # Lose: Red
+            strip[roundNum - 1] = (255, 0, 0)
+        strip.show()
 
-# Inizializzazione radio
+# Game initialization
 radio.on()
 radio.config(group=1)
-radio.receive_full = True # Ricevi messaggi completi
+check = 1
+me = 0
+you = 0
+strip.clear()
+strip.show()
+display.show(Image.HEART)
 
-reset_game_state()
-
+# Main game loop
 while True:
-    # Processa i messaggi radio in arrivo
-    incoming = radio.receive()
-    if incoming:
-        on_received_message(incoming.decode())
 
-    # Se entrambi i giocatori hanno fatto una scelta
-    if my_choice != 0 and your_choice != 0:
-        result_symbol = "="
-        current_round_result = 0 # 0: pareggio, 1: vittoria, -1: sconfitta
-
-        if my_choice == your_choice:
-            result_symbol = "="
+    # Process result when both players have chosen
+    if me != 0 and you != 0:
+        # Current round result: 1=win, 0=draw, -1=lose
+        resultSymbol = "="
+        # Determine round outcome
+        if me == you:
+            resultSymbol = "="
+            # Draw
+            result2 = 0
             draws += 1
-        elif (my_choice == 1 and your_choice == 3) or \
-             (my_choice == 2 and your_choice == 1) or \
-             (my_choice == 3 and your_choice == 2):
-            result_symbol = "W"
-            current_round_result = 1
+        elif me == 2 and you == 1 or (me == 3 and you == 2 or me == 1 and you == 3):
+            resultSymbol = "W"
+            # Win
+            result2 = 1
             wins += 1
         else:
-            result_symbol = "L"
-            current_round_result = -1
-            losses += 1
+            resultSymbol = "L"
+            # Lose
+            result2 = -1
+            loses += 1
 
-        game_results.append(current_round_result)
-        display.show(result_symbol)
-        show_round_result_lights(round_num - 1, current_round_result)
-        utime.sleep_ms(3000)
+        # Save round result
+        gameResults.append(result2)
 
-        if round_num == 3:
-            fourth_round_needed = needs_fourth_round()
+        # Display result symbol
+        display.show(resultSymbol)
+
+        # Update LED strip
+        showRoundResult(round2, result2)
+
+        sleep(3000)
+
+        # Check if game continues
+        if round2 == 3:
+            # After 3 rounds, check for 4th round
+            fourth_round_needed = needFourthRound()
             if fourth_round_needed:
-                round_num = 4
+                # Go to 4th round
+                round2 = 4
                 if fourth_round_needed == 2:
                     display.scroll("FINAL")
-                utime.sleep_ms(1000)
+                sleep(1000)
                 display.show(Image.HEART)
-                my_choice = 0
-                your_choice = 0
+                check = 1
+                me = 0
+                you = 0
             else:
-                if wins > losses:
+                # End game
+                if wins > loses:
                     display.scroll("WINNER")
-                elif losses > wins:
+                elif loses > wins:
                     display.scroll("LOSER")
                 else:
                     display.scroll("TIE")
-                utime.sleep_ms(3000)
-                reset_game_state()
-        elif round_num == 4:
+                sleep(3000)
+                resetGame()
+        elif round2 == 4:
+            # 4th round finished, game over
             display.scroll("GAME OVER")
-            utime.sleep_ms(3000)
-            reset_game_state()
+            sleep(3000)
+            resetGame()
         else:
-            round_num += 1
+            # Next round (1st or 2nd)
+            round2 += 1
             display.show(Image.HEART)
-            my_choice = 0
-            your_choice = 0
+            check = 1
+            me = 0
+            you = 0
 
-    # Gestione dei pulsanti per la scelta del giocatore
-    if my_choice == 0:
-        if not pin15.read_digital(): # Pulsante C (Forbici = 1)
-            my_choice = 1
-            radio.send(str(my_choice))
-            display.show(Image("99009:99090:00900:99090:99009"))
-            utime.sleep_ms(200)
-        elif not pin16.read_digital(): # Pulsante E (Sasso = 2)
-            my_choice = 2
-            radio.send(str(my_choice))
-            display.show(Image.SQUARE_SMALL)
-            utime.sleep_ms(200)
-        elif not pin13.read_digital(): # Pulsante D (Carta = 3)
-            my_choice = 3
-            radio.send(str(my_choice))
+    # Check button input
+    if check == 1:
+        if pin13.read_digital() == 0:
+            # Paper -> send '3'
+            radio.send('3')
             display.show(Image.SQUARE)
-            utime.sleep_ms(200)
+            me = 3
+            check = 0
+            sleep(200)
+        elif pin15.read_digital() == 0:
+            # Scissors -> send '1'
+            radio.send('1')
+            display.show(Image('99009:'
+                                '99090:'
+                                '00900:'
+                                '99090:'
+                                '99009'))
+            me = 1
+            check = 0
+            sleep(200)
+        elif pin16.read_digital() == 0:
+            # Rock -> send '2'
+            radio.send('2')
+            display.show(Image.SQUARE_SMALL)
+            me = 2
+            check = 0
+            sleep(200)
 
-    utime.sleep_ms(100)
+    # Receive radio data
+    try:
+        received = radio.receive()
+        if received is not None:
+            on_received_message(received)
+    except:
+        pass
+
+    sleep(100)
+
+
+# Receive opponent's choice via radio
+def on_received_message(receivedMsg):
+    global you
+    if you == 0:
+        # Convert string to integer if needed
+        if isinstance(receivedMsg, str) and receivedMsg in ['1', '2', '3']:
+            you = int(receivedMsg)
+        # Use directly if it's an integer
+        elif isinstance(receivedMsg, int) and receivedMsg in [1, 2, 3]:
+            you = receivedMsg
+
+# Turn off all LEDs
+def resetLights():
+    for i in range(4):
+        strip[i] = (0, 0, 0)  # Off
+    strip.show()
+
+# Check if a 4th round is needed
+def needFourthRound():
+    # Case 1: All 3 draws -> need 4th round, return 2
+    if wins == 0 and loses == 0 and draws == 3:
+        return 2
+    # Case 2: 1 win, 1 loss, 1 draw -> need 4th round, return 1
+    if wins == 1 and loses == 1 and draws == 1:
+        return 1
+    # No 4th round needed
+    return 0
+
+# Show round result on LED strip
+def showRoundResult(roundNum, result):
+    if roundNum <= 4:
+        if result == 1:
+            # Win: Green
+            strip[roundNum - 1] = (0, 255, 0)
+        elif result == 0:
+            # Draw: Yellow
+            strip[roundNum - 1] = (255, 255, 0)
+        else:
+            # Lose: Red
+            strip[roundNum - 1] = (255, 0, 0)
+        strip.show()
+
+# Game initialization
+radio.on()
+radio.config(group=1)
+check = 1
+me = 0
+you = 0
+strip.clear()
+strip.show()
+display.show(Image.HEART)
+
+# Main game loop
+while True:
+
+    # Process result when both players have chosen
+    if me != 0 and you != 0:
+        # Current round result: 1=win, 0=draw, -1=lose
+        resultSymbol = "="
+        # Determine round outcome
+        if me == you:
+            resultSymbol = "="
+            # Draw
+            result2 = 0
+            draws += 1
+        elif me == 2 and you == 1 or (me == 3 and you == 2 or me == 1 and you == 3):
+            resultSymbol = "W"
+            # Win
+            result2 = 1
+            wins += 1
+        else:
+            resultSymbol = "L"
+            # Lose
+            result2 = -1
+            loses += 1
+
+        # Save round result
+        gameResults.append(result2)
+
+        # Display result symbol
+        display.show(resultSymbol)
+
+        # Update LED strip
+        showRoundResult(round2, result2)
+
+        sleep(3000)
+
+        # Check if game continues
+        if round2 == 3:
+            # After 3 rounds, check for 4th round
+            fourth_round_needed = needFourthRound()
+            if fourth_round_needed:
+                # Go to 4th round
+                round2 = 4
+                if fourth_round_needed == 2:
+                    display.scroll("FINAL")
+                sleep(1000)
+                display.show(Image.YES)
+                check = 1
+                me = 0
+                you = 0
+            else:
+                # End game
+                if wins > loses:
+                    display.scroll("WINNER")
+                elif loses > wins:
+                    display.scroll("LOSER")
+                else:
+                    display.scroll("TIE")
+                sleep(3000)
+                resetGame()
+        elif round2 == 4:
+            # 4th round finished, game over
+            display.scroll("GAME OVER")
+            sleep(3000)
+            resetGame()
+        else:
+            # Next round (1st or 2nd)
+            round2 += 1
+            display.show(Image.HEART)
+            check = 1
+            me = 0
+            you = 0
+
+    # Check button input
+    if check == 1:
+        if pin13.read_digital() == 0:
+            # Paper -> send '3'
+            radio.send('3')
+            display.show(Image.SQUARE)
+            me = 3
+            check = 0
+            sleep(200)
+        elif pin15.read_digital() == 0:
+            # Scissors -> send '1'
+            radio.send('1')
+            display.show(Image('99009:'
+                                '99090:'
+                                '00900:'
+                                '99090:'
+                                '99009'))
+            me = 1
+            check = 0
+            sleep(200)
+        elif pin16.read_digital() == 0:
+            # Rock -> send '2'
+            radio.send('2')
+            display.show(Image.SQUARE_SMALL)
+            me = 2
+            check = 0
+            sleep(200)
+
+    # Receive radio data
+    try:
+        received = radio.receive()
+        if received is not None:
+            on_received_message(received)
+    except:
+        pass
+
+    sleep(100)
 ```
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Inizializza la radio e imposta il gruppo su '1'; imposta il numero di round, lo stato, l'avversario e il risultato di sasso-carta-forbici dei giocatori; collega le quattro luci RGB al pin P8 e aggiorna il display, imposta la matrice per mostrare ![Img](./media/6004.png).
-
+① Importer les bibliothèques pertinentes, initialiser les variables globales et configurer les pins.
 ```python
 from microbit import *
 import neopixel
 import radio
-import utime
 
-# Variabili globali
-round_num = 1
-my_choice = 0
-your_choice = 0
+# Global Variables
+round2 = 1
+check = 1
+me = 0
+you = 0
 wins = 0
-losses = 0
+loses = 0
 draws = 0
-game_results = []
+gameResults = []
+strip = None
 
-# Configurazione dei NeoPixel (collegati a P8, 4 LED)
-np = neopixel.NeoPixel(pin8, 4)
+pin13.set_pull(pin13.PULL_UP)
+pin15.set_pull(pin15.PULL_UP)
+pin16.set_pull(pin16.PULL_UP)
+# Initialize LED strip (4 LEDs, connected to pin P8)
+strip = neopixel.NeoPixel(pin8, 4)
+```
+② `resetGame` réinitialise tous les états du jeu.
 
-# Configura i pin dei pulsanti
-pin13.set_pull(pin13.PULL_UP) # Pulsante D (Carta)
-pin15.set_pull(pin15.PULL_UP) # Pulsante C (Forbici)
-pin16.set_pull(pin16.PULL_UP) # Pulsante E (Sasso)
+Il est généralement appelé au démarrage d’un jeu ou après la fin d’une manche pour remettre à leurs valeurs initiales toutes les variables globales liées à la progression du jeu — y compris les sélections des joueurs, le nombre de manches, les comptes de victoires/défaites/égalité et l’historique des résultats.
 
-# Funzione per resettare lo stato del gioco
-def reset_game_state():
-    global my_choice, your_choice, round_num, wins, losses, draws, game_results
-    my_choice = 0
-    your_choice = 0
-    round_num = 1
+`resetLights()` éteint tous les NeoPixel et affiche une icône en forme de cœur (`Image.HEART`), indiquant que le jeu est prêt à commencer.
+
+```python
+# Reset game state
+def resetGame():
+    global me, you, round2, wins, loses, draws, gameResults, check
+    me = 0
+    you = 0
+    round2 = 1
     wins = 0
-    losses = 0
+    loses = 0
     draws = 0
-    game_results = []
-    clear_lights()
+    gameResults = []
+    check = 1
+    resetLights()
     display.show(Image.HEART)
+```
 
-# Funzione per spegnere tutti i LED
-def clear_lights():
-    for i in range(len(np)):
-        np[i] = (0, 0, 0)
-    np.show()
+③ `on_received_message` traite la sélection de l’adversaire reçue via la radio. Il gère les messages radio provenant d’un autre micro:bit (ciseaux, pierre ou papier).
 
-# Funzione per mostrare il risultato del round sui LED
-def show_round_result_lights(round_index, result):
-    if round_index < len(np):
-        if result == 1: # Vittoria: Verde
-            np[round_index] = (0, 255, 0)
-        elif result == 0: # Pareggio: Giallo
-            np[round_index] = (255, 255, 0)
-        else: # Sconfitta: Rosso
-            np[round_index] = (255, 0, 0)
-        np.show()
+Pour garantir l’exactitude, il vérifie le type du message : si le message est une chaîne ('1', '2' ou '3'), le convertir en entier ; si c’est déjà un entier (1, 2 ou 3), l’utiliser directement.
 
-# Funzione per determinare se è necessario un quarto round
-def needs_fourth_round():
-    if draws == 3: # Tutti pareggi
-        return 2 # Quarto round decisivo
-    if wins == 1 and losses == 1 and draws == 1: # Vittoria-sconfitta-pareggio
-        return 1 # Quarto round
-    return 0 # Nessun quarto round
+La valeur de `you` est mise à jour uniquement lorsque `you` = 0 (aucun choix de l’adversaire reçu), empêchant les réceptions multiples.
 
-# Gestore messaggi radio
-def on_received_message(msg):
-    global your_choice
-    if your_choice == 0:
-        try:
-            choice = int(msg)
-            if choice in [1, 2, 3]:
-                your_choice = choice
-        except ValueError:
-            pass
+```python
+# Receive opponent's choice via radio
+def on_received_message(receivedMsg):
+    global you
+    if you == 0:
+        # Convert string to integer if needed
+        if isinstance(receivedMsg, str) and receivedMsg in ['1', '2', '3']:
+            you = int(receivedMsg)
+        # Use directly if it's an integer
+        elif isinstance(receivedMsg, int) and receivedMsg in [1, 2, 3]:
+            you = receivedMsg
+```
 
-# Inizializzazione radio
+④ `resetLights` éteint tous les NeoPixel. Il itère sur les quatre LEDs pour définir leur couleur en noir (`(0, 0, 0)`), c’est-à-dire éteint.
+
+`strip.show()` envoie ces mises à jour de couleur à la bande lumineuse pour s’assurer que toutes les LEDs sont éteintes.
+
+```python
+# Turn off all LEDs
+def resetLights():
+    for i in range(4):
+        strip[i] = (0, 0, 0)  # Off
+    strip.show()
+```
+
+⑤ `needFourthRound` détermine si une quatrième manche est nécessaire après les trois manches.
+
+Elle gère deux cas particuliers : si les trois manches se terminent par des égalités (`wins == 0 and loses == 0 and draws == 3`), retourner `2` pour une quatrième manche — la partie décisive finale ; si on a un cas victoire-défaite-nul (`wins == 1 and loses == 1 and draws == 1`), retourner aussi `1` pour une manche supplémentaire. Dans tous les autres cas (où il y a un gagnant clair/perdant clair), retourner `0` (pas de 4ᵉ manche nécessaire).
+
+```python
+# Check if a 4th round is needed
+def needFourthRound():
+    # Case 1: All 3 draws -> need 4th round, return 2
+    if wins == 0 and loses == 0 and draws == 3:
+        return 2
+    # Case 2: 1 win, 1 loss, 1 draw -> need 4th round, return 1
+    if wins == 1 and loses == 1 and draws == 1:
+        return 1
+    # No 4th round needed
+    return 0
+```
+
+⑥ `showRoundResult` affiche le résultat de chaque manche sur la bande LED.
+
+Elle accepte le numéro de la manche en cours (`roundNum`) et le résultat (`result` : 1 pour victoire, 0 pour nul, -1 pour défaite). Selon le résultat, elle allume différentes couleurs sur la LED correspondante : vert pour victoire, jaune pour nul, et rouge pour défaite.
+
+`roundNum-1` convertit le numéro de manche en un index zéro-basé pour les LEDs.
+
+```python
+# Show round result on LED strip
+def showRoundResult(roundNum, result):
+    if roundNum <= 4:
+        if result == 1:
+            # Win: Green
+            strip[roundNum - 1] = (0, 255, 0)
+        elif result == 0:
+            # Draw: Yellow
+            strip[roundNum - 1] = (255, 255, 0)
+        else:
+            # Lose: Red
+            strip[roundNum - 1] = (255, 0, 0)
+        strip.show()
+```
+⑦ Initialisation au démarrage du jeu.
+
+Elle s’exécute une fois au démarrage du programme. Elle active la fonction radio du micro:bit et définit `group=1`. Ensuite, elle met `check` à `1` (sélectionnable pour le joueur), `me` et `you` à `0` (en attente des choix du joueur et de l’adversaire).
+
+La bande NeoPixel est effacée et mise à jour pour éteindre toutes les LEDs. Et le micro:bit affiche une icône cœur (`Image.HEART`) comme invite initiale en attente de l’entrée du joueur.
+
+```python
+# Game initialization
 radio.on()
 radio.config(group=1)
-radio.receive_full = True # Ricevi messaggi completi
-
-reset_game_state()
+check = 1
+me = 0
+you = 0
+strip.clear()
+strip.show()
+display.show(Image.HEART)
 ```
 
-② Determina l'esito del round corrente: se la tua scelta corrisponde a quella dell'avversario (**1/2/3 per forbici/sasso/carta**), è un pareggio; altrimenti, seleziona un vincitore (forbici contro carta contro sasso contro forbici), il valore del round +1 e memorizza il risultato.
+⑧ Traiter les résultats des manches et contrôler le flux du jeu.
 
+Ce code représente la logique principale du jeu, exécutée dans une boucle infinie. Il vérifie d’abord si le Joueur et l’Adversaire ont fait leurs choix (`me != 0 and you != 0`).
+
+Si oui, il détermine l’issue de la manche en cours selon les règles du pierre-papier-ciseaux, met à jour les compteurs `wins`, `loses`, `draws`, et affiche l’icône correspondante ("W", "L", "=") sur la matrice.
+
+`showRoundResult` allume la LED NeoPixel correspondante dans les couleurs liées pour la manche précédente.
+
+Après avoir affiché les résultats pendant 3s, le jeu poursuit son cours selon le numéro de manche actuel :
+
+*   Si c’est la 3ᵉ manche (`round2 == 3`), `needFourthRound()` déterminera si la manche décisive finale est requise. Si oui, la quatrième manche se déroule ; sinon, selon le résultat global, afficher "WINNER"/"LOSER"/"TIE" et réinitialiser le jeu.
+*   Si c’est la quatrième manche (`round2 == 4`), déclarer "GAME OVER" et réinitialiser le jeu.
+*   Si c’est la première ou la deuxième manche, incrémenter la manche (`round2 += 1`), afficher l’icône cœur, réinitialiser les choix et se préparer pour la manche suivante.
 ```python
-    # Se entrambi i giocatori hanno fatto una scelta
-    if my_choice != 0 and your_choice != 0:
-        result_symbol = "="
-        current_round_result = 0 # 0: pareggio, 1: vittoria, -1: sconfitta
+# Main game loop
+while True:
 
-        if my_choice == your_choice:
-            result_symbol = "="
+    # Process result when both players have chosen
+    if me != 0 and you != 0:
+        # Current round result: 1=win, 0=draw, -1=lose
+        resultSymbol = "="
+        # Determine round outcome
+        if me == you:
+            resultSymbol = "="
+            # Draw
+            result2 = 0
             draws += 1
-        elif (my_choice == 1 and your_choice == 3) or \
-             (my_choice == 2 and your_choice == 1) or \
-             (my_choice == 3 and your_choice == 2):
-            result_symbol = "W"
-            current_round_result = 1
+        elif me == 2 and you == 1 or (me == 3 and you == 2 or me == 1 and you == 3):
+            resultSymbol = "W"
+            # Win
+            result2 = 1
             wins += 1
         else:
-            result_symbol = "L"
-            current_round_result = -1
-            losses += 1
+            resultSymbol = "L"
+            # Lose
+            result2 = -1
+            loses += 1
 
-        game_results.append(current_round_result)
-        display.show(result_symbol)
-        show_round_result_lights(round_num - 1, current_round_result)
-        utime.sleep_ms(3000)
-```
+        # Save round result
+        gameResults.append(result2)
 
-③ Memorizza i risultati in un array e visualizza la stringa corrispondente. Se questa è la terza partita, determina se è necessaria una quarta partita (in caso di parità o vittoria-sconfitta-parità). In tal caso, visualizza "FINAL" e attendi 1 secondo prima di cancellare la selezione sasso-carta-forbici.
+        # Display result symbol
+        display.show(resultSymbol)
 
-```python
-        if round_num == 3:
-            fourth_round_needed = needs_fourth_round()
+        # Update LED strip
+        showRoundResult(round2, result2)
+
+        sleep(3000)
+
+        # Check if game continues
+        if round2 == 3:
+            # After 3 rounds, check for 4th round
+            fourth_round_needed = needFourthRound()
             if fourth_round_needed:
-                round_num = 4
+                # Go to 4th round
+                round2 = 4
                 if fourth_round_needed == 2:
                     display.scroll("FINAL")
-                utime.sleep_ms(1000)
+                sleep(1000)
                 display.show(Image.HEART)
-                my_choice = 0
-                your_choice = 0
+                check = 1
+                me = 0
+                you = 0
             else:
-                if wins > losses:
+                # End game
+                if wins > loses:
                     display.scroll("WINNER")
-                elif losses > wins:
+                elif loses > wins:
                     display.scroll("LOSER")
                 else:
                     display.scroll("TIE")
-                utime.sleep_ms(3000)
-                reset_game_state()
-        elif round_num == 4:
+                sleep(3000)
+                resetGame()
+        elif round2 == 4:
+            # 4th round finished, game over
             display.scroll("GAME OVER")
-            utime.sleep_ms(3000)
-            reset_game_state()
+            sleep(3000)
+            resetGame()
         else:
-            round_num += 1
+            # Next round (1st or 2nd)
+            round2 += 1
             display.show(Image.HEART)
-            my_choice = 0
-            your_choice = 0
+            check = 1
+            me = 0
+            you = 0
 ```
 
-④ Premi C e la scheda invia "1" come forbici, e la matrice mostra ![Img](./media/6011.png); premi D e la scheda invia "3" come carta, e la matrice mostra ![Img](./media/6012.png); Premi E e invia "2" come sasso e mostra ![Img](./media/6013.png).
+⑨ Traiter l’entrée des boutons du joueur.
+
+Il détecte les choix des joueurs via des boutons externes (connectés à `pin13`, `pin15`, `pin16`). Il détecte l’appui uniquement lorsque `check` = `1` (les choix sont autorisés).
+
+*   Si `pin13` est pressé (low), Papier est choisi (`3`), et le micro:bit envoie `'3'` et affiche un grand carré.
+*   Si `pin15` est pressé, Ciseaux est choisi (`1`), envoie `'1'` et affiche une icône de ciseaux.
+*   Si `pin16` est pressé, Pierre est choisi (`2`), envoie `'2'` et affiche un petit carré.
+
+Après le choix, mettre à jour `me`, `check` = `0` (éviter les choix répétés) et attendre 200 ms pour anti-rebond.
 
 ```python
-    # Gestione dei pulsanti per la scelta del giocatore
-    if my_choice == 0:
-        if not pin15.read_digital(): # Pulsante C (Forbici = 1)
-            my_choice = 1
-            radio.send(str(my_choice))
-            display.show(Image("99009:99090:00900:99090:99009"))
-            utime.sleep_ms(200)
-        elif not pin16.read_digital(): # Pulsante E (Sasso = 2)
-            my_choice = 2
-            radio.send(str(my_choice))
-            display.show(Image.SQUARE_SMALL)
-            utime.sleep_ms(200)
-        elif not pin13.read_digital(): # Pulsante D (Carta = 3)
-            my_choice = 3
-            radio.send(str(my_choice))
+    # Check button input
+    if check == 1:
+        if pin13.read_digital() == 0:
+            # Paper -> send '3'
+            radio.send('3')
             display.show(Image.SQUARE)
-            utime.sleep_ms(200)
+            me = 3
+            check = 0
+            sleep(200)
+        elif pin15.read_digital() == 0:
+            # Scissors -> send '1'
+            radio.send('1')
+            display.show(Image('99009:'
+                                '99090:'
+                                '00900:'
+                                '99090:'
+                                '99009'))
+            me = 1
+            check = 0
+            sleep(200)
+        elif pin16.read_digital() == 0:
+            # Rock -> send '2'
+            radio.send('2')
+            display.show(Image.SQUARE_SMALL)
+            me = 2
+            check = 0
+            sleep(200)
 ```
 
-⑤ Ricevi i dati radio (scelta dell'avversario).
+⑩ Gérer la réception des données radio et la temporisation de la boucle.
+
+Il tente de recevoir des données radio à chaque itération de la boucle principale. `radio.receive()` capture les messages entrants. Si un message est reçu (`received is not None`), appeler `on_received_message()` pour traiter le choix de l’adversaire.
+
+Pour éviter que le programme ne se bloque en cas de messages manquants, un `try-except` capture d’éventuelles anomalies (bien que `radio.receive()` ne lance généralement pas d’exceptions directement en MicroPython, c’est une bonne pratique).
+
+`sleep(100)` met le programme en pause pendant 100 ms, régulant la fréquence d’exécution de la boucle principale pour éviter une consommation excessive du processeur et permettant le temps nécessaire à la détection des boutons et au rafraîchissement de l’affichage.
 
 ```python
-    # Processa i messaggi radio in arrivo
-    incoming = radio.receive()
-    if incoming:
-        on_received_message(incoming.decode())
+    # Receive radio data
+    try:
+        received = radio.receive()
+        if received is not None:
+            on_received_message(received)
+    except:
+        pass
+
+    sleep(100)
 ```
-
-⑥ Determina se è necessario un quarto round. Se tutti e tre i giochi finiscono in parità o vittoria-sconfitta-parità, è necessario un quarto gioco; altrimenti, non è necessario.
-
-```python
-def needs_fourth_round():
-    if draws == 3: # Tutti pareggi
-        return 2 # Quarto round decisivo
-    if wins == 1 and losses == 1 and draws == 1: # Vittoria-sconfitta-pareggio
-        return 1 # Quarto round
-    return 0 # Nessun quarto round
-```
-
-⑦ Le luci RGB visualizzano i colori corrispondenti in base all'esito: verde per la vittoria, rosso per la sconfitta e giallo per un pareggio.
-
-```python
-def show_round_result_lights(round_index, result):
-    if round_index < len(np):
-        if result == 1: # Vittoria: Verde
-            np[round_index] = (0, 255, 0)
-        elif result == 0: # Pareggio: Giallo
-            np[round_index] = (255, 255, 0)
-        else: # Sconfitta: Rosso
-            np[round_index] = (255, 0, 0)
-        np.show()
-```
-
-⑧ Quando il gioco finisce, cancella il display delle quattro luci RGB.
-
-```python
-def clear_lights():
-    for i in range(len(np)):
-        np[i] = (0, 0, 0)
-    np.show()
-```
-
-⑨ Resetta lo stato del gioco, cancella tutti i valori delle variabili di gioco, resetta le luci RGB e mostra ![Img](./media/6004.png).
-
-```python
-def reset_game_state():
-    global my_choice, your_choice, round_num, wins, losses, draws, game_results
-    my_choice = 0
-    your_choice = 0
-    round_num = 1
-    wins = 0
-    losses = 0
-    draws = 0
-    game_results = []
-    clear_lights()
-    display.show(Image.HEART)
-```
-
-#### 5.2.6.6 Risultato del Test
+#### 5.2.6.6 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
+Après avoir téléversé le code, insérez la carte micro:bit dans le logement du gamepad (**piles installées**) et basculez son interrupteur sur “ON”.
 
-La matrice mostra inizialmente ![Img](./media/6004.png). I giocatori premono i pulsanti per selezionare la loro mossa (E per sasso, D per carta o C per forbici), con scambio di dati tra i due dispositivi. Determinano l'esito del round corrente: una vittoria è indicata dalla "W" con la luce RGB che diventa verde, un pareggio dalla "=" con la luce gialla e una sconfitta dalla "L" con la luce rossa (la prima luce RGB si accende dopo il primo round, e così via). Il round successivo seguirà se il gioco non è finito.
+La matrice affiche ![Img](./media/6004.png) initialement. Les joueurs appuient sur les boutons pour sélectionner leur coup (E pour pierre, D pour papier, ou C pour ciseaux), avec échange des données de la manche entre les deux appareils. Ils déterminent l’issue de la manche actuelle : une victoire est indiquée par le "W" avec la LED RGB devenant verte, une égalité par le "=" avec la LED jaune, et une défaite par le "L" avec la LED rouge (la première LED RGB s’allume après la première manche, et ainsi de suite). La manche suivante commence si le jeu n’est pas terminé.
 
-Il gioco adotta il meglio di tre: se tutti e tre i round finiscono in parità o vittoria-sconfitta-parità, viene attivata una quarta partita.
+Le jeu adopte le meilleur des trois : si les trois manches se terminent toutes par des égalités ou par un cas victoire-défaite-nul, une quatrième manche est déclenchée.
 
-Se c'è un vincitore dopo tre round, visualizzerà "WINNER" per la vittoria e "LOSER" per la sconfitta. Una volta mostrato il risultato, apparirà "GAME OVER" per resettare il gioco. Se il quarto round rimane indeciso, anche il gioco sarà finito.
+S’il y a un gagnant après trois manches, il affichera "WINNER" pour la victoire et "LOSER" pour la défaite. Une fois le résultat affiché, "GAME OVER" apparaîtra pour réinitialiser le jeu. Si la quatrième manche reste indécise, le jeu se terminera également.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Attendi che l'icona a forma di cuore appaia prima di continuare il round successivo. Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Attendez que l’icône cœur apparaisse avant de poursuivre la manche suivante. Si aucune réponse n’apparaît sur la carte, veuillez appuyer sur le bouton de réinitialisation au dos de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

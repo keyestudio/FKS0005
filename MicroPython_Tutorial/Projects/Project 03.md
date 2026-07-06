@@ -1,185 +1,186 @@
-### 5.2.3 Semplice Pianoforte Elettronico
+### 5.2.3 Simple Electronic Piano
 
-#### 5.2.3.1 Panoramica
+#### 5.2.3.1 Overview
 
 ![Img](./media/top1.png)
 
-In questo progetto, controlliamo l'altoparlante micro:bit per riprodurre toni diversi azionando il joystick e premendo i pulsanti. Nel frattempo, la matrice LED a bordo mostrerà i numeri corrispondenti.
+Dans ce projet, nous contrôlons le haut-parleur micro:bit pour jouer différentes tonalités en basculant le joystick et en appuyant sur les boutons. Pendant ce temps, la matrice de LED intégrée affichera les chiffres correspondants.
 
-Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1". C'è una bella sincronizzazione tra joystick, pulsanti, toni e display.
+Tourner le joystick vers la droite produit « Do (Tone Central C) » avec l'affichage montrant « 1 » ; le tourner vers la gauche produit « Re (Tone D) » avec « 2 » ; le pousser vers le haut produit « Mi (Tone E) » avec « 3 » ; le pousser vers le bas produit « Fa (Tone F) » avec « 4 ». Appuyer sur le bouton C produit « Sol (Tone G) » avec « 5 », appuyer sur D produit « La (Tone A) » avec « 6 », E produit « Si (Tone B) » avec « 7 », et appuyer sur F produit un Do aigu tandis que l'affichage revient à « 1 ». Il y a une belle synchronisation entre le joystick, les boutons, les tonalités et l'affichage.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.3.2 Conoscenza dei Componenti
+#### 5.2.3.2 Component Knowledge
 
-Questo progetto utilizza lo stesso altoparlante micro:bit del Progetto 03. Si prega di fare riferimento alla sezione 4.2.3.2 per la conoscenza dei suoi componenti.
+![Img](./media/2top.png)
 
-#### 5.2.3.3 Parti Richieste
+**Microbit haut-parleur**
 
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
+![Img](./media/j901.png)
+
+La carte micro:bit dispose d'un haut-parleur intégré pour produire des sons, comme des rires, des salutations, des bâillements, ou des expressions de tristesse, ou même pour composer une chanson. Par programmation, il peut même générer des notes individuelles, des mélodies et des rythmes, ou même des compositions musicales, telles que la chanson *Ode à la joie*.
+
+![Img](./media/2bottom.png)
+
+#### 5.2.3.3 Required Parts
+
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
 
-#### 5.2.3.4 Flusso del Codice
+#### 5.2.3.4 Code Flow
 
 ![Img](./media/3009.png)
 
-#### 5.2.3.5 Codice di Test
+#### 5.2.3.5 Test Code
 
-⚠️ **Nota che la sensibilità del joystick può essere regolata in base alle proprie esigenze.**
+⚠️ **Remarque : la sensibilité du joystick peut être ajustée selon vos besoins.**
 
-**Codice completo:**
+**Code complet:**
 
 ```python
+# import related libraries
 from microbit import *
+import music
 
-# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
-JOYSTICK_CENTER_X = 511
-JOYSTICK_CENTER_Y = 511
-# Soglia per rilevare il movimento (regola per la sensibilità)
-JOYSTICK_THRESHOLD = 100
+# --- Configuration Constants ---
+# Joystick and Button Mapping (Pin, Note, Display Character)
+# For Joystick: (Pin, Threshold, Note, Character)
+JOY_MAP = [(pin2, 600, 'c4:2', '1'), (pin2, 400, 'd4:2', '2'), 
+           (pin1, 600, 'e4:2', '3'), (pin1, 400, 'f4:2', '4')]
 
-# Mappatura delle note musicali ai numeri visualizzati
-NOTES = {
-    "right": (262, "1"),  # Do centrale
-    "left": (294, "2"),   # Re
-    "up": (330, "3"),     # Mi
-    "down": (349, "4"),   # Fa
-    "C": (392, "5"),      # Sol
-    "D": (440, "6"),      # La
-    "E": (494, "7"),      # Si
-    "F": (523, "1")       # Do alto
-}
+# For Buttons: (Pin, Note, Character)
+BTN_MAP = [(pin15, 'g4:2', '5'), (pin16, 'a4:2', '6'), 
+           (pin13, 'b4:2', '7'), (pin14, 'c5:2', '1')]
 
-# Funzione per riprodurre una nota e visualizzare un numero
-def play_note_and_show(note_freq, display_char):
-    music.play(music.note(note_freq, 500), wait=False) # Riproduci per 500ms in sottofondo
-    display.show(display_char)
+# ==================== Initialization ====================
+# Enable internal pull-up resistors for all button pins
+for p, n, d in BTN_MAP: 
+    p.set_pull(p.PULL_UP)
 
-# Configura i pin dei pulsanti
-pin13.set_pull(pin13.PULL_UP) # Pulsante D
-pin15.set_pull(pin15.PULL_UP) # Pulsante C
-pin16.set_pull(pin16.PULL_UP) # Pulsante E
-pin14.set_pull(pin14.PULL_UP) # Pulsante F (assumendo P14 per F)
+# Visual feedback on startup
+display.show(Image.MUSIC_CROTCHET)
 
-display.show(Image.MUSIC)
-
+# ==================== Main Loop ====================
 while True:
-    # Leggi i valori analogici del joystick
-    x_value = pin0.read_analog()
-    y_value = pin1.read_analog()
+    # 1. Joystick Logic: Iterate through map and check analog thresholds
+    for pin, thresh, note, disp in JOY_MAP:
+        val = pin.read_analog()
+        # Trigger if value exceeds high threshold or drops below low threshold
+        if (thresh == 600 and val > 600) or (thresh == 400 and val < 400):
+            music.play(note, wait=False)
+            display.show(disp)
 
-    # Controlla il joystick
-    if x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["right"][0], NOTES["right"][1])
-    elif x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["left"][0], NOTES["left"][1])
-    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["up"][0], NOTES["up"][1])
-    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["down"][0], NOTES["down"][1])
+    # 2. Button Logic: Check for digital presses (Active Low)
+    for pin, note, disp in BTN_MAP:
+        if pin.read_digital() == 0: 
+            music.play(note, wait=False)
+            display.show(disp)
+            # Debounce/Stutter protection: Wait until the button is released
+            while pin.read_digital() == 0: 
+                sleep(10)
 
-    # Controlla i pulsanti
-    if not pin15.read_digital(): # Pulsante C
-        play_note_and_show(NOTES["C"][0], NOTES["C"][1])
-    elif not pin13.read_digital(): # Pulsante D
-        play_note_and_show(NOTES["D"][0], NOTES["D"][1])
-    elif not pin16.read_digital(): # Pulsante E
-        play_note_and_show(NOTES["E"][0], NOTES["E"][1])
-    elif not pin14.read_digital(): # Pulsante F
-        play_note_and_show(NOTES["F"][0], NOTES["F"][1])
+    # Small delay to maintain system stability and reduce CPU load
+    sleep(20)
 
-    sleep(100) # Breve ritardo per evitare letture eccessive e debounce
 ```
-
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication:**
 
-① Inizializza la matrice LED micro:bit per mostrare ![Img](./media/3004.png).
+① Importer les bibliothèques, configurer les constantes et initialiser.
+
+Il importe la bibliothèque `microbit` pour accéder aux capacités matérielles de la micro:bit et `music` pour jouer de la musique. Il définit ensuite deux listes essentielles de constantes de configuration :
+
+*   `JOY_MAP` : Sert à configurer le mappage du joystick. Chaque tuple contient les broches connectées au joystick, les seuils (par exemple, au-dessus de 600 ou en dessous de 400), la note musicale à jouer (par exemple, 'c4:2' est le do central durant deux temps), et le caractère affiché sur la matrice LED de la micro:bit.
+*   `BTN_MAP` : Le mappage utilisé pour configurer les boutons externes. Chaque tuple contient les broches connectées aux boutons, les notes musicales à jouer, et les caractères affichés sur la matrice LED de la micro:bit.
+
+Lors de l'initialisation, le programme parcourt toutes les broches de bouton dans `BTN_MAP` et active leurs résistances pull-up internes (`p.PULL_UP`). Cela garantit que les broches restent à un niveau haut lorsque le bouton n'est pas pressé et passent à un niveau bas lorsqu'il est pressé.
+
+Enfin, une icône de note musicale (`Image.MUSIC_CROTCHET`) apparaît sur la matrice LED.
 
 ```python
+# import related libraries
 from microbit import *
+import music
 
-# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
-JOYSTICK_CENTER_X = 511
-JOYSTICK_CENTER_Y = 511
-# Soglia per rilevare il movimento (regola per la sensibilità)
-JOYSTICK_THRESHOLD = 100
+# --- Configuration Constants ---
+# Joystick and Button Mapping (Pin, Note, Display Character)
+# For Joystick: (Pin, Threshold, Note, Character)
+JOY_MAP = [(pin2, 600, 'c4:2', '1'), (pin2, 400, 'd4:2', '2'), 
+           (pin1, 600, 'e4:2', '3'), (pin1, 400, 'f4:2', '4')]
 
-# Mappatura delle note musicali ai numeri visualizzati
-NOTES = {
-    "right": (262, "1"),  # Do centrale
-    "left": (294, "2"),   # Re
-    "up": (330, "3"),     # Mi
-    "down": (349, "4"),   # Fa
-    "C": (392, "5"),      # Sol
-    "D": (440, "6"),      # La
-    "E": (494, "7"),      # Si
-    "F": (523, "1")       # Do alto
-}
+# For Buttons: (Pin, Note, Character)
+BTN_MAP = [(pin15, 'g4:2', '5'), (pin16, 'a4:2', '6'), 
+           (pin13, 'b4:2', '7'), (pin14, 'c5:2', '1')]
 
-# Funzione per riprodurre una nota e visualizzare un numero
-def play_note_and_show(note_freq, display_char):
-    music.play(music.note(note_freq, 500), wait=False) # Riproduci per 500ms in sottofondo
-    display.show(display_char)
+# ==================== Initialization ====================
+# Enable internal pull-up resistors for all button pins
+for p, n, d in BTN_MAP: 
+    p.set_pull(p.PULL_UP)
 
-# Configura i pin dei pulsanti
-pin13.set_pull(pin13.PULL_UP) # Pulsante D
-pin15.set_pull(pin15.PULL_UP) # Pulsante C
-pin16.set_pull(pin16.PULL_UP) # Pulsante E
-pin14.set_pull(pin14.PULL_UP) # Pulsante F (assumendo P14 per F)
-
-display.show(Image.MUSIC)
+# Visual feedback on startup
+display.show(Image.MUSIC_CROTCHET)
 ```
 
-② Determina la direzione del movimento del joystick; riproduci i toni corrispondenti per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
+② Boucle principale : Gérer les entrées du joystick.
+
+Il s'agit d'une boucle infinie (`while True`). Il traite d'abord l'entrée du joystick en itérant sur la liste `JOY_MAP` et en vérifiant chaque direction du joystick. Pour chaque broche du joystick, il lit sa valeur analogique (`pin.read_analog()`).
+
+Le joystick est ensuite considéré comme activé en fonction d'un seuil prédéfini (`thresh`) : si le seuil est 600 et que la valeur analogique actuelle dépasse 600 (joystick poussé), ou si le seuil est 400 et que la valeur analogique actuelle est inférieure à 400 (poussée dans la direction opposée), il joue la note musicale correspondante (`music.play(note, wait=False)`), où `wait=False` garantit que la lecture musicale ne bloque pas la boucle principale, permettant la détection simultanée d'autres entrées.
+
+Et l'affichage LED de la micro:bit affiche le caractère correspondant à la direction du joystick.
 
 ```python
+# ==================== Main Loop ====================
 while True:
-    # Leggi i valori analogici del joystick
-    x_value = pin0.read_analog()
-    y_value = pin1.read_analog()
-
-    # Controlla il joystick
-    if x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["right"][0], NOTES["right"][1])
-    elif x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["left"][0], NOTES["left"][1])
-    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["up"][0], NOTES["up"][1])
-    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
-        play_note_and_show(NOTES["down"][0], NOTES["down"][1])
+    # 1. Joystick Logic: Iterate through map and check analog thresholds
+    for pin, thresh, note, disp in JOY_MAP:
+        val = pin.read_analog()
+        # Trigger if value exceeds high threshold or drops below low threshold
+        if (thresh == 600 and val > 600) or (thresh == 400 and val < 400):
+            music.play(note, wait=False)
+            display.show(disp)
 ```
 
-③ Controlla se un pulsante è premuto, e riproduci il tono corrispondente per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
+③ Boucle principale : Traiter les entrées des boutons.
+
+Après l'entrée du joystick, c'est au tour des boutons externes. Il parcourt chaque bouton dans la liste `BTN_MAP`. Pour chaque broche de bouton, il vérifie si la lecture numérique est `0` (`pin.read_digital() == 0`, ce qui signifie bouton pressé). Lorsque le bouton est pressé, la broche est à l'état bas en raison de sa résistance pull-up, le programme joue la note musicale correspondante (`music.play(note, wait=False)`) et affiche le caractère sur la matrice LED de la micro:bit.
+
+Pour éviter les rebonds ou les détections multiples d'une seule pression, il y a une boucle `while` qui attend la libération du bouton courant (`while pin.read_digital() == 0: sleep(10)`). Cette période d'attente bloque temporairement le programme jusqu'à ce que le bouton soit relâché.
 
 ```python
-    # Controlla i pulsanti
-    if not pin15.read_digital(): # Pulsante C
-        play_note_and_show(NOTES["C"][0], NOTES["C"][1])
-    elif not pin13.read_digital(): # Pulsante D
-        play_note_and_show(NOTES["D"][0], NOTES["D"][1])
-    elif not pin16.read_digital(): # Pulsante E
-        play_note_and_show(NOTES["E"][0], NOTES["E"][1])
-    elif not pin14.read_digital(): # Pulsante F
-        play_note_and_show(NOTES["F"][0], NOTES["F"][1])
-
-    sleep(100) # Breve ritardo per evitare letture eccessive e debounce
+    # 2. Button Logic: Check for digital presses (Active Low)
+    for pin, note, disp in BTN_MAP:
+        if pin.read_digital() == 0: 
+            music.play(note, wait=False)
+            display.show(disp)
+            # Debounce/Stutter protection: Wait until the button is released
+            while pin.read_digital() == 0: 
+                sleep(10)
 ```
 
-#### 5.2.3.6 Risultato del Test
+④ Boucle principale : Délai de boucle.
+
+Après toutes les détections d'entrée, le programme fait une pause de 20 millisecondes (`sleep(20)`) pour stabiliser le système, réduire la charge CPU et fournir un intervalle pour la prochaine détection d'entrée de la boucle.
+
+```python
+    # Small delay to maintain system stability and reduce CPU load
+    sleep(20)
+```
+
+#### 5.2.3.6 Test Result
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”. La matrice LED mostra “![Img](./media/3004.png)” per prima.
+Après avoir transféré le code, insérez la carte micro:bit dans la fente du gamepad (**batteries installées**), et mettez l'interrupteur sur « ON ». La matrice LED affiche d'abord « ![Img](./media/3004.png) ».
 
-Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1".
+Tourner le joystick vers la droite produit « Do (Tone Central C) » avec l'affichage montrant « 1 » ; le tourner vers la gauche produit « Re (Tone D) » avec « 2 » ; le pousser vers le haut produit « Mi (Tone E) » avec « 3 » ; le pousser vers le bas produit « Fa (Tone F) » avec « 4 ». Appuyer sur le bouton C produit « Sol (Tone G) » avec « 5 », appuyer sur D produit « La (Tone A) » avec « 6 », E produit « Si (Tone B) » avec « 7 », et appuyer sur F produit un Do aigu tandis que l'affichage revient à « 1 ».
 
-Hai costruito il semplice pianoforte elettronico!
+Vous avez construit le simple piano électronique !
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Conseil :** Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation au dos de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

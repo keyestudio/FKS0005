@@ -1,22 +1,19 @@
-## Risoluzione dei Problemi
+## Dépannage
 
-1\. Dopo aver caricato il codice, la matrice 5x5 di micro:bit mostra una faccia che piange e visualizzerà messaggi di errore in modo scorrevole.
+1\. Après le téléversement du code, la matrice 5x5 du micro:bit affiche un visage en pleurs, et elle affichera des messages d'erreur en défilement.
 
-2\. Se il codice caricato presenta caratteri aggiunti o eliminati per errore, è possibile verificarlo in base ai suggerimenti nella shell.
+2\. Si le code téléversé a des caractères ajoutés ou supprimés par erreur, vous pouvez le vérifier selon les invites dans le shell.
 
 ![Img](./media/g002.png)
 
-3\. Se il codice caricato contiene file di librerie di terze parti, verificare prima se le librerie corrispondenti sono state caricate sulla scheda micro:bit. Per come importare una libreria, fare riferimento a “**5.1.4 Carica Codice**”.
+3\. Si le code téléversé contient des fichiers de bibliothèques tierces, vérifiez d'abord si les bibliothèques correspondantes ont été téléversées sur la carte micro:bit. Pour savoir comment importer une bibliothèque, veuillez vous référer à “**5.1.4 Téléverser le code**”. 
 
-4\. Dopo aver caricato il codice, non vengono stampati dati. È necessario fare clic su "![Img](./media/t027.png)" prima, quindi premere il pulsante di reset sul retro della scheda Micro:bit, dopodiché i dati verranno stampati normalmente.
+4\. Après le téléversement du code, aucune donnée n'est imprimée. Vous devez d'abord cliquer sur "![Img](./media/t027.png)", puis appuyer sur le bouton de réinitialisation à l'arrière de la carte Micro:bit, après quoi les données s'imprimeront normalement.
 
 ![Img](./media/g001.png)
 
-5\. Il firmware micropython andrà perso dopo aver caricato il codice Makecode, e la shell stamperà i messaggi di errore:
+5\.  Le micrologiciel micropython sera perdu après la gravure du code Makecode, et le shell affichera des messages d'erreur :
 
 ![Img](./media/g000.png)
 
-In questo momento, è necessario caricare nuovamente il firmware, facendo riferimento a **5.2.3 Carica Firmware Micropython (Importante)**.
-
-
-
+À ce moment, vous devez regraver le micrologiciel en vous référant à **5.2.3 Graver le micrologiciel Micropython (Important)**.

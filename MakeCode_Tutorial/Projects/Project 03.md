@@ -1,74 +1,74 @@
-### 4.2.3 Semplice Pianoforte Elettronico
+### 4.2.3 Simple Electronic Piano
 
-#### 4.2.3.1 Panoramica
+#### 4.2.3.1 Overview
 
 ![Img](./media/top1.png)
 
-In questo progetto, controlliamo l'altoparlante micro:bit per riprodurre toni diversi azionando il joystick e premendo i pulsanti. Nel frattempo, la matrice LED a bordo mostrerà i numeri corrispondenti.
+Dans ce projet, nous contrôlons le micro:bit speaker pour jouer différentes tonalités en basculant le joystick et en appuyant sur les boutons. Pendant ce temps, la matrice LED embarquée affichera les numéros correspondants.
 
-Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1". C'è una bella sincronizzazione tra joystick, pulsanti, toni e display.
+Tourner le joystick vers la droite produit « Do (note Do centrale) » avec l'affichage montrant « 1 » ; le tourner vers la gauche produit « Ré (note Ré) » avec « 2 » ; le tourner vers le haut produit « Mi (note Mi) » avec « 3 » ; le tourner vers le bas produit « Fa (note Fa) » avec « 4 ». Appuyer sur le bouton C produit « Sol (note Sol) » avec « 5 », C D produit « La (note La) » avec « 6 », E produit « Si (note Si) » avec « 7 », et appuyer sur F produit un « Do » plus aigu tandis que l'affichage revient à « 1 ». Il y a une belle synchronisation entre le joystick, les boutons, les tonalités et l'affichage.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.3.2 Conoscenza dei Componenti
+#### 4.2.3.2 Component Knowledge
 
 ![Img](./media/2top.png)
 
-**Altoparlante Microbit**
+**Microbit speaker**
 
 ![Img](./media/j901.png)
 
-La scheda micro:bit è dotata di un altoparlante integrato per emettere suoni, come risatine, saluti, sbadigli o espressioni di tristezza, o persino comporre una canzone. Programmando, può persino generare note individuali, melodie e ritmi, o persino composizioni musicali, come la canzone *Twinkle Twinkle Little Star*.
+La carte micro:bit board dispose d'un haut-parleur intégré pour produire des sons, comme des rires, des salutations, des bâillements, ou des expressions de tristesse, ou même pour composer une chanson. Par programmation, il peut même générer des notes individuelles, des mélodies et des rythmes, ou même des compositions musicales, comme la chanson *Brille, brille, petite étoile*.
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.3.3 Parti Richieste
+#### 4.2.3.3 Required Parts
 
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
+| **micro:bit V2 board** (à fournir) ×1 | **micro:bit Smart Gamepad** (pré-assemblé) ×1 |**AAA battery** (à fournir) ×4 |
 | :--: | :--: | :--: |
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 
-#### 4.2.3.4 Flusso del Codice
+#### 4.2.3.4 Code Flow
 
 ![Img](./media/3009.png)
 
-#### 4.2.3.5 Codice di Test
+#### 4.2.3.5 Test Code
 
-⚠️ **Nota che la sensibilità del joystick può essere regolata in base alle proprie esigenze.**
+⚠️ **Remarque : la sensibilité du joystick peut être ajustée selon vos besoins.**
 
-**Codice completo:**
+**Complete code:**
 
 ![Img](./media/3008.png)
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Inizializza la matrice LED micro:bit per mostrare ![Img](./media/3004.png).
+① Initialiser la matrice LED du micro:bit pour afficher ![Img](./media/3004.png).
 
 ![Img](./media/3005.png)
 
-② Determina la direzione del movimento del joystick; riproduci i toni corrispondenti per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
+② Déterminer la direction du mouvement du joystick ; jouer en arrière-plan les tons correspondants pendant un demi-temps, et la matrice LED affiche le numéro correspondant.
 
 ![Img](./media/3006.png)
 
-③ Controlla se un pulsante è premuto, e riproduci il tono corrispondente per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
+③ Vérifier si un bouton est pressé, jouer en arrière-plan le ton correspondant pendant un demi-temps, et la matrice LED affiche le numéro correspondant.
 
 ![Img](./media/3007.png)
 
 
-#### 4.2.3.6 Risultato del Test
+#### 4.2.3.6 Test Result
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”. La matrice LED mostra “![Img](./media/3004.png)” per prima.
+Après avoir téléversé le code, insérez le micro:bit board dans la fente du gamepad (**batteries installées**), et basculez l'interrupteur sur “ON”. La matrice LED affiche d'abord « ![Img](./media/3004.png) ».
 
-Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1".
+Tourner le joystick vers la droite produit « Do (note Do centrale) » avec l'affichage montrant « 1 » ; le tourner vers la gauche produit « Ré (note Ré) » avec « 2 » ; le tourner vers le haut produit « Mi (note Mi) » avec « 3 » ; le tourner vers le bas produit « Fa (note Fa) » avec « 4 ». Appuyer sur le bouton C produit « Sol (note Sol) » avec « 5 », appuyer sur D produit « La (note La) » avec « 6 », E produit « Si (note Si) » avec « 7 », et appuyer sur F produit un « Do » plus aigu tandis que l'affichage revient à « 1 ».
 
-Hai costruito il semplice pianoforte elettronico!
+Vous avez construit le simple piano électronique !
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation à l'arrière du micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

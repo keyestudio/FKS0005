@@ -1,143 +1,138 @@
-### 5.2.1 Indicatore di Direzione
+### 5.2.1 Indicateur de direction
 
-#### 5.2.1.1 Panoramica
+#### 5.2.1.1 Aperçu
 
 ![Img](./media/top1.png)
 
-Quando si muove il joystick, la matrice di punti visualizza frecce nella direzione corrispondente in tempo reale: sinistra, destra, su, giù, fornendo un chiaro riferimento di direzione.
+Lorsque vous déplacez le joystick, la matrice de points affiche en temps réel des flèches dans la direction correspondante : gauche, droite, haut, bas, vous fournissant une référence de direction claire.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.1.2 Conoscenza dei Componenti
+#### 5.2.1.2 Connaissance des composants
 
-Questo progetto utilizza lo stesso joystick del Progetto 01. Si prega di fare riferimento alla sezione 4.2.1.2 per la conoscenza dei suoi componenti.
+![Img](./media/2top.png)
 
-#### 5.2.1.3 Parti Richieste
+**Matrice LED de Micro:bit :**
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png)|
+![Img](./media//1001.png)
+
+La matrice de diodes électroluminescentes (LED) de la carte micro:bit se compose d'un total de 25 diodes, groupées par 5, correspondant aux axes X et Y, formant une matrice 5×5. Chacune est placée à l'intersection de la ligne (X) et de la colonne (Y). Nous pouvons contrôler une ou plusieurs LED en définissant les points de coordonnées.
+
+**Joystick :**
+
+| ![Img](./media/1002.png)| ![Img](./media//1003.png)  |
+| :--: | :--: |
+|       Produit réel       |     Schéma     |
+
+La structure interne de ce joystick est composée de deux résistances ajustables (potentiomètres) d'une valeur de 10KΩ chacune.
+
+Il détecte les directions (et l'amplitude) de la poussée via la broche analogique ADC du microcontrôleur pour délivrer des signaux électriques analogiques correspondant à chaque dimension. Lors de la lecture réelle du signal, lorsque les valeurs analogiques des axes X et Y du joystick se situent dans la plage 450~600, on peut déterminer que le joystick est en position neutre (stationnaire) sans basculement actif.
+
+![Img](./media/2bottom.png)
+
+#### 5.2.1.3 Pièces requises
+
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png)  |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
+| **micro:bit V2 board** (fourni par l'utilisateur) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 | **Pile AAA** (fourni par l'utilisateur) ×4 |
+
+#### 5.2.1.4 Flux du code
+
+![Img](./media/1004.png)
 
 
-#### 5.2.1.4 Flusso del Codice
+#### 5.2.1.5 Code de test
 
-![Img](./media/1008.png)
+**Code complet:**
 
-#### 5.2.1.5 Codice di Test
-
-⚠️ **Nota che la sensibilità del joystick può essere regolata in base alle proprie esigenze.**
-
-**Codice completo:**
-
-```python
+```Python
+# import related libraries
 from microbit import *
 
-# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
-# I valori tipici per il centro sono intorno a 511 per entrambi gli assi
-JOYSTICK_CENTER_X = 511
-JOYSTICK_CENTER_Y = 511
-# Soglia per rilevare il movimento (regola per la sensibilità)
-JOYSTICK_THRESHOLD = 100
+display.show(Image.HOUSE)
 
-# Funzione per visualizzare le frecce
-def show_arrow(direction):
-    if direction == "up":
-        display.show(Image.ARROW_N)
-    elif direction == "down":
-        display.show(Image.ARROW_S)
-    elif direction == "left":
-        display.show(Image.ARROW_W)
-    elif direction == "right":
+while True:
+    #Read the toggle state of the joystick
+    x = pin2.read_analog()
+    y = pin1.read_analog()
+    #Determine the direction in which the joystick is toggled
+    if x > 600 and (400 < y < 600):
         display.show(Image.ARROW_E)
+    elif x < 400 and (400 < y < 600):
+        display.show(Image.ARROW_W)
+    elif y > 600 and (400 < x < 600):
+        display.show(Image.ARROW_S)
+    elif y < 400 and (400 < x < 600):
+        display.show(Image.ARROW_N)
     else:
         display.show(Image.HOUSE)
-
-# Loop principale
-while True:
-    # Leggi i valori analogici del joystick
-    x_value = pin0.read_analog()
-    y_value = pin1.read_analog()
-
-    # Determina la direzione in base ai valori del joystick
-    if x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
-        show_arrow("left")
-    elif x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
-        show_arrow("right")
-    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
-        show_arrow("up")
-    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
-        show_arrow("down")
-    else:
-        show_arrow("center")
-
-    sleep(100) # Breve ritardo per evitare letture eccessive
 ```
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Explication brève :**
 
-① Inizializza la matrice LED per farla mostrare ![Img](./media/1006.png).
+① Importer la bibliothèque et afficher l'image initiale.
+
+Commencez par importer la bibliothèque `microbit`, qui est la bibliothèque de base nécessaire pour Micro:bit sous MicroPython. Elle donne un accès complet au matériel de Micro:bit (y compris l'affichage LED et les broches). Après l'importation, une icône maison(`Image.HOUSE`) s'affiche sur la matrice comme état initial / écran de veille.
 
 ```python
+# import related libraries
 from microbit import *
 
-# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
-# I valori tipici per il centro sono intorno a 511 per entrambi gli assi
-JOYSTICK_CENTER_X = 511
-JOYSTICK_CENTER_Y = 511
-# Soglia per rilevare il movimento (regola per la sensibilità)
-JOYSTICK_THRESHOLD = 100
+display.show(Image.HOUSE)
+```
+② Boucle : lire la valeur analogique du joystick.
 
-# Funzione per visualizzare le frecce
-def show_arrow(direction):
-    if direction == "up":
-        display.show(Image.ARROW_N)
-    elif direction == "down":
-        display.show(Image.ARROW_S)
-    elif direction == "left":
-        display.show(Image.ARROW_W)
-    elif direction == "right":
+Le programme entre dans une boucle infinie (`while True`). Au début de la boucle, il lit les valeurs d'entrée analogiques de `pin2` et `pin1`, correspondant typiquement à l'axe X (gauche-droite) et à l'axe Y (haut-bas) du joystick.
+
+`read_analog()` renvoie un entier entre 0 et 1023, représentant la position du joystick le long de cet axe. Il est généralement proche de 511–512 lorsque le joystick est centré.
+
+```python
+while True:
+    #Read the toggle state of the joystick
+    x = pin2.read_analog()
+    y = pin1.read_analog()
+```
+③ Déterminer la direction du joystick et afficher la flèche correspondante.
+
+Ici, on détermine la direction du mouvement du joystick en se basant sur les valeurs analogiques `x` et `y`. Nous fixons des seuils (400 et 600) pour déterminer si le joystick est incliné.
+
+*   [ `x` > 600 , 400 <  `y` < 600 ] : (sur l'axe Y central) le joystick est à droite et affiche la flèche orientée vers l'est (`Image.ARROW_E`).
+*   [ `x` < 400 , 400 <  `y` < 600 ] : le joystick est à gauche et affiche la flèche orientée vers l'ouest (`Image.ARROW_W`).
+*   [ `y` >  600 , 400 < `x` < 600 ] : le joystick est poussé vers le bas et affiche la flèche orientée vers le sud (`Image.ARROW_S`).
+*   [ `y` < 400 ,400 < `x` < 600 ] : le joystick est poussé vers le haut et affiche la flèche orientée vers le nord (`Image.ARROW_N`).
+
+```python
+    #Determine the direction in which the joystick is toggled
+    if x > 600 and (400 < y < 600):
         display.show(Image.ARROW_E)
+    elif x < 400 and (400 < y < 600):
+        display.show(Image.ARROW_W)
+    elif y > 600 and (400 < x < 600):
+        display.show(Image.ARROW_S)
+    elif y < 400 and (400 < x < 600):
+        display.show(Image.ARROW_N)
+```
+④ Le motif "maison" est affiché lorsque le joystick est centré.
+
+Si aucune des conditions ci‑dessus n'est remplie — c'est‑à‑dire que le joystick ne se déplace pas de façon significative dans une quelconque direction (ce qui indique généralement qu'il est en position centrale) — la Micro:bit affichera à nouveau la "maison" (`Image.HOUSE`), ce qui signifie que le joystick est immobile.
+
+```python
     else:
         display.show(Image.HOUSE)
 ```
 
-② Leggi i valori degli assi X e Y per determinare la direzione di movimento. Se viene rilevata, la matrice mostra la freccia corrispondente. In caso contrario, visualizza ![Img](./media/1006.png).
-
-```python
-# Loop principale
-while True:
-    # Leggi i valori analogici del joystick
-    x_value = pin0.read_analog()
-    y_value = pin1.read_analog()
-
-    # Determina la direzione in base ai valori del joystick
-    if x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
-        show_arrow("left")
-    elif x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
-        show_arrow("right")
-    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
-        show_arrow("up")
-    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
-        show_arrow("down")
-    else:
-        show_arrow("center")
-
-    sleep(100) # Breve ritardo per evitare letture eccessive
-```
-
-
-#### 5.2.1.6 Risultato del Test
+#### 5.2.1.6 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l\interruttore su “ON”.
+Après avoir transféré le code, insérez la carte micro:bit dans la fente du gamepad (**piles installées**), et basculez l'interrupteur dessus sur « ON ».
 
-Quando spingi il joystick del gamepad, puoi vedere le frecce corrispondenti sulla matrice. Se alzi il dito per riportarlo al centro, apparirà un\icona a forma di casa sulla matrice.
+Lorsque vous poussez le joystick du gamepad, vous verrez les flèches correspondantes sur la matrice. Si vous le ramenez au centre, une icône maison apparaîtra sur la matrice.
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c\è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Si aucune réponse n'apparaît sur la carte, veuillez appuyer sur le bouton de réinitialisation à l'arrière de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

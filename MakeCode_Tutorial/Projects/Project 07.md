@@ -1,156 +1,154 @@
-### 4.2.7 Misuratore di Temperatura e Umidità
+### 4.2.7 Thermomètre et Hygromètre
 
-#### 4.2.7.1 Panoramica
+#### 4.2.7.1 Aperçu
 
 ![Img](./media/top1.png)
 
-In questo progetto, costruiamo un sistema di monitoraggio della temperatura e dell'umidità con una scheda Micro:bit, un gamepad, un sensore di temperatura e umidità XHT11 e un display OLED. Il sensore XHT11 misura la temperatura e l'umidità ambiente, mentre il display OLED aggiorna le letture in tempo reale. La scheda di controllo del gamepad facilita l'espansione del circuito e le connessioni stabili, consentendo al sistema di funzionare come un semplice termometro.
+Dans ce projet, nous construisons un système de surveillance de la température et de l'humidité à l'aide d'une carte micro:bit, d'un gamepad, d'un capteur de température et d'humidité XHT11 et d'un écran OLED. Le capteur XHT11 mesure la température ambiante et l'humidité, tandis que l'écran OLED met à jour les lectures en temps réel. La carte contrôleur du gamepad facilite l'extension du circuit et les connexions stables, permettant au système de fonctionner comme un simple thermomètre.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.7.2 Conoscenza dei Componenti
+#### 4.2.7.2 Connaissances sur les composants
 
 ![Img](./media/2top.png)
 
-**Sensore di temperatura e umidità XHT11**
+**Capteur de température et d'humidité XHT11**
 
 ![Img](./media/XHT11.png)
 
-Il sensore di temperatura e umidità XHT11 emette segnali digitali e impiega un'acquisizione e conversione del segnale analogico specializzata, tecniche avanzate di rilevamento della temperatura e dell'umidità per garantire un'eccellente stabilità a lungo termine e un'elevata affidabilità.
+Le capteur XHT11 fournit des signaux numériques et utilise une acquisition et une conversion de signal analogique spécialisées, ainsi que des techniques avancées de détection de la température et de l'humidité pour garantir une excellente stabilité à long terme et une grande fiabilité.
 
-Incorpora sensori di umidità resistivi e termistori di temperatura ad alta precisione, integrati con un microcontrollore a 8 bit ad alte prestazioni.
+Il intègre des capteurs d'humidité résistifs haute précision et des thermistances de température, intégrés à un microcontrôleur 8 bits haute performance.
 
-**Modalità di comunicazione XHT11:**
+**Mode de communication du XHT11 :**
 
-Impiega una comunicazione single-bus semplificata. Il single-bus è costituito da una singola linea dati, attraverso la quale vengono eseguite tutte le operazioni di scambio dati e controllo all'interno del sistema.
+Il utilise une communication par bus unique simplifiée. Le bus unique se compose d'une seule ligne de données, via laquelle tous les échanges de données et opérations de contrôle au sein du système sont effectués.
 
-- Bit di dati di trasmissione single-bus:
+- Bits de transmission sur le bus unique :
 
-  - Formato dati single-bus: Trasmette 40 bit di dati alla volta, bit più significativo per primo.
+  - Format de données du bus unique : Transmet 40 bits de données à la fois, bit de poids fort en premier.
 
-  - 8 bit di dati di umidità interi + 8 bit di dati di umidità decimali + 8 bit di dati di temperatura interi + 8 bit di dati di temperatura decimali + 8 bit di parità.
+  - 8 bits de partie entière de l'humidité + 8 bits de partie décimale de l'humidité + 8 bits de partie entière de la température + 8 bits de partie décimale de la température + 8 bits de parité.
 
-    **Nota: La parte decimale dell'umidità è 0**.
+    **Note : La partie décimale de l'humidité est 0**.
 
-- Bit di parità:
-  
-  - 8 bit di dati di umidità interi + 8 bit di dati di umidità decimali + 8 bit di dati di temperatura interi + 8 bit di dati di temperatura decimali
-  
-    Il bit di parità a 8 bit è l'ultimo 8 bit del risultato.
+- Bit de parité :
+
+  - 8 bits de partie entière de l'humidité + 8 bits de partie décimale de l'humidité + 8 bits de partie entière de la température + 8 bits de partie décimale de la température
+
+    Le bit de parité de 8 bits est les 8 derniers bits du résultat.
 
 ![Img](./media/7001.png)
 
-Diagramma della sequenza dati del sensore di temperatura e umidità XH11:
+Diagramme de séquence des données du capteur de température et d'humidité XH11 :
 
-Dopo che l'host utente (MCU) invia un segnale di avvio, l'XHT11 passa dalla modalità a basso consumo alla modalità ad alta velocità, e dopo la fine di questo segnale, l'XHT11 invia un segnale di risposta e 40 bit di dati, e attiva un'acquisizione del segnale.
+Après que l'hôte utilisateur (MCU) envoie un signal de démarrage, le XHT11 passe du mode basse consommation au mode haute vitesse, et après la fin de ce signal, le XHT11 envoie un signal de réponse et 40 bits de données, et déclenche une acquisition de signal.
 
-Il segnale viene inviato come mostrato nella figura:
+Le signal est envoyé comme illustré dans la figure :
 
 ![Img](./media/7002.png)
 
-⚠️ **Suggerimento:** I dati di temperatura e umidità letti dall'host dal sensore XHT11 sono sempre i valori della misurazione precedente. Se c'è un lungo intervallo tra due misurazioni, si prega di effettuare due letture consecutive; il valore della seconda volta sarà quello effettivo.
+⚠️ **Astuce :** Les données de température et d'humidité lues par l'hôte à partir du capteur XHT11 sont toujours les valeurs de la mesure précédente. S'il y a un long intervalle entre deux mesures, veuillez effectuer deux lectures consécutives ; la valeur lors de la deuxième lecture sera la valeur réelle.
 
-**Schema schematico:**
+**Schéma :**
 
 ![Img](./media/cou73-2.png)
 
-**Parametri:**
+**Paramètres :**
 
-- Tensione operativa: DC 3V~5V
-- Corrente operativa: (Max)2.5mA
-- Potenza massima: 0.0125W
-- Intervallo di temperatura: -25 ~ +60°C (±2℃)
-- Intervallo di umidità: 5 ~ 95%RH (Precisione intorno a 25°C è ±5%RH)
-- Segnale di uscita: single-bus digitale bidirezionale
+- Tension de fonctionnement : DC 3V~5V
+- Courant de fonctionnement : (Max)2.5mA
+- Puissance maximale : 0.0125W
+- Plage de température : -25 ~ +60°C (±2℃)
+- Plage d'humidité : 5 ~ 95%RH(Précision autour de 25°C ±5%RH)
+- Signal de sortie : bus unique numérique bidirectionnel
 
-**Display OLED**
+**Écran OLED**
 
 ![Img](./media/A636.png)
 
-L'OLED offre vantaggi eccezionali come una ricca riproduzione dei colori, un contrasto elevato e ampi angoli di visione. Le immagini su di esso sono chiare e vivide, con un nero particolarmente eccezionale. Ogni pixel è auto-emissivo senza bisogno di retroilluminazione, con conseguente consumo energetico relativamente basso. Lo schermo OLED da 0,9 pollici, con le sue dimensioni compatte, l'alta risoluzione (128×64 pixel) e il basso consumo energetico, è ideale per applicazioni in sistemi embedded e dispositivi indossabili.
+L'OLED offre des avantages exceptionnels tels que la richesse des couleurs, un fort contraste et de larges angles de vue. Les images sont nettes et vives, avec un noir particulièrement remarquable. Chaque pixel est auto-émissif sans besoin de rétroéclairage, ce qui entraîne une consommation d'énergie relativement faible. L'écran OLED de 0,9 pouce, avec sa taille compacte, sa haute résolution (128×64 pixels) et sa faible consommation d'énergie, est idéal pour les applications dans les systèmes embarqués et les dispositifs portables.
 
-⚠️ **Nota**: Per questo display OLED, l'interfaccia SDA è collegata al pin P20 sulla scheda Micro:bit, mentre l'SCL è collegata al pin P19.
+⚠️ **Remarque** : Pour cet écran OLED, l'interface SDA est connectée à la broche P20 sur la carte micro:bit, tandis que le SCL est connecté à la broche P19.
 
-**Parametri:**
+**Paramètres :**
 
-- Tensione operativa: DC 3V - 5V
-- Corrente operativa: 30mA
-- Interfaccia: Pin con spaziatura di 2.54mm
-- Modalità di comunicazione: comunicazione I2C
-- Chip di pilotaggio interno: SSD1306
-- Risoluzione: 128×64
-- Angolo di visione: Maggiore di 150°
+- Tension de fonctionnement : DC 3V - 5V
+- Courant de fonctionnement : 30mA
+- Interface : broches avec un espacement de 2,54mm
+- Mode de communication : communication I2C
+- Puce de pilotage interne : SSD1306
+- Résolution : 128×64
+- Angle de vue : supérieur à 150°
 
-#### 4.2.7.3 Parti Richieste
+#### 4.2.7.3 Pièces requises
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 | **Batteria AAA** (auto-fornita) ×4 |
+| **micro:bit V2 board** (apporté par l'utilisateur) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 |**Pile AAA** (apportées par l'utilisateur) ×4 |
 |![Img](./media/XHT11.png)|![Img](./media/OLED.png)|![Img](./media/7008.png)|
-|**Sensore di temperatura e umidità XHT11** (auto-fornito)×1|**Display OLED** (auto-fornito)×1 |**Cavo DuPont F-F**(auto-fornito) x7|
+|**Capteur de température et d'humidité XHT11** (apporté par l'utilisateur)×1|**Écran OLED** (apporté par l'utilisateur)×1 |**Fil Dupont F-F**(apporté par l'utilisateur) x7|
 
-
-#### 4.2.7.4 Schema di Cablaggio
+#### 4.2.7.4 Schéma de câblage
 
 ![Img](./media/jiexian.png)
 
-**Dopo aver cablato come mostrato sopra, inserisci la micro:bit nello slot sulla scheda di controllo del gamepad.**
+**Après avoir câblé comme indiqué ci-dessus, insérez la micro:bit dans la fente de la carte de contrôle du gamepad.**
 
-| Display OLED | Scheda di controllo gamepad micro:bit | Pin scheda micro:bit |
+| OLED display | micro:bit gamepad control board |micro:bit board pin |
 | :--: | :--: | :--: |
-| GND | GND | GND |
-| VCC | 3V | 3V |
-| SDA | SDA | P20 |
-| SCL | SCL | P19 |
+| GND |  GND | GND |
+| VCC |  3V | 3V |
+| SDA |  SDA | P20 |
+| SCL |  SCL | P19 |
 
-| Sensore di temperatura e umidità XHT11 | Scheda di controllo gamepad micro:bit | Pin scheda micro:bit |
+| XHT11 temperature and humidity sensor | micro:bit gamepad control board | micro:bit board pin |
 | :--: | :--: | :--: |
 | G | GND | GND |
-| V | 3V | 3V |
-| S | 12 | P12 |
+| V |  3V | 3V |
+| S |  12 | P12 |
 
-
-#### 4.2.7.5 Flusso del Codice
+#### 4.2.7.5 Flux du code
 
 ![Img](./media/7003.png)
 
-#### 4.2.7.6 Codice di Test
-⚠️ **Nota che qui sono incluse le librerie OLED e DHT11, quindi dobbiamo importare: https://github.com/keyestudio/pxt-environment-kit-master**.
+#### 4.2.7.6 Code de test
+⚠️ **Remarque :** ici les bibliothèques OLED et DHT11 sont incluses, donc nous devons importer : https://github.com/keyestudio/pxt-environment-kit-master.
 
-**Codice completo:**
+**Code complet :**
 
 ![Img](./media/7004.png)
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Inizializza i pixel dell'OLED e cancellalo, imposta la matrice 5×5LED per mostrare ![Img](./media/1006.png), e definisci i valori di temperatura e umidità a 0.
+① Initialiser les pixels de l'OLED et le nettoyer, afficher ![Img](./media/1006.png) sur la matrice 5×5 LED, et définir les valeurs des variables temperature et humidity à 0.
 
 ![Img](./media/7005.png)
 
-② Assegna le letture corrispondenti del sensore XHT11 alle variabili temperatura e umidità.
+② Attribuer les mesures correspondantes du capteur XHT11 aux variables temperature et humidity.
 
 ![Img](./media/7006.png)
 
-③ L'OLED mostra le letture del sensore XHT11.
+③ L'OLED affiche les relevés du capteur XHT11.
 
 ![Img](./media/7007.png)
 
-④ Ritardo 500ms (0.5s).
+④ Pause de 500 ms (0,5 s).
 
 ![Img](./media/cou28.png)
 
-#### 4.2.7.7 Risultato del Test
+#### 4.2.7.7 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
+Après avoir transféré le code, insérez la carte micro:bit dans la fente du gamepad (**piles installées**), et basculez l'interrupteur sur « ON ».
 
-Dopo aver caricato il codice sulla scheda micro:bit, l'OLED mostra in tempo reale la temperatura e l'umidità lette dal sensore XHT11.
+Après avoir téléversé le code sur la carte micro:bit, l'OLED affiche en temps réel la température et l'humidité lues par le capteur XHT11.
 
 ![Img](./media/7000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation au dos de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

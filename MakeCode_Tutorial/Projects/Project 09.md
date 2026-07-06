@@ -1,113 +1,112 @@
-### 4.2.9 Auto Robot Mecanum 4WD Controllata da Gamepad Micro:bit
+### 4.2.9 Micro:bit Gamepad Controlled 4WD Mecanum Robot Car
 
-#### 4.2.9.1 Panoramica
+#### 4.2.9.1 Aperçu
 
 ![Img](./media/top1.png)
-In questo progetto, controlliamo un Robot Car Mecanum 4WD con una scheda di controllo gamepad e una scheda Micro:bit. Il joystick consente all'auto di andare avanti, indietro, girare a sinistra e a destra; il pulsante C sposta l'auto lateralmente a sinistra, il D lateralmente a destra, l'E accelera e il tasto F decelera (con un intervallo di velocità di 20–95). Quando non viene eseguita alcuna operazione, l'auto rimane ferma.
+Dans ce projet, nous contrôlons un 4WD Mecanum Robot Car à l'aide d'une carte de commande de type gamepad et d'une carte Micro:bit. Le joystick permet au véhicule d'aller en avant, en arrière, de tourner à gauche et à droite ; la touche C déplace le véhicule latéralement vers la gauche, la touche D latéralement vers la droite, la touche E accélère, et la touche F décélère (avec une plage de vitesse de 20–95). Lorsqu'aucune opération n'est effectuée, le véhicule reste immobile.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.9.2 Parti Richieste
+#### 4.2.9.2 Pièces requises
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
+| **micro:bit V2 board** (fournie par l'utilisateur) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 |**AAA battery** (fournie par l'utilisateur) ×4 |
 | ![Img](./media/che.png) | ![Img](./media/18650.png) ||
-| **Kit KS4034**(auto-fornito) ×1 | **Batteria 18650**(auto-fornita) ×2 ||
+| **KS4034 kit** (fournie par l'utilisateur) ×1 | **18650 battery** (fournie par l'utilisateur) ×2 ||
 
-Per informazioni dettagliate sul Robot Car Mecanum 4WD**(KS4034)**, visitare [qui](https://docs.keyestudio.com/projects/KS4034/en/latest/).
-#### 4.2.9.3 Schema di Cablaggio
+Pour des informations détaillées sur le 4WD Mecanum Robot Car **(KS4034)**, veuillez visiter [ici](https://docs.keyestudio.com/projects/KS4034/en/latest/).
+#### 4.2.9.3 Schéma de câblage
 
-Si prega di fare riferimento alle istruzioni di cablaggio nella documentazione KS4034 per collegare il Robot Car Mecanum 4WD e il gamepad tramite comunicazione radio. Non è richiesto alcun cablaggio fisico tra i due; entrambi i dispositivi comunicano in modalità wireless.
+Veuillez vous référer aux instructions de câblage dans la documentation KS4034 pour connecter le 4WD Mecanum Robot Car et le gamepad via la communication radio. Aucun câblage physique entre les deux n'est requis ; les deux appareils communiquent sans fil.
 
-#### 4.2.9.4 Flusso del Codice
-⚠️ **Nota che la seguente libreria deve essere importata durante la programmazione dei codici dell'auto: https://github.com/keyestudio2019/mecanum_robot_v2**.
+#### 4.2.9.4 Flux du code
+⚠️ **Notez que la bibliothèque suivante doit être importée lors de la programmation du code du véhicule : https://github.com/keyestudio2019/mecanum_robot_v2**.
 
-**Flusso del codice del gamepad:**
+**Flux du code du gamepad :**
 
 ![Img](./media/9001.png)
 
-**Flusso del codice dell'auto:**
+**Flux du code du véhicule :**
 
 ![Img](./media/9002.png)
 
-#### 4.2.9.5 Codice di Test
+#### 4.2.9.5 Code de test
 
-**Codice completo del gamepad:**
+**Code complet du gamepad :**
 
 ![Img](./media/9003.png)
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Inizializza il gruppo radio a 1 con una potenza di trasmissione del segnale di 7; visualizza un'icona a forma di cuore e imposta le variabili SEND_INTERCAL a 100 e BTN_DEBOUNCE_TIME a 20.
+① Initialiser le groupe radio à 1 avec une puissance de transmission du signal de 7 ; afficher une icône de cœur, et définir les variables SEND_INTERCAL à 100 et BTN_DEBOUNCE_TIME à 20.
 
 ![Img](./media/9004.png)
 
-② Imposta la variabile currentCmd (variabile del contenuto dell'istruzione) sul carattere '0' e assegna i valori degli assi X e Y del joystick alle variabili rockerX e rockerY, rispettivamente.
+② Affecter la variable currentCmd (variable de contenu d'instruction) au caractère '0', et assigner les valeurs des axes X et Y du joystick aux variables rockerX et rockerY, respectivement.
 
 ![Img](./media/9005.png)
 
-③ Controlla se il joystick o il pulsante hanno un'operazione corrispondente. Se si verifica un'operazione, imposta la variabile currentCmd (variabile del contenuto dell'istruzione) sul carattere corrispondente (R/U/L/D/A/B/Z/X); altrimenti, lasciala invariata.
+③ Vérifier si le joystick ou un bouton a une opération correspondante. Si une opération se produit, définir la variable currentCmd (variable de contenu d'instruction) sur le caractère correspondant (R/U/L/D/A/B/Z/X) ; sinon, la laisser inchangée.
 
 ![Img](./media/9006.png)
 
-④ Controlla se currentCmd (variabile del contenuto dell'istruzione) differisce da lastCmd (memorizza il contenuto dell'istruzione precedente). In caso affermativo, invia currentCmd, imposta lastCmd su currentCmd e attendi un ritardo specificato.
+④ Vérifier si currentCmd (variable de contenu d'instruction) diffère de lastCmd (stocke le contenu d'instruction précédent). Si oui, envoyer currentCmd, définir lastCmd à currentCmd, et attendre un délai spécifié.
 
 ![Img](./media/9007.png)
 
-**Codice completo dell'auto:**
+**Code complet du véhicule :**
 
 ![Img](./media/9008.png)
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication :**
 
-① Inizializza il gruppo radio a 1 con una potenza di trasmissione del segnale di 7; visualizza un'icona a forma di cuore e imposta le variabili SPEED a 50, MIN_SPEED a 20 e MAX_speed a 95.
+① Initialiser le groupe radio à 1 avec une puissance de transmission du signal de 7 ; afficher une icône de cœur, et définir les variables SPEED à 50, MIN_SPEED à 20, et MAX_speed à 95.
 
 ![Img](./media/9009.png)
 
-② Ricevi il valore del comando inviato dalla radio e memorizza il comando nella variabile item.
+② Recevoir la valeur de commande envoyée par la radio et stocker la commande dans la variable item.
 
 ![Img](./media/9010.png)
 
-③ In base ai comandi dei caratteri (U/L/D/R/A/B) ricevuti da item, chiama le funzioni corrispondenti per controllare l'auto per andare avanti, indietro, girare a sinistra, a destra, e spostarsi a sinistra e a destra.
+③ En fonction des commandes de caractères (U/L/D/R/A/B) reçues dans item, appeler les fonctions correspondantes pour contrôler le véhicule afin d'aller vers l'avant, vers l'arrière, tourner à gauche, tourner à droite, et effectuer un déplacement latéral gauche et droit.
 
 ![Img](./media/9011.png)
 
-④ In base al comando del carattere (Z/X) ricevuto da item, l'auto viene accelerata o decelerata di conseguenza.
+④ En fonction de la commande de caractère (Z/X) reçue dans item, le véhicule est accéléré ou décéléré en conséquence.
 
-Durante l'accelerazione, la velocità è impostata al minimo tra SPEED+5 e MAX_speed (per evitare di superare MAX_speed); durante la decelerazione, la velocità è impostata al massimo tra SPEED-5 e MIN_speed (per evitare di scendere al di sotto di MIN_speed).
+Pendant l'accélération, la vitesse est réglée sur le minimum entre SPEED+5 et MAX_speed (pour éviter de dépasser MAX_speed) ; pendant la décélération, la vitesse est réglée sur le maximum entre SPEED-5 et MIN_speed (pour éviter de descendre en dessous de MIN_speed).
 
 ![Img](./media/9012.png)
 
-⑤ Qui sono definite sei funzioni di controllo del movimento del veicolo:
+⑤ Six fonctions de contrôle du mouvement du véhicule sont définies ici :
 
-- car_back controlla tutti e quattro i motori per ruotare all'indietro per andare indietro;
-- car_forward controlla tutti e quattro i motori per ruotare in avanti per avanzare;
-- car_left realizza la svolta a sinistra dell'auto impostando i motori laterali sinistri all'indietro e i motori laterali destri in avanti;
-- car_right realizza la svolta a destra impostando i motori laterali destri all'indietro e i motori laterali sinistri in avanti;
-- car_left_move e car_right_move consentono lo spostamento a sinistra e a destra tramite la rotazione coordinata dei motori diagonali.
+- car_back contrôle les quatre moteurs pour une rotation inverse afin d'aller en arrière ; 
+- car_forward contrôle les quatre moteurs pour une rotation avant afin d'avancer ; 
+- car_left réalise une rotation à gauche en mettant les moteurs côté gauche en marche arrière et les moteurs côté droit en marche avant ; 
+- car_right réalise une rotation à droite en mettant les moteurs côté droit en marche arrière et les moteurs côté gauche en marche avant ; 
+- car_left_move et car_right_move permettent un déplacement latéral gauche et droit via la rotation coordonnée des moteurs en diagonale. 
 
-Tutte le funzioni prendono la variabile SPEED come parametro di velocità del motore.
+Toutes les fonctions prennent la variable SPEED comme paramètre de vitesse des moteurs.
 
 ![Img](./media/9013.png)
 
-#### 4.2.9.6 Risultato del Test
+#### 4.2.9.6 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
+Après avoir téléversé le code, insérez la carte micro:bit dans le logement du gamepad (**batteries installées**), et basculez son interrupteur sur « ON ».
 
-Caricando questi codici su due schede Micro:bit, rispettivamente del gamepad e dell'auto, e assicurati che le batterie siano sufficientemente cariche. Inserisci le Micro:bit corrispondenti nel gamepad e nell'auto e sposta gli interruttori su entrambi su "ON".
+Téléversez ces codes sur les deux Micro:bit du gamepad et du véhicule respectivement, et assurez-vous que les batteries sont suffisamment chargées. Insérez les Micro:bit correspondants dans le gamepad et le véhicule et mettez les deux interrupteurs sur « ON ».
 
-Ora puoi controllare l'auto tramite il gamepad: spingi il joystick verso l'alto e l'auto si muove in avanti, spingilo verso il basso per muoversi all'indietro, a sinistra la fa girare a sinistra e a destra la fa girare a destra. Possiamo anche controllare l'accelerazione (premi il pulsante E)/decelerazione (premi il pulsante F), lo spostamento a sinistra (C) e lo spostamento a destra (D) dell'auto. Nota che l'intervallo di velocità è 20–95.
+Vous pouvez maintenant contrôler le véhicule avec le gamepad : poussez le joystick vers le haut et le véhicule avance, poussez-le vers le bas pour reculer, vers la gauche pour tourner à gauche, et vers la droite pour tourner à droite. Vous pouvez également contrôler l'accélération (appuyez sur la touche E) / la décélération (appuyez sur la touche F), le déplacement latéral gauche (C) et droit (D). Notez que la plage de vitesse est de 20–95.
 
 ![Img](./media/9000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation à l'arrière de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)
-

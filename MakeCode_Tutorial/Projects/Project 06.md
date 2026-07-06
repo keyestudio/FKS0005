@@ -1,112 +1,112 @@
-### 4.2.6 Sasso-Carta-Forbici
+### 4.2.6 Rock-Paper-Scissors
 
-#### 4.2.6.1 Panoramica
+#### 4.2.6.1 Aperçu
 
 ![Img](./media/top1.png)
 
-Qui, giochiamo a sasso-carta-forbici tramite comunicazione wireless di micro:bit. I giocatori selezionano la loro mossa (sasso, carta o forbici) tramite i pulsanti, con scambio di dati tra i dispositivi. Il gioco segue il meglio di tre; se tutti e tre i round finiscono in parità o vittoria-sconfitta-parità, viene attivata una quarta partita.
+Ici, jouons à pierre-feuille-ciseaux par communication sans fil entre micro:bit. Les joueurs sélectionnent leur coup (pierre, feuille ou ciseaux) via les boutons, avec échange de données entre les appareils. Le jeu se joue au meilleur des trois ; si les trois manches se terminent toutes par des égalités ou par une combinaison victoire-défaite-égalité, une quatrième partie est déclenchée.
 
-Ogni risultato viene visualizzato sulla matrice micro:bit (W per vittoria, L per sconfitta, = per parità) e rivelato dalle luci RGB (verde per vittoria, rosso per sconfitta, giallo per parità) sul pin P8. Al completamento di un round, i due dispositivi resettano tutti i dati e le luci, preparandosi per la partita successiva.
+Chaque résultat est affiché sur la matrice du micro:bit (W pour victoire, L pour défaite, = pour égalité) et révélé par les lumières RGB (vert pour victoire, rouge pour défaite, jaune pour égalité) sur la broche P8. À la fin d'une manche, les deux appareils réinitialisent toutes les données et les lumières, se préparant pour la manche suivante.
 
-Il gameplay integra perfettamente l'interazione wireless con il combattimento multi-round.
+Le gameplay intègre de manière fluide l'interaction sans fil avec le combat en plusieurs manches.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.6.2 Conoscenza dei Componenti
+#### 4.2.6.2 Connaissances composants
 
 ![Img](./media/2top.png)
 
-**Comunicazione wireless Microbit**
+**Microbit wireless communication**
 
 ![Img](./media/6001.png)
 
-La scheda micro:bit integra due comode capacità di comunicazione wireless: **radio a 2.4GHz** e **Bluetooth a bassa energia (BLE)**. Tuttavia, non possono essere utilizzate contemporaneamente.
+La carte micro:bit intègre deux capacités pratiques de communication sans fil : **radio 2.4GHz** et **Bluetooth basse consommation (BLE)**. Cependant elles ne peuvent pas être utilisées simultanément.
 
-La prima non richiede accoppiamento e supporta fino a 255 pacchetti indipendenti per minimizzare le interferenze, con un raggio di comunicazione di 10-30 metri, consentendo una rapida trasmissione di dati digitali e stringhe. Mentre la seconda è utilizzata principalmente per l'accoppiamento con smartphone, tablet e altri dispositivi intelligenti per applicazioni IoT come il caricamento di dati da sensori e il controllo remoto tramite app mobile.
+La première ne nécessite pas d'appariement et prend en charge jusqu'à 255 paquets indépendants pour minimiser les interférences, avec une portée de communication de 10–30 mètres, permettant une transmission rapide de données numériques et de chaînes. Tandis que la seconde est principalement utilisée pour l'appariement avec les smartphones, tablettes et autres appareils intelligents pour des applications IoT telles que le téléversement de données de capteurs et le contrôle à distance via une application mobile.
 
-Espandono le possibilità di sviluppo creativo della micro:bit.
+Elles élargissent les possibilités de développement créatif du micro:bit.
 
-#### 4.2.6.3 Parti Richieste
+#### 4.2.6.3 Pièces requises
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Scheda micro:bit V2** (auto-fornita) ×2 | **Smart Gamepad micro:bit** (assemblato) ×2 | **Batteria AAA** (auto-fornita) ×8 |
+| **micro:bit V2 board** (fournie) ×2 | **micro:bit Smart Gamepad** (assemblé) ×2 |**AAA battery** (fournies) ×8 |
 
-#### 4.2.6.4 Flusso del Codice
+#### 4.2.6.4 Flux du code
 
 ![Img](./media/6002.png)
 
-#### 4.2.6.5 Codice di Test
+#### 4.2.6.5 Code de test
 
-**Codice completo:**
+**Code complet:**
 
 ![Img](./media/6003.png)
 
 ![Img](./media/line1.png)
 
-**Breve spiegazione:**
+**Brève explication:**
 
-① Inizializza la radio e imposta il gruppo su '1'; imposta il numero di round, lo stato, l'avversario e il risultato di sasso-carta-forbici dei giocatori; collega le quattro luci RGB al pin P8 e aggiorna il display, imposta la matrice per mostrare ![Img](./media/6004.png).
+① Initialiser la radio et définir le groupe sur '1' ; définir le nombre de manches, le statut, l'adversaire, et le résultat pierre-feuille-ciseaux des joueurs ; connecter les quatre lumières RGB à la broche P8 et rafraîchir l'affichage, définir la matrice pour afficher ![Img](./media/6004.png).
 
 ![Img](./media/6005.png)
 
-② Determina l'esito del round corrente: se la tua scelta corrisponde a quella dell'avversario (**1/2/3 per forbici/sasso/carta**), è un pareggio; altrimenti, seleziona un vincitore (forbici contro carta contro sasso contro forbici), il valore del round +1 e memorizza il risultato.
+② Déterminer l'issue de la manche en cours : si votre choix correspond à celui de l'adversaire (**1/2/3 pour ciseaux/pierre/papier**), c'est une égalité ; sinon, sélectionner un gagnant (ciseaux battent feuille, feuille bat pierre, pierre bat ciseaux), incrémenter la valeur de la manche de +1 et stocker le résultat.
 
 ![Img](./media/6006.png)
 
-③ Memorizza i risultati in un array e visualizza la stringa corrispondente. Se questa è la terza partita, determina se è necessaria una quarta partita (in caso di parità o vittoria-sconfitta-parità). In tal caso, visualizza "FINAL" e attendi 1 secondo prima di cancellare la selezione sasso-carta-forbici.
+③ Stocker les résultats dans un tableau et afficher la chaîne correspondante. Si c'est la troisième partie, déterminer si une quatrième partie est nécessaire (si les trois parties sont toutes des égalités ou forment victoire-défaite-égalité). Si oui, afficher "FINAL" et attendre 1 seconde avant d'effacer la sélection pierre-feuille-ciseaux.
 
 ![Img](./media/6007.png)
 
-Altrimenti, mostra "WINNER" per la vittoria, "LOSER" per la sconfitta e "TIE" per un pareggio. Dopo un ritardo di 3 secondi, chiama la funzione resetGame per cancellare tutte le variabili di gioco.
+Sinon, afficher "GAGNANT" pour la victoire, "PERDANT" pour la défaite, et "ÉGALITÉ" pour une égalité. Après un délai de 3 secondes, appeler la fonction resetGame pour effacer toutes les variables du jeu.
 
-Se la partita consiste in quattro giochi, visualizza "GAME OVER" e chiama di nuovo la funzione resetGame dopo un ritardo di 3 secondi per resettare tutte le variabili di gioco.
+Si le match comporte quatre parties, afficher "FIN DU JEU" et appeler à nouveau la fonction resetGame après un délai de 3 secondes pour réinitialiser toutes les variables du jeu.
 
 ![Img](./media/6008.png)
 
-Se il gioco non è finito, mostra ![Img](./media/6004.png) e cancella le scelte di entrambi.
+Si le jeu n'est pas terminé, il affiche ![Img](./media/6004.png) et efface les choix des deux joueurs.
 
 ![Img](./media/6009.png)
 
-④ Premi C e la scheda invia "1" come forbici, e la matrice mostra ![Img](./media/6011.png); premi D e la scheda invia "3" come carta, e la matrice mostra ![Img](./media/6012.png); Premi E e invia "2" come sasso e mostra ![Img](./media/6013.png).
+④ Appuyez sur C et la carte envoie "1" pour ciseaux, et la matrice affiche ![Img](./media/6011.png) ; appuyez sur D et la carte envoie "3" pour papier, et la matrice affiche ![Img](./media/6012.png) ; appuyez sur E et elle envoie "2" pour pierre et affiche ![Img](./media/6013.png).
 
 ![Img](./media/6010.png)
 
-⑤ Ricevi i dati radio (scelta dell'avversario).
+⑤ Recevoir les données radio (le choix de l'adversaire).
 
 ![Img](./media/6014.png)
 
-⑥ Determina se è necessario un quarto round. Se tutti e tre i giochi finiscono in parità o vittoria-sconfitta-parità, è necessario un quarto gioco; altrimenti, non è necessario.
+⑥ Déterminer si une quatrième manche est requise. Si les trois jeux se terminent tous par des égalités ou par une combinaison victoire-défaite-égalité, une quatrième manche est nécessaire ; sinon, elle n'est pas nécessaire.
 
 ![Img](./media/6015.png)
 
-⑦ Le luci RGB visualizzano i colori corrispondenti in base all'esito: verde per la vittoria, rosso per la sconfitta e giallo per un pareggio.
+⑦ Les lumières RGB affichent les couleurs correspondantes en fonction du résultat : vert pour victoire, rouge pour défaite, et jaune pour égalité.
 
 ![Img](./media/6016.png)
 
-⑧ Quando il gioco finisce, cancella il display delle quattro luci RGB.
+⑧ Lorsque le jeu se termine, effacer l'affichage des quatre lumières RGB.
 
 ![Img](./media/6017.png)
 
-⑨ Resetta lo stato del gioco, cancella tutti i valori delle variabili di gioco, resetta le luci RGB e mostra ![Img](./media/6004.png).
+⑨ Réinitialiser l'état du jeu, effacer toutes les valeurs des variables du jeu, réinitialiser les lumières RGB, et afficher ![Img](./media/6004.png).
 
 ![Img](./media/6018.png)
 
 
-#### 4.2.6.6 Risultato del Test
+#### 4.2.6.6 Résultat du test
 
 ![Img](./media/4top.png)
 
-Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
+Après avoir transféré le code, insérez la carte micro:bit dans l'emplacement du gamepad (**piles installées**), et basculez l'interrupteur dessus sur “ON”.
 
-La matrice mostra inizialmente ![Img](./media/6004.png). I giocatori premono i pulsanti per selezionare la loro mossa (E per sasso, D per carta o C per forbici), con scambio di dati tra i due dispositivi. Determinano l'esito del round corrente: una vittoria è indicata dalla "W" con la luce RGB che diventa verde, un pareggio dalla "=" con la luce gialla e una sconfitta dalla "L" con la luce rossa (la prima luce RGB si accende dopo il primo round, e così via). Il round successivo seguirà se il gioco non è finito.
+La matrice affiche initialement ![Img](./media/6004.png). Les joueurs appuient sur des boutons pour sélectionner leur coup (E pour pierre, D pour papier, ou C pour ciseaux), avec échange de données de match entre les deux appareils. Ils déterminent l'issue de la manche en cours : une victoire est indiquée par le "W" avec la lumière RGB devenant verte, une égalité par le "=" avec la lumière jaune, et une défaite par le "L" avec la lumière rouge (la première lumière RGB s'allume après la première manche, et ainsi de suite). La manche suivante aura lieu si le jeu n'est pas terminé.
 
-Il gioco adotta il meglio di tre: se tutti e tre i round finiscono in parità o vittoria-sconfitta-parità, viene attivata una quarta partita.
+Le jeu adopte le meilleur des trois : si les trois manches se terminent toutes par des égalités ou par une combinaison victoire-défaite-égalité, une quatrième partie est déclenchée.
 
-Se c'è un vincitore dopo tre round, visualizzerà "WINNER" per la vittoria e "LOSER" per la sconfitta. Una volta mostrato il risultato, apparirà "GAME OVER" per resettare il gioco. Se il quarto round rimane indeciso, anche il gioco sarà finito.
+S'il y a un gagnant après trois manches, il affichera "GAGNANT" pour la victoire et "PERDANT" pour la défaite. Une fois le résultat affiché, "FIN DU JEU" apparaîtra pour réinitialiser le jeu. Si la quatrième manche reste indécise, le jeu se terminera également.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Suggerimento:** Attendi che l'icona a forma di cuore appaia prima di continuare il round successivo. Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Astuce :** Attendez que l'icône du cœur apparaisse avant de continuer la manche suivante. Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation à l'arrière de la carte micro:bit.</span>
 
 ![Img](./media/4bottom.png)

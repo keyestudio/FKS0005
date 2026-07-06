@@ -1,95 +1,101 @@
-### 4.2.5 Éviter les briques
+### 4.2.5 Evitar Ladrillos
 
-#### 4.2.5.1 Aperçu
+#### 4.2.5.1 Resumen
 
 ![Img](./media/top1.png)
 
-Dans ce projet, nous jouons à un jeu d'évitement de briques où les joueurs utilisent un Micro:bit gamepad pour déplacer leur indicateur LED vers la gauche et la droite tout en évitant des briques tombant d'en haut. Il y a trois états : a) une icône dynamique au démarrage, b) des actions d'évitement en temps réel pendant le jeu, et c) un score final après les collisions.
+En este proyecto, jugamos un juego de evitar ladrillos donde los jugadores usan un gamepad Micro:bit para mover su indicador LED a izquierda y derecha mientras evaden ladrillos que caen desde arriba. Hay tres estados: a) un icono dinámico al inicio, b) acciones de evasión en tiempo real durante el juego, y c) una puntuación final después de las colisiones.
 
-Les joueurs gagnent 1 point après chaque esquive (lorsque la brique atteint le bas), et la partie se termine lorsqu'ils entrent en collision avec une brique ; le score final est affiché avec un effet de défilement.
+Los jugadores ganan 1 punto después de cada evasión (cuando el ladrillo llega al fondo), y el juego termina cuando colisionan con un ladrillo; la puntuación final se muestra con un efecto de desplazamiento.
+
+El juego se puede iniciar o reiniciar presionando A+B. Este mecanismo de juego sencillo combina la capacidad de respuesta en tiempo real con la anticipación estratégica.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.5.2 Matériel requis
+#### 4.2.5.2 Piezas Requeridas
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (fourni par l'utilisateur) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 |**AAA battery** (fourni par l'utilisateur) ×4 |
+| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
 
-#### 4.2.5.3 Flux du code
+#### 4.2.5.3 Flujo del Código
 
 ![Img](./media/5001.png)
 
-#### 4.2.5.4 Code de test
+#### 4.2.5.4 Código de Prueba
 
-⚠️ **Remarque : le seuil initial 300 dans le code peut être modifié selon vos besoins. Plus la valeur est élevée, plus la brique tombera lentement.**
+⚠️ **Tenga en cuenta que el umbral inicial 300 en el código se puede modificar según sus necesidades. Cuanto mayor sea el valor, más lento caerá el ladrillo.**
 
-**Code complet :**
+**Código completo:**
 
 ![Img](./media/5002.png)
 
 ![Img](./media/line1.png)
 
-**Brève explication :**
+**Breve explicación:**
 
-① Initialiser les variables liées, y compris la colonne initiale du joueur, la ligne et la vitesse de la brique, et positionner le joueur sur la colonne initiale. Appeler la fonction on_start.
+① Inicialice las variables relacionadas, incluyendo la columna inicial del jugador, la fila y la velocidad del ladrillo, y establezca la posición del jugador en la columna inicial.
+
+Llame a una función on_start.
 
 ![Img](./media/5003.png)
 
-② Cette fonction fait apparaître la brique dans une colonne aléatoire de 0~4 au début du jeu.
+② En cuanto a esta función, hace que el ladrillo aparezca en una columna aleatoria de 0~4 al comienzo del juego.
 
 ![Img](./media/5004.png)
 
-③ Déterminer si “A+B est pressé et que le jeu n'a pas démarré”. Si oui et que le démarrage est marqué comme état initial, marquer d'abord l'état de démarrage et confirmer à nouveau si les boutons sont toujours enfoncés après un court délai. S'ils le sont, réinitialiser le jeu (appeler la fonction reset_game) et enregistrer l'heure. Sinon, annuler la marque de démarrage.
+③ Determine si “A+B está presionado y el juego no ha comenzado”. Si es así y el inicio está marcado como un estado inicial, marque el estado de inicio primero y confirme nuevamente si los botones aún están presionados después de un breve retraso. De lo contrario, cancele la marca de inicio.
 
 ![Img](./media/5005.png)
 
-④ La fonction suivante réinitialise le jeu à l'état initial. Elle définit l'état sur “gaming” (game_state=1) et remet le joueur à la position initiale. La brique apparaîtra dans une colonne aléatoire (0~4) et à la ligne 0, et les scores sont remis à zéro. Enfin, l'appui des boutons A/B est marqué comme non déclenché, et la matrice est ensuite effacée.
+④ La siguiente función reinicia el juego a su estado inicial. Establece el estado en “jugando” (game_state=1) y coloca al jugador en la posición inicial. Y el ladrillo aparecerá en una columna aleatoria (0~4) y en la fila 0, y las puntuaciones se pondrán a cero. Por último, la pulsación de A/B se marca como no activada, y la matriz se borra.
 
 ![Img](./media/5006.png)
 
-⑤ Lorsque l'état de jeu est **0-initial state** (pas en train de jouer après la mise sous tension), l'icône affichée clignote.
+⑤ Cuando el estado del juego es **0-estado inicial** (no jugando después de encender), el icono mostrado parpadeará.
 
 ![Img](./media/5007.png)
 
-⑥ Quand il est en **2-game over**, l'affichage du score est contrôlé selon le nombre de clignotements (flash_count). Si le count<3, répéter “afficher le score → court délai → effacer l'affichage → court délai → count+1” ; lorsque count atteint 3, il affiche toujours le score et prolonge le délai.
+⑥ Cuando está en **2-fin del juego**, la puntuación se controlará según el recuento de parpadeos (flash_count). Si el recuento < 3, repite “mostrar puntuación → breve retraso → borrar pantalla → breve retraso → recuento + 1”; cuando el recuento llega a 3, siempre muestra la puntuación y extiende el retraso.
 
 ![Img](./media/5008.png)
 
-⑦ En état **1-gaming**, lorsque vous appuyez sur C sans que la marque d'appui soit déclenchée et que la colonne du joueur > 0, la colonne du joueur diminue de 1 et le bouton C est marqué comme déclenché (avec un délai anti-rebond) ; appuyez sur E sans déclenchement et lorsque la colonne du joueur < 4, la colonne augmente de 1 et E est marqué comme déclenché (délai) ; si aucune action n'est effectuée, la marque de déclenchement des boutons correspondants est réinitialisée.
+⑦ En el estado **1-jugando**, cuando presiona C sin activar la marca de presión y la columna del jugador > 0, la columna del jugador -1 y marca el botón C como activado (con retraso para anti-jitter); presiona E sin activar y cuando la columna del jugador < 4, y la columna +1 con E activado (retraso); si no se realiza ninguna acción, la marca de activación de los botones correspondientes se restablece.
 
 ![Img](./media/5009.png)
 
-⑧ Calculer la différence entre le temps courant et le dernier temps de déplacement de la brique. Si cette différence dépasse le seuil de vitesse de la brique, mettre à jour le temps de déplacement de la brique et incrémenter la ligne de la brique de 1. Si row > 4 (atteint la limite), réinitialiser la brique à une colonne aléatoire avec row=0, et score+1.
+⑧ Calcule la diferencia entre el tiempo actual y el último tiempo de movimiento del ladrillo. Si esta diferencia excede el umbral de velocidad del ladrillo, actualice el tiempo de movimiento del ladrillo y la fila del ladrillo +1. Si la fila > 4 (alcanzando el límite), reinicie el ladrillo a una columna aleatoria con su fila = cero, y puntuación +1.
 
-Appeler les fonctions de détection de collision et de rendu graphique du jeu pour faire descendre les briques, réinitialiser après avoir atteint la limite, accumuler le score et mettre à jour l'état du jeu en temps réel.
+Invoque las funciones de detección de colisiones y renderizado de gráficos del juego para dejar caer ladrillos, reiniciar después de alcanzar el límite, acumular puntuación y actualizar el estado del juego en tiempo real.
+
+Invoque las funciones de detección de colisiones y renderizado de gráficos del juego para lograr el avance automático de ladrillos, el reinicio de límites, la acumulación de puntuación y las actualizaciones del estado del juego en tiempo real.
 
 ![Img](./media/5010.png)
 
-⑨ Déterminer si la partie est terminée : il vérifie d'abord si “la colonne de la brique correspond à celle du joueur” et “si la ligne de la brique correspond à celle du joueur”. Si les deux conditions sont remplies (c.-à-d. que la brique chevauche le joueur), définir le jeu en état 2 (game over), effacer l'affichage et réinitialiser flash_count.
+⑨ Determine si el juego ha terminado: primero comprueba si “la columna del ladrillo coincide con la del jugador” y “si la fila del ladrillo coincide con la del jugador”. Si se cumplen ambas condiciones (es decir, los ladrillos se superponen con el jugador), establezca el juego en estado 2 (fin del juego), borre la pantalla y reinicie el contador de parpadeos.
 
-“Game over lors d'une collision.”
+“Fin del juego al colisionar.”
 
 ![Img](./media/5011.png)
 
-⑩ Rendre les visuels du jeu : on efface d'abord l'affichage, puis on trace des points avec une luminosité de 255 (Player) à la ligne fixe et à la colonne actuelle du joueur ; si le jeu est démarré (game_state=1), on trace des points avec une luminosité de 85 (brick) à la ligne et colonne de la brique. On peut ainsi distinguer les briques du joueur selon leur luminosité.
+⑩ Renderice los elementos visuales del juego: primero borra la pantalla y luego traza puntos con un brillo de 255 (Jugador) en la fila fija del jugador y en las posiciones de la columna actual; si el juego se inicia (game_state=1), traza puntos con un brillo de 85 (ladrillo) en la fila y columna del ladrillo. Así podemos distinguir los ladrillos del jugador según su brillo.
 
 ![Img](./media/5012.png)
 
-#### 4.2.5.5 Résultat du test
+#### 4.2.5.5 Resultado de la Prueba
 
 ![Img](./media/4top.png)
 
-Après avoir flashé le code, insérez la carte micro:bit dans le slot du gamepad (**piles installées**), et basculez son interrupteur sur “ON”.
+Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
 
-Il est en **0-initial state** après la mise sous tension et la matrice clignote avec deux icônes carrées.
+Está en **0-estado inicial** después de encender y la matriz parpadea dos iconos cuadrados.
 
-Appuyez sur A et B (pendant au moins 1 seconde) pour démarrer la partie (en état **1-gaming**), et une brique tombera dans une colonne aléatoire. Vous pouvez maintenant vous déplacer à gauche/droite en appuyant sur C/E. À chaque fois que vous évitez une brique, score+1.
+Presione A y B (durante al menos 1 segundo) para iniciar el juego (en estado **1-jugando**), y un ladrillo caerá en una columna aleatoria. Ahora puede moverse a izquierda/derecha presionando C/E. Cada vez que evite un ladrillo, puntuación +1.
 
-Game over lors d'une collision (**2-game over**), et le score final sera affiché sur la matrice. Si vous voulez rejouer une manche, appuyez de nouveau sur A et B. Éteignez pour quitter le jeu (mettre l'interrupteur DIP sur “OFF”).
+Fin del juego al colisionar (**2-fin del juego**), y la puntuación final se mostrará en la matriz. Si desea jugar una ronda más, presione A y B nuevamente. Apague para salir del juego (cambie el interruptor DIP a “OFF”).
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, veuillez appuyer sur le bouton reset à l'arrière de la carte micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
 
 ![Img](./media/4bottom.png)

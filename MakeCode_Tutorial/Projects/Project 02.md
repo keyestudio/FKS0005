@@ -1,120 +1,121 @@
-### 4.2.2 Lumières colorées
+### 4.2.2 Luces de Colores
 
-#### 4.2.2.1 Aperçu
+#### 4.2.2.1 Resumen
 
 ![Img](./media/top1.png)
 
-Les LED RGB sont un type de source lumineuse qui crée des images en mélangeant la lumière des trois couleurs primaires : rouge, vert et bleu, dont l'intersection produit diverses teintes. Les méthodes courantes incluent le mélange direct des couleurs primaires, l'utilisation d'une LED bleue combinée à un phosphore jaune, ou l'emploi d'une LED ultraviolet avec un phosphore RGB. Comparées aux LED qui émettent une lumière blanche directement, les LED RGB offrent une gamme plus large de possibilités de mélange de couleurs car les trois couleurs primaires peuvent être contrôlées indépendamment.
+Los LED RGB son un tipo de fuente de luz LED que crea imágenes mezclando la luz de los tres colores primarios: rojo, verde y azul, cuya intersección produce varios tonos. Los métodos comunes incluyen la mezcla directa de los colores primarios, el uso de un LED azul combinado con fósforo amarillo, o el empleo de un LED ultravioleta junto con fósforo RGB. En comparación con los LED que emiten luz blanca directamente, los LED RGB ofrecen una gama más amplia de posibilidades de mezcla de colores porque los tres colores primarios se pueden controlar de forma independiente.
 
-Dans ce projet, chaque bouton correspond à un mode différent des LED RGB. Lorsque le bouton C est pressé, les lumières clignotent alternativement dans l'ordre « rouge, vert, bleu, jaune et violet » ; Appuyez sur D pour passer aux lumières en respiration ; Appuyez sur E pour les lumières à effet d'eau courante ; Appuyez sur F pour les lumières en défilement.
+En este proyecto, cada botón corresponde a un modo diferente de los LED RGB. Cuando se presiona el botón C, las luces parpadean alternativamente en el orden de "rojo, verde, azul, amarillo y púrpura"; presione D para cambiar a luces de respiración; presione E para luces de flujo de agua; presione F para luces de marquesina.
 
-Guirlandes lumineuses colorées pour décorations de fête, éclairages de sapin de Noël, bandes RGB pour l'ambiance quotidienne, éclairages décoratifs LED dans les parcs d'attraction et les centres commerciaux... Ce sont tous des exemples courants de lumières multi-modes dans notre vie quotidienne.
+Cadenas de luces de colores para decoraciones festivas, luces de árboles de Navidad, tiras RGB para el ambiente diario, luces decorativas LED en parques de atracciones y centros comerciales... Todos son ejemplos comunes de luces multimodo en nuestra vida diaria.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.2.2 Connaissances sur les composants
+#### 4.2.2.2 Conocimiento de Componentes
 
 ![Img](./media/2top.png)
 
-**SK6812 RGB LED**
+**LED RGB SK6812**
 
 | ![Img](./media//2001.png)| ![Img](./media//2002.png)|
 | :--: | :--: |
-| Produit réel | Schéma |
+| Producto real | Diagrama esquemático |
 
-Le SK6812 est une source lumineuse LED à contrôle externe qui intègre les circuits de commande et d'éclairage. Sa partie principale est constituée de perles LED à surface 5x5mm, chacune fonctionnant comme un pixel indépendant qui intègre plusieurs circuits centraux : un circuit de verrouillage de données à interface numérique intelligente, un circuit de mise en forme et d'amplification du signal, un circuit de régulation d'alimentation, un circuit à courant constant intégré et un oscillateur RC à haute précision.
+El SK6812 es una fuente de luz LED controlada externamente que integra circuitos de control e iluminación. Su parte principal son perlas LED iluminadas en superficie de 5x5 mm, cada una funcionando como un píxel independiente que incorpora múltiples circuitos centrales: un circuito de enganche de datos de interfaz digital inteligente, un circuito de accionamiento de conformación y amplificación de señal, un circuito de regulación de potencia, un circuito de corriente constante incorporado y un oscilador RC de alta precisión.
 
-Sa communication utilise un protocole de code monopolaire à retour à zéro. Au rétablissement sous tension, chaque pixel reçoit les données du contrôleur via le port DIN. Les 24 premiers bits de données sont extraits par le pixel initial et stockés dans le verrou de données interne, tandis que les bits restants sont mis en forme et amplifiés en interne avant d'être transmis via le port DOUT aux pixels suivants. À mesure que chaque pixel est traité, la taille du signal transmis diminue de 24 bits.
+Su comunicación emplea un protocolo de código de retorno a cero de polaridad única. Al reiniciar el encendido, cada píxel recibe datos del controlador a través del puerto DIN. Los primeros 24 bits de datos son extraídos por el píxel inicial y almacenados en el enganche de datos interno, mientras que los restantes son conformados y amplificados internamente antes de ser transmitidos a través del puerto DOUT a los píxeles subsiguientes. Con cada píxel procesado, el tamaño de la señal transmitida disminuye en 24 bits.
 
-Sur le gamepad, il y a quatre SK6812 RGB. Ceux-ci prennent tous en charge un réglage de luminosité sur 256 niveaux pour leurs canaux rouge, vert et bleu, permettant des combinaisons de couleurs 256×256×256. Grâce à cela, ils produisent des effets d'éclairage variés tels que des clignotements alternés, des dégradés de respiration et des animations de défilement, offrant des interactions plus intuitives et vivantes.
+En el gamepad, hay cuatro luces RGB SK6812. Todas ellas admiten un ajuste de brillo de 256 niveles en sus canales rojo, verde y azul, lo que permite 256×256×256 combinaciones de colores. Debido a esto, ofrece diversos efectos de iluminación, como parpadeos alternos, gradientes de respiración y animaciones de desplazamiento, proporcionando interacciones más intuitivas y vívidas.
 
-**Bouton**
+**Botón**
 
 | ![Img](./media//2003.png)| ![Img](./media//2004.png)|
 | :--: | :--: |
-| Produit réel | Schéma |
+| Producto real | Diagrama esquemático |
 
-Le bouton, apparu pour la première fois au Japon, était appelé interrupteur sensible. Pendant le fonctionnement, appuyez sur l'interrupteur pour appliquer une force et fermer le circuit. Lors du relâchement de la pression, l'interrupteur s'ouvre. Sa lame ressort métallique interne change son état de connexion/déconnexion en réponse à la force appliquée.
+El botón, que apareció por primera vez en Japón, se conocía como un interruptor sensible. Durante el funcionamiento, presione el interruptor para aplicar fuerza y cerrar el circuito. Al liberar la presión, el interruptor se abre. Su lámina de resorte metálica interna cambia su estado de conectado/desconectado en respuesta a la fuerza aplicada.
 
-Il y a quatre boutons, chacun connecté indépendamment à une broche de la carte micro:bit. Lorsqu'un bouton est pressé, le circuit génère un signal de niveau bas correspondant, permettant à la micro:bit de répondre rapidement aux commandes et améliorant considérablement la commodité et la précision de l'interaction.
+Hay cuatro botones, cada uno conectado de forma independiente a un pin de la placa micro:bit. Cuando se presiona un botón, el circuito genera una señal de bajo nivel correspondiente, lo que permite a la micro:bit responder rápidamente a los comandos y mejora significativamente la comodidad y precisión de la interacción.
 
-![Img](./media/2bottom.png) 
+![Img](./media/2bottom.png)
 
-#### 4.2.2.3 Pièces requises
+#### 4.2.2.3 Piezas Requeridas
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (fourni par l'utilisateur) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 |**AAA battery** (fourni par l'utilisateur) ×4 |
+| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
 
-#### 4.2.2.4 Flux de code
+
+#### 4.2.2.4 Flujo del Código
 
 ![Img](./media/2006.png)
 
-#### 4.2.2.5 Code de test
+#### 4.2.2.5 Código de Prueba
 
-⚠️ **Notez que le temps de délai de MODE*_DELAY dans les codes peut être modifié selon vos besoins.**
+⚠️ **Tenga en cuenta que el tiempo de retardo de MODE\*_DELAY en los códigos se puede modificar según sus necesidades.**
 
-**Code complet :**
+**Código completo:**
 
 ![Img](./media/2005.png)
 
 ![Img](./media/line1.png)
 
-**Brève explication :**
+**Breve explicación:**
 
-① Au début, désactivez la fonction des LED (Set led enable to false).
+① Al principio, deshabilite la función de los LED (establezca led enable en false).
 
-Et définissez 4 délais LED (par exemple, définir 5 en mode 2, définir 500 en mode 1...), définissez l'anti-rebond des boutons sur 20. Initialisez quatre LED RGB sur la broche P8 avec aucune couleur (définir toutes les valeurs à 0), c'est-à-dire éteintes.
+Y defina 4 retrasos de LED (por ejemplo, establezca 5 en el modo 2, establezca 500 en el modo 1...), establezca el antirebote del botón en 20. Inicialice cuatro LED RGB en el pin P8 sin color (establezca todos los valores en 0), es decir, apáguelos.
 
 ![Img](./media/2009.png)
 
-② Pendant la boucle, une opération anti-rebond est mise en œuvre en vérifiant si la différence entre le temps d'exécution actuel et le temps d'appui précédent dépasse le seuil anti-rebond prédéfini (BTN_DEBOUNCE), empêchant ainsi les pressions répétées causées par le rebond physique.
+② Durante el bucle, la operación anti-jitter se implementa comprobando si la diferencia entre el tiempo de ejecución actual y el tiempo de pulsación anterior excede el umbral anti-jitter preestablecido (BTN_DEBOUNCE), evitando así las pulsaciones repetidas causadas por el jitter físico.
 
 
 ![Img](./media/2010.png)
 
 
-③ Lorsque C(/D/E/F) est pressé, le mode est réglé sur 1(2/3/4), tandis que les étapes d'animation et les points de départ temporels pour le mode correspondant sont réinitialisés, les lumières sont effacées et l'horodatage du bouton est mis à jour. Cela permet un basculement précis et un démarrage initial des différents modes LED.
+③ Cuando se presiona C(/D/E/F), el modo se establece en 1(2/3/4), mientras que los pasos de animación y los puntos de inicio de temporización para el modo correspondiente se restablecen, las luces se borran y la marca de tiempo del botón se actualiza. Esto permite un cambio preciso y el funcionamiento inicial de diferentes modos de LED.
 
 
 | ![Img](./media/2011.png)|![Img](./media/2012.png)|
 | :--: | :--: |
-|Le bouton C est pressé|Le bouton D est pressé|
-| ![Img](./media/2013.png)    |     ![Img](./media/2014.png)   |
-|Le bouton E est pressé|Le bouton F est pressé|
+|Botón C presionado|Botón D presionado|
+| ![Img](./media/2013.png) | ![Img](./media/2014.png) |
+|Botón E presionado|Botón F presionado|
 
-④ Lorsque le mode est réglé sur 1 et que l'intervalle entre le temps actuel et le temps du mode précédent dépasse MODE1Delay, mettez d'abord à jour l'horodatage du mode, et affichez les lumières en fonction des différentes valeurs de model_step (0–4) dans l'ordre : rouge, vert, bleu, jaune et violet. Après avoir actualisé l'affichage, réinitialisez la boucle de model_step par une opération modulo pour changer régulièrement ces cinq couleurs.
+④ Cuando el modo se establece en 1 y el intervalo entre el tiempo actual y el tiempo del modo anterior excede MODE1Delay, actualice primero la marca de tiempo del modo y muestre las luces según los diferentes valores de model_step (0–4) en secuencia: rojo, verde, azul, amarillo y púrpura. Después de actualizar la pantalla, reinicie el bucle model_step mediante una operación de módulo para cambiar regularmente estos cinco colores.
 
 ![Img](./media/2015.png)
 
-⑤ Lorsque le mode est 2 et que l'intervalle entre le temps actuel et le temps du mode précédent dépasse MODE2_DELAY, mettez d'abord à jour l'horodatage du mode, et incrémentez la valeur de couleur (teinte) de manière cyclique par modulo (plage 0–359). Ensuite, effacez la lumière et affichez la teinte correspondante avec une saturation élevée (99) et une faible luminosité (20), et les couleurs en dégradé changeront en douceur. (Les valeurs de luminosité et de saturation dans les codes peuvent être ajustées selon les besoins.)
+⑤ Cuando el modo es 2 y el intervalo entre el tiempo actual y el tiempo del modo anterior excede MODE2_DELAY, actualice primero la marca de tiempo del modo e incremente el valor del color (tono) cíclicamente por módulo (rango 0–359). Luego, borre la luz y muestre el tono correspondiente con alta saturación (99) y bajo brillo (20), y los colores degradados cambiarán suavemente. (Los valores de brillo y saturación en los códigos se pueden ajustar según sea necesario).
 
 ![Img](./media/2016.png)
 
-⑥ Lorsque le mode est 3 et que l'intervalle entre le temps actuel et le temps du mode précédent dépasse MODE3_DELAY, mettez d'abord à jour l'horodatage du mode et décalez tous les pixels de la bande lumineuse d'un cran, assignez une teinte aléatoire (0–359), une saturation élevée (99) et une faible luminosité (20) au pixel 0. Actualisez l'affichage et vous verrez un effet d'eau courante : les lumières se déplacent séquentiellement et changent de couleur de façon aléatoire. (Les valeurs de luminosité et de saturation dans le code peuvent être ajustées selon les besoins.)
+⑥ Cuando el modo es 3 y el intervalo entre el tiempo actual y el tiempo del modo anterior excede MODE3_DELAY, actualice primero la marca de tiempo del modo y desplace todos los píxeles de la tira de luz en 1 bit, asigne un tono aleatorio (0–359), alta saturación (99) y bajo brillo (20) al píxel 0. Actualice la pantalla y podrá ver una luz que fluye: las luces se mueven secuencialmente y cambian de color aleatoriamente. (Los valores de brillo y saturación en el código se pueden ajustar según sea necesario).
 
 ![Img](./media/2017.png)
 
-⑦ Lorsque le mode est 4 et que l'intervalle entre le temps actuel et le temps du mode précédent dépasse MODE4_DELAY, mettez d'abord à jour l'horodatage du mode et effacez la bande lumineuse, assignez une teinte aléatoire (0–359), une saturation élevée (99) et une faible luminosité (20) aux pixels correspondant à model_step, et actualisez l'affichage. Enfin, faites cycler model_step dans 0–3 via modulo, et vous verrez un seul LED s'allumer séquentiellement dans des couleurs aléatoires. (Les valeurs de luminosité et de saturation dans le code peuvent être ajustées selon les besoins.)
+⑦ Cuando el modo es 4 y el intervalo entre el tiempo actual y el tiempo del modo anterior excede MODE4_DELAY, actualice primero la marca de tiempo del modo y borre la tira de luz, asigne un tono aleatorio (0–359), alta saturación (99) y bajo brillo (20) a los píxeles correspondientes a model_step, y actualice la pantalla. Finalmente, cíclico model_step dentro de 0-3 a través de módulo, y verá que un solo LED se enciende secuencialmente en colores aleatorios. (Los valores de brillo y saturación en el código se pueden ajustar según sea necesario).
 
 ![Img](./media/2018.png)
 
-#### 4.2.2.6 Résultat du test
+#### 4.2.2.6 Resultado de la Prueba
 
 ![Img](./media/4top.png)
 
-Après avoir téléversé le code, insérez la carte micro:bit dans la fente du gamepad (**piles installées**), et basculez l'interrupteur sur “ON”.
+Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
 
-Appuyez sur **C** : les lumières alternent parmi **rouge-vert-bleu-jaune-violet** dans l'ordre.
+Presione **C**: las luces alternan entre **rojo-verde-azul-amarillo-púrpura** en secuencia.
 
-Appuyez sur **D** : la teinte des lumières augmentera, et finalement les couleurs en dégradé changeront en douceur.
+Presione **D**: el tono de color de las luces aumentará y, finalmente, los colores degradados cambiarán suavemente.
 
-Appuyez sur **E** : les lumières génèrent une couleur aléatoire à partir du pixel 0, et déplacent la couleur d'un pixel séquentiellement, vous voyez donc un effet d'eau courante.
+Presione **E**: las luces generan un color aleatorio a partir del píxel 0 y desplazan el color un píxel secuencialmente, por lo que puede ver una luz que fluye.
 
-Appuyez sur **F** : chaque pixel s'allume séquentiellement avec des couleurs aléatoires.
+Presione **F**: cada píxel se ilumina en colores aleatorios en secuencia.
 
 ![Img](./media/2019.gif)
 
-<span style="color: rgb(0, 209, 0);">**Astuce :** Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation à l'arrière de la carte micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
 
 ![Img](./media/4bottom.png)

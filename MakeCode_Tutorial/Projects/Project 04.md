@@ -1,93 +1,93 @@
-### 4.2.4 Music Player
+### 4.2.4 Reproductor de Música
 
-#### 4.2.4.1 Overview
+#### 4.2.4.1 Resumen
 
 ![Img](./media/top1.png)
 
-Ici, nous construisons un lecteur de musique qui génère du son via le buzzer intégré sur la micro:bit (ne joue pas de musique vocale). Il dispose d'une bibliothèque de 20 courts morceaux et prend en charge la lecture séquentielle et aléatoire.
+Aquí construimos un reproductor de música que genera sonido a través del zumbador incorporado en la placa micro:bit (no reproduce música vocal). Cuenta con una biblioteca de 20 pistas cortas y admite la reproducción secuencial y aleatoria.
 
-En mode séquentiel, appuyer sur C (chanson précédente) ou E (chanson suivante) change de piste selon une séquence prédéfinie jusqu'à atteindre la fin de la liste ; tandis qu'en mode aléatoire, chaque pression sélectionne une piste au hasard parmi les 20 sons avec les voyants colorés qui clignotent, et lorsque la chanson se termine, la lecture s'arrête immédiatement.
+En el modo secuencial, al presionar el botón C (Canción anterior) o E (Canción siguiente) se cambian las pistas según una secuencia preestablecida hasta llegar al final de la lista; mientras que en el modo aleatorio, cada pulsación selecciona una pista al azar entre los 20 sonidos con las luces de colores parpadeando, y cuando una canción termina, se detiene inmediatamente.
 
-Pendant ce temps, la matrice LED de la micro:bit affiche en temps réel le mode de lecture actuel.
+Mientras tanto, la matriz de LED de la micro:bit muestra el modo de reproducción actual en tiempo real.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.4.2 Required Parts
+#### 4.2.4.2 Piezas Requeridas
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**pile AAA** (à fournir) ×4 |
+| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
 
-#### 4.2.4.3 Code Flow
+#### 4.2.4.3 Flujo del Código
 
 ![Img](./media/4001.png)
 
-#### 4.2.4.4 Test Code
+#### 4.2.4.4 Código de Prueba
 
-**Complete code:**
+**Código completo:**
 
 ![Img](./media/4002.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Breve explicación:**
 
-① Initialiser la matrice LED et le volume sonore, connecter la broche RGB à P8 et définir le nombre de LED RGB à 4.
+① Inicialice la matriz de LED y el volumen del sonido, conecte el pin RGB a P8 y establezca el número de RGB en 4.
 
 ![Img](./media/4003.png)
 
-② Initialiser le tableau des mélodies à 20 éléments et ajouter leurs pistes détaillées, et définir son volume initial.
+② Inicialice el array de melodías a 20 y añada sus pistas detalladas, y establezca su volumen inicial.
 
 ![Img](./media/4004.png)
 
-③ Déterminer si le bouton D ou F est pressé. Appuyer sur D pour '0-lecture séquentielle', sur F pour '1-lecture aléatoire'.
+③ Determine si se presiona el botón D o F. Presione D para '0-reproducción secuencial', F para '1-reproducción aleatoria'.
 
 ![Img](./media/4005.png)
 
-④ En mode séquentiel, appuyer sur C pour jouer la chanson précédente, E pour passer à la chanson suivante.
+④ En modo secuencial, presione C para reproducir la canción anterior, E para saltar a la siguiente canción.
 
 ![Img](./media/4006.png)
 
-Comme il n'y a que 20 pistes dans le tableau, seules les musiques N.O. 0-19 peuvent être jouées. Nous ajoutons donc une condition if pour éviter les débordements et sous-dépassements du tableau.
+Dado que solo hay 20 pistas en el array, solo se puede reproducir música del N.º 0-19. Por lo tanto, agregamos una condición if para evitar desbordamientos y subdesbordamientos del array.
 
 ![Img](./media/4007.png)
 
-Cependant, en mode aléatoire, appuyer sur C/E pour mélanger ces 20 chansons.
+Sin embargo, en modo aleatorio, presione C/E para mezclar todas estas 20 canciones.
 
 ![Img](./media/4008.png)
 
-⑤ Déterminer si la chanson précédente est différente de la chanson actuelle. Si oui, arrêter d'abord la chanson en cours puis jouer la nouvelle.
+⑤ Determine si la canción anterior es inconsistente con la actual. Si es así, detenga la actual primero y luego reproduzca esa.
 
 ![Img](./media/4009.png)
 
-⑥ Vérifier si le mode est '0-lecture séquentielle', affichant '![Img](./media/4010.png)', ou '1-lecture aléatoire', affichant '![Img](./media/4011.png)', avec un délai de 100 ms.
+⑥ Compruebe si el modo es '0-reproducción secuencial', mostrando '![Img](./media/4010.png)', o '1-reproducción aleatoria', mostrando '![Img](./media/4011.png)', con un retardo de 100ms.
 
 ![Img](./media/4012.png)
 
-⑦ Faire l'effet de respiration des lumières RGB en arrière-plan.
+⑦ Haga que las luces RGB respiren en segundo plano.
 
 ![Img](./media/4013.png)
 
-⑧ Appuyer sur A pour augmenter le volume (+10) ; appuyer sur B pour le diminuer (-10). Le volume du buzzer de la micro:bit est déterminé par la tension de sortie de la broche interne connectée. Nous pouvons contrôler le volume en convertissant des valeurs numériques 0~255 en valeurs analogiques via le DAC.
+⑧ Presione A para subir el volumen (+10); presione B para bajarlo (-10). El volumen del zumbador de la micro:bit se decide por el voltaje de salida del pin interno conectado. Podemos controlar el volumen convirtiendo valores digitales 0~255 en analógicos a través de DAC.
 
 ![Img](./media/4014.png)
 
-#### 4.2.4.5 Test Result
+#### 4.2.4.5 Resultado de la Prueba
 
 ![Img](./media/4top.png)
 
-Après avoir téléversé le code, insérer la micro:bit dans le logement du gamepad (**piles installées**), et mettre l'interrupteur sur “ON”.
+Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
 
-Au démarrage, il est en mode séquentiel par défaut, et jouera la chanson N.O. “0”. À la fin de celle-ci, vous pouvez appuyer sur C pour la chanson précédente ou sur E pour la suivante.
+Después de encender, está en modo secuencial por defecto, y reproducirá la canción en el N.º “0”. Cuando termine, puede presionar C para la última canción o E para la siguiente.
 
-Appuyer sur F pour passer en mode aléatoire. Et vous pouvez appuyer sur D pour revenir au mode séquentiel. En mode F, une piste aléatoire parmi ces 20 sera jouée si vous appuyez sur C/E. Après la fin, la lecture s'arrête.
+Presione F para cambiar al modo aleatorio. Y puede presionar D para volver al secuencial. En el modo F, se reproducirá una pista aleatoria de estas 20 si presiona C/E. Después de terminar, se detiene.
 
-Les lumières RGB effectuent constamment l'effet de respiration dès la mise sous tension. Parallèlement, la matrice LED de la micro:bit affiche “![Img](./media/4010.png)” en mode séquentiel et “![Img](./media/4011.png)” en mode aléatoire.
+Las luces RGB siempre están respirando desde el momento de encender. Mientras tanto, la matriz de LED de la micro:bit muestra “![Img](./media/4010.png)” en modo secuencial y “![Img](./media/4011.png)” en modo aleatorio.
 
-Pour le volume, appuyez sur A pour augmenter et sur B pour diminuer.
+Para el volumen, presione A para subir y B para bajar.
 
 ![Img](./media/4015.gif)
 
-<span style="color: rgb(0, 209, 0);">**Conseil :** Si la carte ne répond pas, veuillez appuyer sur le bouton reset à l'arrière de la micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
 
 ![Img](./media/4bottom.png)

@@ -1,112 +1,112 @@
-### 4.2.6 Rock-Paper-Scissors
+### 4.2.6 Piedra-Papel-Tijera
 
-#### 4.2.6.1 Aperçu
+#### 4.2.6.1 Resumen
 
 ![Img](./media/top1.png)
 
-Ici, jouons à pierre-feuille-ciseaux par communication sans fil entre micro:bit. Les joueurs sélectionnent leur coup (pierre, feuille ou ciseaux) via les boutons, avec échange de données entre les appareils. Le jeu se joue au meilleur des trois ; si les trois manches se terminent toutes par des égalités ou par une combinaison victoire-défaite-égalité, une quatrième partie est déclenchée.
+Aquí, juguemos a piedra-papel-tijera mediante comunicación inalámbrica de micro:bit. Los jugadores seleccionan su movimiento (piedra, papel o tijera) a través de los botones, con intercambio de datos entre dispositivos. El juego sigue el formato al mejor de tres; si las tres rondas terminan en empate total o en victoria-derrota-empate, se activa un cuarto partido.
 
-Chaque résultat est affiché sur la matrice du micro:bit (W pour victoire, L pour défaite, = pour égalité) et révélé par les lumières RGB (vert pour victoire, rouge pour défaite, jaune pour égalité) sur la broche P8. À la fin d'une manche, les deux appareils réinitialisent toutes les données et les lumières, se préparant pour la manche suivante.
+Cada resultado se muestra en la matriz de micro:bit (W para victoria, L para derrota, = para empate) y se revela mediante las luces RGB (verde para victoria, rojo para derrota, amarillo para empate) en el pin P8. Al finalizar una ronda, los dos dispositivos reinician todos los datos y luces, preparándose para el siguiente partido.
 
-Le gameplay intègre de manière fluide l'interaction sans fil avec le combat en plusieurs manches.
+El juego integra a la perfección la interacción inalámbrica con el combate de varias rondas.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.6.2 Connaissances composants
+#### 4.2.6.2 Conocimiento de Componentes
 
 ![Img](./media/2top.png)
 
-**Microbit wireless communication**
+**Comunicación inalámbrica de Micro:bit**
 
 ![Img](./media/6001.png)
 
-La carte micro:bit intègre deux capacités pratiques de communication sans fil : **radio 2.4GHz** et **Bluetooth basse consommation (BLE)**. Cependant elles ne peuvent pas être utilisées simultanément.
+La placa micro:bit integra dos cómodas capacidades de comunicación inalámbrica: **radio de 2.4GHz** y **Bluetooth de baja energía (BLE)**. Sin embargo, no se pueden usar simultáneamente.
 
-La première ne nécessite pas d'appariement et prend en charge jusqu'à 255 paquets indépendants pour minimiser les interférences, avec une portée de communication de 10–30 mètres, permettant une transmission rapide de données numériques et de chaînes. Tandis que la seconde est principalement utilisée pour l'appariement avec les smartphones, tablettes et autres appareils intelligents pour des applications IoT telles que le téléversement de données de capteurs et le contrôle à distance via une application mobile.
+La primera no requiere emparejamiento y admite hasta 255 paquetes independientes para minimizar las interferencias, con un rango de comunicación de 10 a 30 metros, lo que permite la transmisión rápida de datos digitales y cadenas. Mientras que la segunda se utiliza principalmente para emparejar con teléfonos inteligentes, tabletas y otros dispositivos inteligentes para aplicaciones de IoT, como la carga de datos de sensores y el control remoto de aplicaciones móviles.
 
-Elles élargissent les possibilités de développement créatif du micro:bit.
+Amplían las posibilidades de desarrollo creativo de la micro:bit.
 
-#### 4.2.6.3 Pièces requises
+#### 4.2.6.3 Piezas Requeridas
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (fournie) ×2 | **micro:bit Smart Gamepad** (assemblé) ×2 |**AAA battery** (fournies) ×8 |
+| **Placa micro:bit V2** (suministrada por el usuario) ×2 | **Smart Gamepad micro:bit** (ensamblado) ×2 | **Pila AAA** (suministrada por el usuario) ×8 |
 
-#### 4.2.6.4 Flux du code
+#### 4.2.6.4 Flujo del Código
 
 ![Img](./media/6002.png)
 
-#### 4.2.6.5 Code de test
+#### 4.2.6.5 Código de Prueba
 
-**Code complet:**
+**Código completo:**
 
 ![Img](./media/6003.png)
 
 ![Img](./media/line1.png)
 
-**Brève explication:**
+**Breve explicación:**
 
-① Initialiser la radio et définir le groupe sur '1' ; définir le nombre de manches, le statut, l'adversaire, et le résultat pierre-feuille-ciseaux des joueurs ; connecter les quatre lumières RGB à la broche P8 et rafraîchir l'affichage, définir la matrice pour afficher ![Img](./media/6004.png).
+① Inicie la radio y establezca el grupo en '1'; establezca el número de rondas, el estado, el oponente y el resultado de piedra-papel-tijera de los jugadores; conecte las cuatro luces RGB al pin P8 y actualice la pantalla, establezca la matriz para que muestre ![Img](./media/6004.png).
 
 ![Img](./media/6005.png)
 
-② Déterminer l'issue de la manche en cours : si votre choix correspond à celui de l'adversaire (**1/2/3 pour ciseaux/pierre/papier**), c'est une égalité ; sinon, sélectionner un gagnant (ciseaux battent feuille, feuille bat pierre, pierre bat ciseaux), incrémenter la valeur de la manche de +1 et stocker le résultat.
+② Determine el resultado de la ronda actual: si su elección coincide con la del oponente (**1/2/3 para tijera/piedra/papel**), es un empate; de lo contrario, seleccione un ganador (tijera contra papel contra piedra contra tijera), el valor de la ronda +1 y almacene el resultado.
 
 ![Img](./media/6006.png)
 
-③ Stocker les résultats dans un tableau et afficher la chaîne correspondante. Si c'est la troisième partie, déterminer si une quatrième partie est nécessaire (si les trois parties sont toutes des égalités ou forment victoire-défaite-égalité). Si oui, afficher "FINAL" et attendre 1 seconde avant d'effacer la sélection pierre-feuille-ciseaux.
+③ Almacene los resultados en un array y muestre la cadena correspondiente. Si este es el tercer juego, determine si se necesita un cuarto juego (en caso de empate total o victoria-derrota-empate). Si es así, muestre "FINAL" y espere 1 segundo antes de borrar la selección de piedra-papel-tijera.
 
 ![Img](./media/6007.png)
 
-Sinon, afficher "GAGNANT" pour la victoire, "PERDANT" pour la défaite, et "ÉGALITÉ" pour une égalité. Après un délai de 3 secondes, appeler la fonction resetGame pour effacer toutes les variables du jeu.
+De lo contrario, muestre "WINNER" para la victoria, "LOSER" para la derrota y "TIE" para un empate. Después de un retraso de 3 segundos, llame a la función resetGame para borrar todas las variables del juego.
 
-Si le match comporte quatre parties, afficher "FIN DU JEU" et appeler à nouveau la fonction resetGame après un délai de 3 secondes pour réinitialiser toutes les variables du jeu.
+Si el partido consta de cuatro juegos, muestre "GAME OVER" y llame a la función resetGame nuevamente después de un retraso de 3 segundos para reiniciar todas las variables del juego.
 
 ![Img](./media/6008.png)
 
-Si le jeu n'est pas terminé, il affiche ![Img](./media/6004.png) et efface les choix des deux joueurs.
+Si el juego no ha terminado, muestra ![Img](./media/6004.png) y borra las elecciones de ambos.
 
 ![Img](./media/6009.png)
 
-④ Appuyez sur C et la carte envoie "1" pour ciseaux, et la matrice affiche ![Img](./media/6011.png) ; appuyez sur D et la carte envoie "3" pour papier, et la matrice affiche ![Img](./media/6012.png) ; appuyez sur E et elle envoie "2" pour pierre et affiche ![Img](./media/6013.png).
+④ Presione C y la placa envía "1" como tijera, y la matriz muestra ![Img](./media/6011.png); presione D y la placa envía "3" como papel, y la matriz muestra ![Img](./media/6012.png); presione E y envía "2" como piedra y muestra ![Img](./media/6013.png).
 
 ![Img](./media/6010.png)
 
-⑤ Recevoir les données radio (le choix de l'adversaire).
+⑤ Reciba datos de radio (elección del oponente).
 
 ![Img](./media/6014.png)
 
-⑥ Déterminer si une quatrième manche est requise. Si les trois jeux se terminent tous par des égalités ou par une combinaison victoire-défaite-égalité, une quatrième manche est nécessaire ; sinon, elle n'est pas nécessaire.
+⑥ Determine si se requiere una cuarta ronda. Si los tres juegos terminan en empate total o victoria-derrota-empate, es necesario un cuarto juego; de lo contrario, no es necesario.
 
 ![Img](./media/6015.png)
 
-⑦ Les lumières RGB affichent les couleurs correspondantes en fonction du résultat : vert pour victoire, rouge pour défaite, et jaune pour égalité.
+⑦ Las luces RGB muestran los colores correspondientes según el resultado: verde para la victoria, rojo para la derrota y amarillo para un empate.
 
 ![Img](./media/6016.png)
 
-⑧ Lorsque le jeu se termine, effacer l'affichage des quatre lumières RGB.
+⑧ Cuando el juego termina, borre la visualización de las cuatro luces RGB.
 
 ![Img](./media/6017.png)
 
-⑨ Réinitialiser l'état du jeu, effacer toutes les valeurs des variables du jeu, réinitialiser les lumières RGB, et afficher ![Img](./media/6004.png).
+⑨ Reinicie el estado del juego, borre todos los valores de las variables del juego, reinicie las luces RGB y muestre ![Img](./media/6004.png).
 
 ![Img](./media/6018.png)
 
 
-#### 4.2.6.6 Résultat du test
+#### 4.2.6.6 Resultado de la Prueba
 
 ![Img](./media/4top.png)
 
-Après avoir transféré le code, insérez la carte micro:bit dans l'emplacement du gamepad (**piles installées**), et basculez l'interrupteur dessus sur “ON”.
+Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
 
-La matrice affiche initialement ![Img](./media/6004.png). Les joueurs appuient sur des boutons pour sélectionner leur coup (E pour pierre, D pour papier, ou C pour ciseaux), avec échange de données de match entre les deux appareils. Ils déterminent l'issue de la manche en cours : une victoire est indiquée par le "W" avec la lumière RGB devenant verte, une égalité par le "=" avec la lumière jaune, et une défaite par le "L" avec la lumière rouge (la première lumière RGB s'allume après la première manche, et ainsi de suite). La manche suivante aura lieu si le jeu n'est pas terminé.
+La matriz muestra ![Img](./media/6004.png) inicialmente. Los jugadores presionan los botones para seleccionar su movimiento (E para piedra, D para papel o C para tijera), con intercambio de datos entre los dos dispositivos. Determinan el resultado de la ronda actual: una victoria se indica con la "W" con la luz RGB volviéndose verde, un empate con el "=" con la luz amarilla y una derrota con la "L" con la luz roja (la primera luz RGB se enciende después de la primera ronda, y así sucesivamente). La siguiente ronda seguirá si el juego no ha terminado.
 
-Le jeu adopte le meilleur des trois : si les trois manches se terminent toutes par des égalités ou par une combinaison victoire-défaite-égalité, une quatrième partie est déclenchée.
+El juego adopta el formato al mejor de tres: si las tres rondas terminan en empate total o victoria-derrota-empate, se activa un cuarto partido.
 
-S'il y a un gagnant après trois manches, il affichera "GAGNANT" pour la victoire et "PERDANT" pour la défaite. Une fois le résultat affiché, "FIN DU JEU" apparaîtra pour réinitialiser le jeu. Si la quatrième manche reste indécise, le jeu se terminera également.
+Si hay un ganador después de tres rondas, mostrará "WINNER" para la victoria y "LOSER" para la derrota. Una vez que se muestre el resultado, aparecerá "GAME OVER" para reiniciar el juego. Si la cuarta ronda sigue sin decidirse, el juego también terminará.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Astuce :** Attendez que l'icône du cœur apparaisse avant de continuer la manche suivante. Si la carte ne répond pas, veuillez appuyer sur le bouton de réinitialisation à l'arrière de la carte micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Consejo:** Espere a que aparezca el icono del corazón antes de continuar con la siguiente ronda. Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
 
 ![Img](./media/4bottom.png)

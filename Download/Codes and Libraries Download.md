@@ -1,5 +1,5 @@
-# 1.Téléchargement des codes et bibliothèques
+# 1. Descarga de Códigos y Librerías
 
-Veuillez d'abord télécharger les ressources (MakeCode and MicroPython codes) requises par ce tutoriel, y compris les codes et le micrologiciel, et les enregistrer dans un emplacement pratique pour votre apprentissage.
+Por favor, descargue primero los recursos (códigos MakeCode y MicroPython) requeridos por este tutorial, incluyendo códigos y firmware, y guárdelos en una ubicación conveniente para su aprendizaje.
 
-Cliquez pour télécharger les codes et le micrologiciel : [Téléchargement des codes et des bibliothèques](./Code_Library_Download.7z).
+Haga clic para descargar los códigos y el firmware: [Descarga de Códigos y Librerías](./Code_Library_Download.7z).

@@ -1,33 +1,212 @@
-### 5.2.5 Éviter les briques
+### 5.2.5 Evitar Ladrillos
 
-#### 5.2.5.1 Aperçu
+#### 5.2.5.1 Resumen
 
 ![Img](./media/top1.png)
 
-Dans ce projet, nous jouons à un jeu d'évitement de briques où les joueurs utilisent un Micro:bit gamepad pour déplacer leur indicateur LED à gauche et à droite tout en évitant les briques qui tombent depuis le haut. Il y a trois états : a) une icône animée au démarrage, b) des actions d'évitement en temps réel pendant la partie, et c) un score final après collision.
+En este proyecto, jugamos un juego de evitar ladrillos donde los jugadores usan un gamepad Micro:bit para mover su indicador LED a izquierda y derecha mientras evaden ladrillos que caen desde arriba. Hay tres estados: a) un icono dinámico al inicio, b) acciones de evasión en tiempo real durante el juego, y c) una puntuación final después de las colisiones.
 
-Les joueurs gagnent 1 point après chaque évitement (lorsque la brique atteint le bas), et la partie se termine lorsqu'ils entrent en collision avec une brique ; le score final est affiché avec un effet de défilement.
+Los jugadores ganan 1 punto después de cada evasión (cuando el ladrillo llega al fondo), y el juego termina cuando colisionan con un ladrillo; la puntuación final se muestra con un efecto de desplazamiento.
 
-Le jeu peut être démarré ou réinitialisé en appuyant simultanément sur A+B. Ce mécanisme de jeu simple combine réactivité en temps réel et anticipation stratégique.
+El juego se puede iniciar o reiniciar presionando A+B. Este mecanismo de juego sencillo combina la capacidad de respuesta en tiempo real con la anticipación estratégica.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.5.2 Pièces requises
+#### 5.2.5.2 Piezas Requeridas
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (à fournir) ×1 | **micro:bit Smart Gamepad** (assemblé) ×1 | **AAA battery** (à fournir) ×4 |
+| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
 
-#### 5.2.5.3 Flux du code
+#### 5.2.5.3 Flujo del Código
 
 ![Img](./media/5001.png)
 
-#### 5.2.5.4 Code de test
+#### 5.2.5.4 Código de Prueba
 
-⚠️ **Remarque : le seuil initial ''brick_move_speed=300'' peut être modifié selon vos besoins. Plus la valeur est élevée, plus la chute de la brique sera lente.**
+⚠️ **Tenga en cuenta que el umbral inicial `brick_move_speed=300` se puede modificar según sus necesidades. Cuanto mayor sea el valor, más lento caerá el ladrillo.**
 
-**Code complet :**
+**Código completo:**
 
+```python
+import utime
+import random
+from microbit import *
+
+# ===================== Global Configuration & Variables =====================
+# Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
+player_fixed_row = 4    # Player's fixed row (bottom row)
+player_init_col = 4     # Player's initial column (rightmost)
+brick_move_speed = 300  # Brick falling interval (ms)
+
+# Game state: 0=not started 1=running 2=game over
+game_state = 0
+brick_x = 0             # Brick current column (left-right)
+brick_y = 0             # Brick current row (top-bottom)
+score = 0               # Score counter
+a_pressed_flag = False  # Left move button debounce flag
+b_pressed_flag = False  # Right move button debounce flag
+collision_x = False     # Collision detection - same column
+collision_y = False     # Collision detection - same row
+flash_count = 0         # End screen flash counter
+time_passed = 0         # Time difference (for brick falling)
+current_time = 0        # Current timestamp
+last_brick_time = 0     # Last brick falling timestamp
+start_flag = 0          # Start button debounce flag
+can_start = False       # Game start flag
+ab_pressed = False      # A+B pressed simultaneously flag
+player_col = player_init_col  # Player's current column
+
+# Initialize pins with pull-up (PULL_UP: pressed=low level 0, released=high level 1)
+pin13.set_pull(pin13.PULL_UP)  # Right move button
+pin15.set_pull(pin15.PULL_UP)  # Left move button
+
+# ===================== Core Functions =====================
+def on_start():
+    """Initialization on power-up: randomly generate initial brick column"""
+    global brick_x
+    brick_x = random.randint(0, 4)
+
+def draw_game():
+    """Draw game screen: player (bright) + brick (dim)"""
+    global game_state, player_col, brick_x, brick_y
+    display.clear()
+    # Draw player (fixed at bottom row, brightness 9 = brightest)
+    display.set_pixel(player_col, player_fixed_row, 9)
+    # Draw brick during gameplay (brightness 3 = dim)
+    if game_state == 1:
+        display.set_pixel(brick_x, brick_y, 7)
+
+def reset_game():
+    """Reset all game states"""
+    global game_state, player_col, brick_x, brick_y, score
+    global a_pressed_flag, b_pressed_flag
+    game_state = 1
+    player_col = player_init_col
+    brick_x = random.randint(0, 4)
+    brick_y = 0
+    score = 0
+    a_pressed_flag = False
+    b_pressed_flag = False
+    display.clear()
+
+def check_collision():
+    """Collision detection: game over if brick is in same column and row as player"""
+    global collision_x, collision_y, game_state, flash_count
+    collision_x = (brick_x == player_col)
+    collision_y = (brick_y == player_fixed_row)
+    if collision_x and collision_y:
+        game_state = 2
+        display.clear()
+        flash_count = 0
+
+# ===================== Main Loop =====================
+def on_forever():
+    """Main game logic loop"""
+    global ab_pressed, can_start, start_flag, last_brick_time
+    global flash_count, player_col, a_pressed_flag, b_pressed_flag
+    global current_time, time_passed, brick_x, brick_y, score
+
+    # 1. A+B pressed simultaneously: start/reset game (debounced)
+    ab_pressed = button_a.is_pressed() and button_b.is_pressed()
+    can_start = ab_pressed and (game_state != 1)
+    if can_start:
+        if start_flag == 0:
+            start_flag = 1
+            utime.sleep_ms(20)
+            if button_a.is_pressed() and button_b.is_pressed():
+                reset_game()
+                last_brick_time = running_time()
+    else:
+        start_flag = 0
+
+    # 2. Game not started state
+    if game_state == 0:
+        display.show(Image.DIAMOND_SMALL)
+        utime.sleep_ms(500)
+        display.show(Image.DIAMOND)
+        utime.sleep_ms(500)
+
+    # 3. Game over state
+    if game_state == 2:
+        if flash_count < 3:
+            display.scroll(score)
+            utime.sleep_ms(300)
+            display.clear()
+            utime.sleep_ms(200)
+            flash_count += 1
+        else:
+            display.scroll(score)
+            utime.sleep_ms(500)
+
+    # 4. Game running logic
+    if game_state == 1:
+        # Left move button (pin15): fix level detection + set flag only on successful move
+        if not pin15.read_digital():  # Pressed = low level 0, trigger left move
+            if not a_pressed_flag:
+                if player_col > 0:
+                    player_col -= 1
+                    a_pressed_flag = True  # Only set flag on successful move
+                    utime.sleep_ms(50)
+        else:
+            a_pressed_flag = False  # Reset flag immediately when button is released
+
+        # Right move button (pin13): fix level detection + set flag only on successful move
+        if not pin13.read_digital():  # Pressed = low level 0, trigger right move
+            if not b_pressed_flag:
+                if player_col < 4:
+                    player_col += 1
+                    b_pressed_flag = True  # Only set flag on successful move
+                    utime.sleep_ms(50)
+        else:
+            b_pressed_flag = False  # Reset flag immediately when button is released
+
+        # Brick falling logic
+        current_time = running_time()
+        time_passed = current_time - last_brick_time
+        if time_passed > brick_move_speed:
+            last_brick_time = current_time
+            brick_y += 1
+            if brick_y > 4:
+                brick_x = random.randint(0, 4)
+                brick_y = 0
+                score += 1
+
+        # Collision detection + screen refresh
+        check_collision()
+        draw_game()
+
+# ===================== Program Entry Point =====================
+if __name__ == "__main__":
+    on_start()
+    while True:
+        on_forever()
+        utime.sleep_ms(10)
+```
+
+![Img](./media/line1.png)
+
+**Breve explicación:**
+
+① Importe librerías, configure constantes e inicialización.
+
+Primero importa `utime` para operaciones relacionadas con el tiempo (por ejemplo, retrasos), `random` para generar números aleatorios, `microbit` para acceder al hardware de Micro:bit.
+
+Luego define variables globales y constantes para configurar el juego:
+
+*   `player_fixed_row` y `player_init_col` definen la posición inicial del jugador (en la columna más a la derecha de la fila inferior).
+*   `brick_move_speed` establece el intervalo de tiempo (en milisegundos) de la caída del ladrillo.
+*   `game_state` rastrea el estado del juego (0=no iniciado, 1=jugando, 2=fin del juego).
+*   `brick_x`, `brick_y` almacenan las coordenadas actuales del ladrillo.
+*   `score` registra la puntuación.
+*   `a_pressed_flag`, `b_pressed_flag` eliminan el rebote del botón.
+*   `collision_x`, `collision_y` detectan colisiones.
+*   `flash_count` crea un efecto de parpadeo al final del juego.
+*   `time_passed`, `current_time`, `last_brick_time` son para cronometrar la caída de los ladrillos.
+*   `start_flag`, `can_start`, `ab_pressed` se utilizan para iniciar el juego y restablecer el anti-rebote y el estado del botón.
+*   `player_col` almacena la posición de la columna actual del jugador.
+
+Finalmente, configura `pin13` y `pin15` (utilizados para los movimientos de los botones izquierdo y derecho) como resistencias pull-up internas (`pinX.PULL_UP`), lo que significa que los pines mantienen un nivel alto (1) cuando los botones no están presionados y un nivel bajo (0) cuando están presionados.
 
 ```python
 import utime
@@ -63,70 +242,14 @@ pin13.set_pull(pin13.PULL_UP)  # Right move button
 pin15.set_pull(pin15.PULL_UP)  # Left move button
 ```
 
-**Brève explication :**
+② Definiciones de funciones funcionales principales.
 
-① Importation des bibliothèques, configuration des constantes et initialisation.
+Hay tres funciones principales que el juego necesita:
 
-Le programme importe d'abord `utime` pour les opérations liées au temps (par ex. délais), `random` pour générer des nombres aléatoires, et `microbit` pour accéder au matériel du Micro:bit.
-
-Il définit ensuite des variables et constantes globales pour configurer le jeu :
-
-*   `player_fixed_row` et `player_init_col` définissent la position initiale du joueur (à la colonne la plus à droite de la ligne du bas).
-*   `brick_move_speed` règle l'intervalle de temps (en millisecondes) de la chute des briques.
-*   `game_state` suit l'état du jeu (0=initial, 1=en cours, 2=fin de jeu).
-*   `brick_x`, `brick_y` stockent les coordonnées actuelles de la brique.
-*   `score` enregistre le score.
-*   `a_pressed_flag`, `b_pressed_flag` évitent les rebonds des boutons.
-*   `collision_x`, `collision_y` détectent les collisions.
-*   `flash_count` crée un effet de clignotement en fin de partie.
-*   `time_passed`, `current_time`, `last_brick_time` servent à temporiser la chute des briques.
-*   `start_flag`, `can_start`, `ab_pressed` servent au démarrage du jeu et à l'anti-rebond des boutons.
-*   `player_col` stocke la colonne actuelle du joueur.
-
-Enfin, il configure `pin13` et `pin15` (utilisés pour les mouvements gauche/droite) en résistance pull-up interne (`pinX.PULL_UP`), ce qui signifie que les broches maintiennent un niveau haut (1) lorsque les boutons ne sont pas pressés et un niveau bas (0) lorsque pressés.
-
-```python
-import utime
-import random
-from microbit import *
-
-# ===================== Global Configuration & Variables =====================
-# Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
-player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (rightmost)
-brick_move_speed = 300  # Brick falling interval (ms)
-
-# Game state: 0=not started 1=running 2=game over
-game_state = 0
-brick_x = 0             # Brick current column (left-right)
-brick_y = 0             # Brick current row (top-bottom)
-score = 0               # Score counter
-a_pressed_flag = False  # Left move button debounce flag
-b_pressed_flag = False  # Right move button debounce flag
-collision_x = False     # Collision detection - same column
-collision_y = False     # Collision detection - same row
-flash_count = 0         # End screen flash counter
-time_passed = 0         # Time difference (for brick falling)
-current_time = 0        # Current timestamp
-last_brick_time = 0     # Last brick falling timestamp
-start_flag = 0          # Start button debounce flag
-can_start = False       # Game start flag
-ab_pressed = False      # A+B pressed simultaneously flag
-player_col = player_init_col  # Player's current column
-
-# Initialize pins with pull-up (PULL_UP: pressed=low level 0, released=high level 1)
-pin13.set_pull(pin13.PULL_UP)  # Right move button
-pin15.set_pull(pin15.PULL_UP)  # Left move button
-```
-
-② Définitions des fonctions principales.
-
-Les fonctions principales du jeu sont :
-
-*   `on_start()` : Appelée au démarrage du programme. Elle initialise principalement la colonne de départ de la brique, en choisissant aléatoirement une valeur entre 0 et 4.
-*   `draw_game()` : Responsable du rendu des éléments de jeu sur la matrice LED 5x5 du Micro:bit. Elle efface l'affichage et montre le joueur à la luminosité maximale (9) sur la ligne `player_fixed_row` avec la colonne déterminée par `player_col`. Lorsque le jeu est en cours (`game_state == 1`), elle affiche la brique avec une luminosité moyenne (7).
-*   `reset_game()` : Remet le jeu à son état initial. Elle place `game_state` à 1, réinitialise le joueur, la brique et le score, remet à zéro les flags anti-rebond des boutons et efface l'affichage.
-*   `check_collision()` : Détecte si une collision se produit entre la brique et le joueur. Cela se fait en comparant l'axe `x` (`brick_x == player_col`) et l'axe `y` (`brick_y == player_fixed_row`). Si les deux correspondent, une collision est détectée, `game_state` passe à 2 (fin de jeu), l'affichage est effacé et `flash_count` est remis à zéro.
+*   `on_start()`: Se llama al inicio del programa. Principalmente inicializa la posición de la columna inicial de los ladrillos, asegurando que aparezca uno aleatoriamente entre 0 y 4.
+*   `draw_game()`: Responsable de renderizar los elementos del juego en la matriz LED 5x5 de Micro:bit. Borra la pantalla y muestra al jugador con el brillo máximo (9) en la fila inferior `player_fixed_row` con columnas determinadas por `player_col`. Cuando el juego está en ejecución (`game_state == 1`), renderiza ladrillos con un brillo medio (7).
+*   `reset_game()`: Reinicia el juego a su estado inicial. Establece `game_state` en 1, reinicia al jugador y al ladrillo y las puntuaciones, borra el indicador anti-rebote del botón y la pantalla.
+*   `check_collision()`: Detecta si ocurre una colisión entre el ladrillo y el jugador. Esto se determina comparando el eje `x` (`brick_x == player_col`) y el `y` (`brick_y == player_fixed_row`). Si ambos coinciden, se detecta una colisión y `game_state` = 2 (fin del juego), borra la pantalla y reinicia `flash_count`.
 
 ```python
 # ===================== Core Functions =====================
@@ -169,13 +292,13 @@ def check_collision():
         flash_count = 0
 ```
 
-③ Boucle principale : logique de démarrage / réinitialisation.
+③ Bucle principal: Lógica de inicio/reinicio del juego.
 
-`on_forever()` vérifie d'abord si les boutons A et B de la carte Micro:bit sont pressés (`button_a.is_pressed() and button_b.is_pressed()`). Le flag `can_start` est vrai lorsque A et B sont pressés simultanément et que le jeu n'est pas en cours.
+`on_forever()` primero verifica si ambos botones A y B de la placa Micro:bit están presionados (`button_a.is_pressed() and button_b.is_pressed()`). El indicador `can_start` es verdadero cuando ambos botones A y B se presionan simultáneamente y el juego no está en ejecución.
 
-Si `can_start` est vrai et que `start_flag == 0` (première détection de la pression simultanée A+B), on place `start_flag` à 1 et on effectue un court délai (`utime.sleep_ms(20)`).
+Si `can_start` es verdadero y `start_flag` = 0 (la primera pulsación simultánea detectada de A+B), establece `start_flag` en 1 con un breve retraso (`utime.sleep_ms(20)`).
 
-On vérifie à nouveau si A+B restent pressés (anti-rebond). Si oui, `reset_game()` redémarre la partie et `last_brick_time` est enregistré. Si A+B ne sont pas pressés simultanément, `start_flag` est remis à 0.
+Vuelve a verificar si los botones A+B permanecen presionados (para anti-rebote). Si es así, `reset_game()` reiniciará el juego y se registrará `last_brick_time`. Si A+B no se presionan al mismo tiempo, `start_flag` = 0.
 
 ```python
 # ===================== Main Loop =====================
@@ -199,10 +322,9 @@ def on_forever():
         start_flag = 0
 ```
 
-④ Boucle principale : affichage des états « non démarré » et « fin de jeu ».
-
-*   **Jeu non démarré (`game_state == 0`)** : Dans cet état, la matrice affiche des petits diamants (`Image.DIAMOND_SMALL`) et des diamants pleins (`Image.DIAMOND`) chacun pendant 500 ms, pour inviter le joueur à démarrer.
-*   **Fin de jeu (`game_state == 2`)** : Lorsque la partie se termine, le programme entre dans une boucle qui fait clignoter le score. `flash_count` limite le nombre de clignotements (ici 3). À chaque clignotement le score est défilé, l'affichage est effacé avec un court délai. Ensuite, le score final est de nouveau affiché pendant 500 ms.
+④ Bucle principal: Visualización del estado de juego no iniciado y de fin de juego.
+*   **Juego no iniciado (`game_state == 0`)**: En este estado, la matriz muestra pequeños diamantes (`Image.DIAMOND_SMALL`) y grandes diamantes (`Image.DIAMOND`), cada uno con una duración de 500ms, como indicación para que los jugadores esperen antes de comenzar.
+*   **Juego terminado (`game_state == 2`)**: Cuando el juego termina, el programa entra en un bucle que parpadea la puntuación. `flash_count` limita el número de parpadeos (3 aquí). Cada parpadeo desplaza la puntuación actual y la borra con un breve retraso. Después de eso, la puntuación final se muestra de nuevo durante 500 milisegundos.
 
 ```python
     # 2. Game not started state
@@ -225,20 +347,7 @@ def on_forever():
             utime.sleep_ms(500)
 ```
 
-⑤ Boucle principale : logique pendant la partie.
-
-Lorsque `game_state == 1` (en jeu), exécuter la logique suivante :
-
-*   **Déplacement du joueur à gauche et à droite :**
-    *   `pin15` (bouton gauche) : si `pin15` est pressé (lecture 0), que `a_pressed_flag` est `False` (évite les déclenchements consécutifs), et que le joueur n'est pas à l'extrême gauche (`player_col > 0`), le joueur se déplace d'une case à gauche (`player_col -= 1`) et `a_pressed_flag` est mis à `True`, avec un délai de 50 ms. Si `pin15` n'est pas pressé, `a_pressed_flag` est réinitialisé à `False`.
-    *   `pin13` (bouton droit) : si `pin13` est pressé (lecture 0), que `b_pressed_flag` est `False` (évite les déclenchements consécutifs), et que le joueur n'est pas à l'extrême droite (`player_col < 4`), le joueur se déplace d'une case à droite (`player_col += 1`) et `b_pressed_flag` devient `True`, avec un délai de 50 ms. Si `pin13` n'est pas pressé, `b_pressed_flag` est réinitialisé à `False`.
-*   **Chute des briques :**
-    *   `current_time` récupère le temps courant, `time_passed` calcule le temps écoulé depuis la dernière chute de brique.
-    *   Si `time_passed > brick_move_speed`, on met à jour `last_brick_time` et la brique descend d'une case (`brick_y += 1`).
-    *   Si une brique atteint le bas (`brick_y > 4`), elle est réinitialisée dans une colonne aléatoire en haut (`brick_x = random.randint(0, 4)`), `brick_y` est remis à 0 et `score` est incrémenté de 1.
-*   **Détection de collision et rafraîchissement de l'affichage :**
-    *   `check_collision()` détecte si le joueur et la brique sont en collision.
-    *   `draw_game()` met à jour l'affichage sur la matrice du Micro:bit.
+⑤ Lógica de juego en ejecución.
 
 ```python
     # 4. Game running logic
@@ -279,17 +388,7 @@ Lorsque `game_state == 1` (en jeu), exécuter la logique suivante :
         draw_game()
 ```
 
-⑥ Point d'entrée du programme.
-
-Ceci est le point de départ réel de l'exécution du programme.
-
-`if __name__ == "__main__":` garantit que ce code n'est exécuté que lorsque le script est lancé comme programme principal.
-
-Dans cette section, `on_start()` effectue une initialisation unique.
-Ensuite, une boucle infinie (`while True`) est lancée, où à chaque itération :
-
-*   `on_forever()` exécute toute la logique principale du jeu.
-*   Un délai de 10 ms (`utime.sleep_ms(10)`) contrôle la fréquence d'exécution, réduit la charge CPU et assure une vitesse de mise à jour modérée du jeu.
+⑥ Punto de entrada del programa.
 
 ```python
 # ===================== Program Entry Point =====================
@@ -299,20 +398,21 @@ if __name__ == "__main__":
         on_forever()
         utime.sleep_ms(10)
 ```
-#### 5.2.5.5 Résultat du test
+
+#### 5.2.5.5 Resultado de la Prueba
 
 ![Img](./media/4top.png)
 
-Après avoir téléversé le code, insérez la carte micro:bit dans l'emplacement de la manette (**piles installées**), et mettez l'interrupteur sur “ON”.
+Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
 
-Après la mise sous tension, l'état est **0-initial** et la matrice clignote deux icônes en forme de losange.
+Está en **0-estado inicial** después de encender y la matriz parpadea dos iconos cuadrados.
 
-Appuyez sur A et B (pendant au moins 1 seconde) pour démarrer la partie (état **1-en cours**), et une brique tombera dans une colonne aléatoire. Vous pouvez maintenant vous déplacer à gauche/droite en appuyant sur C/E. À chaque fois que vous évitez une brique, le score augmente de 1.
+Presione A y B (durante al menos 1 segundo) para iniciar el juego (en estado **1-jugando**), y un ladrillo caerá en una columna aleatoria. Ahora puede moverse a izquierda/derecha presionando C/E. Cada vez que evite un ladrillo, puntuación +1.
 
-La partie se termine en cas de collision (**2-fin de partie**), et le score final sera affiché sur la matrice. Si vous voulez rejouer, appuyez de nouveau sur A et B. Pour quitter le jeu, éteignez l'appareil (positionnez l'interrupteur DIP sur “OFF”).
+Fin del juego al colisionar (**2-fin del juego**), y la puntuación final se mostrará en la matriz. Si desea jugar una ronda más, presione A y B nuevamente. Apague para salir del juego (cambie el interruptor DIP a “OFF”).
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Conseil :** Si la carte ne répond pas, veuillez appuyer sur le bouton reset à l'arrière de la carte micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
 
 ![Img](./media/4bottom.png)

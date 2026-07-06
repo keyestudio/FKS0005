@@ -1,44 +1,34 @@
-### 5.2.6 じゃんけん
+### 5.2.6 Sasso-Carta-Forbici
 
-#### 5.2.6.1 概要
+#### 5.2.6.1 Panoramica
 
 ![Img](./media/top1.png)
 
-ここでは、micro:bitの無線通信を使ってじゃんけんをしましょう。プレイヤーはボタンで手（グー、チョキ、パー）を選択し、デバイス間でデータを交換します。ゲームは3回勝負で、3回すべて引き分けまたは勝ち負け引き分けの場合、4回戦が行われます。
+Qui, giochiamo a sasso-carta-forbici tramite comunicazione wireless di micro:bit. I giocatori selezionano la loro mossa (sasso, carta o forbici) tramite i pulsanti, con scambio di dati tra i dispositivi. Il gioco segue il meglio di tre; se tutti e tre i round finiscono in parità o vittoria-sconfitta-parità, viene attivata una quarta partita.
 
-各結果はmicro:bitマトリックスに表示され（Wは勝ち、Lは負け、=は引き分け）、P8ピンのRGBライトで示されます（緑は勝ち、赤は負け、黄は引き分け）。1ラウンドが終了すると、両方のデバイスはすべてのデータとライトをリセットし、次の試合に備えます。
+Ogni risultato viene visualizzato sulla matrice micro:bit (W per vittoria, L per sconfitta, = per parità) e rivelato dalle luci RGB (verde per vittoria, rosso per sconfitta, giallo per parità) sul pin P8. Al completamento di un round, i due dispositivi resettano tutti i dati e le luci, preparandosi per la partita successiva.
 
-ゲームプレイは、無線インタラクションと複数ラウンドの対戦をシームレスに統合しています。
+Il gameplay integra perfettamente l'interazione wireless con il combattimento multi-round.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.6.2 コンポーネント知識
+#### 5.2.6.2 Conoscenza dei Componenti
 
-![Img](./media/2top.png)
+Questo progetto utilizza la stessa comunicazione wireless Microbit, LED RGB SK6812 e pulsanti del Progetto 06. Si prega di fare riferimento alla sezione 4.2.6.2 per la conoscenza dei suoi componenti.
 
-**Microbit 無線通信**
+#### 5.2.6.3 Parti Richieste
 
-![Img](./media/6001.png)
-
-micro:bitボードは、**2.4GHz無線**と**低電力Bluetooth (BLE)**という2つの便利な無線通信機能を統合しています。ただし、これらを同時に使用することはできません。
-
-前者はペアリングが不要で、干渉を最小限に抑えるために最大255個の独立したパケットをサポートし、通信範囲は10〜30メートルで、デジタルデータと文字列の高速伝送を可能にします。後者は主にスマートフォン、タブレット、その他のスマートデバイスとのペアリングに使用され、センサーデータアップロードやモバイルアプリのリモートコントロールなどのIoTアプリケーションに利用されます。
-
-これらはmicro:bitの創造的な開発の可能性を広げます。
-
-#### 5.2.6.3 必要な部品
-
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 ボード** (自己調達) ×2 | **micro:bit スマートゲームパッド** (組み立て済み) ×2 | **単4電池** (自己調達) ×8 |
+| **Scheda micro:bit V2** (auto-fornita) ×2 | **Smart Gamepad micro:bit** (assemblato) ×2 | **Batteria AAA** (auto-fornita) ×8 |
 
-#### 5.2.6.4 コードフロー
+#### 5.2.6.4 Flusso del Codice
 
 ![Img](./media/6002.png)
 
-#### 5.2.6.5 テストコード
+#### 5.2.6.5 Codice di Test
 
-**完全なコード:**
+**Codice completo:**
 
 ```python
 from microbit import *
@@ -46,185 +36,164 @@ import neopixel
 import radio
 import utime
 
-# Global Variables
+# Variabili globali
 round_num = 1
 my_choice = 0
-opponent_choice = 0
+your_choice = 0
 wins = 0
-loses = 0
+losses = 0
 draws = 0
 game_results = []
-strip = None
 
-# Pin configurations for buttons
-pin13.set_pull(pin13.PULL_UP) # Button C (Scissors)
-pin15.set_pull(pin15.PULL_UP) # Button E (Rock)
-pin16.set_pull(pin16.PULL_UP) # Button F (Paper)
+# Configurazione dei NeoPixel (collegati a P8, 4 LED)
+np = neopixel.NeoPixel(pin8, 4)
 
-# Initialize LED strip (4 LEDs, connected to pin P8)
-strip = neopixel.NeoPixel(pin8, 4)
+# Configura i pin dei pulsanti
+pin13.set_pull(pin13.PULL_UP) # Pulsante D (Carta)
+pin15.set_pull(pin15.PULL_UP) # Pulsante C (Forbici)
+pin16.set_pull(pin16.PULL_UP) # Pulsante E (Sasso)
 
-# Reset game state
-def reset_game():
-    global my_choice, opponent_choice, round_num, wins, loses, draws, game_results
+# Funzione per resettare lo stato del gioco
+def reset_game_state():
+    global my_choice, your_choice, round_num, wins, losses, draws, game_results
     my_choice = 0
-opponent_choice = 0
+    your_choice = 0
     round_num = 1
     wins = 0
-    loses = 0
+    losses = 0
     draws = 0
     game_results = []
-    reset_lights()
+    clear_lights()
     display.show(Image.HEART)
 
-# Receive opponent\\'s choice via radio
-def on_received_message(received_msg):
-    global opponent_choice
-    if opponent_choice == 0:
-        # Convert string to integer if needed
-        if isinstance(received_msg, str) and received_msg in [\'1\', \'2\', \'3\']:
-            opponent_choice = int(received_msg)
-        # Use directly if it\\'s an integer
-        elif isinstance(received_msg, int) and received_msg in [1, 2, 3]:
-            opponent_choice = received_msg
+# Funzione per spegnere tutti i LED
+def clear_lights():
+    for i in range(len(np)):
+        np[i] = (0, 0, 0)
+    np.show()
 
-# Turn off all LEDs
-def reset_lights():
-    for i in range(4):
-        strip[i] = (0, 0, 0)  # Off
-    strip.show()
+# Funzione per mostrare il risultato del round sui LED
+def show_round_result_lights(round_index, result):
+    if round_index < len(np):
+        if result == 1: # Vittoria: Verde
+            np[round_index] = (0, 255, 0)
+        elif result == 0: # Pareggio: Giallo
+            np[round_index] = (255, 255, 0)
+        else: # Sconfitta: Rosso
+            np[round_index] = (255, 0, 0)
+        np.show()
 
-# Check if a 4th round is needed
-def need_fourth_round():
-    # Case 1: All 3 draws -> need 4th round, return 2
-    if wins == 0 and loses == 0 and draws == 3:
-        return 2
-    # Case 2: 1 win, 1 loss, 1 draw -> need 4th round, return 1
-    if wins == 1 and loses == 1 and draws == 1:
-        return 1
-    # No 4th round needed
-    return 0
+# Funzione per determinare se è necessario un quarto round
+def needs_fourth_round():
+    if draws == 3: # Tutti pareggi
+        return 2 # Quarto round decisivo
+    if wins == 1 and losses == 1 and draws == 1: # Vittoria-sconfitta-pareggio
+        return 1 # Quarto round
+    return 0 # Nessun quarto round
 
-# Show round result on LED strip
-def show_round_result(current_round, result):
-    if current_round <= 4:
-        if result == 1:
-            # Win: Green
-            strip[current_round - 1] = (0, 255, 0)
-        elif result == 0:
-            # Draw: Yellow
-            strip[current_round - 1] = (255, 255, 0)
-        else:
-            # Lose: Red
-            strip[current_round - 1] = (255, 0, 0)
-        strip.show()
+# Gestore messaggi radio
+def on_received_message(msg):
+    global your_choice
+    if your_choice == 0:
+        try:
+            choice = int(msg)
+            if choice in [1, 2, 3]:
+                your_choice = choice
+        except ValueError:
+            pass
 
-# Game initialization
+# Inizializzazione radio
 radio.on()
 radio.config(group=1)
-reset_lights()
-display.show(Image.HEART)
+radio.receive_full = True # Ricevi messaggi completi
 
-# Main game loop
+reset_game_state()
+
 while True:
-    # Process result when both players have chosen
-    if my_choice != 0 and opponent_choice != 0:
-        result_symbol = "="
-        round_result = 0 # 0=draw, 1=win, -1=lose
+    # Processa i messaggi radio in arrivo
+    incoming = radio.receive()
+    if incoming:
+        on_received_message(incoming.decode())
 
-        # Determine round outcome
-        if my_choice == opponent_choice:
+    # Se entrambi i giocatori hanno fatto una scelta
+    if my_choice != 0 and your_choice != 0:
+        result_symbol = "="
+        current_round_result = 0 # 0: pareggio, 1: vittoria, -1: sconfitta
+
+        if my_choice == your_choice:
             result_symbol = "="
-            round_result = 0
             draws += 1
-        elif (my_choice == 1 and opponent_choice == 3) or \
-             (my_choice == 2 and opponent_choice == 1) or \
-             (my_choice == 3 and opponent_choice == 2):
+        elif (my_choice == 1 and your_choice == 3) or \
+             (my_choice == 2 and your_choice == 1) or \
+             (my_choice == 3 and your_choice == 2):
             result_symbol = "W"
-            round_result = 1
+            current_round_result = 1
             wins += 1
         else:
             result_symbol = "L"
-            round_result = -1
-            loses += 1
+            current_round_result = -1
+            losses += 1
 
-        # Save round result
-        game_results.append(round_result)
-
-        # Display result symbol
+        game_results.append(current_round_result)
         display.show(result_symbol)
-
-        # Update LED strip
-        show_round_result(round_num, round_result)
-
+        show_round_result_lights(round_num - 1, current_round_result)
         utime.sleep_ms(3000)
 
-        # Check if game continues
         if round_num == 3:
-            # After 3 rounds, check for 4th round
-            fourth_round_needed = need_fourth_round()
+            fourth_round_needed = needs_fourth_round()
             if fourth_round_needed:
-                # Go to 4th round
                 round_num = 4
                 if fourth_round_needed == 2:
                     display.scroll("FINAL")
                 utime.sleep_ms(1000)
                 display.show(Image.HEART)
                 my_choice = 0
-                opponent_choice = 0
+                your_choice = 0
             else:
-                # End game
-                if wins > loses:
+                if wins > losses:
                     display.scroll("WINNER")
-                elif loses > wins:
+                elif losses > wins:
                     display.scroll("LOSER")
                 else:
                     display.scroll("TIE")
                 utime.sleep_ms(3000)
-                reset_game()
+                reset_game_state()
         elif round_num == 4:
-            # 4th round finished, game over
             display.scroll("GAME OVER")
             utime.sleep_ms(3000)
-            reset_game()
+            reset_game_state()
         else:
-            # Next round (1st or 2nd)
             round_num += 1
             display.show(Image.HEART)
             my_choice = 0
-            opponent_choice = 0
+            your_choice = 0
 
-    # Check button input
+    # Gestione dei pulsanti per la scelta del giocatore
     if my_choice == 0:
-        if pin13.read_digital() == 0: # Button C (Scissors)
-            radio.send(\'1\')
-            display.show(Image(\'99009:\'\'99090:\'\'00900:\'\'99090:\'\'99009\')) # Scissors image
+        if not pin15.read_digital(): # Pulsante C (Forbici = 1)
             my_choice = 1
+            radio.send(str(my_choice))
+            display.show(Image("99009:99090:00900:99090:99009"))
             utime.sleep_ms(200)
-        elif pin15.read_digital() == 0: # Button E (Rock)
-            radio.send(\'2\')
-            display.show(Image.SQUARE_SMALL) # Rock image
+        elif not pin16.read_digital(): # Pulsante E (Sasso = 2)
             my_choice = 2
+            radio.send(str(my_choice))
+            display.show(Image.SQUARE_SMALL)
             utime.sleep_ms(200)
-        elif pin16.read_digital() == 0: # Button F (Paper)
-            radio.send(\'3\')
-            display.show(Image.SQUARE) # Paper image
+        elif not pin13.read_digital(): # Pulsante D (Carta = 3)
             my_choice = 3
+            radio.send(str(my_choice))
+            display.show(Image.SQUARE)
             utime.sleep_ms(200)
-
-    # Receive radio data
-    received = radio.receive()
-    if received is not None:
-        on_received_message(received)
 
     utime.sleep_ms(100)
 ```
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① 無線を初期化し、グループを「1」に設定します。ラウンド数、ステータス、対戦相手、プレイヤーのじゃんけんの結果を設定します。4つのRGBライトをP8ピンに接続し、表示を更新し、マトリックスに ![Img](./media/6004.png) を表示させます。
+① Inizializza la radio e imposta il gruppo su '1'; imposta il numero di round, lo stato, l'avversario e il risultato di sasso-carta-forbici dei giocatori; collega le quattro luci RGB al pin P8 e aggiorna il display, imposta la matrice per mostrare ![Img](./media/6004.png).
 
 ```python
 from microbit import *
@@ -232,272 +201,236 @@ import neopixel
 import radio
 import utime
 
-# Global Variables
+# Variabili globali
 round_num = 1
 my_choice = 0
-opponent_choice = 0
+your_choice = 0
 wins = 0
-loses = 0
+losses = 0
 draws = 0
 game_results = []
-strip = None
 
-# Pin configurations for buttons
-pin13.set_pull(pin13.PULL_UP) # Button C (Scissors)
-pin15.set_pull(pin15.PULL_UP) # Button E (Rock)
-pin16.set_pull(pin16.PULL_UP) # Button F (Paper)
+# Configurazione dei NeoPixel (collegati a P8, 4 LED)
+np = neopixel.NeoPixel(pin8, 4)
 
-# Initialize LED strip (4 LEDs, connected to pin P8)
-strip = neopixel.NeoPixel(pin8, 4)
+# Configura i pin dei pulsanti
+pin13.set_pull(pin13.PULL_UP) # Pulsante D (Carta)
+pin15.set_pull(pin15.PULL_UP) # Pulsante C (Forbici)
+pin16.set_pull(pin16.PULL_UP) # Pulsante E (Sasso)
 
-# Reset game state
-def reset_game():
-    global my_choice, opponent_choice, round_num, wins, loses, draws, game_results
+# Funzione per resettare lo stato del gioco
+def reset_game_state():
+    global my_choice, your_choice, round_num, wins, losses, draws, game_results
     my_choice = 0
-opponent_choice = 0
+    your_choice = 0
     round_num = 1
     wins = 0
-    loses = 0
+    losses = 0
     draws = 0
     game_results = []
-    reset_lights()
+    clear_lights()
     display.show(Image.HEART)
 
-# Receive opponent\\'s choice via radio
-def on_received_message(received_msg):
-    global opponent_choice
-    if opponent_choice == 0:
-        # Convert string to integer if needed
-        if isinstance(received_msg, str) and received_msg in [\'1\', \'2\', \'3\']:
-            opponent_choice = int(received_msg)
-        # Use directly if it\\'s an integer
-        elif isinstance(received_msg, int) and received_msg in [1, 2, 3]:
-            opponent_choice = received_msg
+# Funzione per spegnere tutti i LED
+def clear_lights():
+    for i in range(len(np)):
+        np[i] = (0, 0, 0)
+    np.show()
 
-# Turn off all LEDs
-def reset_lights():
-    for i in range(4):
-        strip[i] = (0, 0, 0)  # Off
-    strip.show()
+# Funzione per mostrare il risultato del round sui LED
+def show_round_result_lights(round_index, result):
+    if round_index < len(np):
+        if result == 1: # Vittoria: Verde
+            np[round_index] = (0, 255, 0)
+        elif result == 0: # Pareggio: Giallo
+            np[round_index] = (255, 255, 0)
+        else: # Sconfitta: Rosso
+            np[round_index] = (255, 0, 0)
+        np.show()
 
-# Check if a 4th round is needed
-def need_fourth_round():
-    # Case 1: All 3 draws -> need 4th round, return 2
-    if wins == 0 and loses == 0 and draws == 3:
-        return 2
-    # Case 2: 1 win, 1 loss, 1 draw -> need 4th round, return 1
-    if wins == 1 and loses == 1 and draws == 1:
-        return 1
-    # No 4th round needed
-    return 0
+# Funzione per determinare se è necessario un quarto round
+def needs_fourth_round():
+    if draws == 3: # Tutti pareggi
+        return 2 # Quarto round decisivo
+    if wins == 1 and losses == 1 and draws == 1: # Vittoria-sconfitta-pareggio
+        return 1 # Quarto round
+    return 0 # Nessun quarto round
 
-# Show round result on LED strip
-def show_round_result(current_round, result):
-    if current_round <= 4:
-        if result == 1:
-            # Win: Green
-            strip[current_round - 1] = (0, 255, 0)
-        elif result == 0:
-            # Draw: Yellow
-            strip[current_round - 1] = (255, 255, 0)
-        else:
-            # Lose: Red
-            strip[current_round - 1] = (255, 0, 0)
-        strip.show()
+# Gestore messaggi radio
+def on_received_message(msg):
+    global your_choice
+    if your_choice == 0:
+        try:
+            choice = int(msg)
+            if choice in [1, 2, 3]:
+                your_choice = choice
+        except ValueError:
+            pass
 
-# Game initialization
+# Inizializzazione radio
 radio.on()
 radio.config(group=1)
-reset_lights()
-display.show(Image.HEART)
+radio.receive_full = True # Ricevi messaggi completi
+
+reset_game_state()
 ```
 
-② 現在のラウンドの結果を決定します。自分の選択が相手の選択と一致する場合（**チョキ/グー/パーはそれぞれ1/2/3**）、引き分けです。そうでない場合は、勝者を選択し（チョキはパーに勝ち、パーはグーに勝ち、グーはチョキに勝つ）、ラウンド値を+1して結果を保存します。
+② Determina l'esito del round corrente: se la tua scelta corrisponde a quella dell'avversario (**1/2/3 per forbici/sasso/carta**), è un pareggio; altrimenti, seleziona un vincitore (forbici contro carta contro sasso contro forbici), il valore del round +1 e memorizza il risultato.
 
 ```python
-# Main game loop
-while True:
-    # Process result when both players have chosen
-    if my_choice != 0 and opponent_choice != 0:
+    # Se entrambi i giocatori hanno fatto una scelta
+    if my_choice != 0 and your_choice != 0:
         result_symbol = "="
-        round_result = 0 # 0=draw, 1=win, -1=lose
+        current_round_result = 0 # 0: pareggio, 1: vittoria, -1: sconfitta
 
-        # Determine round outcome
-        if my_choice == opponent_choice:
+        if my_choice == your_choice:
             result_symbol = "="
-            round_result = 0
             draws += 1
-        elif (my_choice == 1 and opponent_choice == 3) or \
-             (my_choice == 2 and opponent_choice == 1) or \
-             (my_choice == 3 and opponent_choice == 2):
+        elif (my_choice == 1 and your_choice == 3) or \
+             (my_choice == 2 and your_choice == 1) or \
+             (my_choice == 3 and your_choice == 2):
             result_symbol = "W"
-            round_result = 1
+            current_round_result = 1
             wins += 1
         else:
             result_symbol = "L"
-            round_result = -1
-            loses += 1
+            current_round_result = -1
+            losses += 1
 
-        # Save round result
-        game_results.append(round_result)
-
-        # Display result symbol
+        game_results.append(current_round_result)
         display.show(result_symbol)
-
-        # Update LED strip
-        show_round_result(round_num, round_result)
-
+        show_round_result_lights(round_num - 1, current_round_result)
         utime.sleep_ms(3000)
 ```
 
-③ 結果を配列に保存し、対応する文字列を表示します。これが3回目のゲームの場合、4回目のゲームが必要かどうかを判断します（すべて引き分けまたは勝ち負け引き分けの場合）。必要な場合は「FINAL」と表示し、1秒待ってからじゃんけんの選択をクリアします。
+③ Memorizza i risultati in un array e visualizza la stringa corrispondente. Se questa è la terza partita, determina se è necessaria una quarta partita (in caso di parità o vittoria-sconfitta-parità). In tal caso, visualizza "FINAL" e attendi 1 secondo prima di cancellare la selezione sasso-carta-forbici.
 
 ```python
-        # Check if game continues
         if round_num == 3:
-            # After 3 rounds, check for 4th round
-            fourth_round_needed = need_fourth_round()
+            fourth_round_needed = needs_fourth_round()
             if fourth_round_needed:
-                # Go to 4th round
                 round_num = 4
                 if fourth_round_needed == 2:
                     display.scroll("FINAL")
                 utime.sleep_ms(1000)
                 display.show(Image.HEART)
                 my_choice = 0
-                opponent_choice = 0
+                your_choice = 0
             else:
-                # End game
-                if wins > loses:
+                if wins > losses:
                     display.scroll("WINNER")
-                elif loses > wins:
+                elif losses > wins:
                     display.scroll("LOSER")
                 else:
                     display.scroll("TIE")
                 utime.sleep_ms(3000)
-                reset_game()
+                reset_game_state()
         elif round_num == 4:
-            # 4th round finished, game over
             display.scroll("GAME OVER")
             utime.sleep_ms(3000)
-            reset_game()
+            reset_game_state()
         else:
-            # Next round (1st or 2nd)
             round_num += 1
             display.show(Image.HEART)
             my_choice = 0
-            opponent_choice = 0
+            your_choice = 0
 ```
 
-そうでない場合は、勝利の場合は「WINNER」、敗北の場合は「LOSER」、引き分けの場合は「TIE」と表示します。3秒の遅延の後、`reset_game()`関数を呼び出してすべてのゲーム変数をクリアします。
-
-試合が4ゲームで構成されている場合、「GAME OVER」と表示され、3秒の遅延の後、`reset_game()`関数を再度呼び出してすべてのゲーム変数をリセットします。
-
-ゲームが終了していない場合は、![Img](./media/6004.png) を表示し、両方の選択をクリアします。
-
-④ Cを押すと、ボードはチョキとして「1」を送信し、マトリックスは ![Img](./media/6011.png) を表示します。Eを押すと、ボードはグーとして「2」を送信し、![Img](./media/6013.png) を表示します。Fを押すと、ボードはパーとして「3」を送信し、マトリックスは ![Img](./media/6012.png) を表示します。
+④ Premi C e la scheda invia "1" come forbici, e la matrice mostra ![Img](./media/6011.png); premi D e la scheda invia "3" come carta, e la matrice mostra ![Img](./media/6012.png); Premi E e invia "2" come sasso e mostra ![Img](./media/6013.png).
 
 ```python
-    # Check button input
+    # Gestione dei pulsanti per la scelta del giocatore
     if my_choice == 0:
-        if pin13.read_digital() == 0: # Button C (Scissors)
-            radio.send(\'1\')
-            display.show(Image(\'99009:\'\'99090:\'\'00900:\'\'99090:\'\'99009\')) # Scissors image
+        if not pin15.read_digital(): # Pulsante C (Forbici = 1)
             my_choice = 1
+            radio.send(str(my_choice))
+            display.show(Image("99009:99090:00900:99090:99009"))
             utime.sleep_ms(200)
-        elif pin15.read_digital() == 0: # Button E (Rock)
-            radio.send(\'2\')
-            display.show(Image.SQUARE_SMALL) # Rock image
+        elif not pin16.read_digital(): # Pulsante E (Sasso = 2)
             my_choice = 2
+            radio.send(str(my_choice))
+            display.show(Image.SQUARE_SMALL)
             utime.sleep_ms(200)
-        elif pin16.read_digital() == 0: # Button F (Paper)
-            radio.send(\'3\')
-            display.show(Image.SQUARE) # Paper image
+        elif not pin13.read_digital(): # Pulsante D (Carta = 3)
             my_choice = 3
+            radio.send(str(my_choice))
+            display.show(Image.SQUARE)
             utime.sleep_ms(200)
 ```
 
-⑤ 無線データ（相手の選択）を受信します。
+⑤ Ricevi i dati radio (scelta dell'avversario).
 
 ```python
-    # Receive radio data
-    received = radio.receive()
-    if received is not None:
-        on_received_message(received)
-
-    utime.sleep_ms(100)
+    # Processa i messaggi radio in arrivo
+    incoming = radio.receive()
+    if incoming:
+        on_received_message(incoming.decode())
 ```
 
-⑥ 4回戦が必要かどうかを判断します。3回すべて引き分けまたは勝ち負け引き分けの場合、4回戦が必要です。そうでない場合は不要です。
+⑥ Determina se è necessario un quarto round. Se tutti e tre i giochi finiscono in parità o vittoria-sconfitta-parità, è necessario un quarto gioco; altrimenti, non è necessario.
 
 ```python
-def need_fourth_round():
-    # Case 1: All 3 draws -> need 4th round, return 2
-    if wins == 0 and loses == 0 and draws == 3:
-        return 2
-    # Case 2: 1 win, 1 loss, 1 draw -> need 4th round, return 1
-    if wins == 1 and loses == 1 and draws == 1:
-        return 1
-    # No 4th round needed
-    return 0
+def needs_fourth_round():
+    if draws == 3: # Tutti pareggi
+        return 2 # Quarto round decisivo
+    if wins == 1 and losses == 1 and draws == 1: # Vittoria-sconfitta-pareggio
+        return 1 # Quarto round
+    return 0 # Nessun quarto round
 ```
 
-⑦ RGBライトは、結果に応じて対応する色を表示します。緑は勝ち、赤は負け、黄は引き分けです。
+⑦ Le luci RGB visualizzano i colori corrispondenti in base all'esito: verde per la vittoria, rosso per la sconfitta e giallo per un pareggio.
 
 ```python
-def show_round_result(current_round, result):
-    if current_round <= 4:
-        if result == 1:
-            # Win: Green
-            strip[current_round - 1] = (0, 255, 0)
-        elif result == 0:
-            # Draw: Yellow
-            strip[current_round - 1] = (255, 255, 0)
-        else:
-            # Lose: Red
-            strip[current_round - 1] = (255, 0, 0)
-        strip.show()
+def show_round_result_lights(round_index, result):
+    if round_index < len(np):
+        if result == 1: # Vittoria: Verde
+            np[round_index] = (0, 255, 0)
+        elif result == 0: # Pareggio: Giallo
+            np[round_index] = (255, 255, 0)
+        else: # Sconfitta: Rosso
+            np[round_index] = (255, 0, 0)
+        np.show()
 ```
 
-⑧ ゲームが終了したら、4つのRGBライトの表示をクリアします。
+⑧ Quando il gioco finisce, cancella il display delle quattro luci RGB.
 
 ```python
-def reset_lights():
-    for i in range(4):
-        strip[i] = (0, 0, 0)  # Off
-    strip.show()
+def clear_lights():
+    for i in range(len(np)):
+        np[i] = (0, 0, 0)
+    np.show()
 ```
 
-⑨ ゲームの状態をリセットし、すべてのゲーム変数の値をクリアし、RGBライトをリセットし、![Img](./media/6004.png) を表示します。
+⑨ Resetta lo stato del gioco, cancella tutti i valori delle variabili di gioco, resetta le luci RGB e mostra ![Img](./media/6004.png).
 
 ```python
-def reset_game():
-    global my_choice, opponent_choice, round_num, wins, loses, draws, game_results
+def reset_game_state():
+    global my_choice, your_choice, round_num, wins, losses, draws, game_results
     my_choice = 0
-opponent_choice = 0
+    your_choice = 0
     round_num = 1
     wins = 0
-    loses = 0
+    losses = 0
     draws = 0
     game_results = []
-    reset_lights()
+    clear_lights()
     display.show(Image.HEART)
 ```
 
-#### 5.2.6.6 テスト結果
+#### 5.2.6.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
 
-マトリックスには最初に ![Img](./media/6004.png) が表示されます。プレイヤーはボタンを押して手（Eはグー、Dはパー、Cはチョキ）を選択し、2つのデバイス間で試合データを交換します。現在のラウンドの結果を決定します。勝ちは「W」と緑色のRGBライトで示され、引き分けは「=」と黄色のライトで示され、負けは「L」と赤色のライトで示されます（最初のRGBライトは最初のラウンド後に点灯し、以降も同様です）。ゲームが終了していない場合は、次のラウンドに進みます。
+La matrice mostra inizialmente ![Img](./media/6004.png). I giocatori premono i pulsanti per selezionare la loro mossa (E per sasso, D per carta o C per forbici), con scambio di dati tra i due dispositivi. Determinano l'esito del round corrente: una vittoria è indicata dalla "W" con la luce RGB che diventa verde, un pareggio dalla "=" con la luce gialla e una sconfitta dalla "L" con la luce rossa (la prima luce RGB si accende dopo il primo round, e così via). Il round successivo seguirà se il gioco non è finito.
 
-ゲームは3回勝負を採用しています。3回すべて引き分けまたは勝ち負け引き分けの場合、4回戦が行われます。
+Il gioco adotta il meglio di tre: se tutti e tre i round finiscono in parità o vittoria-sconfitta-parità, viene attivata una quarta partita.
 
-3ラウンド後に勝者がいる場合、勝利の場合は「WINNER」、敗北の場合は「LOSER」と表示されます。結果が表示された後、「GAME OVER」が表示され、ゲームがリセットされます。4回戦が未決定の場合もゲームオーバーになります。
+Se c'è un vincitore dopo tre round, visualizzerà "WINNER" per la vittoria e "LOSER" per la sconfitta. Una volta mostrato il risultato, apparirà "GAME OVER" per resettare il gioco. Se il quarto round rimane indeciso, anche il gioco sarà finito.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** 次のラウンドに進む前にハートアイコンが表示されるのを待ちます。ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Attendi che l'icona a forma di cuore appaia prima di continuare il round successivo. Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

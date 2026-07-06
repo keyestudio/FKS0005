@@ -1,152 +1,150 @@
-## トラブルシューティング
-### 4.3.1 USBドライバーのインストール (オプション)
+## Risoluzione dei Problemi
+### 4.3.1 Installazione del Driver USB (Opzionale)
 
-**Micro:bitはドライバーのインストールは不要です。ただし、コンピューターがメインボードを認識しない場合は、ドライバーをインストールできます。**
+**Micro:bit non richiede l'installazione di driver. Tuttavia, nel caso in cui il computer non riconosca la scheda principale, è possibile installare il driver.**
 
 
-#### 4.3.1.1 USBドライバーのダウンロード
+#### 4.3.1.1 Download del Driver USB
 
-[USBドライバー](./USB_driver.7z)をダウンロードするには、ここをクリックしてください。
+Clicca per scaricare il [driver USB](./USB_driver.7z).
 
-#### 4.3.1.2 USBドライバーのインストール
+#### 4.3.1.2 Installazione del Driver USB
 
-⚠️ ここではWindowsでのドライバーのインストール方法を説明します。これはMacOSユーザーの参考になります。
+⚠️ Nota che qui dimostriamo come installare il driver su Windows, che può essere preso come riferimento per gli utenti MacOS.
 
-1\. micro:bitメインボードをUSBケーブルでコンピューターに接続します。
+1\. Collega la scheda principale micro:bit al computer tramite cavo USB.
 
 ![Img](./media/A800.png)
 
-2\. ドライバーファイルを見つけてクリックし、**Install**をクリックします。
+2\. Trova il file del driver e cliccalo per **Installare**.
 
 ![Img](./media/A323.png)
 
 ![Img](./media/A327.png)
 
-3\. 「**Install**」をクリックし、「**Next**」をクリックします。
+3\. Clicca “**Install**” e “**Next**”.
 
 ![Img](./media/A347.png)
 
-4\. 「**Install**」をクリックし、「**Finish**」をクリックします。
+4\. Clicca “**Install**” e “**Finish**”.
 
 ![Img](./media/A408.png)
 
 ![Img](./media/A349.png)
 
-5\. 「**Computer**」→「**Properties**」→「**Device manager**」をクリックすると、次のように表示されます:
+5\. Clicca “**Computer**” → “**Properties**” → “**Device manager**” e vedrai:
 
 ![Img](./media/A427.png)
 
 ### 4.3.2 FAQ
-Microbitがプログラムをダウンロードできず、MAINTENANCEと表示される問題の解決策。
+Soluzioni per il problema in cui Microbit non riesce a scaricare i programmi e visualizza MAINTENANCE.
 
-#### 4.3.2.1 問題
+#### 4.3.2.1 Problemi
 
-多くの新規ユーザーが最近この問題に遭遇しています: Micro:bitボードをMicro USBケーブルでコンピューターに接続し、「**Download**」をクリックすると、コードがダウンロードされず、ボードが応答しません。
+Molti nuovi utenti hanno recentemente riscontrato questo problema: quando collegano la scheda Micro:bit al computer tramite un cavo Micro USB e cliccano su “**Download**”, il codice non viene scaricato e la scheda non mostra alcuna risposta.
 
-プログラムをコピーする際に誤ってMicro:bitボードの背面にあるリセットボタンを押し続けていた場合、ボードはメンテナンスモードに入ります。または、何らかの誤りにより、ボード上のファームウェアが失われた可能性があります。
+Se si teneva accidentalmente premuto il pulsante di reset sul retro della scheda Micro:bit nel momento in cui si copiava il programma su di essa, questo avrebbe messo la scheda in modalità di manutenzione. O forse a causa di alcuni errori propri, il firmware sulla scheda è andato perso.
 
-その結果、ファイルマネージャーに新しい「**MAINTENANCE**」ドライブが表示され、micro:bitはユーザーコードを受け付けなくなります。
+Di conseguenza, una nuova unità “**MAINTENANCE**” apparirà nel tuo file manager, quindi la micro:bit non accetterà il tuo codice utente.
 
-MAINTENANCEドライブは、コンピューターによって次のように表示されます:
+L'unità MAINTENANCE apparirà così, a seconda del tuo computer:
 
 ![Img](./media/158.png)
 
- #### 4.3.2.2 解決策
+ #### 4.3.2.2 Soluzioni
 
-(1) このページからmicro:bitのバージョンに適した<span style="color: rgb(255, 76, 65);">.hex</span>ファイルをコンピューターにダウンロードします。
+(1) Scarica il file <span style="color: rgb(255, 76, 65);">.hex</span> appropriato per la tua versione di micro:bit da questa pagina al tuo computer.
 
-[最新のMicro:bitファームウェア -0255 .hexファイル](https://www.microbit.org/get-started/user-guide/firmware/)をダウンロードしてください。これはフォルダーにも提供されています。
+Scarica [l'ultimo firmware Micro:bit -0255 .hex file](https://www.microbit.org/get-started/user-guide/firmware/), che abbiamo anche fornito nella cartella.
 
-(2) このページからダウンロードした.hexファイルを**MAINTENANCE**ドライブにドラッグアンドドロップします。<span style="color: rgb(255, 76, 65);">注: ファームウェアはMicro:bit V2ボードのモデルによって異なります。ここではV2.20_V2.21用のファームウェアです。</span>アップグレードが完了すると、micro:bitはリセットされ、コンピューターから排出され、通常の**MICROBIT**ドライブモードで再表示されます。
+(2) Trascina e rilascia il file .hex scaricato da questa pagina sull'unità **MAINTENANCE**. <span style="color: rgb(255, 76, 65);">Nota che il firmware varia dal modello della scheda Micro:bit V2. Qui è il Firmware per V2.20_V2.21.</span> Quando l'aggiornamento è completato, la micro:bit si resetterà, espellendosi dal computer e riapparirà in modalità unità **MICROBIT** normale.
 
 ![Img](./media/326.png)
 
 ![Img](./media/331.png)
 
-#### 4.3.2.3 「MAINTENANCE」モードを避ける
+#### 4.3.2.3 Evitare la Modalità “MAINTENANCE”
 
-(1) Micro USBケーブルが接続されているときに、Micro:bitボードの背面にあるリセットボタンを押さないでください。
+(1) Non premere il pulsante di reset sul retro della scheda Micro:bit quando è collegata a un cavo Micro USB.
 
-電源投入時にリセットボタンが押されると、micro:bitはメンテナンスモードに入ります。（**<span style="color: rgb(255, 76, 65);">初心者が犯しやすい間違い</span>**）
+Se il pulsante di reset viene premuto durante l'accensione, la micro:bit entrerà in modalità di manutenzione. (**<span style="color: rgb(255, 76, 65);">Errori comuni commessi dai principianti</span>**)
 
 ![Img](./media/228.png)
 
-(2) プログラムのダウンロード中に突然抜き差ししないでください。ファームウェアが失われ、micro:bitがMAINTENANCEモードに入る可能性があります。
+(2) Non scollegarla improvvisamente durante il download del programma. Altrimenti il firmware potrebbe andare perso e la micro:bit entrerà in modalità MAINTENANCE.
 
-(3) 実験中に配線ミスがあると、短絡が発生し、micro:bitファームウェアが失われる可能性があります。初心者は操作時に注意を払う必要があります。
+(3) Durante l'esperimento, un cablaggio errato causerà anche un cortocircuito, quindi il firmware della micro:bit potrebbe andare perso. I principianti devono prestare attenzione durante l'operazione.
 
-#### 4.3.2.4 WebUSBでのダウンロード
+#### 4.3.2.4 Download con WebUSB
 
-WebUSB（/ device/ usb/ webusb）でmicro:bitに障害が発生したようです。原因を突き止めましょう。
+La tua micro:bit sembra aver sviluppato un difetto con WebUSB (/ device/ usb/ webusb)? Cerchiamo di capire il motivo.
 
-**ステップ1: micro USBケーブルでのテスト**
+**Passaggio 1: Test sul cavo micro USB**
 
-micro USBケーブルでmicro:bitをコンピューターに接続します。MICROBITドライブとして表示されるはずです。
+Collega la micro:bit al computer con un cavo micro USB. Dovrebbe apparire come un'unità MICROBIT.
 
 ![Img](./media/321.png)
 
-デバイスとドライブの下にMICROBITがドライブとして表示される場合は、ステップ2に進みます。
+Se MICROBIT appare come un'unità sotto Dispositivi e unità, vai al Passaggio 2.
 
-そうでない場合は、(a)別のケーブル、(b)コンピューターの別のUSBポート、(c)micro:bitを別のコンピューターに接続してみてください。
+In caso contrario, prova: (a) un altro cavo; (b) un'altra porta USB sul tuo computer; (c) collegare la micro:bit a un altro computer.
 
-一部のmicro USBケーブルは電源接続のみを提供し、実際にはデータを送信しない場合があります。また、一部のコンピューターは、何らかの理由でUSBポートの電源を落とす場合があります。
+Alcuni cavi micro USB potrebbero offrire solo una connessione di alimentazione e non trasmettere dati, e alcuni computer potrebbero disattivare le loro porte USB per qualche motivo.
 
-それでもMICROBITドライブが見えませんか？うーん、micro:bitボードに問題があるかもしれません。[トラブルシューティング](https://support.microbit.org/solution/articles/19000024000-fault-finding-with-a-micro-bit)の記事を参照するか、[サポートチケット](https://support.microbit.org/support/tickets/new)を開いてMicro:bit Foundationに問題を通知してください。そして、以下のすべての手順をスキップしてください。
+Non riesci ancora a vedere l'unità MICROBIT? Hmm, potrebbe esserci un problema con la tua scheda micro:bit. Consulta l'articolo sulla [risoluzione dei problemi](https://support.microbit.org/solution/articles/19000024000-fault-finding-with-a-micro-bit) con microbit.org o apri un [ticket di supporto](https://support.microbit.org/support/tickets/new) per notificare il problema alla Micro:bit Foundation. E, salta tutti i passaggi seguenti.
 
-**ステップ2: ファームウェアバージョンの確認**
+**Passaggio 2: Verifica della versione del firmware**
 
-micro:bitにインストールされているファームウェアのバージョンを確認するには:
+Per scoprire quale versione del firmware hai sulla tua micro:bit:
 
-① USBケーブルを使用してコンピューターに接続し、**MICROBIT**ドライブを開きます。
+① Collegala a un computer usando il cavo USB e apri l'unità **MICROBIT**.
 
 ![Img](./media/A8491.png)
 
-② **DETAILS.TXT**ファイルを開きます。
+② Apri il file **DETAILS.TXT**.
 
 ![Img](./media/0452.png)
 
-③ 「Interface/Bootloader Version」で始まる行の番号を探します。
+③ Cerca il numero sulla riga che inizia con “Interface/Bootloader Version”.
 
 ![Img](./media/501.png)
 
-0234/0241/0243の場合は、micro:bit V2ボードのファームウェアを更新する必要があります。更新についてはステップ3に進みます。
+Se è 0234/0241/0243, devi aggiornare il firmware sulla tua scheda micro:bit V2. Vai al Passaggio 3 per l'aggiornamento.
 
-0249/0257以降の場合は、ステップ4に進みます。
+Se è 0249/0257 o superiore, vai al Passaggio 4.
 
-**ステップ3: ファームウェアの更新方法**
+**Passaggio 3: Come aggiornare il firmware**
 
-新機能にアクセスしたり、問題をトラブルシューティングしたりするためにファームウェアを更新する必要がある場合は、次の手順を実行します:
+Se devi aggiornare il firmware per accedere a una nuova funzionalità o risolvere un problema, ecco come fare:
 
-① USBケーブルとバッテリーパックをmicro:bitから切断します。
+① Scollega il cavo USB e il pacco batterie dalla micro:bit.
 
-② micro:bitの背面にあるリセットボタンを押し続け、USBケーブルをmicro:bitとコンピューターに接続します。ファイルマネージャーに**MAINTENANCE**（MICROBITではなく）というドライブが表示され、背面にある黄色のLEDインジケーターが点灯するはずです。
+② Tieni premuto il pulsante di reset sul retro della micro:bit e collega il cavo USB alla micro:bit e al tuo computer. Dovresti vedere un'unità apparire nel tuo file manager chiamata **MAINTENANCE** (invece di MICROBIT) e l'indicatore LED giallo sul retro dovrebbe accendersi.
 
 ![Img](./media/551.png)
 
 ![Img](./media/AAC1.webp)
 
-③ micro:bitのバージョンに適した[ファームウェア.hexファイル](https://microbit.org/guide/firmware/)をダウンロードします。<span style="color: rgb(255, 76, 65);">ここではV2.20_V2.21用のファームウェアです。</span>
+③ Scarica il [file .hex del firmware](https://microbit.org/guide/firmware/) appropriato per la tua versione di micro:bit. <span style="color: rgb(255, 76, 65);">Qui è il Firmware per V2.20_V2.21.</span>
 
 ![Img](./media/0629.png)
 
-④ <span style="color: rgb(255, 76, 65);">.hex</span>ファームウェアを**MAINTENANCE**ドライブにドラッグアンドドロップします。
+④ Trascina e rilascia il firmware <span style="color: rgb(255, 76, 65);">.hex</span> sull'unità **MAINTENANCE**.
 
 ![Img](./media/331.png)
 
-⑤ デバイスの背面にある黄色のLEDが点滅を停止するまで待ちます。コピー後、LEDは消灯し、micro:bitはリセットされます。MAINTENANCEはMICROBITに戻ります。
+⑤ Attendi che il LED giallo sul retro del dispositivo smetta di lampeggiare. Dopo la copia, il LED si spegnerà e la micro:bit si resetterà. MAINTENANCE tornerà a MICROBIT.
 
-⑥ 最後に、**MICROBIT**ドライブにある<span style="color: rgb(255, 76, 65);">DETAILS.TXT</span>ファイルを確認し、.hexファームウェアと同じバージョン番号であることを確認します。
+⑥ Infine, controlla il file <span style="color: rgb(255, 76, 65);">DETAILS.TXT</span> che si trova sull'unità **MICROBIT** e assicurati che abbia lo stesso numero di versione del firmware .hex.
 
-ボード、メンテナンスモード、ファームウェアの更新に関する問題については、[ファームウェアガイド](https://microbit.org/guide/firmware/)を参照してください。
+Per qualsiasi problema relativo alla scheda, alla modalità di manutenzione e agli aggiornamenti del firmware, consulta la [Guida al Firmware](https://microbit.org/guide/firmware/).
 
-**ステップ4: ブラウザバージョンの確認**
+**Passaggio 4: Verifica della versione del browser**
 
-WebUSBは比較的新しい機能であり、ブラウザを更新する必要がある場合があります。ブラウザが次のいずれかと互換性があるか確認してください: (a) Android、Chrome OS; (b) Microsoft Edge; (c) Linux、macOS、Windows 10のChrome 65+。
+WebUSB è una funzione relativamente nuova che potresti dover aggiornare il tuo browser. Controlla se il tuo browser è: (a) compatibile con Android, Chrome OS; (b) Microsoft Edge; (c) Chrome 65+ di Linux, macOS e Windows 10.
 
-**ステップ5: デバイスの接続**
+**Passaggio 5: Connessione di un dispositivo**
 
-Google Chrome / Microsoft Edgeを開いてMakeCodeエディターに移動し、「**Connect Device**」をクリックします。デバイスのペアリング方法については、[WebUSB（/ device/ usb/ webusb）](https://microbit.org/get-started/user-guide/web-usb/)を参照してください。
+Apri Google Chrome / Microsoft Edge per andare all'editor MakeCode e clicca su “**Connect Device**”. Per come accoppiare un dispositivo, consulta [WebUSB (/ device/ usb/ webusb)](https://microbit.org/get-started/user-guide/web-usb/).
 
-迅速なダウンロードをお楽しみください！
-
-
+Goditi il download rapido!

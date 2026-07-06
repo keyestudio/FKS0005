@@ -1,6 +1,5 @@
-# 1.コードとライブラリのダウンロード
+# 1. Download di Codici e Librerie
 
-このチュートリアルに必要なリソース（MakeCodeおよびMicroPythonコード）には、コードとファームウェアが含まれています。学習しやすい場所にダウンロードして保存してください。
+Si prega di scaricare prima le risorse (codici MakeCode e MicroPython) richieste da questo tutorial, inclusi codici e firmware, e di salvarle in una posizione comoda per l'apprendimento.
 
-コードとファームウェアをダウンロードするには、ここをクリックしてください: [Codes and Libraries Download](./Code_Library_Download.7z).
-
+Clicca per scaricare i codici e il firmware: [Codes and Libraries Download](./Code_Library_Download.7z).

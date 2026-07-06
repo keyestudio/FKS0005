@@ -1,74 +1,74 @@
-### 4.2.3 シンプルな電子ピアノ
+### 4.2.3 Semplice Pianoforte Elettronico
 
-#### 4.2.3.1 概要
+#### 4.2.3.1 Panoramica
 
 ![Img](./media/top1.png)
 
-このプロジェクトでは、ジョイスティックを操作したりボタンを押したりすることで、micro:bitスピーカーを制御して異なる音を再生します。同時に、オンボードのLEDマトリックスには対応する数字が表示されます。
+In questo progetto, controlliamo l'altoparlante micro:bit per riprodurre toni diversi azionando il joystick e premendo i pulsanti. Nel frattempo, la matrice LED a bordo mostrerà i numeri corrispondenti.
 
-ジョイスティックを右に倒すと「ド（中央C）」が鳴り、「1」が表示されます。左に倒すと「レ（D）」が鳴り、「2」が表示されます。上に倒すと「ミ（E）」が鳴り、「3」が表示されます。下に倒すと「ファ（F）」が鳴り、「4」が表示されます。ボタンCを押すと「ソ（G）」が鳴り、「5」が表示され、Dを押すと「ラ（A）」が鳴り、「6」が表示され、Eを押すと「シ（B）」が鳴り、「7」が表示され、Fを押すと高い「ド（シャープ）」が鳴り、表示は「1」に戻ります。ジョイスティック、ボタン、音、表示がうまく同期しています。
+Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1". C'è una bella sincronizzazione tra joystick, pulsanti, toni e display.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.3.2 コンポーネント知識
+#### 4.2.3.2 Conoscenza dei Componenti
 
 ![Img](./media/2top.png)
 
-**Microbit スピーカー**
+**Altoparlante Microbit**
 
 ![Img](./media/j901.png)
 
-micro:bitボードには、くすくす笑い、挨拶、あくび、悲しみの表現などの音を出すための内蔵スピーカーが搭載されており、曲を作曲することもできます。プログラミングによって、個々の音符、メロディー、リズム、さらには「きらきら星」のような楽曲も生成できます。
+La scheda micro:bit è dotata di un altoparlante integrato per emettere suoni, come risatine, saluti, sbadigli o espressioni di tristezza, o persino comporre una canzone. Programmando, può persino generare note individuali, melodie e ritmi, o persino composizioni musicali, come la canzone *Twinkle Twinkle Little Star*.
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.3.3 必要な部品
+#### 4.2.3.3 Parti Richieste
 
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
 | :--: | :--: | :--: |
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 
-#### 4.2.3.4 コードフロー
+#### 4.2.3.4 Flusso del Codice
 
 ![Img](./media/3009.png)
 
-#### 4.2.3.5 テストコード
+#### 4.2.3.5 Codice di Test
 
-⚠️ **ジョイスティックの感度は、必要に応じて調整できます。**
+⚠️ **Nota che la sensibilità del joystick può essere regolata in base alle proprie esigenze.**
 
-**完全なコード:**
+**Codice completo:**
 
 ![Img](./media/3008.png)
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① micro:bit LEDマトリックスを初期化して ![Img](./media/3004.png) を表示させます。
+① Inizializza la matrice LED micro:bit per mostrare ![Img](./media/3004.png).
 
 ![Img](./media/3005.png)
 
-② ジョイスティックの動きの方向を決定します。対応する音をバックグラウンドで半拍再生し、LEDマトリックスに対応する数字を表示します。
+② Determina la direzione del movimento del joystick; riproduci i toni corrispondenti per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
 
 ![Img](./media/3006.png)
 
-③ ボタンが押されているかを確認し、対応する音をバックグラウンドで半拍再生し、LEDマトリックスに対応する数字を表示します。
+③ Controlla se un pulsante è premuto, e riproduci il tono corrispondente per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
 
 ![Img](./media/3007.png)
 
 
-#### 4.2.3.6 テスト結果
+#### 4.2.3.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。LEDマトリックスには最初に「![Img](./media/3004.png)」が表示されます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”. La matrice LED mostra “![Img](./media/3004.png)” per prima.
 
-ジョイスティックを右に倒すと「ド（中央C）」が鳴り、「1」が表示されます。左に倒すと「レ（D）」が鳴り、「2」が表示されます。上に倒すと「ミ（E）」が鳴り、「3」が表示されます。下に倒すと「ファ（F）」が鳴り、「4」が表示されます。ボタンCを押すと「ソ（G）」が鳴り、「5」が表示され、Dを押すと「ラ（A）」が鳴り、「6」が表示され、Eを押すと「シ（B）」が鳴り、「7」が表示され、Fを押すと高い「ド（シャープ）」が鳴り、表示は「1」に戻ります。
+Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1".
 
-シンプルな電子ピアノが完成しました！
+Hai costruito il semplice pianoforte elettronico!
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

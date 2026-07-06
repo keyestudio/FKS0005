@@ -1,8 +1,8 @@
 =========
-4. MakeCode チュートリアル
+4. Tutorial MakeCode
 =========
 
-4.1 MakeCode 開発環境
+4.1 Ambiente di Sviluppo MakeCode
 =========
 
 .. toctree::
@@ -11,7 +11,7 @@
     MakeCode Development Environment
 
 
-4.2 プロジェクト
+4.2 Progetti
 =========
 
 
@@ -29,7 +29,7 @@
     Projects/Project 09
 
   
-4.3 トラブルシューティング
+4.3 Risoluzione dei Problemi
 =========
 
 .. toctree::

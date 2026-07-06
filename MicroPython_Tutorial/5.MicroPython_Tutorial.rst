@@ -1,9 +1,9 @@
-=================
-5. MicroPython チュートリアル
-=================
+=========
+5. Tutorial MicroPython
+=========
 
-5.1 Thonny 開発環境
-=================
+5.1 Ambiente di Sviluppo Thonny
+=========
 
 .. toctree::
     :maxdepth: 1
@@ -11,8 +11,8 @@
     Thonny Development Environment
 
 
-5.2 プロジェクト
-=================
+5.2 Progetti
+=========
 
 
 .. toctree::
@@ -27,8 +27,9 @@
     Projects/Project 07
 
   
-5.3 トラブルシューティング
-=================
+5.3 Risoluzione dei Problemi
+=========
+
 
 .. toctree::
     :maxdepth: 1

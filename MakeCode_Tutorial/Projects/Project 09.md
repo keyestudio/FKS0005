@@ -1,110 +1,113 @@
-### 4.2.9 障害物回避
+### 4.2.9 Auto Robot Mecanum 4WD Controllata da Gamepad Micro:bit
 
-#### 4.2.9.1 概要
+#### 4.2.9.1 Panoramica
 
 ![Img](./media/top1.png)
-
-このプロジェクトでは、micro:bitボード、ゲームパッド、および超音波センサーを使用して、障害物回避システムを構築します。超音波センサーは障害物までの距離を測定し、OLEDディスプレイはリアルタイムで距離を表示します。距離が設定された閾値よりも小さい場合、micro:bitは警告音を鳴らし、LEDマトリックスに警告アイコンを表示します。
+In questo progetto, controlliamo un Robot Car Mecanum 4WD con una scheda di controllo gamepad e una scheda Micro:bit. Il joystick consente all'auto di andare avanti, indietro, girare a sinistra e a destra; il pulsante C sposta l'auto lateralmente a sinistra, il D lateralmente a destra, l'E accelera e il tasto F decelera (con un intervallo di velocità di 20–95). Quando non viene eseguita alcuna operazione, l'auto rimane ferma.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.9.2 コンポーネント知識
+#### 4.2.9.2 Parti Richieste
 
-![Img](./media/2top.png)
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| :--: | :--: | :--: |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
+| ![Img](./media/che.png) | ![Img](./media/18650.png) ||
+| **Kit KS4034**(auto-fornito) ×1 | **Batteria 18650**(auto-fornita) ×2 ||
 
-**超音波センサー**
+Per informazioni dettagliate sul Robot Car Mecanum 4WD**(KS4034)**, visitare [qui](https://docs.keyestudio.com/projects/KS4034/en/latest/).
+#### 4.2.9.3 Schema di Cablaggio
+
+Si prega di fare riferimento alle istruzioni di cablaggio nella documentazione KS4034 per collegare il Robot Car Mecanum 4WD e il gamepad tramite comunicazione radio. Non è richiesto alcun cablaggio fisico tra i due; entrambi i dispositivi comunicano in modalità wireless.
+
+#### 4.2.9.4 Flusso del Codice
+⚠️ **Nota che la seguente libreria deve essere importata durante la programmazione dei codici dell'auto: https://github.com/keyestudio2019/mecanum_robot_v2**.
+
+**Flusso del codice del gamepad:**
 
 ![Img](./media/9001.png)
 
-超音波センサーは、超音波を使用して物体までの距離を測定するデバイスです。超音波センサーは、人間の聴覚の範囲を超える高周波音波を放射し、その反射波を受信することで機能します。音波が物体に到達して反射してセンサーに戻るまでの時間を測定することで、センサーは物体までの距離を計算できます。
-
-**回路図:**
-
-![Img](./media/cou73-1.png)
-
-**パラメータ:**
-
-- 動作電圧: DC 3V~5V
-- 動作電流: 15mA
-- 測定範囲: 2cm~400cm
-- 測定精度: 0.3cm
-- 測定角度: 15度
-- 出力信号: デジタル信号
-
-#### 4.2.9.3 必要な部品
-
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
-| :--: | :--: | :--: |
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
-|![Img](./media/9001.png)|![Img](./media/OLED.png)|![Img](./media/7008.png)|
-|**超音波センサー** (自己調達) ×1|**OLED ディスプレイ** (自己調達) ×1 |**F-F デュポンワイヤー**(自己調達) x7|
-
-#### 4.2.9.4 配線図
-
-![Img](./media/jiexian.png)
-
-**上記のように配線した後、micro:bitをゲームパッドコントロールボードのスロットに挿入します。**
-
-| OLED ディスプレイ | micro:bit ゲームパッドコントロールボード |micro:bit ボードピン |
-| :--: | :--: | :--: |
-| GND |  GND | GND |
-| VCC |  3V | 3V |
-| SDA |  SDA | P20 |
-| SCL |  SCL | P19 |
-
-| 超音波センサー | micro:bit ゲームパッドコントロールボード | micro:bit ボードピン |
-| :--: | :--: | :--: |
-| GND | GND | GND |
-| VCC | 3V | 3V |
-| Trig | 1 | P1 |
-| Echo | 2 | P2 |
-
-#### 4.2.9.5 コードフロー
+**Flusso del codice dell'auto:**
 
 ![Img](./media/9002.png)
 
-#### 4.2.9.6 テストコード
+#### 4.2.9.5 Codice di Test
 
-⚠️ **ここではOLEDと超音波センサーのライブラリが含まれているため、`https://github.com/keyestudio/pxt-environment-kit-master`をインポートする必要があります。**
-
-**完全なコード:**
+**Codice completo del gamepad:**
 
 ![Img](./media/9003.png)
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① OLEDのピクセルを初期化してクリアし、5×5LEDマトリックスに ![Img](./media/1006.png) を表示させ、距離の値を0に定義します。
+① Inizializza il gruppo radio a 1 con una potenza di trasmissione del segnale di 7; visualizza un'icona a forma di cuore e imposta le variabili SEND_INTERCAL a 100 e BTN_DEBOUNCE_TIME a 20.
 
 ![Img](./media/9004.png)
 
-② 超音波センサーの対応する測定値を変数distanceに割り当てます。
+② Imposta la variabile currentCmd (variabile del contenuto dell'istruzione) sul carattere '0' e assegna i valori degli assi X e Y del joystick alle variabili rockerX e rockerY, rispettivamente.
 
 ![Img](./media/9005.png)
 
-③ OLEDに超音波センサーの測定値を表示します。
+③ Controlla se il joystick o il pulsante hanno un'operazione corrispondente. Se si verifica un'operazione, imposta la variabile currentCmd (variabile del contenuto dell'istruzione) sul carattere corrispondente (R/U/L/D/A/B/Z/X); altrimenti, lasciala invariata.
 
 ![Img](./media/9006.png)
 
-④ 距離が10cm未満の場合、micro:bitは警告音を鳴らし、LEDマトリックスに警告アイコンを表示します。そうでない場合は、警告音を停止し、LEDマトリックスをクリアします。
+④ Controlla se currentCmd (variabile del contenuto dell'istruzione) differisce da lastCmd (memorizza il contenuto dell'istruzione precedente). In caso affermativo, invia currentCmd, imposta lastCmd su currentCmd e attendi un ritardo specificato.
 
 ![Img](./media/9007.png)
 
-⑤ 500ms（0.5秒）遅延させます。
+**Codice completo dell'auto:**
 
-![Img](./media/cou28.png)
+![Img](./media/9008.png)
 
-#### 4.2.9.7 テスト結果
+![Img](./media/line1.png)
+
+**Breve spiegazione:**
+
+① Inizializza il gruppo radio a 1 con una potenza di trasmissione del segnale di 7; visualizza un'icona a forma di cuore e imposta le variabili SPEED a 50, MIN_SPEED a 20 e MAX_speed a 95.
+
+![Img](./media/9009.png)
+
+② Ricevi il valore del comando inviato dalla radio e memorizza il comando nella variabile item.
+
+![Img](./media/9010.png)
+
+③ In base ai comandi dei caratteri (U/L/D/R/A/B) ricevuti da item, chiama le funzioni corrispondenti per controllare l'auto per andare avanti, indietro, girare a sinistra, a destra, e spostarsi a sinistra e a destra.
+
+![Img](./media/9011.png)
+
+④ In base al comando del carattere (Z/X) ricevuto da item, l'auto viene accelerata o decelerata di conseguenza.
+
+Durante l'accelerazione, la velocità è impostata al minimo tra SPEED+5 e MAX_speed (per evitare di superare MAX_speed); durante la decelerazione, la velocità è impostata al massimo tra SPEED-5 e MIN_speed (per evitare di scendere al di sotto di MIN_speed).
+
+![Img](./media/9012.png)
+
+⑤ Qui sono definite sei funzioni di controllo del movimento del veicolo:
+
+- car_back controlla tutti e quattro i motori per ruotare all'indietro per andare indietro;
+- car_forward controlla tutti e quattro i motori per ruotare in avanti per avanzare;
+- car_left realizza la svolta a sinistra dell'auto impostando i motori laterali sinistri all'indietro e i motori laterali destri in avanti;
+- car_right realizza la svolta a destra impostando i motori laterali destri all'indietro e i motori laterali sinistri in avanti;
+- car_left_move e car_right_move consentono lo spostamento a sinistra e a destra tramite la rotazione coordinata dei motori diagonali.
+
+Tutte le funzioni prendono la variabile SPEED come parametro di velocità del motore.
+
+![Img](./media/9013.png)
+
+#### 4.2.9.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
 
-micro:bitボードにコードをアップロードすると、OLEDに超音波センサーが読み取った距離がリアルタイムで表示されます。距離が10cm未満の場合、micro:bitは警告音を鳴らし、LEDマトリックスに警告アイコンを表示します。
+Caricando questi codici su due schede Micro:bit, rispettivamente del gamepad e dell'auto, e assicurati che le batterie siano sufficientemente cariche. Inserisci le Micro:bit corrispondenti nel gamepad e nell'auto e sposta gli interruttori su entrambi su "ON".
+
+Ora puoi controllare l'auto tramite il gamepad: spingi il joystick verso l'alto e l'auto si muove in avanti, spingilo verso il basso per muoversi all'indietro, a sinistra la fa girare a sinistra e a destra la fa girare a destra. Possiamo anche controllare l'accelerazione (premi il pulsante E)/decelerazione (premi il pulsante F), lo spostamento a sinistra (C) e lo spostamento a destra (D) dell'auto. Nota che l'intervallo di velocità è 20–95.
 
 ![Img](./media/9000.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)
+

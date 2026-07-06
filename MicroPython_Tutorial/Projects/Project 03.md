@@ -1,260 +1,185 @@
-### 5.2.3 シンプルな電子ピアノ
+### 5.2.3 Semplice Pianoforte Elettronico
 
-#### 5.2.3.1 概要
+#### 5.2.3.1 Panoramica
 
 ![Img](./media/top1.png)
 
-このプロジェクトでは、ジョイスティックを操作したりボタンを押したりすることで、micro:bitスピーカーを制御して異なる音を再生します。同時に、オンボードのLEDマトリックスには対応する数字が表示されます。
+In questo progetto, controlliamo l'altoparlante micro:bit per riprodurre toni diversi azionando il joystick e premendo i pulsanti. Nel frattempo, la matrice LED a bordo mostrerà i numeri corrispondenti.
 
-ジョイスティックを右に倒すと「ド（中央C）」が鳴り、「1」が表示されます。左に倒すと「レ（D）」が鳴り、「2」が表示されます。上に倒すと「ミ（E）」が鳴り、「3」が表示されます。下に倒すと「ファ（F）」が鳴り、「4」が表示されます。ボタンCを押すと「ソ（G）」が鳴り、「5」が表示され、Dを押すと「ラ（A）」が鳴り、「6」が表示され、Eを押すと「シ（B）」が鳴り、「7」が表示され、Fを押すと高い「ド（シャープ）」が鳴り、表示は「1」に戻ります。ジョイスティック、ボタン、音、表示がうまく同期しています。
+Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1". C'è una bella sincronizzazione tra joystick, pulsanti, toni e display.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.3.2 コンポーネント知識
+#### 5.2.3.2 Conoscenza dei Componenti
 
-![Img](./media/2top.png)
+Questo progetto utilizza lo stesso altoparlante micro:bit del Progetto 03. Si prega di fare riferimento alla sezione 4.2.3.2 per la conoscenza dei suoi componenti.
 
-**Microbit スピーカー**
+#### 5.2.3.3 Parti Richieste
 
-![Img](./media/j901.png)
-
-micro:bitボードには、くすくす笑い、挨拶、あくび、悲しみの表現などの音を出すための内蔵スピーカーが搭載されており、曲を作曲することもできます。プログラミングによって、個々の音符、メロディー、リズム、さらには「きらきら星」のような楽曲も生成できます。
-
-![Img](./media/2bottom.png)
-
-#### 5.2.3.3 必要な部品
-
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
 | :--: | :--: | :--: |
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 
-#### 5.2.3.4 コードフロー
+#### 5.2.3.4 Flusso del Codice
 
 ![Img](./media/3009.png)
 
-#### 5.2.3.5 テストコード
+#### 5.2.3.5 Codice di Test
 
-⚠️ **ジョイスティックの感度は、必要に応じて調整できます。**
+⚠️ **Nota che la sensibilità del joystick può essere regolata in base alle proprie esigenze.**
 
-**完全なコード:**
+**Codice completo:**
 
 ```python
 from microbit import *
-import music
-import utime
 
-# Define notes for the piano
-NOTES = [
-    music.C4, music.D4, music.E4, music.F4,
-    music.G4, music.A4, music.B4, music.C5
-]
+# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
+JOYSTICK_CENTER_X = 511
+JOYSTICK_CENTER_Y = 511
+# Soglia per rilevare il movimento (regola per la sensibilità)
+JOYSTICK_THRESHOLD = 100
 
-# Define display images for each note
-NOTE_IMAGES = [
-    Image("00000:00000:09990:00000:00000"), # 1
-    Image("00000:00000:09990:00000:00000"), # 2 (will be changed to actual 2)
-    Image("00000:00000:09990:00000:00000"), # 3 (will be changed to actual 3)
-    Image("00000:00000:09990:00000:00000"), # 4 (will be changed to actual 4)
-    Image("00000:00000:09990:00000:00000"), # 5 (will be changed to actual 5)
-    Image("00000:00000:09990:00000:00000"), # 6 (will be changed to actual 6)
-    Image("00000:00000:09990:00000:00000"), # 7 (will be changed to actual 7)
-    Image("00000:00000:09990:00000:00000")  # 1 (high C)
-]
+# Mappatura delle note musicali ai numeri visualizzati
+NOTES = {
+    "right": (262, "1"),  # Do centrale
+    "left": (294, "2"),   # Re
+    "up": (330, "3"),     # Mi
+    "down": (349, "4"),   # Fa
+    "C": (392, "5"),      # Sol
+    "D": (440, "6"),      # La
+    "E": (494, "7"),      # Si
+    "F": (523, "1")       # Do alto
+}
 
-# Actual images for 1-7
-NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # 1
-NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # 2
-NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # 3
-NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # 4
-NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # 5
-NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # 6
-NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # 7
-NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # 1 (high C)
+# Funzione per riprodurre una nota e visualizzare un numero
+def play_note_and_show(note_freq, display_char):
+    music.play(music.note(note_freq, 500), wait=False) # Riproduci per 500ms in sottofondo
+    display.show(display_char)
 
-# Simplified images for 1-7
-NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # Represents 1
-NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # Represents 2
-NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # Represents 3
-NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # Represents 4
-NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # Represents 5
-NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # Represents 6
-NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # Represents 7
-NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # Represents high 1
+# Configura i pin dei pulsanti
+pin13.set_pull(pin13.PULL_UP) # Pulsante D
+pin15.set_pull(pin15.PULL_UP) # Pulsante C
+pin16.set_pull(pin16.PULL_UP) # Pulsante E
+pin14.set_pull(pin14.PULL_UP) # Pulsante F (assumendo P14 per F)
 
-# Correct images for 1-7
-NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # 1
-NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # 2
-NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # 3
-NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # 4
-NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # 5
-NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # 6
-NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # 7
-NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # High 1
-
-# Placeholder images, replace with actual 5x5 images for 1-7
-# For example, Image("00000:00000:09990:00000:00000") is a placeholder for '1'
-# You would need to define actual 5x5 pixel images for each number
-
-# Initial display
 display.show(Image.MUSIC)
 
-# Joystick threshold
-JOYSTICK_THRESHOLD = 200
-
 while True:
-    x_value = pin1.read_analog()
-    y_value = pin2.read_analog()
+    # Leggi i valori analogici del joystick
+    x_value = pin0.read_analog()
+    y_value = pin1.read_analog()
 
-    # Check joystick input
-    if x_value > 512 + JOYSTICK_THRESHOLD:  # Right (C4 - Do)
-        music.play(NOTES[0], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 1
-    elif x_value < 512 - JOYSTICK_THRESHOLD:  # Left (D4 - Re)
-        music.play(NOTES[1], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 2
-    elif y_value < 512 - JOYSTICK_THRESHOLD:  # Up (E4 - Mi)
-        music.play(NOTES[2], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 3
-    elif y_value > 512 + JOYSTICK_THRESHOLD:  # Down (F4 - Fa)
-        music.play(NOTES[3], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 4
-    # Check button input
-    elif pin13.read_digital() == 0:  # Button C (G4 - Sol)
-        music.play(NOTES[4], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 5
-    elif pin14.read_digital() == 0:  # Button D (A4 - La)
-        music.play(NOTES[5], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 6
-    elif pin15.read_digital() == 0:  # Button E (B4 - Si)
-        music.play(NOTES[6], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 7
-    elif pin16.read_digital() == 0:  # Button F (C5 - High Do)
-        music.play(NOTES[7], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 1 (high)
-    else:
-        music.stop()
-        display.show(Image.MUSIC)
+    # Controlla il joystick
+    if x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["right"][0], NOTES["right"][1])
+    elif x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["left"][0], NOTES["left"][1])
+    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["up"][0], NOTES["up"][1])
+    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["down"][0], NOTES["down"][1])
 
-    utime.sleep_ms(100)
+    # Controlla i pulsanti
+    if not pin15.read_digital(): # Pulsante C
+        play_note_and_show(NOTES["C"][0], NOTES["C"][1])
+    elif not pin13.read_digital(): # Pulsante D
+        play_note_and_show(NOTES["D"][0], NOTES["D"][1])
+    elif not pin16.read_digital(): # Pulsante E
+        play_note_and_show(NOTES["E"][0], NOTES["E"][1])
+    elif not pin14.read_digital(): # Pulsante F
+        play_note_and_show(NOTES["F"][0], NOTES["F"][1])
+
+    sleep(100) # Breve ritardo per evitare letture eccessive e debounce
 ```
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① micro:bit LEDマトリックスを初期化して ![Img](./media/3004.png) を表示させます。
+① Inizializza la matrice LED micro:bit per mostrare ![Img](./media/3004.png).
 
 ```python
 from microbit import *
-import music
-import utime
 
-# Define notes for the piano
-NOTES = [
-    music.C4, music.D4, music.E4, music.F4,
-    music.G4, music.A4, music.B4, music.C5
-]
+# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
+JOYSTICK_CENTER_X = 511
+JOYSTICK_CENTER_Y = 511
+# Soglia per rilevare il movimento (regola per la sensibilità)
+JOYSTICK_THRESHOLD = 100
 
-# Define display images for each note
-NOTE_IMAGES = [
-    Image("00000:00000:09990:00000:00000"), # 1
-    Image("00000:00000:09990:00000:00000"), # 2 (will be changed to actual 2)
-    Image("00000:00000:09990:00000:00000"), # 3 (will be changed to actual 3)
-    Image("00000:00000:09990:00000:00000"), # 4 (will be changed to actual 4)
-    Image("00000:00000:09990:00000:00000"), # 5 (will be changed to actual 5)
-    Image("00000:00000:09990:00000:00000"), # 6 (will be changed to actual 6)
-    Image("00000:00000:09990:00000:00000"), # 7 (will be changed to actual 7)
-    Image("00000:00000:09990:00000:00000")  # 1 (high C)
-]
+# Mappatura delle note musicali ai numeri visualizzati
+NOTES = {
+    "right": (262, "1"),  # Do centrale
+    "left": (294, "2"),   # Re
+    "up": (330, "3"),     # Mi
+    "down": (349, "4"),   # Fa
+    "C": (392, "5"),      # Sol
+    "D": (440, "6"),      # La
+    "E": (494, "7"),      # Si
+    "F": (523, "1")       # Do alto
+}
 
-# Actual images for 1-7
-NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # 1
-NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # 2
-NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # 3
-NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # 4
-NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # 5
-NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # 6
-NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # 7
-NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # 1 (high C)
+# Funzione per riprodurre una nota e visualizzare un numero
+def play_note_and_show(note_freq, display_char):
+    music.play(music.note(note_freq, 500), wait=False) # Riproduci per 500ms in sottofondo
+    display.show(display_char)
 
-# Simplified images for 1-7
-NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # Represents 1
-NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # Represents 2
-NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # Represents 3
-NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # Represents 4
-NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # Represents 5
-NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # Represents 6
-NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # Represents 7
-NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # Represents high 1
+# Configura i pin dei pulsanti
+pin13.set_pull(pin13.PULL_UP) # Pulsante D
+pin15.set_pull(pin15.PULL_UP) # Pulsante C
+pin16.set_pull(pin16.PULL_UP) # Pulsante E
+pin14.set_pull(pin14.PULL_UP) # Pulsante F (assumendo P14 per F)
 
-# Placeholder images, replace with actual 5x5 images for 1-7
-# For example, Image("00000:00000:09990:00000:00000") is a placeholder for '1'
-# You would need to define actual 5x5 pixel images for each number
-
-# Initial display
 display.show(Image.MUSIC)
-
-# Joystick threshold
-JOYSTICK_THRESHOLD = 200
 ```
 
-② ジョイスティックの動きの方向を決定します。対応する音をバックグラウンドで半拍再生し、LEDマトリックスに対応する数字を表示します。
+② Determina la direzione del movimento del joystick; riproduci i toni corrispondenti per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
 
 ```python
 while True:
-    x_value = pin1.read_analog()
-    y_value = pin2.read_analog()
+    # Leggi i valori analogici del joystick
+    x_value = pin0.read_analog()
+    y_value = pin1.read_analog()
 
-    # Check joystick input
-    if x_value > 512 + JOYSTICK_THRESHOLD:  # Right (C4 - Do)
-        music.play(NOTES[0], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 1
-    elif x_value < 512 - JOYSTICK_THRESHOLD:  # Left (D4 - Re)
-        music.play(NOTES[1], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 2
-    elif y_value < 512 - JOYSTICK_THRESHOLD:  # Up (E4 - Mi)
-        music.play(NOTES[2], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 3
-    elif y_value > 512 + JOYSTICK_THRESHOLD:  # Down (F4 - Fa)
-        music.play(NOTES[3], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 4
+    # Controlla il joystick
+    if x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["right"][0], NOTES["right"][1])
+    elif x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["left"][0], NOTES["left"][1])
+    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["up"][0], NOTES["up"][1])
+    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
+        play_note_and_show(NOTES["down"][0], NOTES["down"][1])
 ```
 
-③ ボタンが押されているかを確認し、対応する音をバックグラウンドで半拍再生し、LEDマトリックスに対応する数字を表示します。
+③ Controlla se un pulsante è premuto, e riproduci il tono corrispondente per mezza battuta in sottofondo, e la matrice LED visualizza il numero corrispondente.
 
 ```python
-    # Check button input
-    elif pin13.read_digital() == 0:  # Button C (G4 - Sol)
-        music.play(NOTES[4], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 5
-    elif pin14.read_digital() == 0:  # Button D (A4 - La)
-        music.play(NOTES[5], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 6
-    elif pin15.read_digital() == 0:  # Button E (B4 - Si)
-        music.play(NOTES[6], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 7
-    elif pin16.read_digital() == 0:  # Button F (C5 - High Do)
-        music.play(NOTES[7], wait=False)
-        display.show(Image("00000:00000:09990:00000:00000")) # Display 1 (high)
-    else:
-        music.stop()
-        display.show(Image.MUSIC)
+    # Controlla i pulsanti
+    if not pin15.read_digital(): # Pulsante C
+        play_note_and_show(NOTES["C"][0], NOTES["C"][1])
+    elif not pin13.read_digital(): # Pulsante D
+        play_note_and_show(NOTES["D"][0], NOTES["D"][1])
+    elif not pin16.read_digital(): # Pulsante E
+        play_note_and_show(NOTES["E"][0], NOTES["E"][1])
+    elif not pin14.read_digital(): # Pulsante F
+        play_note_and_show(NOTES["F"][0], NOTES["F"][1])
 
-    utime.sleep_ms(100)
+    sleep(100) # Breve ritardo per evitare letture eccessive e debounce
 ```
 
-#### 5.2.3.6 テスト結果
+#### 5.2.3.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。LEDマトリックスには最初に「![Img](./media/3004.png)」が表示されます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”. La matrice LED mostra “![Img](./media/3004.png)” per prima.
 
-ジョイスティックを右に倒すと「ド（中央C）」が鳴り、「1」が表示されます。左に倒すと「レ（D）」が鳴り、「2」が表示されます。上に倒すと「ミ（E）」が鳴り、「3」が表示されます。下に倒すと「ファ（F）」が鳴り、「4」が表示されます。ボタンCを押すと「ソ（G）」が鳴り、「5」が表示され、Dを押すと「ラ（A）」が鳴り、「6」が表示され、Eを押すと「シ（B）」が鳴り、「7」が表示され、Fを押すと高い「ド（シャープ）」が鳴り、表示は「1」に戻ります。
+Girando il joystick a destra si produce "Do (Tono Do Centrale)" con la visualizzazione che mostra "1"; girandolo a sinistra si produce "Re (Tono Re)" con "2"; girandolo verso l'alto si produce "Mi (Tono Mi)" con "3"; girandolo verso il basso si produce "Fa (Tono Fa)" con "4". Premendo il pulsante C si produce "Sol (Tono Sol)" con "5", premendo D si produce "La (Tono La)" con "6", E produce "Si (Tono Si)" con "7", e premendo F si produce un "Do (Diesis)" più alto mentre la visualizzazione torna a "1".
 
-シンプルな電子ピアノが完成しました！
+Hai costruito il semplice pianoforte elettronico!
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

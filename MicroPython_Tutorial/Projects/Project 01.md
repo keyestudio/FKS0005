@@ -1,133 +1,143 @@
-### 5.2.1 方向指示器
+### 5.2.1 Indicatore di Direzione
 
-#### 5.2.1.1 概要
+#### 5.2.1.1 Panoramica
 
 ![Img](./media/top1.png)
 
-ジョイスティックを操作すると、ドットマトリックスにリアルタイムで対応する方向（左、右、上、下）の矢印が表示され、明確な方向参照が得られます。
+Quando si muove il joystick, la matrice di punti visualizza frecce nella direzione corrispondente in tempo reale: sinistra, destra, su, giù, fornendo un chiaro riferimento di direzione.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.1.2 コンポーネント知識
+#### 5.2.1.2 Conoscenza dei Componenti
 
-![Img](./media/2top.png)
+Questo progetto utilizza lo stesso joystick del Progetto 01. Si prega di fare riferimento alla sezione 4.2.1.2 per la conoscenza dei suoi componenti.
 
-**Micro:bit ドットマトリックス:**
+#### 5.2.1.3 Parti Richieste
 
-![Img](./media/1001.png)
-
-micro:bitボードのLEDドットマトリックスは、合計25個の発光ダイオードで構成されており、5個のグループがX軸とY軸に対応し、5×5のマトリックスを形成しています。それぞれが行（X）と列（Y）の交点に配置されています。座標点を設定することで、1つまたは複数のLEDを制御できます。
-
-**ジョイスティック:**
-
-| ![Img](./media/1002.png)| ![Img](./media/1003.png)  |
-| :--: | :--: |
-| 実物 | 回路図 |
-
-このジョイスティックの内部コア構造は、それぞれ10KΩの抵抗値を持つ2つの調整可能な抵抗器（ポテンショメータ）で構成されています。
-
-マイクロコントローラーのADCアナログピンを介してプッシュの方向（および振幅）を検出し、対応する次元のアナログ電気信号を出力します。実際の信号読み取り中、ジョイスティックのX軸とY軸のアナログ値が450〜600の範囲内で検出された場合、ジョイスティックがアクティブな操作なしにニュートラル（静止）状態にあると判断できます。
-
-![Img](./media/2bottom.png)
-
-#### 5.2.1.3 必要な部品
-
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png)  |![Img](./media/dianchi.png)|
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
 
 
-#### 5.2.1.4 コードフロー
+#### 5.2.1.4 Flusso del Codice
 
 ![Img](./media/1008.png)
 
-#### 5.2.1.5 テストコード
+#### 5.2.1.5 Codice di Test
 
-⚠️ **以下のコードにはゲームパッドのMicroPythonライブラリが含まれています。ジョイスティックの感度は必要に応じて調整できます。**
+⚠️ **Nota che la sensibilità del joystick può essere regolata in base alle proprie esigenze.**
 
-**完全なコード:**
+**Codice completo:**
 
 ```python
 from microbit import *
-import utime
 
-# Define the threshold for joystick movement
-JOYSTICK_THRESHOLD = 200
+# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
+# I valori tipici per il centro sono intorno a 511 per entrambi gli assi
+JOYSTICK_CENTER_X = 511
+JOYSTICK_CENTER_Y = 511
+# Soglia per rilevare il movimento (regola per la sensibilità)
+JOYSTICK_THRESHOLD = 100
 
-# Initialize display
-display.show(Image.HOUSE)
-
-while True:
-    # Read analog values from joystick X and Y axes
-    x_value = pin1.read_analog()
-    y_value = pin2.read_analog()
-
-    # Determine direction based on joystick values
-    if x_value < 512 - JOYSTICK_THRESHOLD:  # Left
-        display.show(Image.ARROW_WEST)
-    elif x_value > 512 + JOYSTICK_THRESHOLD:  # Right
-        display.show(Image.ARROW_EAST)
-    elif y_value < 512 - JOYSTICK_THRESHOLD:  # Up
-        display.show(Image.ARROW_NORTH)
-    elif y_value > 512 + JOYSTICK_THRESHOLD:  # Down
-        display.show(Image.ARROW_SOUTH)
-    else:  # Neutral
+# Funzione per visualizzare le frecce
+def show_arrow(direction):
+    if direction == "up":
+        display.show(Image.ARROW_N)
+    elif direction == "down":
+        display.show(Image.ARROW_S)
+    elif direction == "left":
+        display.show(Image.ARROW_W)
+    elif direction == "right":
+        display.show(Image.ARROW_E)
+    else:
         display.show(Image.HOUSE)
 
-    utime.sleep_ms(100)
+# Loop principale
+while True:
+    # Leggi i valori analogici del joystick
+    x_value = pin0.read_analog()
+    y_value = pin1.read_analog()
+
+    # Determina la direzione in base ai valori del joystick
+    if x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
+        show_arrow("left")
+    elif x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
+        show_arrow("right")
+    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
+        show_arrow("up")
+    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
+        show_arrow("down")
+    else:
+        show_arrow("center")
+
+    sleep(100) # Breve ritardo per evitare letture eccessive
 ```
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① micro:bit LEDマトリックスを初期化して ![Img](./media/1006.png) を表示させます。
+① Inizializza la matrice LED per farla mostrare ![Img](./media/1006.png).
 
 ```python
 from microbit import *
-import utime
 
-# Define the threshold for joystick movement
-JOYSTICK_THRESHOLD = 200
+# Calibrazione del joystick (regola questi valori se il joystick non è centrato)
+# I valori tipici per il centro sono intorno a 511 per entrambi gli assi
+JOYSTICK_CENTER_X = 511
+JOYSTICK_CENTER_Y = 511
+# Soglia per rilevare il movimento (regola per la sensibilità)
+JOYSTICK_THRESHOLD = 100
 
-# Initialize display
-display.show(Image.HOUSE)
+# Funzione per visualizzare le frecce
+def show_arrow(direction):
+    if direction == "up":
+        display.show(Image.ARROW_N)
+    elif direction == "down":
+        display.show(Image.ARROW_S)
+    elif direction == "left":
+        display.show(Image.ARROW_W)
+    elif direction == "right":
+        display.show(Image.ARROW_E)
+    else:
+        display.show(Image.HOUSE)
 ```
 
-② X軸とY軸の値を読み取り、操作方向を決定します。検出された場合、マトリックスは対応する矢印を表示します。そうでない場合、![Img](./media/1006.png) を表示します。
+② Leggi i valori degli assi X e Y per determinare la direzione di movimento. Se viene rilevata, la matrice mostra la freccia corrispondente. In caso contrario, visualizza ![Img](./media/1006.png).
 
 ```python
+# Loop principale
 while True:
-    # Read analog values from joystick X and Y axes
-    x_value = pin1.read_analog()
-    y_value = pin2.read_analog()
+    # Leggi i valori analogici del joystick
+    x_value = pin0.read_analog()
+    y_value = pin1.read_analog()
 
-    # Determine direction based on joystick values
-    if x_value < 512 - JOYSTICK_THRESHOLD:  # Left
-        display.show(Image.ARROW_WEST)
-    elif x_value > 512 + JOYSTICK_THRESHOLD:  # Right
-        display.show(Image.ARROW_EAST)
-    elif y_value < 512 - JOYSTICK_THRESHOLD:  # Up
-        display.show(Image.ARROW_NORTH)
-    elif y_value > 512 + JOYSTICK_THRESHOLD:  # Down
-        display.show(Image.ARROW_SOUTH)
-    else:  # Neutral
-        display.show(Image.HOUSE)
+    # Determina la direzione in base ai valori del joystick
+    if x_value < JOYSTICK_CENTER_X - JOYSTICK_THRESHOLD:
+        show_arrow("left")
+    elif x_value > JOYSTICK_CENTER_X + JOYSTICK_THRESHOLD:
+        show_arrow("right")
+    elif y_value < JOYSTICK_CENTER_Y - JOYSTICK_THRESHOLD:
+        show_arrow("up")
+    elif y_value > JOYSTICK_CENTER_Y + JOYSTICK_THRESHOLD:
+        show_arrow("down")
+    else:
+        show_arrow("center")
 
-    utime.sleep_ms(100)
+    sleep(100) # Breve ritardo per evitare letture eccessive
 ```
 
 
-#### 5.2.1.6 テスト結果
+#### 5.2.1.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l\interruttore su “ON”.
 
-ゲームパッドのジョイスティックを操作すると、マトリックスに対応する矢印が表示されます。指を離して中央に戻すと、マトリックスに家のアイコンが表示されます。
+Quando spingi il joystick del gamepad, puoi vedere le frecce corrispondenti sulla matrice. Se alzi il dito per riportarlo al centro, apparirà un\icona a forma di casa sulla matrice.
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c\è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

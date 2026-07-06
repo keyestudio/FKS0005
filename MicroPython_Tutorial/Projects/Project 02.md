@@ -1,397 +1,341 @@
-### 5.2.2 カラフルなライト
+### 5.2.2 Luci Colorate
 
-#### 5.2.2.1 概要
+#### 5.2.2.1 Panoramica
 
 ![Img](./media/top1.png)
 
-RGB LEDは、赤、緑、青の3原色の光を混ぜ合わせることで画像を作成するLED光源の一種で、その組み合わせにより様々な色合いを生み出します。一般的な方法としては、3原色を直接混合する方法、青色LEDと黄色蛍光体を組み合わせる方法、または紫外線LEDとRGB蛍光体を組み合わせる方法があります。白色光を直接発するLEDと比較して、RGB LEDは3原色を独立して制御できるため、より幅広い色の混合が可能です。
+I LED RGB sono un tipo di sorgente luminosa a LED che crea immagini mescolando la luce dei tre colori primari: rosso, verde e blu, la cui intersezione produce varie tonalità. I metodi comuni includono la miscelazione diretta dei colori primari, l\utilizzo di un LED blu combinato con fosforo giallo, o l\impiego di un LED ultravioletto insieme a fosforo RGB. Rispetto ai LED che emettono luce bianca direttamente, i LED RGB offrono una gamma più ampia di possibilità di miscelazione dei colori perché i tre colori primari possono essere controllati indipendentemente.
 
-このプロジェクトでは、各ボタンがRGB LEDの異なるモードに対応しています。ボタンCを押すと、「赤、緑、青、黄、紫」の順にライトが交互に点滅します。Dを押すと呼吸ライトに切り替わり、Eを押すと水が流れるようなライト、Fを押すとマーキーライトになります。
+In questo progetto, ogni pulsante corrisponde a una diversa modalità dei LED RGB. Quando si preme il pulsante C, le luci lampeggiano alternativamente nell\ordine di "rosso, verde, blu, giallo e viola"; premere D per passare alle luci a respiro; premere E per le luci a flusso d\acqua; premere F per le luci a scorrimento.
 
-お祭りの飾り付け用のカラフルなライトストリング、クリスマスツリーのライト、日常の雰囲気を演出するRGBストリップ、遊園地やショッピングモールのLED装飾ライトなど、これらはすべて私たちの日常生活におけるマルチモードライトの一般的な例です。
+Stringhe di luci colorate per decorazioni festive, luci per alberi di Natale, strisce RGB per l\ambiente quotidiano, luci decorative a LED nei parchi di divertimento e nei centri commerciali... Sono tutti esempi comuni di luci multimodali nella nostra vita quotidiana.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.2.2 コンポーネント知識
+#### 5.2.2.2 Conoscenza dei Componenti
 
-![Img](./media/2top.png)
+Questo progetto utilizza gli stessi LED RGB SK6812 e pulsanti del Progetto 02. Si prega di fare riferimento alla sezione 4.2.2.2 per la conoscenza dei suoi componenti.
 
-**SK6812 RGB LED**
+#### 5.2.2.3 Parti Richieste
 
-| ![Img](./media//2001.png)| ![Img](./media//2002.png)|
-| :--: | :--: |
-| 実物 | 回路図 |
-
-SK6812は、制御回路と照明回路を統合した外部制御型LED光源です。その主要部分は5x5mmの表面実装型LEDビーズで、それぞれが独立したピクセルとして機能し、スマートデジタルインターフェースデータラッチ回路、信号整形および増幅駆動回路、電源調整回路、内蔵定電流回路、高精度RCオシレーターなど、複数のコア回路を内蔵しています。
-
-その通信は単極性ゼロリターンコードプロトコルを採用しています。電源投入リセット後、各ピクセルはDINポートを介してコントローラーからデータを受信します。最初の24ビットのデータは最初のピクセルによって抽出され、内部データラッチに保存されます。残りのデータは内部で整形および増幅された後、DOUTポートを介して後続のピクセルに送信されます。各ピクセルが処理されるたびに、送信される信号サイズは24ビット減少します。
-
-ゲームパッドには4つのSK6812 RGBライトがあります。これらはすべて、赤、緑、青の各チャンネルで256段階の明るさ調整をサポートしており、256×256×256の色を組み合わせることができます。これにより、交互点滅、呼吸グラデーション、スクロールアニメーションなど、多様な照明効果を実現し、より直感的で鮮やかなインタラクションを提供します。
-
-**ボタン**
-
-| ![Img](./media//2003.png)| ![Img](./media//2004.png)|
-| :--: | :--: |
-| 実物 | 回路図 |
-
-ボタンは、日本で最初に登場し、感圧スイッチと呼ばれていました。操作中、スイッチを押して力を加えることで回路を閉じます。圧力を解放すると、スイッチが開きます。その内部の金属製スプリングリーフは、加えられた力に応じて接続/切断の状態を変化させます。
-
-4つのボタンがあり、それぞれがmicro:bitボードのピンに独立して接続されています。いずれかのボタンが押されると、回路は対応する低レベル信号を生成し、micro:bitがコマンドに迅速に応答できるようにし、インタラクションの利便性と精度を大幅に向上させます。
-
-![Img](./media/2bottom.png)
-
-#### 5.2.2.3 必要な部品
-
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
 
-
-#### 5.2.2.4 コードフロー
+#### 5.2.2.4 Flusso del Codice
 
 ![Img](./media/2006.png)
 
-#### 5.2.2.5 テストコード
+#### 5.2.2.5 Codice di Test
 
-⚠️ **コード内のMODE\*_DELAYの遅延時間は、必要に応じて変更できます。**
+⚠️ **Nota che il tempo di ritardo di MODE\*_DELAY nei codici può essere modificato in base alle proprie esigenze.**
 
-**完全なコード:**
+**Codice completo:**
 
 ```python
 from microbit import *
 import neopixel
 import utime
 
-# Disable the LED function initially
-# led.enable(False)
+# Configurazione dei LED NeoPixel
+# I NeoPixel sono collegati al pin P8 e ci sono 4 LED
+np = neopixel.NeoPixel(pin8, 4)
 
-# Define delay times for different modes
-MODE1_DELAY = 500  # Delay for mode 1 (alternating colors)
-MODE2_DELAY = 5    # Delay for mode 2 (breathing light)
-MODE3_DELAY = 200  # Delay for mode 3 (flowing water light)
-MODE4_DELAY = 200  # Delay for mode 4 (marquee light)
-BTN_DEBOUNCE = 20  # Button debounce time
+# Variabili di stato
+mode = 0  # 0: spento, 1: alternato, 2: respiro, 3: flusso d'acqua, 4: scorrimento
+last_mode_change_time = utime.ticks_ms()
+last_button_press_time = utime.ticks_ms()
 
-# Initialize NeoPixel strip (4 LEDs connected to pin P8)
-strip = neopixel.NeoPixel(pin8, 4)
+# Tempi di ritardo per le modalità (in ms)
+MODE1_DELAY = 500  # Alternato
+MODE2_DELAY = 50   # Respiro
+MODE3_DELAY = 100  # Flusso d'acqua
+MODE4_DELAY = 150  # Scorrimento
+BTN_DEBOUNCE = 100 # Debounce del pulsante
 
-# Global variables for light modes and timing
-current_mode = 0
-mode_timestamp = 0
-mode_step = 0
-button_timestamp = 0
+# Variabili per le animazioni
+color_index = 0
+hue = 0
+water_flow_pos = 0
+scroll_pos = 0
 
-# Initialize all LEDs to off
+# Colori predefiniti per la modalità alternata (RGB)
+colors = [
+    (255, 0, 0),    # Rosso
+    (0, 255, 0),    # Verde
+    (0, 0, 255),    # Blu
+    (255, 255, 0),  # Giallo
+    (255, 0, 255)   # Viola
+]
+
+# Funzione per impostare tutti i LED su nero (spenti)
 def clear_lights():
-    for i in range(4):
-        strip[i] = (0, 0, 0)  # Off
-    strip.show()
+    for i in range(len(np)):
+        np[i] = (0, 0, 0)
+    np.show()
+
+# Funzione per convertire HSV in RGB
+def hsv_to_rgb(h, s, v):
+    # h: 0-359, s: 0-99, v: 0-99
+    h_i = int(h * 6 / 100)  # Converti h in 0-5 per l'indice del settore
+    f = h * 6 / 100 - h_i
+    p = v * (100 - s) / 100
+    q = v * (100 - f * s) / 100
+    t = v * (100 - (1 - f) * s) / 100
+
+    r, g, b = 0, 0, 0
+    if h_i == 0: r, g, b = v, t, p
+    if h_i == 1: r, g, b = q, v, p
+    if h_i == 2: r, g, b = p, v, t
+    if h_i == 3: r, g, b = p, q, v
+    if h_i == 4: r, g, b = t, p, v
+    if h_i == 5: r, g, b = v, p, q
+
+    return (int(r * 2.55), int(g * 2.55), int(b * 2.55)) # Scala a 0-255
+
+# Configura i pin dei pulsanti
+pin13.set_pull(pin13.PULL_UP) # Pulsante D
+pin15.set_pull(pin15.PULL_UP) # Pulsante C
+pin16.set_pull(pin16.PULL_UP) # Pulsante E
+pin14.set_pull(pin14.PULL_UP) # Pulsante F (assumendo P14 per F)
 
 clear_lights()
 
-# Function to convert HSL to RGB (simplified for hue only)
-def hsl_to_rgb(h, s, l):
-    # Simplified for this example, assuming full saturation and medium lightness
-    # Only hue (h) is used to determine color
-    h_prime = h / 60
-    c = 1 # Full saturation
-    x = c * (1 - abs(h_prime % 2 - 1))
-    m = l - c / 2
-
-    r, g, b = 0, 0, 0
-
-    if 0 <= h_prime < 1:
-        r, g, b = c, x, 0
-    elif 1 <= h_prime < 2:
-        r, g, b = x, c, 0
-    elif 2 <= h_prime < 3:
-        r, g, b = 0, c, x
-    elif 3 <= h_prime < 4:
-        r, g, b = 0, x, c
-    elif 4 <= h_prime < 5:
-        r, g, b = x, 0, c
-    elif 5 <= h_prime < 6:
-        r, g, b = c, 0, x
-
-    return (int((r + m) * 255), int((g + m) * 255), int((b + m) * 255))
-
-# Main loop
 while True:
     current_time = utime.ticks_ms()
 
-    # Button debouncing
-    if current_time - button_timestamp > BTN_DEBOUNCE:
-        # Check button C (P13)
-        if pin13.read_digital() == 0:  # Button C pressed
-            current_mode = 1
-            mode_step = 0
-            mode_timestamp = current_time
+    # Gestione del debounce dei pulsanti
+    if utime.ticks_diff(current_time, last_button_press_time) > BTN_DEBOUNCE:
+        if not pin15.read_digital(): # Pulsante C (alternato)
+            mode = 1
+            color_index = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
-        # Check button D (P14)
-        elif pin14.read_digital() == 0:  # Button D pressed
-            current_mode = 2
-            mode_step = 0
-            mode_timestamp = current_time
+        elif not pin13.read_digital(): # Pulsante D (respiro)
+            mode = 2
+            hue = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
-        # Check button E (P15)
-        elif pin15.read_digital() == 0:  # Button E pressed
-            current_mode = 3
-            mode_step = 0
-            mode_timestamp = current_time
+        elif not pin16.read_digital(): # Pulsante E (flusso d'acqua)
+            mode = 3
+            water_flow_pos = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
-        # Check button F (P16)
-        elif pin16.read_digital() == 0:  # Button F pressed
-            current_mode = 4
-            mode_step = 0
-            mode_timestamp = current_time
+        elif not pin14.read_digital(): # Pulsante F (scorrimento)
+            mode = 4
+            scroll_pos = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
 
-    # Mode 1: Alternating colors (Red, Green, Blue, Yellow, Purple)
-    if current_mode == 1:
-        if current_time - mode_timestamp > MODE1_DELAY:
-            mode_timestamp = current_time
-            colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (128, 0, 128)]
+    # Logica delle modalità
+    if mode == 1: # Alternato
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE1_DELAY:
+            last_mode_change_time = current_time
             clear_lights()
-            strip[mode_step % 4] = colors[mode_step % len(colors)]
-            strip.show()
-            mode_step += 1
-
-    # Mode 2: Breathing light (hue cycle)
-    elif current_mode == 2:
-        if current_time - mode_timestamp > MODE2_DELAY:
-            mode_timestamp = current_time
-            hue = mode_step % 360  # Cycle hue from 0 to 359
-            # For breathing effect, we can vary lightness or saturation, but here we\'ll just cycle hue
-            r, g, b = hsl_to_rgb(hue, 1, 0.5) # Full saturation, medium lightness
-            for i in range(4):
-                strip[i] = (r, g, b)
-            strip.show()
-            mode_step += 1
-
-    # Mode 3: Flowing water light
-    elif current_mode == 3:
-        if current_time - mode_timestamp > MODE3_DELAY:
-            mode_timestamp = current_time
+            np[0] = colors[color_index]
+            np[1] = colors[(color_index + 1) % len(colors)]
+            np[2] = colors[(color_index + 2) % len(colors)]
+            np[3] = colors[(color_index + 3) % len(colors)]
+            np.show()
+            color_index = (color_index + 1) % len(colors)
+    elif mode == 2: # Respiro
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE2_DELAY:
+            last_mode_change_time = current_time
+            hue = (hue + 5) % 360 # Incrementa la tonalità
+            rgb_color = hsv_to_rgb(hue, 99, 20) # Saturazione alta, luminosità bassa
+            for i in range(len(np)):
+                np[i] = rgb_color
+            np.show()
+    elif mode == 3: # Flusso d'acqua
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE3_DELAY:
+            last_mode_change_time = current_time
             clear_lights()
-            # Shift all pixels one position to the right
-            for i in range(3, 0, -1):
-                strip[i] = strip[i-1]
-            # Set the first pixel to a new random color
-            hue = utime.ticks_ms() % 360
-            r, g, b = hsl_to_rgb(hue, 1, 0.5)
-            strip[0] = (r, g, b)
-            strip.show()
-            mode_step += 1
-
-    # Mode 4: Marquee light (single LED moving)
-    elif current_mode == 4:
-        if current_time - mode_timestamp > MODE4_DELAY:
-            mode_timestamp = current_time
+            np[water_flow_pos] = (0, 255, 255) # Ciano
+            np.show()
+            water_flow_pos = (water_flow_pos + 1) % len(np)
+    elif mode == 4: # Scorrimento
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE4_DELAY:
+            last_mode_change_time = current_time
             clear_lights()
-            hue = utime.ticks_ms() % 360
-            r, g, b = hsl_to_rgb(hue, 1, 0.5)
-            strip[mode_step % 4] = (r, g, b)
-            strip.show()
-            mode_step += 1
+            np[scroll_pos] = (255, 165, 0) # Arancione
+            np.show()
+            scroll_pos = (scroll_pos + 1) % len(np)
 
-    utime.sleep_ms(10) # Small delay to prevent busy-waiting
+    sleep(10) # Breve ritardo per il loop principale
 ```
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① 最初はLEDの機能を無効にします（led enableをfalseに設定）。
+① All\inizio, disabilita la funzione dei LED (imposta led enable su false).
 
-そして、4つのLED遅延を定義し（例えば、モード2で5、モード1で500など）、ボタンのデバウンスを20に設定します。ピンP8の4つのRGB LEDを無色（すべての値を0に設定）に初期化します。つまり、オフに設定します。
+E definisci 4 ritardi LED (ad esempio, imposta 5 in modalità 2, imposta 500 in modalità 1...), imposta il debounce del pulsante su 20. Inizializza quattro LED RGB sul pin P8 a nessun colore (imposta tutti i valori a 0), cioè, imposta su spento.
 
 ```python
 from microbit import *
 import neopixel
 import utime
 
-# Disable the LED function initially
-# led.enable(False)
+# Configurazione dei LED NeoPixel
+# I NeoPixel sono collegati al pin P8 e ci sono 4 LED
+np = neopixel.NeoPixel(pin8, 4)
 
-# Define delay times for different modes
-MODE1_DELAY = 500  # Delay for mode 1 (alternating colors)
-MODE2_DELAY = 5    # Delay for mode 2 (breathing light)
-MODE3_DELAY = 200  # Delay for mode 3 (flowing water light)
-MODE4_DELAY = 200  # Delay for mode 4 (marquee light)
-BTN_DEBOUNCE = 20  # Button debounce time
+# Variabili di stato
+mode = 0  # 0: spento, 1: alternato, 2: respiro, 3: flusso d'acqua, 4: scorrimento
+last_mode_change_time = utime.ticks_ms()
+last_button_press_time = utime.ticks_ms()
 
-# Initialize NeoPixel strip (4 LEDs connected to pin P8)
-strip = neopixel.NeoPixel(pin8, 4)
+# Tempi di ritardo per le modalità (in ms)
+MODE1_DELAY = 500  # Alternato
+MODE2_DELAY = 50   # Respiro
+MODE3_DELAY = 100  # Flusso d'acqua
+MODE4_DELAY = 150  # Scorrimento
+BTN_DEBOUNCE = 100 # Debounce del pulsante
 
-# Global variables for light modes and timing
-current_mode = 0
-mode_timestamp = 0
-mode_step = 0
-button_timestamp = 0
+# Variabili per le animazioni
+color_index = 0
+hue = 0
+water_flow_pos = 0
+scroll_pos = 0
 
-# Initialize all LEDs to off
+# Colori predefiniti per la modalità alternata (RGB)
+colors = [
+    (255, 0, 0),    # Rosso
+    (0, 255, 0),    # Verde
+    (0, 0, 255),    # Blu
+    (255, 255, 0),  # Giallo
+    (255, 0, 255)   # Viola
+]
+
+# Funzione per impostare tutti i LED su nero (spenti)
 def clear_lights():
-    for i in range(4):
-        strip[i] = (0, 0, 0)  # Off
-    strip.show()
+    for i in range(len(np)):
+        np[i] = (0, 0, 0)
+    np.show()
 
-clear_lights()
-
-# Function to convert HSL to RGB (simplified for hue only)
-def hsl_to_rgb(h, s, l):
-    # Simplified for this example, assuming full saturation and medium lightness
-    # Only hue (h) is used to determine color
-    h_prime = h / 60
-    c = 1 # Full saturation
-    x = c * (1 - abs(h_prime % 2 - 1))
-    m = l - c / 2
+# Funzione per convertire HSV in RGB
+def hsv_to_rgb(h, s, v):
+    # h: 0-359, s: 0-99, v: 0-99
+    h_i = int(h * 6 / 100)  # Converti h in 0-5 per l'indice del settore
+    f = h * 6 / 100 - h_i
+    p = v * (100 - s) / 100
+    q = v * (100 - f * s) / 100
+    t = v * (100 - (1 - f) * s) / 100
 
     r, g, b = 0, 0, 0
+    if h_i == 0: r, g, b = v, t, p
+    if h_i == 1: r, g, b = q, v, p
+    if h_i == 2: r, g, b = p, v, t
+    if h_i == 3: r, g, b = p, q, v
+    if h_i == 4: r, g, b = t, p, v
+    if h_i == 5: r, g, b = v, p, q
 
-    if 0 <= h_prime < 1:
-        r, g, b = c, x, 0
-    elif 1 <= h_prime < 2:
-        r, g, b = x, c, 0
-    elif 2 <= h_prime < 3:
-        r, g, b = 0, c, x
-    elif 3 <= h_prime < 4:
-        r, g, b = 0, x, c
-    elif 4 <= h_prime < 5:
-        r, g, b = x, 0, c
-    elif 5 <= h_prime < 6:
-        r, g, b = c, 0, x
+    return (int(r * 2.55), int(g * 2.55), int(b * 2.55)) # Scala a 0-255
 
-    return (int((r + m) * 255), int((g + m) * 255), int((b + m) * 255))
+# Configura i pin dei pulsanti
+pin13.set_pull(pin13.PULL_UP) # Pulsante D
+pin15.set_pull(pin15.PULL_UP) # Pulsante C
+pin16.set_pull(pin16.PULL_UP) # Pulsante E
+pin14.set_pull(pin14.PULL_UP) # Pulsante F (assumendo P14 per F)
+
+clear_lights()
 ```
 
-② ループ中、現在の実行時間と前回の押下時間の差がプリセットされたアンチジッター閾値（BTN_DEBOUNCE）を超えているかを確認することで、物理的なジッターによる繰り返しの押下を防ぐアンチジッター操作が実装されます。
+② Durante il ciclo, l\operazione anti-jitter viene implementata controllando se la differenza tra il tempo di esecuzione corrente e il tempo di pressione precedente supera la soglia anti-jitter preimpostata (BTN_DEBOUNCE), prevenendo così pressioni ripetute causate da jitter fisico.
 
 ```python
 while True:
     current_time = utime.ticks_ms()
 
-    # Button debouncing
-    if current_time - button_timestamp > BTN_DEBOUNCE:
-        # Check button C (P13)
-        if pin13.read_digital() == 0:  # Button C pressed
-            current_mode = 1
-            mode_step = 0
-            mode_timestamp = current_time
+    # Gestione del debounce dei pulsanti
+    if utime.ticks_diff(current_time, last_button_press_time) > BTN_DEBOUNCE:
+        if not pin15.read_digital(): # Pulsante C (alternato)
+            mode = 1
+            color_index = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
-        # Check button D (P14)
-        elif pin14.read_digital() == 0:  # Button D pressed
-            current_mode = 2
-            mode_step = 0
-            mode_timestamp = current_time
+        elif not pin13.read_digital(): # Pulsante D (respiro)
+            mode = 2
+            hue = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
-        # Check button E (P15)
-        elif pin15.read_digital() == 0:  # Button E pressed
-            current_mode = 3
-            mode_step = 0
-            mode_timestamp = current_time
+        elif not pin16.read_digital(): # Pulsante E (flusso d'acqua)
+            mode = 3
+            water_flow_pos = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
-        # Check button F (P16)
-        elif pin16.read_digital() == 0:  # Button F pressed
-            current_mode = 4
-            mode_step = 0
-            mode_timestamp = current_time
+        elif not pin14.read_digital(): # Pulsante F (scorrimento)
+            mode = 4
+            scroll_pos = 0
+            last_mode_change_time = current_time
+            last_button_press_time = current_time
             clear_lights()
-            button_timestamp = current_time
 ```
 
-③ C(/D/E/F)が押されると、モードは1(2/3/4)に設定され、対応するモードのアニメーションステップとタイミング開始点がリセットされ、ライトがクリアされ、ボタンのタイムスタンプが更新されます。これにより、異なるLEDモードの正確な切り替えと初期操作が可能になります。
+③ Quando C(/D/E/F) viene premuto, la modalità viene impostata su 1(2/3/4), mentre i passaggi dell\animazione e i punti di inizio temporizzazione per la modalità corrispondente vengono resettati, le luci vengono cancellate e il timestamp del pulsante viene aggiornato. Ciò consente una commutazione precisa e un funzionamento iniziale di diverse modalità LED.
 
 ```python
-    # Mode 1: Alternating colors (Red, Green, Blue, Yellow, Purple)
-    if current_mode == 1:
-        if current_time - mode_timestamp > MODE1_DELAY:
-            mode_timestamp = current_time
-            colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (128, 0, 128)]
+    # Logica delle modalità
+    if mode == 1: # Alternato
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE1_DELAY:
+            last_mode_change_time = current_time
             clear_lights()
-            strip[mode_step % 4] = colors[mode_step % len(colors)]
-            strip.show()
-            mode_step += 1
-```
-
-④ モードが1に設定され、現在の時間と前回のモード時間の間の間隔がMODE1_DELAYを超えると、まずモードのタイムスタンプを更新し、model_stepの異なる値（0〜4）に基づいてライトを順に表示します：赤、緑、青、黄、紫。表示を更新した後、剰余演算によってmodel_stepループをリセットし、これら5つの色を定期的に変更します。
-
-```python
-    # Mode 2: Breathing light (hue cycle)
-    elif current_mode == 2:
-        if current_time - mode_timestamp > MODE2_DELAY:
-            mode_timestamp = current_time
-            hue = mode_step % 360  # Cycle hue from 0 to 359
-            # For breathing effect, we can vary lightness or saturation, but here we\'ll just cycle hue
-            r, g, b = hsl_to_rgb(hue, 1, 0.5) # Full saturation, medium lightness
-            for i in range(4):
-                strip[i] = (r, g, b)
-            strip.show()
-            mode_step += 1
-```
-
-⑤ モードが2で、現在の時間と前回のモード時間の間の間隔がMODE2_DELAYを超えると、まずモードのタイムスタンプを更新し、色値（色相）を剰余演算（0〜359の範囲）によって周期的に増加させます。次に、ライトをクリアし、高彩度（99）と低輝度（20）で対応する色相を表示すると、グラデーションカラーがスムーズに変化します。（コード内の輝度と彩度の値は必要に応じて調整できます。）
-
-```python
-    # Mode 3: Flowing water light
-    elif current_mode == 3:
-        if current_time - mode_timestamp > MODE3_DELAY:
-            mode_timestamp = current_time
+            np[0] = colors[color_index]
+            np[1] = colors[(color_index + 1) % len(colors)]
+            np[2] = colors[(color_index + 2) % len(colors)]
+            np[3] = colors[(color_index + 3) % len(colors)]
+            np.show()
+            color_index = (color_index + 1) % len(colors)
+    elif mode == 2: # Respiro
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE2_DELAY:
+            last_mode_change_time = current_time
+            hue = (hue + 5) % 360 # Incrementa la tonalità
+            rgb_color = hsv_to_rgb(hue, 99, 20) # Saturazione alta, luminosità bassa
+            for i in range(len(np)):
+                np[i] = rgb_color
+            np.show()
+    elif mode == 3: # Flusso d'acqua
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE3_DELAY:
+            last_mode_change_time = current_time
             clear_lights()
-            # Shift all pixels one position to the right
-            for i in range(3, 0, -1):
-                strip[i] = strip[i-1]
-            # Set the first pixel to a new random color
-            hue = utime.ticks_ms() % 360
-            r, g, b = hsl_to_rgb(hue, 1, 0.5)
-            strip[0] = (r, g, b)
-            strip.show()
-            mode_step += 1
-```
-
-⑥ モードが3で、現在の時間と前回のモード時間の間の間隔がMODE3_DELAYを超えると、まずモードのタイムスタンプを更新し、ライトストリップのすべてのピクセルを1ビットシフトし、0番目のピクセルにランダムな色相（0〜359）、高彩度（99）、低輝度（20）を割り当てます。表示を更新すると、流れるようなライトが見えます：ライトが順次移動し、色がランダムに変化します。（コード内の輝度と彩度の値は必要に応じて調整できます。）
-
-```python
-    # Mode 4: Marquee light (single LED moving)
-    elif current_mode == 4:
-        if current_time - mode_timestamp > MODE4_DELAY:
-            mode_timestamp = current_time
+            np[water_flow_pos] = (0, 255, 255) # Ciano
+            np.show()
+            water_flow_pos = (water_flow_pos + 1) % len(np)
+    elif mode == 4: # Scorrimento
+        if utime.ticks_diff(current_time, last_mode_change_time) > MODE4_DELAY:
+            last_mode_change_time = current_time
             clear_lights()
-            hue = utime.ticks_ms() % 360
-            r, g, b = hsl_to_rgb(hue, 1, 0.5)
-            strip[mode_step % 4] = (r, g, b)
-            strip.show()
-            mode_step += 1
+            np[scroll_pos] = (255, 165, 0) # Arancione
+            np.show()
+            scroll_pos = (scroll_pos + 1) % len(np)
+
+    sleep(10) # Breve ritardo per il loop principale
 ```
 
-⑦ モードが4で、現在の時間と前回のモード時間の間の間隔がMODE4_DELAYを超えると、まずモードのタイムスタンプを更新し、ライトストリップをクリアし、model_stepに対応するピクセルにランダムな色相（0〜359）、高彩度（99）、低輝度（20）を割り当て、表示を更新します。最後に、剰余演算によってmodel_stepを0〜3の範囲で循環させると、単一のLEDがランダムな色で順次点灯するのを確認できます。（コード内の輝度と彩度の値は必要に応じて調整できます。）
-
-```python
-    utime.sleep_ms(10) # Small delay to prevent busy-waiting
-```
-
-#### 5.2.2.6 テスト結果
+#### 5.2.2.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l\interruttore su “ON”.
 
-**C**を押す: ライトが**赤-緑-青-黄-紫**の順に交互に点滅します。
+Premi **C**: le luci si alternano tra **rosso-verde-blu-giallo-viola** in sequenza.
 
-**D**を押す: ライトの色相が増加し、最終的にグラデーションカラーがスムーズに変化します。
+Premi **D**: la tonalità del colore delle luci aumenterà, e alla fine i colori sfumati cambieranno fluidamente.
 
-**E**を押す: ライトが0番目のピクセルからランダムな色を生成し、色を1ピクセルずつ順次シフトするため、水が流れるようなライトが見えます。
+Premi **E**: le luci generano un colore casuale a partire dal pixel 0, e spostano il colore di un pixel sequenzialmente, in modo da poter vedere una luce a flusso d\acqua.
 
-**F**を押す: 各ピクセルがランダムな色で順次点灯します。
+Premi **F**: ogni pixel si accende con colori casuali in sequenza.
 
 ![Img](./media/2019.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c\è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

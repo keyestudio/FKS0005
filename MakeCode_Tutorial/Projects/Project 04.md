@@ -1,93 +1,93 @@
-### 4.2.4 音楽プレーヤー
+### 4.2.4 Lettore Musicale
 
-#### 4.2.4.1 概要
+#### 4.2.4.1 Panoramica
 
 ![Img](./media/top1.png)
 
-ここでは、micro:bitボードの内蔵ブザーを介して音を生成する音楽プレーヤー（ボーカル音楽は再生しません）を構築します。20の短いトラックのライブラリを備え、シーケンシャル再生とランダム再生の両方をサポートしています。
+Qui costruiamo un lettore musicale che genera suoni tramite il buzzer integrato sulla scheda micro:bit (non riproduce musica vocale). Dispone di una libreria di 20 brevi tracce e supporta sia la riproduzione sequenziale che casuale.
 
-シーケンシャルモードでは、C（前の曲）またはE（次の曲）ボタンを押すと、プリセットされたシーケンスに従ってトラックが切り替わり、リストの最後まで到達します。一方、ランダムモードでは、押すたびに20のサウンドからランダムにトラックが選択され、カラーライトが点滅し、1曲が終わるとすぐに停止します。
+In modalità sequenziale, premendo il pulsante C (Canzone precedente) o E (Canzone successiva) si cambiano le tracce secondo una sequenza preimpostata fino a raggiungere la fine dell'elenco; mentre in modalità casuale, ogni pressione seleziona una traccia a caso tra i 20 suoni con le luci colorate che lampeggiano, e quando una canzone finisce si ferma immediatamente.
 
-同時に、micro:bit LEDマトリックスは現在の再生モードをリアルタイムで表示します。
+Nel frattempo, la matrice LED micro:bit visualizza la modalità di riproduzione corrente in tempo reale.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.4.2 必要な部品
+#### 4.2.4.2 Parti Richieste
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 | **Batteria AAA** (auto-fornita) ×4 |
 
-#### 4.2.4.3 コードフロー
+#### 4.2.4.3 Flusso del Codice
 
 ![Img](./media/4001.png)
 
-#### 4.2.4.4 テストコード
+#### 4.2.4.4 Codice di Test
 
-**完全なコード:**
+**Codice completo:**
 
 ![Img](./media/4002.png)
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① LEDマトリックスと音量を初期化し、RGBピンをP8に接続し、RGBの数を4に設定します。
+① Inizializza la matrice LED e il volume del suono, collega il pin RGB a P8 e imposta il numero di RGB a 4.
 
 ![Img](./media/4003.png)
 
-② メロディの配列を20に初期化し、詳細なトラックを追加し、初期音量を設定します。
+② Inizializza l'array della melodia a 20 e aggiungi le loro tracce dettagliate, e imposta il volume iniziale.
 
 ![Img](./media/4004.png)
 
-③ ボタンDまたはFが押されているかを確認します。Dを押すと「0-シーケンシャル再生」、Fを押すと「1-ランダム再生」になります。
+③ Determina se il pulsante D o F è premuto. Premi D per '0-riproduzione sequenziale', F per '1-riproduzione casuale'.
 
 ![Img](./media/4005.png)
 
-④ シーケンシャルモードでは、Cを押すと前の曲、Eを押すと次の曲にスキップします。
+④ In modalità sequenziale, premi C per riprodurre la canzone precedente, E per passare alla canzone successiva.
 
 ![Img](./media/4006.png)
 
-配列には20トラックしかないので、N.O. 0-19の音楽しか再生できません。そのため、配列のオーバーランとアンダーランを避けるためにif条件を追加します。
+Poiché ci sono solo 20 tracce nell'array, può essere riprodotta solo musica dal N.O. 0-19. Quindi aggiungiamo una condizione if per evitare overflow e underflow dell'array.
 
 ![Img](./media/4007.png)
 
-ただし、ランダムモードでは、C/Eを押すとこれら20曲すべてがシャッフルされます。
+In modalità casuale, invece, premi C/E per mescolare tutte queste 20 canzoni.
 
 ![Img](./media/4008.png)
 
-⑤ 前の曲が現在の曲と一致しないかどうかを判断します。一致する場合は、まず現在の曲を停止してからその曲を再生します。
+⑤ Determina se la canzone precedente è incoerente con quella attuale. In caso affermativo, ferma prima quella attuale e poi riproduci quella.
 
 ![Img](./media/4009.png)
 
-⑥ モードが「0-シーケンシャル再生」の場合は「![Img](./media/4010.png)」、または「1-ランダム再生」の場合は「![Img](./media/4011.png)」を表示し、100msの遅延を設けます。
+⑥ Controlla se la modalità è '0-riproduzione sequenziale', mostrando '![Img](./media/4010.png)', o '1-riproduzione casuale', mostrando '![Img](./media/4011.png)', con un ritardo di 100ms.
 
 ![Img](./media/4012.png)
 
-⑦ RGBライトをバックグラウンドで呼吸させます。
+⑦ Fai respirare le luci RGB in sottofondo.
 
 ![Img](./media/4013.png)
 
-⑧ Aを押すと音量を上げ（+10）、Bを押すと音量を下げます（-10）。micro:bitブザーの音量は、内部接続されたピンの出力電圧によって決定されます。DACを介してデジタル値0〜255をアナログ値に変換することで音量を制御できます。
+⑧ Premi A per aumentare il volume (+10); premi B per diminuirlo (-10). Il volume del buzzer micro:bit è deciso dalla tensione di uscita del pin interno collegato. Possiamo controllare il volume convertendo i valori digitali 0~255 in valori analogici tramite DAC.
 
 ![Img](./media/4014.png)
 
-#### 4.2.4.5 テスト結果
+#### 4.2.4.5 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
 
-電源投入後、デフォルトでシーケンシャルモードになり、N.O.「0」の曲が再生されます。終了したら、Cを押して前の曲、またはEを押して次の曲に進むことができます。
+Dopo l'accensione, è in modalità sequenziale per impostazione predefinita e riprodurrà la canzone al N.O. “0”. Una volta terminata, puoi premere C per l'ultima canzone o E per la successiva.
 
-Fを押すとランダムモードに切り替わります。Dを押すとシーケンシャルモードに戻ります。Fモードでは、C/Eを押すと20曲の中からランダムなトラックが再生されます。終了すると停止します。
+Premi F per passare alla modalità casuale. E puoi premere D per tornare a quella sequenziale. In modalità F, una traccia casuale di queste 20 verrà riprodotta se premi C/E. Dopo aver terminato, si ferma.
 
-RGBライトは電源投入時から常に呼吸しています。同時に、micro:bit LEDマトリックスはシーケンシャルモードでは「![Img](./media/4010.png)」、ランダムモードでは「![Img](./media/4011.png)」を表示します。
+Le luci RGB respirano sempre dal momento dell'accensione. Nel frattempo, la matrice LED micro:bit mostra “![Img](./media/4010.png)” in modalità sequenziale e “![Img](./media/4011.png)” in modalità casuale.
 
-音量については、Aを押すと上がり、Bを押すと下がります。
+Per il volume, premi A per aumentare e B per diminuire.
 
 ![Img](./media/4015.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

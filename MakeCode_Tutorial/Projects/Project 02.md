@@ -1,121 +1,120 @@
-### 4.2.2 カラフルなライト
+### 4.2.2 Luci Colorate
 
-#### 4.2.2.1 概要
+#### 4.2.2.1 Panoramica
 
 ![Img](./media/top1.png)
 
-RGB LEDは、赤、緑、青の3原色の光を混ぜ合わせることで画像を作成するLED光源の一種で、その組み合わせにより様々な色合いを生み出します。一般的な方法としては、3原色を直接混合する方法、青色LEDと黄色蛍光体を組み合わせる方法、または紫外線LEDとRGB蛍光体を組み合わせる方法があります。白色光を直接発するLEDと比較して、RGB LEDは3原色を独立して制御できるため、より幅広い色の混合が可能です。
+I LED RGB sono un tipo di sorgente luminosa a LED che crea immagini mescolando la luce dei tre colori primari: rosso, verde e blu, la cui intersezione produce varie tonalità. I metodi comuni includono la miscelazione diretta dei colori primari, l'utilizzo di un LED blu combinato con fosforo giallo, o l'impiego di un LED ultravioletto insieme a fosforo RGB. Rispetto ai LED che emettono luce bianca direttamente, i LED RGB offrono una gamma più ampia di possibilità di miscelazione dei colori perché i tre colori primari possono essere controllati indipendentemente.
 
-このプロジェクトでは、各ボタンがRGB LEDの異なるモードに対応しています。ボタンCを押すと、「赤、緑、青、黄、紫」の順にライトが交互に点滅します。Dを押すと呼吸ライトに切り替わり、Eを押すと水が流れるようなライト、Fを押すとマーキーライトになります。
+In questo progetto, ogni pulsante corrisponde a una diversa modalità dei LED RGB. Quando si preme il pulsante C, le luci lampeggiano alternativamente nell'ordine di "rosso, verde, blu, giallo e viola"; premere D per passare alle luci a respiro; premere E per le luci a flusso d'acqua; premere F per le luci a scorrimento.
 
-お祭りの飾り付け用のカラフルなライトストリング、クリスマスツリーのライト、日常の雰囲気を演出するRGBストリップ、遊園地やショッピングモールのLED装飾ライトなど、これらはすべて私たちの日常生活におけるマルチモードライトの一般的な例です。
+Stringhe di luci colorate per decorazioni festive, luci per alberi di Natale, strisce RGB per l'ambiente quotidiano, luci decorative a LED nei parchi di divertimento e nei centri commerciali... Sono tutti esempi comuni di luci multimodali nella nostra vita quotidiana.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.2.2 コンポーネント知識
+#### 4.2.2.2 Conoscenza dei Componenti
 
 ![Img](./media/2top.png)
 
-**SK6812 RGB LED**
+**LED RGB SK6812**
 
 | ![Img](./media//2001.png)| ![Img](./media//2002.png)|
 | :--: | :--: |
-| 実物 | 回路図 |
+| Prodotto reale | Schema schematico |
 
-SK6812は、制御回路と照明回路を統合した外部制御型LED光源です。その主要部分は5x5mmの表面実装型LEDビーズで、それぞれが独立したピクセルとして機能し、スマートデジタルインターフェースデータラッチ回路、信号整形および増幅駆動回路、電源調整回路、内蔵定電流回路、高精度RC発振器など、複数のコア回路を内蔵しています。
+L'SK6812 è una sorgente luminosa a LED controllata esternamente che integra circuiti di controllo e illuminazione. La sua parte principale è costituita da perle LED illuminate in superficie da 5x5 mm, ciascuna funzionante come un pixel indipendente che incorpora più circuiti centrali: un circuito di latch dati con interfaccia digitale intelligente, un circuito di pilotaggio per la modellazione e l'amplificazione del segnale, un circuito di regolazione dell'alimentazione, un circuito a corrente costante integrato e un oscillatore RC ad alta precisione.
 
-その通信は単極性ゼロリターンコードプロトコルを採用しています。電源投入リセット後、各ピクセルはDINポートを介してコントローラーからデータを受信します。最初の24ビットのデータは最初のピクセルによって抽出され、内部データラッチに保存されます。残りのデータは内部で整形および増幅された後、DOUTポートを介して後続のピクセルに送信されます。各ピクセルが処理されるたびに、送信される信号サイズは24ビット減少します。
+La sua comunicazione impiega un protocollo di codice a ritorno a zero a polarità singola. Al ripristino all'accensione, ogni pixel riceve i dati dal controller tramite la porta DIN. I primi 24 bit di dati vengono estratti dal pixel iniziale e memorizzati nel latch dati interno, mentre i restanti vengono modellati e amplificati internamente prima di essere trasmessi attraverso la porta DOUT ai pixel successivi. Con ogni pixel elaborato, la dimensione del segnale trasmesso diminuisce di 24 bit.
 
-ゲームパッドには4つのSK6812 RGBライトがあります。これらはすべて、赤、緑、青の各チャンネルで256段階の明るさ調整をサポートしており、256×256×256の色を組み合わせることができます。これにより、交互点滅、呼吸グラデーション、スクロールアニメーションなど、多様な照明効果を実現し、より直感的で鮮やかなインタラクションを提供します。
+Sul gamepad, ci sono quattro luci RGB SK6812. Queste supportano tutte la regolazione della luminosità a 256 livelli attraverso i loro canali rosso, verde e blu, consentendo combinazioni di colori 256×256×256. Grazie a ciò, offre diversi effetti di illuminazione come lampeggi alternati, gradienti a respiro e animazioni a scorrimento, fornendo interazioni più intuitive e vivide.
 
-**ボタン**
+**Pulsante**
 
 | ![Img](./media//2003.png)| ![Img](./media//2004.png)|
 | :--: | :--: |
-| 実物 | 回路図 |
+| Prodotto reale | Schema schematico |
 
-ボタンは、日本で最初に登場し、感圧スイッチと呼ばれていました。操作中、スイッチを押して力を加えることで回路を閉じます。圧力を解放すると、スイッチが開きます。その内部の金属製スプリングリーフは、加えられた力に応じて接続/切断の状態を変化させます。
+Il pulsante, apparso per la prima volta in Giappone, era chiamato interruttore sensibile. Durante il funzionamento, premere l'interruttore per applicare forza e chiudere il circuito. Al rilascio della pressione, l'interruttore si apre. La sua lamina metallica interna cambia il suo stato di connessione/disconnessione in risposta alla forza applicata.
 
-4つのボタンがあり、それぞれがmicro:bitボードのピンに独立して接続されています。いずれかのボタンが押されると、回路は対応する低レベル信号を生成し、micro:bitがコマンドに迅速に応答できるようにし、インタラクションの利便性と精度を大幅に向上させます。
+Ci sono quattro pulsanti, ciascuno collegato indipendentemente a un pin sulla scheda micro:bit. Quando un pulsante viene premuto, il circuito genera un segnale di basso livello corrispondente, consentendo alla micro:bit di rispondere rapidamente ai comandi e migliorando significativamente la comodità e la precisione dell'interazione.
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.2.3 必要な部品
+#### 4.2.2.3 Parti Richieste
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
+| **Scheda micro:bit V2** (auto-fornita) ×1 | **Smart Gamepad micro:bit** (assemblato) ×1 |**Batteria AAA** (auto-fornita) ×4 |
 
-
-#### 4.2.2.4 コードフロー
+#### 4.2.2.4 Flusso del Codice
 
 ![Img](./media/2006.png)
 
-#### 4.2.2.5 テストコード
+#### 4.2.2.5 Codice di Test
 
-⚠️ **コード内のMODE\*_DELAYの遅延時間は、必要に応じて変更できます。**
+⚠️ **Nota che il tempo di ritardo di MODE\*_DELAY nei codici può essere modificato in base alle proprie esigenze.**
 
-**完全なコード:**
+**Codice completo:**
 
 ![Img](./media/2005.png)
 
 ![Img](./media/line1.png)
 
-**簡単な説明:**
+**Breve spiegazione:**
 
-① 最初はLEDの機能を無効にします（led enableをfalseに設定）。
+① All'inizio, disabilita la funzione dei LED (imposta led enable su false).
 
-そして、4つのLED遅延を定義し（例えば、モード2で5、モード1で500など）、ボタンのデバウンスを20に設定します。ピンP8の4つのRGB LEDを無色（すべての値を0に設定）に初期化します。つまり、オフに設定します。
+E definisci 4 ritardi LED (ad esempio, imposta 5 in modalità 2, imposta 500 in modalità 1...), imposta il debounce del pulsante su 20. Inizializza quattro LED RGB sul pin P8 a nessun colore (imposta tutti i valori a 0), cioè, imposta su spento.
 
 ![Img](./media/2009.png)
 
-② ループ中、現在の実行時間と前回の押下時間の差がプリセットされたアンチジッター閾値（BTN_DEBOUNCE）を超えているかを確認することで、物理的なジッターによる繰り返しの押下を防ぐアンチジッター操作が実装されます。
+② Durante il ciclo, l'operazione anti-jitter viene implementata controllando se la differenza tra il tempo di esecuzione corrente e il tempo di pressione precedente supera la soglia anti-jitter preimpostata (BTN_DEBOUNCE), prevenendo così pressioni ripetute causate da jitter fisico.
 
 
 ![Img](./media/2010.png)
 
 
-③ C(/D/E/F)が押されると、モードは1(2/3/4)に設定され、対応するモードのアニメーションステップとタイミング開始点がリセットされ、ライトがクリアされ、ボタンのタイムスタンプが更新されます。これにより、異なるLEDモードの正確な切り替えと初期操作が可能になります。
+③ Quando C(/D/E/F) viene premuto, la modalità viene impostata su 1(2/3/4), mentre i passaggi dell'animazione e i punti di inizio temporizzazione per la modalità corrispondente vengono resettati, le luci vengono cancellate e il timestamp del pulsante viene aggiornato. Ciò consente una commutazione precisa e un funzionamento iniziale di diverse modalità LED.
 
 
 | ![Img](./media/2011.png)|![Img](./media/2012.png)|
 | :--: | :--: |
-|ボタンCが押された|ボタンDが押された|
-| ![Img](./media/2013.png)    |     ![Img](./media/2014.png)   |
-|ボタンEが押された|ボタンFが押された|
+|Pulsante C premuto|Pulsante D premuto|
+| ![Img](./media/2013.png) | ![Img](./media/2014.png) |
+|Pulsante E premuto|Pulsante F premuto|
 
-④ モードが1に設定され、現在の時間と前回のモード時間の間の間隔がMODE1Delayを超えると、まずモードのタイムスタンプを更新し、model_stepの異なる値（0〜4）に基づいてライトを順に表示します：赤、緑、青、黄、紫。表示を更新した後、剰余演算によってmodel_stepループをリセットし、これら5つの色を定期的に変更します。
+④ Quando la modalità è impostata su 1 e l'intervallo tra il tempo corrente e il tempo della modalità precedente supera MODE1Delay, aggiorna prima il timestamp della modalità e visualizza le luci in base ai diversi valori di model_step (0–4) in sequenza: rosso, verde, blu, giallo e viola. Dopo aver aggiornato la visualizzazione, resetta il ciclo model_step con un'operazione modulo per cambiare regolarmente questi cinque colori.
 
 ![Img](./media/2015.png)
 
-⑤ モードが2で、現在の時間と前回のモード時間の間の間隔がMODE2_DELAYを超えると、まずモードのタイムスタンプを更新し、色値（色相）を剰余演算（0〜359の範囲）によって周期的に増加させます。次に、ライトをクリアし、高彩度（99）と低輝度（20）で対応する色相を表示すると、グラデーションカラーがスムーズに変化します。（コード内の輝度と彩度の値は必要に応じて調整できます。）
+⑤ Quando la modalità è 2 e l'intervallo tra il tempo corrente e il tempo della modalità precedente supera MODE2_DELAY, aggiorna prima il timestamp della modalità e incrementa ciclicamente il valore del colore (tonalità) tramite modulo (intervallo 0–359). Quindi, cancella la luce e visualizza la tonalità corrispondente con alta saturazione (99) e bassa luminosità (20), e i colori sfumati cambieranno fluidamente. (I valori di luminosità e saturazione nei codici possono essere regolati secondo necessità.)
 
 ![Img](./media/2016.png)
 
-⑥ モードが3で、現在の時間と前回のモード時間の間の間隔がMODE3_DELAYを超えると、まずモードのタイムスタンプを更新し、ライトストリップのすべてのピクセルを1ビットシフトし、0番目のピクセルにランダムな色相（0〜359）、高彩度（99）、低輝度（20）を割り当てます。表示を更新すると、流れるようなライトが見えます：ライトが順次移動し、色がランダムに変化します。（コード内の輝度と彩度の値は必要に応じて調整できます。）
+⑥ Quando la modalità è 3 e l'intervallo tra il tempo corrente e il tempo della modalità precedente supera MODE3_DELAY, aggiorna prima il timestamp della modalità e sposta tutti i pixel della striscia luminosa di 1 bit, assegna una tonalità casuale (0–359), alta saturazione (99) e bassa luminosità (20) al pixel 0. Aggiorna la visualizzazione e potrai vedere una luce fluida: le luci si muovono sequenzialmente e cambiano colore casualmente. (I valori di luminosità e saturazione nel codice possono essere regolati secondo necessità.)
 
 ![Img](./media/2017.png)
 
-⑦ モードが4で、現在の時間と前回のモード時間の間の間隔がMODE4_DELAYを超えると、まずモードのタイムスタンプを更新し、ライトストリップをクリアし、model_stepに対応するピクセルにランダムな色相（0〜359）、高彩度（99）、低輝度（20）を割り当て、表示を更新します。最後に、剰余演算によってmodel_stepを0〜3の範囲で循環させると、単一のLEDがランダムな色で順次点灯するのを確認できます。（コード内の輝度と彩度の値は必要に応じて調整できます。）
+⑦ Quando la modalità è 4 e l'intervallo tra il tempo corrente e il tempo della modalità precedente supera MODE4_DELAY, aggiorna prima il timestamp della modalità e cancella la striscia luminosa, assegna una tonalità casuale (0–359), alta saturazione (99) e bassa luminosità (20) ai pixel corrispondenti a model_step, e aggiorna la visualizzazione. Infine, cicla model_step tra 0-3 tramite modulo, e vedrai un singolo LED accendersi sequenzialmente con colori casuali. (I valori di luminosità e saturazione nel codice possono essere regolati secondo necessità.)
 
 ![Img](./media/2018.png)
 
-#### 4.2.2.6 テスト結果
+#### 4.2.2.6 Risultato del Test
 
 ![Img](./media/4top.png)
 
-コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
+Dopo aver caricato il codice, inserisci la scheda micro:bit nello slot del gamepad (**batterie installate**) e sposta l'interruttore su “ON”.
 
-**C**を押す: ライトが**赤-緑-青-黄-紫**の順に交互に点滅します。
+Premi **C**: le luci si alternano tra **rosso-verde-blu-giallo-viola** in sequenza.
 
-**D**を押す: ライトの色相が増加し、最終的にグラデーションカラーがスムーズに変化します。
+Premi **D**: la tonalità del colore delle luci aumenterà, e alla fine i colori sfumati cambieranno fluidamente.
 
-**E**を押す: ライトが0番目のピクセルからランダムな色を生成し、色を1ピクセルずつ順次シフトするため、水が流れるようなライトが見えます。
+Premi **E**: le luci generano un colore casuale a partire dal pixel 0, e spostano il colore di un pixel sequenzialmente, in modo da poter vedere una luce a flusso d'acqua.
 
-**F**を押す: 各ピクセルがランダムな色で順次点灯します。
+Premi **F**: ogni pixel si accende con colori casuali in sequenza.
 
 ![Img](./media/2019.gif)
 
-<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
+<span style="color: rgb(0, 209, 0);">**Suggerimento:** Se non c'è risposta sulla scheda, premi il pulsante di reset sul retro della scheda micro:bit.</span>
 
 ![Img](./media/4bottom.png)

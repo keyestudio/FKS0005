@@ -106,6 +106,6 @@ Wenn es nach drei Runden einen Gewinner gibt, wird „WINNER“ für den Sieg un
 
 ![Img](./media/6000.gif)
 
-<span style=\"color: rgb(0, 209, 0);\">**Tipp:** Warten Sie, bis das Herzsymbol erscheint, bevor Sie die nächste Runde fortsetzen. Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Warten Sie, bis das Herzsymbol erscheint, bevor Sie die nächste Runde fortsetzen. Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

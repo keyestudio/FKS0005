@@ -8,7 +8,7 @@
 .. toctree::
     :maxdepth: 1
 
-    Thonny Entwicklungsumgebung
+    Thonny Thonny Development Environment
 
 
 5.2 Projekte
@@ -34,7 +34,7 @@
 .. toctree::
     :maxdepth: 1
 
-    Fehlerbehebung
+    Troubleshooting
     
 
 

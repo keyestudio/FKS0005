@@ -91,6 +91,6 @@ Danach wird das Spiel zurückgesetzt und ein neuer Zielwert festgelegt. Lassen S
 
 ⚠️ **Die Bausteine im Testergebnis sind nicht in diesem Produktkit enthalten.**
 
-<span style=\"color: rgb(0, 209, 0);\">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

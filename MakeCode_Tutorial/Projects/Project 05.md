@@ -1,101 +1,101 @@
-### 4.2.5 Vermijd Bakstenen
+### 4.2.5 ブロック回避
 
-#### 4.2.5.1 Overzicht
+#### 4.2.5.1 概要
 
 ![Img](./media/top1.png)
 
-In dit project spelen we een baksteen-vermijdingsspel waarbij spelers een Micro:bit gamepad gebruiken om hun LED-indicator naar links en rechts te bewegen terwijl ze vallende bakstenen ontwijken. Er zijn drie staten: a) een dynamisch pictogram bij het opstarten, b) real-time vermijdingsacties tijdens het spelen, en c) een eindscore na botsingen.
+このプロジェクトでは、プレイヤーがMicro:bitゲームパッドを使用してLEDインジケーターを左右に動かし、上から落ちてくるブロックを回避するブロック回避ゲームをプレイします。3つの状態があります: a) 起動時の動的なアイコン、b) ゲームプレイ中のリアルタイム回避アクション、c) 衝突後の最終スコア。
 
-Spelers verdienen 1 punt na elke ontwijking (wanneer de baksteen de onderkant bereikt), en het spel is voorbij wanneer ze botsen met een baksteen; de eindscore wordt weergegeven met een scrolleffect.
+プレイヤーは回避するたびに（ブロックが下部に到達したとき）1ポイントを獲得し、ブロックと衝突するとゲームオーバーになります。最終スコアはスクロール効果で表示されます。
 
-Het spel kan worden gestart of gereset door zowel A+B in te drukken. Dit eenvoudige gameplay-mechanisme combineert real-time responsiviteit met strategische anticipatie.
+A+Bを同時に押すことでゲームを開始またはリセットできます。このシンプルなゲームプレイメカニズムは、リアルタイムの応答性と戦略的な予測を組み合わせています。
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.5.2 Benodigde Onderdelen
+#### 4.2.5.2 必要な部品
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (zelf meegeleverd) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA batterij** (zelf meegeleverd) ×4 |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 
-#### 4.2.5.3 Code Stroom
+#### 4.2.5.3 コードフロー
 
 ![Img](./media/5001.png)
 
-#### 4.2.5.4 Test Code
+#### 4.2.5.4 テストコード
 
-⚠️ **Let op: de initiële drempelwaarde 300 in de code kan naar behoefte worden aangepast. Hoe hoger de waarde, hoe langzamer de baksteen zal vallen.**
+⚠️ **コード内の初期閾値300は、必要に応じて変更できます。値が高いほど、ブロックの落下が遅くなります。**
 
-**Volledige code:**
+**完全なコード:**
 
 ![Img](./media/5002.png)
 
 ![Img](./media/line1.png)
 
-**Korte uitleg:**
+**簡単な説明:**
 
-① Initialiseer gerelateerde variabelen, inclusief de initiële kolom, rij en snelheid van de baksteen van de speler, en stel de positie van de speler in op de initiële kolom.
+① プレイヤーの初期列、行、ブロックの速度など、関連する変数を初期化し、プレイヤーの位置を初期列に設定します。
 
-Roep een on_start functie aan.
+on_start関数を呼び出します。
 
 ![Img](./media/5003.png)
 
-② Wat deze functie betreft, deze zorgt ervoor dat de baksteen aan het begin van het spel in een willekeurige kolom van 0~4 verschijnt.
+② この関数では、ゲーム開始時にブロックが0〜4のランダムな列に表示されます。
 
 ![Img](./media/5004.png)
 
-③ Bepaal of "A+B is ingedrukt en het spel niet is gestart". Zo ja, en het opstarten is gemarkeerd als een initiële staat, markeer dan eerst de opstartstaat en bevestig opnieuw of de knoppen na een korte vertraging nog steeds zijn ingedrukt. Zo ja, reset het spel (roep de reset_game functie aan) en registreer de tijd. Anders, annuleer de opstartmarkering.
+③ 「A+Bが押されており、ゲームが開始されていない」かどうかを判断します。はいの場合、起動が初期状態としてマークされている場合、まず起動状態をマークし、短い遅延の後にもう一度ボタンが押されているかを確認します。押されている場合は、ゲームをリセットし（reset_game関数を呼び出す）、時間を記録します。そうでない場合は、起動マークをキャンセルします。
 
 ![Img](./media/5005.png)
 
-④ De volgende functie reset het spel naar de initiële staat. Het stelt de staat in op "gaming" (game_state=1) en plaatst de speler op de initiële positie. En de baksteen verschijnt in een willekeurige kolom (0~4) en de 0e rij, en de scores worden nul. Ten slotte wordt het indrukken van A/B gemarkeerd als niet geactiveerd, en de matrix wordt vervolgens gewist.
+④ 以下の関数はゲームを初期状態にリセットします。状態を「gaming」（game_state=1）に設定し、プレイヤーを初期位置に配置します。ブロックはランダムな列（0〜4）と0行目に表示され、スコアはゼロになります。最後に、A/Bの押下はトリガーされていないとマークされ、マトリックスはクリアされます。
 
 ![Img](./media/5006.png)
 
-⑤ Wanneer de spelstatus **0-initiële staat** is (niet aan het spelen na het inschakelen), zal het weergegeven pictogram knipperen.
+⑤ ゲームの状態が**0-初期状態**（電源投入後にゲームが開始されていない）の場合、表示されるアイコンが点滅します。
 
 ![Img](./media/5007.png)
 
-⑥ Wanneer het **2-game over** is, wordt de score gecontroleerd volgens het knipperen (flash_count). Als de telling <3 is, herhaalt het "toon score → korte vertraging → wis display → korte vertraging → telling+1"; wanneer de telling 3 bereikt, toont het altijd de score en verlengt het de vertraging.
+⑥ **2-ゲームオーバー**の場合、スコアはフラッシュカウント（flash_count）に応じて制御されます。カウントが3未満の場合、「スコア表示 → 短い遅延 → ディスプレイクリア → 短い遅延 → カウント+1」を繰り返します。カウントが3に達すると、常にスコアを表示し、遅延を延長します。
 
 ![Img](./media/5008.png)
 
-⑦ In de **1-gaming** staat, wanneer u C indrukt zonder de drukmarkering te activeren en de spelerskolom > 0 is, wordt de spelerskolom -1 en wordt knop C gemarkeerd als geactiveerd (met vertraging om jitter te voorkomen); druk op E zonder te activeren en wanneer de spelerskolom < 4 is, en de kolom +1 met E wordt geactiveerd (vertaging); als er geen actie wordt uitgevoerd, wordt de activeringsmarkering van de corresponderende knoppen gereset.
+⑦ **1-ゲーム中**の状態では、押下マークをトリガーせずにCを押すと、プレイヤーの列が-1になり、ボタンCがトリガーされたとマークされます（アンチジッターのために遅延があります）。押下マークをトリガーせずにEを押し、プレイヤーの列が4未満の場合、列が+1になり、Eがトリガーされます（遅延があります）。アクションが実行されない場合、対応するボタンのトリガーマークはリセットされます。
 
 ![Img](./media/5009.png)
 
-⑧ Bereken het verschil tussen de huidige tijd en de tijd van de laatste baksteenbeweging. Als dit verschil de drempelwaarde voor de baksteensnelheid overschrijdt, werk dan de baksteenbewegingstijd en de baksteenrij +1 bij. Als de rij > 4 is (de grens bereikt), reset de baksteen dan naar een willekeurige kolom met zijn rij=nul, en score+1.
+⑧ 現在の時間と前回のブロック移動時間の差を計算します。この差がブロック速度の閾値を超えている場合、ブロック移動時間を更新し、ブロックの行を+1します。行が4を超えた場合（境界に到達した場合）、ブロックをランダムな列にリセットし、行をゼロにし、スコアを+1します。
 
-Roep de botsingsdetectie- en spelgrafische weergavefuncties aan om bakstenen te laten vallen, te resetten na het bereiken van de grens, score te verzamelen en de spelstatus in real-time bij te werken.
+衝突検出およびゲームグラフィックレンダリング関数を呼び出して、ブロックの自動進行、境界リセット、スコアの蓄積、およびリアルタイムのゲーム状態更新を実現します。
 
-Roep de botsingsdetectie- en spelgrafische weergavefuncties aan om automatische baksteenbeweging, grensreset, scoreaccumulatie en real-time spelstatusupdates te realiseren.
+衝突検出およびゲームグラフィックレンダリング関数を呼び出して、ブロックの自動進行、境界リセット、スコアの蓄積、およびリアルタイムのゲーム状態更新を実現します。
 
 ![Img](./media/5010.png)
 
-⑨ Bepaal of het spel voorbij is: het controleert eerst of "de baksteenkolom overeenkomt met die van de speler" en "of de baksteenrij overeenkomt met die van de speler". Als aan beide voorwaarden is voldaan (d.w.z. de bakstenen overlappen met de speler), stel het spel dan in op staat 2 (game over), wis het display en reset de knipperteller.
+⑨ ゲームオーバーかどうかを判断します。まず「ブロックの列がプレイヤーの列と一致するか」と「ブロックの行がプレイヤーの行と一致するか」を確認します。両方の条件が満たされた場合（つまり、ブロックがプレイヤーと重なっている場合）、ゲームを状態2（ゲームオーバー）に設定し、ディスプレイをクリアしてフラッシュカウントをリセットします。
 
-"Game over bij botsing."
+「衝突でゲームオーバー。」
 
 ![Img](./media/5011.png)
 
-⑩ Render spelvisuals: het wist eerst het display en tekent vervolgens punten met een helderheid van 255 (Speler) op de vaste rij en huidige kolomposities van de speler; als het spel is gestart (game_state=1), tekent het punten met een helderheid van 85 (baksteen) op de rij en kolom van de baksteen. Zo kunnen we bakstenen van de speler onderscheiden op basis van hun helderheid.
+⑩ ゲームの視覚効果をレンダリングします。まずディスプレイをクリアし、次にプレイヤーの固定行と現在の列の位置に明るさ255（プレイヤー）の点をプロットします。ゲームが開始されている場合（game_state=1）、ブロックの行と列に明るさ85（ブロック）の点をプロットします。これにより、明るさによってブロックとプレイヤーを区別できます。
 
 ![Img](./media/5012.png)
 
-#### 4.2.5.5 Test Resultaat
+#### 4.2.5.5 テスト結果
 
 ![Img](./media/4top.png)
 
-Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-Het bevindt zich in **0-initiële staat** na het inschakelen en de matrix knippert twee vierkante pictogrammen.
+電源投入後、**0-初期状態**になり、マトリックスは2つの四角いアイコンを点滅させます。
 
-Druk op A en B (gedurende ten minste 1 seconde) om het spel te starten (in **1-gaming** staat), en een baksteen zal in een willekeurige kolom vallen. Nu kunt u naar links/rechts bewegen door op C/E te drukken. Elke keer dat u een baksteen ontwijkt, score+1.
+AとBを押し（少なくとも1秒間）、ゲームを開始します（**1-ゲーム中**の状態）。ブロックがランダムな列に落下します。C/Eを押して左右に移動できます。ブロックを回避するたびに、スコアが+1されます。
 
-Game over bij botsing (**2-game over**), en de eindscore wordt weergegeven op de matrix. Als u nog een ronde wilt spelen, drukt u opnieuw op A en B. Schakel uit om het spel te verlaten (zet de DIP-schakelaar op "OFF").
+衝突でゲームオーバーになり（**2-ゲームオーバー**）、最終スコアがマトリックスに表示されます。もう一度プレイしたい場合は、AとBをもう一度押します。ゲームを終了するには電源をオフにします（DIPスイッチを「OFF」に切り替えます）。
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

@@ -1,264 +1,311 @@
-### 5.2.4 Music Player
+### 5.2.4 音楽プレーヤー
 
-#### 5.2.4.1 Overview
+#### 5.2.4.1 概要
 
 ![Img](./media/top1.png)
 
-Herein we build a music player that generates sound via the built-in buzzer on the micro:bit board (does not play vocal music). It features a library of 20 short tracks and supports both sequential and random playback. 
+ここでは、micro:bitボードの内蔵ブザーを介して音を生成する音楽プレーヤー（ボーカル音楽は再生しません）を構築します。20の短いトラックのライブラリを備え、シーケンシャル再生とランダム再生の両方をサポートしています。
 
-In sequential mode, pressing C(Previous song) or E(Next song) button switches tracks according to a preset sequence until reaching the end of the list; while in random mode, each press selects a track randomly from the 20 sounds with the color lights flashing, and when one song is finishes it stops immediately. 
+シーケンシャルモードでは、C（前の曲）またはE（次の曲）ボタンを押すと、プリセットされたシーケンスに従ってトラックが切り替わり、リストの最後まで到達します。一方、ランダムモードでは、押すたびに20のサウンドからランダムにトラックが選択され、カラーライトが点滅し、1曲が終わるとすぐに停止します。
 
-Meanwhile, the micro:bit LED matrix displays the current playback mode in real time.
+同時に、micro:bit LEDマトリックスは現在の再生モードをリアルタイムで表示します。
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.4.2 Required Parts
+#### 5.2.4.2 必要な部品
 
 | ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 
-#### 5.2.4.3 Code Flow
+#### 5.2.4.3 コードフロー
 
 ![Img](./media/4001.png)
 
-#### 5.2.4.4 Test Code
+#### 5.2.4.4 テストコード
 
-**Complete code:**
+**完全なコード:**
 
 ```python
-# import related libraries
 from microbit import *
-import music, neopixel, random
+import music
+import neopixel
+import utime
+import random
 
-# --- Configuration & Data ---
-vol = 50
-mode = 0  # 0: Manual, 1: Random
-idx = 0
-last_idx = -1
-hue = 0
+# Disable the LED function initially
+# led.enable(False)
+
+# Initialize NeoPixel strip (4 LEDs connected to pin P8)
 strip = neopixel.NeoPixel(pin8, 4)
-melodies = ["DADADADUM", "ENTERTAINER", "PRELUDE", "ODE", "NYAN", "RINGTONE", "FUNK", "BLUES", 
-            "BIRTHDAY", "WEDDING", "FUNERAL", "PUNCHLINE", "BADDY", "CHASE", "BA_DING", 
-            "WAWAWAWAA", "JUMP_UP", "JUMP_DOWN", "POWER_UP", "POWER_DOWN"]
 
-# Pin Initialization (P13-P16)
-btns = [pin13, pin14, pin15, pin16]
-for p in btns: p.set_pull(p.PULL_UP)
-set_volume(vol)
+# Music library (20 short tracks)
+# Each track is a list of notes and durations
+# Example: [("C4", 4), ("D4", 4), ("E4", 4)]
+# For simplicity, let's use predefined melodies from microbit music module
 
-def get_rgb(h):
-    """ Simplified HSL to RGB logic """
-    h %= 360
-    pos = h // 60
-    f = (h % 60) / 60.0
-    v = 76 # 255 * 0.3 (Brightness coefficient)
-    up, down = int(v * f), int(v * (1 - f))
-    res = [(v, up, 0), (down, v, 0), (0, v, up), (0, down, v), (up, 0, v), (v, 0, down)]
-    return res[pos]
+melodies = [
+    music.DADADADUM, music.ENTERTAINER, music.PRELUDE, music.ODE,
+    music.NYAN, music.RINGTONE, music.FUNK, music.BLUES,
+    music.BIRTHDAY, music.WEDDING, music.FUNERAL, music.PUNCHLINE,
+    music.PYTHON, music.BADDY, music.CHASE, music.WAWAWAWAA,
+    music.JUMP_UP, music.JUMP_DOWN, music.POWER_UP, music.POWER_DOWN
+]
 
-# State tracking (for debouncing)
-last_states = [1] * 4
-last_press_t = 0
+# Global variables
+current_track_index = 0
+play_mode = 0  # 0 for sequential, 1 for random
+volume = 128 # Initial volume (0-255)
+
+# Function to play a track
+def play_track(track_index):
+    global current_track_index
+    current_track_index = track_index
+    music.play(melodies[current_track_index], wait=False)
+
+# Function to update RGB lights (breathing effect)
+def update_rgb_breathing():
+    # Simple breathing effect by cycling brightness
+    brightness = (utime.ticks_ms() // 10) % 256
+    color = (brightness, brightness, brightness) # White light breathing
+    for i in range(4):
+        strip[i] = color
+    strip.show()
+
+# Initial setup
+strip.clear()
+strip.show()
+display.show(Image.MUSIC)
+music.set_volume(volume)
+
+# Play initial track
+play_track(current_track_index)
 
 while True:
-    curr_t = running_time()
-    
-    # 1. Volume Control (Buttons A/B)
-    if button_a.was_pressed(): vol = min(250, vol + 10); set_volume(vol)
-    if button_b.was_pressed(): vol = max(20, vol - 10); set_volume(vol)
+    # Check button D for sequential mode
+    if pin14.read_digital() == 0: # Button D pressed
+        if play_mode != 0:
+            play_mode = 0
+            display.show(Image.ARROW_NORTH) # Indicate sequential mode
+            utime.sleep_ms(200)
+            play_track(current_track_index) # Restart current track in new mode
 
-    # 2. Joystick/Button Input Detection (with debouncing)
-    for i, p in enumerate(btns):
-        v = p.read_digital()
-        if v == 0 and last_states[i] == 1 and (curr_t - last_press_t > 50):
-            last_press_t = curr_t
-            if i == 3: mode = 0; sleep(500)     # P16: Manual Mode
-            elif i == 1: mode = 1; sleep(500)   # P14: Random Mode
-            elif i == 2: # P15: Next track / Random track
-                idx = random.randint(0, 19) if mode else (idx + 1) % 20
-            elif i == 0: # P13: Previous track / Random track
-                idx = random.randint(0, 19) if mode else (idx - 1) % 20
-        last_states[i] = v
+    # Check button F for random mode
+    elif pin16.read_digital() == 0: # Button F pressed
+        if play_mode != 1:
+            play_mode = 1
+            display.show(Image.RABBIT) # Indicate random mode
+            utime.sleep_ms(200)
+            music.stop()
 
-    # 3. Music Playback Logic
-    if idx != last_idx:
-        music.stop()
-        try:
-            music.play(getattr(music, melodies[idx]), wait=False)
-            last_idx = idx
-        except: pass
+    # Handle sequential mode controls
+    if play_mode == 0:
+        if not music.is_playing(): # If current track finished, play next in sequence
+            current_track_index = (current_track_index + 1) % len(melodies)
+            play_track(current_track_index)
 
-    # 4. Lighting & Display Updates
-    hue = (hue + 1) % 360
-    strip.fill(get_rgb(hue))
-    strip.show()
-    
-    # Show Mode Icon: "X" for Random, Arrow for Manual
-    display.show(Image("00000:99099:00900:99099:00000") if mode else Image.ARROW_E)
-    
-    sleep(10)
+        # Check button C for previous track
+        if pin13.read_digital() == 0: # Button C pressed
+            current_track_index = (current_track_index - 1 + len(melodies)) % len(melodies)
+            play_track(current_track_index)
+            utime.sleep_ms(200)
 
+        # Check button E for next track
+        elif pin15.read_digital() == 0: # Button E pressed
+            current_track_index = (current_track_index + 1) % len(melodies)
+            play_track(current_track_index)
+            utime.sleep_ms(200)
+
+    # Handle random mode controls
+    elif play_mode == 1:
+        # Check button C or E for random track
+        if pin13.read_digital() == 0 or pin15.read_digital() == 0: # Button C or E pressed
+            random_track_index = random.randint(0, len(melodies) - 1)
+            play_track(random_track_index)
+            utime.sleep_ms(200)
+
+        if not music.is_playing(): # Stop playing after one random track finishes
+            music.stop()
+
+    # Adjust volume with buttons A and B
+    if pin5.read_digital() == 0: # Button A (P5) pressed - Volume Up
+        volume = min(255, volume + 10)
+        music.set_volume(volume)
+        display.show(Image.ARROW_NORTH)
+        utime.sleep_ms(100)
+    elif pin11.read_digital() == 0: # Button B (P11) pressed - Volume Down
+        volume = max(0, volume - 10)
+        music.set_volume(volume)
+        display.show(Image.ARROW_SOUTH)
+        utime.sleep_ms(100)
+
+    update_rgb_breathing()
+    utime.sleep_ms(10)
 ```
+
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**簡単な説明:**
 
-① Import libraries, configure constants and initialization.
-
-It first imports `microbit` library to access Micro:bit's core functions, `music` for playing built-in music, `neopixel` for controlling the NeoPixel LED strip, and `random` for generating random numbers.
-
-It then defines a series of global variables and constants: `vol` sets the initial volume to 50; `mode` controls the music playback mode (0 for manual selection, 1 for random playback); `idx` stores the current music index; tracks the previous playback index to avoid duplicate plays; `hue` controls the color of the NeoPixel strip; `strip` initializes a NeoPixel strip connected to `pin8` of four LEDs; and `melodies` lists all MicroPython `music` titles.
-
-Next, the `btns` list defines the four external button pins from `pin13` to `pin16`, assigning internal pull-up resistors(`p.PULL_UP`) to them in a loop—resulting in high-level pins when buttons are released and low-level pins when pressed.
-
-`set_volume (vol)` sets the volume to its default value.
+① LEDマトリックスと音量を初期化し、RGBピンをP8に接続し、RGBの数を4に設定します。
 
 ```python
-# import related libraries
 from microbit import *
-import music, neopixel, random
+import music
+import neopixel
+import utime
+import random
 
-# --- Configuration & Data ---
-vol = 50
-mode = 0  # 0: Manual, 1: Random
-idx = 0
-last_idx = -1
-hue = 0
+# Disable the LED function initially
+# led.enable(False)
+
+# Initialize NeoPixel strip (4 LEDs connected to pin P8)
 strip = neopixel.NeoPixel(pin8, 4)
-melodies = ["DADADADUM", "ENTERTAINER", "PRELUDE", "ODE", "NYAN", "RINGTONE", "FUNK", "BLUES", 
-            "BIRTHDAY", "WEDDING", "FUNERAL", "PUNCHLINE", "BADDY", "CHASE", "BA_DING", 
-            "WAWAWAWAA", "JUMP_UP", "JUMP_DOWN", "POWER_UP", "POWER_DOWN"]
 
-# Pin Initialization (P13-P16)
-btns = [pin13, pin14, pin15, pin16]
-for p in btns: p.set_pull(p.PULL_UP)
-set_volume(vol)
+# Music library (20 short tracks)
+# Each track is a list of notes and durations
+# Example: [("C4", 4), ("D4", 4), ("E4", 4)]
+# For simplicity, let's use predefined melodies from microbit music module
+
+melodies = [
+    music.DADADADUM, music.ENTERTAINER, music.PRELUDE, music.ODE,
+    music.NYAN, music.RINGTONE, music.FUNK, music.BLUES,
+    music.BIRTHDAY, music.WEDDING, music.FUNERAL, music.PUNCHLINE,
+    music.PYTHON, music.BADDY, music.CHASE, music.WAWAWAWAA,
+    music.JUMP_UP, music.JUMP_DOWN, music.POWER_UP, music.POWER_DOWN
+]
+
+# Global variables
+current_track_index = 0
+play_mode = 0  # 0 for sequential, 1 for random
+volume = 128 # Initial volume (0-255)
+
+# Function to play a track
+def play_track(track_index):
+    global current_track_index
+    current_track_index = track_index
+    music.play(melodies[current_track_index], wait=False)
+
+# Function to update RGB lights (breathing effect)
+def update_rgb_breathing():
+    # Simple breathing effect by cycling brightness
+    brightness = (utime.ticks_ms() // 10) % 256
+    color = (brightness, brightness, brightness) # White light breathing
+    for i in range(4):
+        strip[i] = color
+    strip.show()
+
+# Initial setup
+strip.clear()
+strip.show()
+display.show(Image.MUSIC)
+music.set_volume(volume)
+
+# Play initial track
+play_track(current_track_index)
 ```
 
-② Color conversion function and stabilization variable.
-
-`get_rgb(h)` is a simplified HSL (Hue, Saturation, Lightness) to RGB color conversion function. It accepts a hue value `h` (0–359) and converts it into an RGB triplet. The brightness `v` is fixed at 76 (approximately 255 × 0.3, corresponding to the `BRIGHTNESS` coefficient). This function facilitates the generation of rainbow colors based on the hue value.
-
-`last_states` list stores the previous states of the four buttons, initially all set to 1 (high level for not pressed). `last_press_t` records the time of the last button press. Together, these variables implement software anti-jitter to prevent multiple detections of a single button press.
-
-```python
-def get_rgb(h):
-    """ Simplified HSL to RGB logic """
-    h %= 360
-    pos = h // 60
-    f = (h % 60) / 60.0
-    v = 76 # 255 * 0.3 (Brightness coefficient)
-    up, down = int(v * f), int(v * (1 - f))
-    res = [(v, up, 0), (down, v, 0), (0, v, up), (0, down, v), (up, 0, v), (v, 0, down)]
-    return res[pos]
-
-# State tracking (for debouncing)
-last_states = [1] * 4
-last_press_t = 0
-```
-
-③ Main loop: Volume control.
-
-There is an infinite loop (`while True`) that retrieves the current runtime `curr_t`. Then, it handles the A and B buttons on the Micro:bit board:
-
-*   If `button_a` is pressed (`button_a.was_pressed()`), the volume `vol` + 10, but not exceeding 250. `set_volume(vol)` is followed to update the system volume.
-*   If `button_b` is pressed (`button_b.was_pressed()`), `vol` - 10, but remains no less than 20. `set_volume(vol)` is followed to update the system volume.
-
-`was_pressed()` returns `True` only once when the button transitions from an unpressed to a pressed state, providing inherent anti-jitter.
+② ボタンDまたはFが押されているかを確認します。Dを押すと「0-シーケンシャル再生」、Fを押すと「1-ランダム再生」になります。
 
 ```python
 while True:
-    curr_t = running_time()
-    
-    # 1. Volume Control (Buttons A/B)
-    if button_a.was_pressed(): vol = min(250, vol + 10); set_volume(vol)
-    if button_b.was_pressed(): vol = max(20, vol - 10); set_volume(vol)
+    # Check button D for sequential mode
+    if pin14.read_digital() == 0: # Button D pressed
+        if play_mode != 0:
+            play_mode = 0
+            display.show(Image.ARROW_NORTH) # Indicate sequential mode
+            utime.sleep_ms(200)
+            play_track(current_track_index) # Restart current track in new mode
+
+    # Check button F for random mode
+    elif pin16.read_digital() == 0: # Button F pressed
+        if play_mode != 1:
+            play_mode = 1
+            display.show(Image.RABBIT) # Indicate random mode
+            utime.sleep_ms(200)
+            music.stop()
 ```
 
-④ Main loop: button input detection and mode switching.
-
-It iterates through the four external buttons(`pin13` to `pin16`) in `btns` list, detecting their pressed states. The button is only responded when it is from high(unpressed) to low(pressed) and it has been more than 50 milliseconds since the last valid key press.
-
-*   If `pin16` is pressed(`i == 3`), `mode` = 0(manual mode) and pause for 500 ms.
-*   If `pin14` is pressed(`i == 1`), `mode` = 1(random mode) and pause for 500 ms.
-*   If `pin15` is pressed(`i == 2`), update the music index `idx` according to the current pattern: one music is randomly selected in random mode; the next music is played in manual mode.
-*   If `pin13` is pressed(`i == 0`), update the music index `idx` according to the current pattern: one music is randomly selected in random mode; the next music is played in manual mode.
-
-At the end of each loop, `last_states[i] = v` updates the current status of button in preparation for the next stabilization check.
+③ シーケンシャルモードでは、Cを押すと前の曲、Eを押すと次の曲にスキップします。
 
 ```python
-    # 2. Joystick/Button Input Detection (with debouncing)
-    for i, p in enumerate(btns):
-        v = p.read_digital()
-        if v == 0 and last_states[i] == 1 and (curr_t - last_press_t > 50):
-            last_press_t = curr_t
-            if i == 3: mode = 0; sleep(500)     # P16: Manual Mode
-            elif i == 1: mode = 1; sleep(500)   # P14: Random Mode
-            elif i == 2: # P15: Next track / Random track
-                idx = random.randint(0, 19) if mode else (idx + 1) % 20
-            elif i == 0: # P13: Previous track / Random track
-                idx = random.randint(0, 19) if mode else (idx - 1) % 20
-        last_states[i] = v
+    # Handle sequential mode controls
+    if play_mode == 0:
+        if not music.is_playing(): # If current track finished, play next in sequence
+            current_track_index = (current_track_index + 1) % len(melodies)
+            play_track(current_track_index)
+
+        # Check button C for previous track
+        if pin13.read_digital() == 0: # Button C pressed
+            current_track_index = (current_track_index - 1 + len(melodies)) % len(melodies)
+            play_track(current_track_index)
+            utime.sleep_ms(200)
+
+        # Check button E for next track
+        elif pin15.read_digital() == 0: # Button E pressed
+            current_track_index = (current_track_index + 1) % len(melodies)
+            play_track(current_track_index)
+            utime.sleep_ms(200)
 ```
 
-⑤ Main loop: music playback logic.
-
-It controls the playback of the music by checking if the current music index `idx` is different from the last one `last_idx`. If they are, the music needs to be switched:
-
-1.  `music.stop()` stops the music that is currently playing.
-2.  `music.play(getattr(music, melodies[idx]), wait=False)` tries to play a new music. `getattr(music, melodies[idx])` dynamically obtains the music data of the corresponding name in `music`, and `wait=False` ensures that the music playback does not block the main loop.
-3.  If the playback is successful, update `last_idx = idx`.
-4.  `try...except` captures potential errors; for example, there might be invalid music titles in the `melodies` list.
+ただし、ランダムモードでは、C/Eを押すとこれら20曲すべてがシャッフルされます。
 
 ```python
-    # 3. Music Playback Logic
-    if idx != last_idx:
-        music.stop()
-        try:
-            music.play(getattr(music, melodies[idx]), wait=False)
-            last_idx = idx
-        except: pass
+    # Handle random mode controls
+    elif play_mode == 1:
+        # Check button C or E for random track
+        if pin13.read_digital() == 0 or pin15.read_digital() == 0: # Button C or E pressed
+            random_track_index = random.randint(0, len(melodies) - 1)
+            play_track(random_track_index)
+            utime.sleep_ms(200)
+
+        if not music.is_playing(): # Stop playing after one random track finishes
+            music.stop()
 ```
 
-⑥ Main loop: Light and display updates.
-
-Here is an update on the color of the NeoPixel strip and the display of the Micro:bit LED matrix:
-
-1.  `hue = (hue + 1) % 360` continuously increases `hue` to make it cycle among 0 to 359  for a rainbow gradient light.
-2.  `strip.fill(get_rgb(hue))` adopts `get_rgb` to generate a color based on the current `hue` and fill the entire NeoPixel strip with this color.
-3.  `strip.show()` sends the updated color to the NeoPixel strip for display.
-4.  `display.show(...)` displays display depending on the current `mode`. `mode` = 1(random): show a custom “X”; `mode` = 0(manual), show an arrow pointing to the right (`Image.ARROW_E`).
-
-Then, `sleep(10)` introduces a short delay for suitable execution speed, lower CPU load, and smoother effect.
+④ 前の曲が現在の曲と一致しないかどうかを判断します。一致する場合は、まず現在の曲を停止してからその曲を再生します。
 
 ```python
-    # 4. Lighting & Display Updates
-    hue = (hue + 1) % 360
-    strip.fill(get_rgb(hue))
-    strip.show()
-    
-    # Show Mode Icon: "X" for Random, Arrow for Manual
-    display.show(Image("00000:99099:00900:99099:00000") if mode else Image.ARROW_E)
-    
-    sleep(10)
+    # Adjust volume with buttons A and B
+    if pin5.read_digital() == 0: # Button A (P5) pressed - Volume Up
+        volume = min(255, volume + 10)
+        music.set_volume(volume)
+        display.show(Image.ARROW_NORTH)
+        utime.sleep_ms(100)
+    elif pin11.read_digital() == 0: # Button B (P11) pressed - Volume Down
+        volume = max(0, volume - 10)
+        music.set_volume(volume)
+        display.show(Image.ARROW_SOUTH)
+        utime.sleep_ms(100)
 ```
-#### 5.2.4.5 Test Result
+
+⑤ モードが「0-シーケンシャル再生」の場合は「![Img](./media/4010.png)」、または「1-ランダム再生」の場合は「![Img](./media/4011.png)」を表示し、100msの遅延を設けます。
+
+```python
+    update_rgb_breathing()
+    utime.sleep_ms(10)
+```
+
+⑥ RGBライトをバックグラウンドで呼吸させます。
+
+⑦ Aを押すと音量を上げ（+10）、Bを押すと音量を下げます（-10）。micro:bitブザーの音量は、内部接続されたピンの出力電圧によって決定されます。DACを介してデジタル値0〜255をアナログ値に変換することで音量を制御できます。
+
+#### 5.2.4.5 テスト結果
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-After powering on, it is in sequential mode by default, and will play the song at N.O. “0”. As it is finishes, you can press C for the last song or E for the next one. 
+電源投入後、デフォルトでシーケンシャルモードになり、N.O.「0」の曲が再生されます。終了したら、Cを押して前の曲、またはEを押して次の曲に進むことができます。
 
-Press F to switch to random mode. And you can press D to back to sequential one. In F mode, a random track of these 20 will be played if you press C/E. After finishing, it stops. 
+Fを押すとランダムモードに切り替わります。Dを押すとシーケンシャルモードに戻ります。Fモードでは、C/Eを押すと20曲の中からランダムなトラックが再生されます。終了すると停止します。
 
-The RGB lights are always breathing from the moment of powering on. Meanwhile, the micro:bit LED matrix shows “![Img](./media/4010.png)” in sequential mode and “![Img](./media/4011.png)”in random mode. 
+RGBライトは電源投入時から常に呼吸しています。同時に、micro:bit LEDマトリックスはシーケンシャルモードでは「![Img](./media/4010.png)」、ランダムモードでは「![Img](./media/4011.png)」を表示します。
 
-For volume, press A to turn up and B to turn down.
+音量については、Aを押すと上がり、Bを押すと下がります。
 
 ![Img](./media/4015.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

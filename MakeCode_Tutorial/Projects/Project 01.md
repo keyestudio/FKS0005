@@ -1,80 +1,80 @@
-### 4.2.1 Richtingaanwijzer
+### 4.2.1 方向指示器
 
-#### 4.2.1.1 Overzicht
+#### 4.2.1.1 概要
 
 ![Img](./media/top1.png)
 
-Wanneer u de joystick beweegt, toont de puntmatrix in realtime pijlen in de overeenkomstige richting: links, rechts, omhoog, omlaag, waardoor u een duidelijke richtingreferentie krijgt.
+ジョイスティックを操作すると、ドットマトリックスにリアルタイムで対応する方向（左、右、上、下）の矢印が表示され、明確な方向参照が得られます。
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.1.2 Componentkennis
+#### 4.2.1.2 コンポーネント知識
 
 ![Img](./media/2top.png)
 
-**Micro:bit puntmatrix:**
+**Micro:bit ドットマトリックス:**
 
 ![Img](./media/1001.png)
 
-De LED-puntmatrix van het micro:bit-bord bestaat uit in totaal 25 lichtgevende diodes, een groep van 5, corresponderend met as X en Y, die een 5×5 matrix vormen. Elk is geplaatst op het snijpunt van de rij (X) en de kolom (Y). We kunnen een of enkele ervan bedienen door de coördinatenpunten in te stellen.
+micro:bitボードのLEDドットマトリックスは、合計25個の発光ダイオードで構成されており、5個のグループがX軸とY軸に対応し、5×5のマトリックスを形成しています。それぞれが行（X）と列（Y）の交点に配置されています。座標点を設定することで、1つまたは複数のLEDを制御できます。
 
-**Joystick:**
+**ジョイスティック:**
 
-| ![Img](./media/1002.png)| ![Img](./media/1003.png) |
+| ![Img](./media/1002.png)| ![Img](./media/1003.png)  |
 | :--: | :--: |
-| Werkelijk product | Schematisch diagram |
+| 実物 | 回路図 |
 
-De interne kernstructuur van deze joystick is samengesteld uit twee instelbare weerstanden (potentiometers) met elk een weerstandswaarde van 10KΩ.
+このジョイスティックの内部コア構造は、それぞれ10KΩの抵抗値を持つ2つの調整可能な抵抗器（ポテンショメータ）で構成されています。
 
-Het detecteert richtingen (en amplitude) van de druk via de ADC analoge pin van de microcontroller om de analoge elektrische signalen van de overeenkomstige dimensie uit te voeren. Tijdens het daadwerkelijk uitlezen van signalen, wanneer de analoge waarden van de joystick X- en Y-assen worden gedetecteerd binnen het bereik van 450~600, kan worden vastgesteld dat de joystick zich in een neutrale (stationaire) toestand bevindt zonder actieve beweging.
+マイクロコントローラーのADCアナログピンを介してプッシュの方向（および振幅）を検出し、対応する次元のアナログ電気信号を出力します。実際の信号読み取り中、ジョイスティックのX軸とY軸のアナログ値が450〜600の範囲内で検出された場合、ジョイスティックがアクティブな操作なしにニュートラル（静止）状態にあると判断できます。
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.1.3 Benodigde onderdelen
+#### 4.2.1.3 必要な部品
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png)|
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png)  |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **micro:bit V2-bord** (zelf meegebracht) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA-batterij** (zelf meegebracht) ×4 |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 
 
-#### 4.2.1.4 Codestroom
+#### 4.2.1.4 コードフロー
 
 ![Img](./media/1008.png)
 
-#### 4.2.1.5 Testcode
+#### 4.2.1.5 テストコード
 
-⚠️ **Let op dat de volgende codes de Makecode-bibliotheken van de Gamepad bevatten (de manier om bibliotheken toe te voegen is eerder vermeld). De gevoeligheid van de joystick kan naar behoefte worden aangepast.**
+⚠️ **以下のコードにはゲームパッドのMakecodeライブラリが含まれています（ライブラリの追加方法は以前に説明されています）。ジョイスティックの感度は必要に応じて調整できます。**
 
-**Volledige code:**
+**完全なコード:**
 
 ![Img](./media/1004.png)
 
 
 ![Img](./media/line1.png)
 
-**Korte uitleg:**
+**簡単な説明:**
 
-① Initialiseer de LED-matrix om ![Img](./media/1006.png) te tonen.
+① LEDマトリックスを初期化して ![Img](./media/1006.png) を表示させます。
 
 
 ![Img](./media/1005.png)
 
 
-② Lees de waarden van de X- en Y-as om de bewegingsrichting te bepalen. Indien gedetecteerd, toont de matrix de overeenkomstige pijl. Zo niet, dan wordt ![Img](./media/1006.png) weergegeven.
+② X軸とY軸の値を読み取り、操作方向を決定します。検出された場合、マトリックスは対応する矢印を表示します。そうでない場合、![Img](./media/1006.png) を表示します。
 
 ![Img](./media/1007.png)
 
 
-#### 4.2.1.6 Testresultaat
+#### 4.2.1.6 テスト結果
 
 ![Img](./media/4top.png)
 
-Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-Wanneer u de joystick van de gamepad beweegt, ziet u de overeenkomstige pijlen op de matrix. Als u uw vinger optilt om deze terug naar het midden te brengen, verschijnt er een huispictogram op de matrix.
+ゲームパッドのジョイスティックを操作すると、マトリックスに対応する矢印が表示されます。指を離して中央に戻すと、マトリックスに家のアイコンが表示されます。
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

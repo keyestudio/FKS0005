@@ -1,111 +1,112 @@
-### 4.2.6 Steen-Papier-Schaar
+### 4.2.6 じゃんけん
 
-#### 4.2.6.1 Overzicht
+#### 4.2.6.1 概要
 
 ![Img](./media/top1.png)
 
-Hierin spelen we steen-papier-schaar via draadloze communicatie van de micro:bit. Spelers kiezen hun zet (steen, papier of schaar) via de knoppen, met gegevensuitwisseling tussen apparaten. Het spel volgt een best-of-three; als alle drie de rondes eindigen in een gelijkspel of winst-verlies-gelijkspel, wordt een vierde wedstrijd geactiveerd.
+ここでは、micro:bitの無線通信を使ってじゃんけんをしましょう。プレイヤーはボタンで手（グー、チョキ、パー）を選択し、デバイス間でデータを交換します。ゲームは3回勝負で、3回すべて引き分けまたは勝ち負け引き分けの場合、4回戦が行われます。
 
-Elke uitkomst wordt weergegeven op de micro:bit matrix (W voor winst, L voor verlies, = voor gelijkspel) en onthuld door de RGB-lampjes (groen voor winst, rood voor verlies, geel voor gelijkspel) op pin P8. Na voltooiing van een ronde resetten de twee apparaten alle gegevens en lampjes, ter voorbereiding op de volgende wedstrijd.
+各結果はmicro:bitマトリックスに表示され（Wは勝ち、Lは負け、=は引き分け）、P8ピンのRGBライトで示されます（緑は勝ち、赤は負け、黄は引き分け）。1ラウンドが終了すると、両方のデバイスはすべてのデータとライトをリセットし、次の試合に備えます。
 
-De gameplay integreert naadloos draadloze interactie met de meer-ronde gevechten.
+ゲームプレイは、無線インタラクションと複数ラウンドの対戦をシームレスに統合しています。
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.6.2 Component Kennis
+#### 4.2.6.2 コンポーネント知識
 
 ![Img](./media/2top.png)
 
-**Microbit draadloze communicatie**
+**Microbit 無線通信**
 
 ![Img](./media/6001.png)
 
-Het micro:bit board integreert twee handige draadloze communicatiemogelijkheden: **2.4GHz radio** en **low-power Bluetooth (BLE)**. Ze kunnen echter niet gelijktijdig worden gebruikt.
+micro:bitボードは、**2.4GHz無線**と**低電力Bluetooth (BLE)**という2つの便利な無線通信機能を統合しています。ただし、これらを同時に使用することはできません。
 
-De eerste vereist geen koppeling en ondersteunt tot 255 onafhankelijke pakketten om interferentie te minimaliseren, met een communicatiebereik van 10-30 meter, waardoor snelle overdracht van digitale gegevens en strings mogelijk is. De laatste wordt voornamelijk gebruikt voor koppeling met smartphones, tablets en andere slimme apparaten voor IoT-toepassingen zoals het uploaden van sensorgegevens en afstandsbediening via mobiele apps.
+前者はペアリングが不要で、干渉を最小限に抑えるために最大255個の独立したパケットをサポートし、通信範囲は10〜30メートルで、デジタルデータと文字列の高速伝送を可能にします。後者は主にスマートフォン、タブレット、その他のスマートデバイスとのペアリングに使用され、センサーデータアップロードやモバイルアプリのリモートコントロールなどのIoTアプリケーションに利用されます。
 
-Ze breiden de creatieve ontwikkelingsmogelijkheden van de micro:bit uit.
+これらはmicro:bitの創造的な開発の可能性を広げます。
 
-#### 4.2.6.3 Benodigde Onderdelen
+#### 4.2.6.3 必要な部品
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (zelf meegeleverd) ×2 | **micro:bit Smart Gamepad** (gemonteerd) ×2 |**AAA batterij** (zelf meegeleverd) ×8 |
+| **micro:bit V2 ボード** (自己調達) ×2 | **micro:bit スマートゲームパッド** (組み立て済み) ×2 | **単4電池** (自己調達) ×8 |
 
-#### 4.2.6.4 Code Stroom
+#### 4.2.6.4 コードフロー
 
 ![Img](./media/6002.png)
 
-#### 4.2.6.5 Test Code
+#### 4.2.6.5 テストコード
 
-**Volledige code:**
+**完全なコード:**
 
 ![Img](./media/6003.png)
 
 ![Img](./media/line1.png)
 
-**Korte uitleg:**
+**簡単な説明:**
 
-① Initialiseer de radio en stel de groep in op \'1\'; stel het aantal rondes, status, tegenstander en de steen-papier-schaar resultaten van de spelers in; verbind de vier RGB-lampjes met pin P8 en ververs het display, stel de matrix in om ![Img](./media/6004.png) te tonen.
+① 無線を初期化し、グループを「1」に設定します。ラウンド数、ステータス、対戦相手、プレイヤーのじゃんけんの結果を設定します。4つのRGBライトをP8ピンに接続し、表示を更新し、マトリックスに ![Img](./media/6004.png) を表示させます。
 
 ![Img](./media/6005.png)
 
-② Bepaal de uitkomst van de huidige ronde: als uw keuze overeenkomt met die van de tegenstander (**1/2/3 voor schaar/steen/papier**), is het een gelijkspel; anders, selecteer een winnaar (schaar tegen papier tegen steen tegen schaar), ronde waarde +1 en sla het resultaat op.
+② 現在のラウンドの結果を決定します。自分の選択が相手の選択と一致する場合（**チョキ/グー/パーはそれぞれ1/2/3**）、引き分けです。そうでない場合は、勝者を選択し（チョキはパーに勝ち、パーはグーに勝ち、グーはチョキに勝つ）、ラウンド値を+1して結果を保存します。
 
 ![Img](./media/6006.png)
 
-③ Sla de resultaten op in een array en toon de corresponderende string. Als dit het derde spel is, bepaal dan of een vierde spel nodig is (bij een volledig gelijkspel of winst-verlies-gelijkspel). Zo ja, toon "FINAL" en wacht 1 seconde voordat de steen-papier-schaar selectie wordt gewist.
+③ 結果を配列に保存し、対応する文字列を表示します。これが3回目のゲームの場合、4回目のゲームが必要かどうかを判断します（すべて引き分けまたは勝ち負け引き分けの場合）。必要な場合は「FINAL」と表示し、1秒待ってからじゃんけんの選択をクリアします。
 
 ![Img](./media/6007.png)
 
-Anders, toon "WINNER" voor overwinning, "LOSER" voor nederlaag, en "TIE" voor een gelijkspel. Na een vertraging van 3 seconden, roep de resetGame functie aan om alle spelvariabelen te wissen.
+そうでない場合は、勝利の場合は「WINNER」、敗北の場合は「LOSER」、引き分けの場合は「TIE」と表示します。3秒の遅延の後、resetGame関数を呼び出してすべてのゲーム変数をクリアします。
 
-Als de wedstrijd uit vier spellen bestaat, toon dan "GAME OVER" en roep de resetGame functie opnieuw aan na een vertraging van 3 seconden om alle spelvariabelen te resetten.
+試合が4ゲームで構成されている場合、「GAME OVER」と表示され、3秒の遅延の後、resetGame関数を再度呼び出してすべてのゲーム変数をリセットします。
 
 ![Img](./media/6008.png)
 
-Als het spel niet voorbij is, toont het ![Img](./media/6004.png) en wist het de keuzes van beide.
+ゲームが終了していない場合は、![Img](./media/6004.png) を表示し、両方の選択をクリアします。
 
 ![Img](./media/6009.png)
 
-④ Druk op C en het board stuurt "1" als schaar, en de matrix toont ![Img](./media/6011.png); druk op D en het board stuurt "3" als papier, en de matrix toont ![Img](./media/6012.png); Druk op E en het stuurt "2" als steen en toont ![Img](./media/6013.png).
+④ Cを押すと、ボードはチョキとして「1」を送信し、マトリックスは ![Img](./media/6011.png) を表示します。Dを押すと、ボードはパーとして「3」を送信し、マトリックスは ![Img](./media/6012.png) を表示します。Eを押すと、グーとして「2」を送信し、![Img](./media/6013.png) を表示します。
 
 ![Img](./media/6010.png)
 
-⑤ Ontvang radio gegevens (keuze van de tegenstander).
+⑤ 無線データ（相手の選択）を受信します。
 
 ![Img](./media/6014.png)
 
-⑥ Bepaal of een vierde ronde nodig is. Als alle drie de spellen eindigen in een volledig gelijkspel of winst-verlies-gelijkspel, is een vierde spel noodzakelijk; anders is het niet nodig.
+⑥ 4回戦が必要かどうかを判断します。3回すべて引き分けまたは勝ち負け引き分けの場合、4回戦が必要です。そうでない場合は不要です。
 
 ![Img](./media/6015.png)
 
-⑦ De RGB-lampjes tonen de corresponderende kleuren op basis van de uitkomst: groen voor overwinning, rood voor nederlaag, en geel voor een gelijkspel.
+⑦ RGBライトは、結果に応じて対応する色を表示します。緑は勝ち、赤は負け、黄は引き分けです。
 
 ![Img](./media/6016.png)
 
-⑧ Wanneer het spel eindigt, wis dan de weergave van de vier RGB-lampjes.
+⑧ ゲームが終了したら、4つのRGBライトの表示をクリアします。
 
 ![Img](./media/6017.png)
 
-⑨ Reset de spelstatus, wis alle spelvariabele waarden, reset de RGB-lampjes, en toon ![Img](./media/6004.png).
+⑨ ゲームの状態をリセットし、すべてのゲーム変数の値をクリアし、RGBライトをリセットし、![Img](./media/6004.png) を表示します。
 
 ![Img](./media/6018.png)
 
-#### 4.2.6.6 Test Resultaat
+
+#### 4.2.6.6 テスト結果
 
 ![Img](./media/4top.png)
 
-Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-De matrix toont aanvankelijk ![Img](./media/6004.png). Spelers drukken op knoppen om hun zet te kiezen (E voor steen, D voor papier, of C voor schaar), met uitwisseling van wedstrijdgegevens tussen de twee apparaten. Ze bepalen de uitkomst van de huidige ronde: een overwinning wordt aangegeven door de "W" met groen RGB-licht, een gelijkspel door de "=" met geel licht, en een verlies door de "L" met rood (het eerste RGB-licht gaat aan na de eerste ronde, enzovoort). De volgende ronde volgt als het spel nog niet voorbij is.
+マトリックスには最初に ![Img](./media/6004.png) が表示されます。プレイヤーはボタンを押して手（Eはグー、Dはパー、Cはチョキ）を選択し、2つのデバイス間で試合データを交換します。現在のラウンドの結果を決定します。勝ちは「W」と緑色のRGBライトで示され、引き分けは「=」と黄色のライトで示され、負けは「L」と赤色のライトで示されます（最初のRGBライトは最初のラウンド後に点灯し、以降も同様です）。ゲームが終了していない場合は、次のラウンドに進みます。
 
-Het spel hanteert een best-of-three: als alle drie de rondes eindigen in een volledig gelijkspel of winst-verlies-gelijkspel, wordt een vierde wedstrijd geactiveerd.
+ゲームは3回勝負を採用しています。3回すべて引き分けまたは勝ち負け引き分けの場合、4回戦が行われます。
 
-Als er na drie rondes een winnaar is, wordt "WINNER" weergegeven voor overwinning en "LOSER" voor nederlaag. Zodra het resultaat wordt getoond, verschijnt "GAME OVER" om het spel te resetten. Als de vierde ronde onbeslist blijft, is het spel ook voorbij.
+3ラウンド後に勝者がいる場合、勝利の場合は「WINNER」、敗北の場合は「LOSER」と表示されます。結果が表示された後、「GAME OVER」が表示され、ゲームがリセットされます。4回戦が未決定の場合もゲームオーバーになります。
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Wacht tot het hartpictogram verschijnt voordat u doorgaat met de volgende ronde. Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** 次のラウンドに進む前にハートアイコンが表示されるのを待ちます。ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

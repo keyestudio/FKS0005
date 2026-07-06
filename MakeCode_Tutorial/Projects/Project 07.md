@@ -1,156 +1,156 @@
-### 4.2.7 Temperatuur- en Vochtigheidsmeter
+### 4.2.7 温度湿度計
 
-#### 4.2.7.1 Overzicht
+#### 4.2.7.1 概要
 
 ![Img](./media/top1.png)
 
-In dit project bouwen we een temperatuur- en vochtigheidsbewakingssysteem met een Micro:bit board, een gamepad, een XHT11 temperatuur- en vochtigheidssensor en een OLED-display. De XHT11-sensor meet de omgevingstemperatuur en -vochtigheid, terwijl het OLED-display de metingen in real-time bijwerkt. Het controllerboard van de gamepad vergemakkelijkt circuituitbreiding en stabiele verbindingen, waardoor het systeem kan functioneren als een eenvoudige thermometer.
+このプロジェクトでは、Micro:bitボード、ゲームパッド、XHT11温湿度センサー、OLEDディスプレイを使用して温湿度監視システムを構築します。XHT11センサーは周囲の温度と湿度を測定し、OLEDディスプレイはリアルタイムで測定値を更新します。ゲームパッドのコントローラーボードは回路拡張と安定した接続を容易にし、システムがシンプルな温度計として機能することを可能にします。
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.7.2 Component Kennis
+#### 4.2.7.2 コンポーネント知識
 
 ![Img](./media/2top.png)
 
-**XHT11 temperatuur- en vochtigheidssensor**
+**XHT11 温湿度センサー**
 
 ![Img](./media/XHT11.png)
 
-De XHT11 temperatuur- en vochtigheidssensor geeft digitale signalen af en maakt gebruik van gespecialiseerde analoge signaalverwerving en -conversie, geavanceerde temperatuur- en vochtigheidsdetectietechnieken om uitstekende langetermijnstabiliteit en hoge betrouwbaarheid te garanderen.
+XHT11温湿度センサーはデジタル信号を出力し、特殊なアナログ信号取得と変換、高度な温湿度センシング技術を採用して、優れた長期安定性と高い信頼性を保証します。
 
-Het bevat zeer nauwkeurige resistieve vochtigheids- en thermistor temperatuursensoren, geïntegreerd met een 8-bit high-performance microcontroller.
+高精度抵抗式湿度センサーとサーミスタ温度センサーを内蔵し、8ビット高性能マイクロコントローラーと統合されています。
 
-**XHT11 communicatiemodus:**
+**XHT11 通信モード:**
 
-Het maakt gebruik van een vereenvoudigde single-bus communicatie. De single bus bestaat uit een enkele datalijn, waardoor alle gegevensuitwisseling en besturingsbewerkingen binnen het systeem worden uitgevoerd.
+簡素化されたシングルバス通信を採用しています。シングルバスは単一のデータラインで構成され、システム内のすべてのデータ交換と制御操作がこれを通じて実行されます。
 
-- Single-bus transmissie databit:
+- シングルバス伝送データビット:
 
-  - Single-bus dataformaat: Zend 40 bits aan gegevens tegelijkertijd, hoge bit eerst.
+  - シングルバスデータ形式: 40ビットのデータを一度に送信し、上位ビットが最初です。
 
-  - 8-bit integer vochtigheidsgegevens + 8-bit decimale vochtigheidsgegevens + 8-bit integer temperatuurgegevens + 8-bit decimale temperatuurgegevens + 8-bit pariteitsbit.
+  - 8ビット整数湿度データ + 8ビット小数湿度データ + 8ビット整数温度データ + 8ビット小数温度データ + 8ビットパリティビット。
 
-    **Opmerking: Het decimale deel van de vochtigheid is 0**.
+    **注: 湿度の小数部分は0です。**
 
-- Pariteitsbit:
-
-  - 8-bit integer vochtigheidsgegevens + 8-bit decimale vochtigheidsgegevens + 8-bit integer temperatuurgegevens + 8-bit decimale temperatuurgegevens
-
-    De 8-bit pariteitsbit is de laatste 8 bits van het resultaat.
+- パリティビット:
+  
+  - 8ビット整数湿度データ + 8ビット小数湿度データ + 8ビット整数温度データ + 8ビット小数温度データ
+  
+    8ビットパリティビットは結果の最後の8ビットです。
 
 ![Img](./media/7001.png)
 
-Gegevensvolgordediagram van XH11 temperatuur- en vochtigheidssensor:
+XHT11温湿度センサーのデータシーケンス図:
 
-Nadat de gebruikershost (MCU) een startsignaal heeft verzonden, schakelt de XHT11 van de energiezuinige modus naar de hoge-snelheidsmodus, en nadat dit signaal is beëindigd, verzendt de XHT11 een antwoordsignaal en 40-bit gegevens, en activeert het een signaalverwerving.
+ユーザーホスト（MCU）がスタート信号を送信した後、XHT11は低電力モードから高速モードに切り替わり、この信号が終了した後、XHT11は応答信号と40ビットのデータを送信し、信号取得をトリガーします。
 
-Het signaal wordt verzonden zoals weergegeven in de afbeelding:
+信号は図のように送信されます:
 
 ![Img](./media/7002.png)
 
-⚠️ **Tip:** De temperatuur- en vochtigheidsgegevens die door de host van de XHT11-sensor worden gelezen, zijn altijd de waarden van de vorige meting. Als er een lang interval is tussen twee metingen, voer dan twee opeenvolgende metingen uit; de waarde van de tweede keer zal de werkelijke zijn.
+⚠️ **ヒント:** ホストがXHT11センサーから読み取る温湿度データは、常に前回の測定値です。2回の測定間隔が長い場合は、2回連続して読み取ってください。2回目の値が実際の値になります。
 
-**Schematisch diagram:**
+**回路図:**
 
 ![Img](./media/cou73-2.png)
 
-**Parameters:**
+**パラメータ:**
 
-- Bedrijfsspanning: DC 3V~5V
-- Bedrijfsstroom: (Max)2.5mA
-- Maximaal vermogen: 0.0125W
-- Temperatuurbereik: -25 ~ +60°C (±2℃)
-- Vochtigheidsbereik: 5 ~ 95%RH (Nauwkeurigheid rond 25C° is ±5%RH)
-- Uitgangssignaal: digitaal bidirectioneel single bus
+- 動作電圧: DC 3V~5V
+- 動作電流: (最大)2.5mA
+- 最大電力: 0.0125W
+- 温度範囲: -25 ~ +60°C (±2℃)
+- 湿度範囲: 5 ~ 95%RH(25C°付近での精度は±5%RH)
+- 出力信号: デジタル双方向シングルバス
 
-**OLED-display**
+**OLED ディスプレイ**
 
 ![Img](./media/A636.png)
 
-OLED biedt uitzonderlijke voordelen zoals rijke kleurweergave, hoog contrast en brede kijkhoeken. Afbeeldingen erop zijn helder en levendig, met bijzonder uitstekend zwart. Elke pixel is zelflichtgevend zonder dat er achtergrondverlichting nodig is, wat resulteert in een relatief laag stroomverbruik. Het 0.9-inch OLED-scherm, met zijn compacte formaat, hoge resolutie (128×64 pixels) en lage stroomverbruik, is ideaal voor toepassingen in embedded systemen en draagbare apparaten.
+OLEDは、豊かな色彩再現、高いコントラスト、広い視野角といった優れた利点を提供します。画像は鮮明で鮮やかで、特に黒が際立っています。各ピクセルはバックライトを必要とせず自己発光するため、消費電力は比較的低いです。0.9インチのOLEDスクリーンは、コンパクトなサイズ、高解像度（128×64ピクセル）、低消費電力という特徴を持ち、組み込みシステムやウェアラブルデバイスでのアプリケーションに最適です。
 
-⚠️ **Opmerking**: Voor dit OLED-display is de SDA-interface verbonden met pin P20 op het Micro:bit board, terwijl de SCL is verbonden met pin P19.
+⚠️ **注**: このOLEDディスプレイの場合、SDAインターフェースはMicro:bitボードのP20ピンに接続され、SCLはP19ピンに接続されます。
 
-**Parameters:**
+**パラメータ:**
 
-- Bedrijfsspanning: DC 3V - 5V
-- Bedrijfsstroom: 30mA
-- Interface: Pin met een afstand van 2.54mm
-- Communicatiemodus: I2C communicatie
-- Interne driverchip: SSD1306
-- Resolutie: 128×64
-- Kijkhoek: Groter dan 150°
+- 動作電圧: DC 3V - 5V
+- 動作電流: 30mA
+- インターフェース: 2.54mmピッチのピン
+- 通信モード: I2C通信
+- 内部駆動チップ: SSD1306
+- 解像度: 128×64
+- 視野角: 150°以上
 
-#### 4.2.7.3 Benodigde Onderdelen
+#### 4.2.7.3 必要な部品
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (zelf meegeleverd) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA batterij** (zelf meegeleverd) ×4 |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 |![Img](./media/XHT11.png)|![Img](./media/OLED.png)|![Img](./media/7008.png)|
-|**XHT11 temperatuur- en vochtigheidssensor** (zelf meegeleverd)×1|**OLED display** (zelf meegeleverd)×1 |**F-F DuPont draad**(zelf meegeleverd) x7|
+|**XHT11 温湿度センサー** (自己調達)×1|**OLED ディスプレイ** (自己調達)×1 |**F-F デュポンワイヤー**(自己調達) x7|
 
 
-#### 4.2.7.4 Bedradingsschema
+#### 4.2.7.4 配線図
 
 ![Img](./media/jiexian.png)
 
-**Na de bedrading zoals hierboven weergegeven, plaatst u de micro:bit in de sleuf op het gamepad-besturingsbord.**
+**上記のように配線した後、micro:bitをゲームパッドコントロールボードのスロットに挿入します。**
 
-| OLED-display | micro:bit gamepad-besturingsbord | micro:bit board pin |
+| OLED ディスプレイ | micro:bit ゲームパッドコントロールボード |micro:bit ボードピン |
 | :--: | :--: | :--: |
-| GND | GND | GND |
-| VCC | 3V | 3V |
-| SDA | SDA | P20 |
-| SCL | SCL | P19 |
+| GND |  GND | GND |
+| VCC |  3V | 3V |
+| SDA |  SDA | P20 |
+| SCL |  SCL | P19 |
 
-| XHT11 temperatuur- en vochtigheidssensor | micro:bit gamepad-besturingsbord | micro:bit board pin |
+| XHT11 温湿度センサー | micro:bit ゲームパッドコントロールボード | micro:bit ボードピン |
 | :--: | :--: | :--: |
 | G | GND | GND |
-| V | 3V | 3V |
-| S | 12 | P12 |
+| V |  3V | 3V |
+| S |  12 | P12 |
 
 
-#### 4.2.7.5 Code Stroom
+#### 4.2.7.5 コードフロー
 
 ![Img](./media/7003.png)
 
-#### 4.2.7.6 Test Code
-⚠️ **Let op dat hier OLED- en DHT11-bibliotheken zijn opgenomen, dus we moeten importeren: https://github.com/keyestudio/pxt-environment-kit-master**.
+#### 4.2.7.6 テストコード
+⚠️ **ここではOLEDとDHT11ライブラリが含まれているため、`https://github.com/keyestudio/pxt-environment-kit-master`をインポートする必要があります。**
 
-**Volledige code:**
+**完全なコード:**
 
 ![Img](./media/7004.png)
 
 ![Img](./media/line1.png)
 
-**Korte uitleg:**
+**簡単な説明:**
 
-① Initialiseer de pixels van de OLED en wis deze, stel de 5×5LED matrix in om ![Img](./media/1006.png) te tonen, en definieer de waarden van temperatuur en vochtigheid op 0.
+① OLEDのピクセルを初期化してクリアし、5×5LEDマトリックスに ![Img](./media/1006.png) を表示させ、温度と湿度の値を0に定義します。
 
 ![Img](./media/7005.png)
 
-② Wijs de corresponderende metingen van de XHT11-sensor toe aan de variabelen temperatuur en vochtigheid.
+② XHT11センサーの対応する測定値を変数temperatureとhumidityに割り当てます。
 
 ![Img](./media/7006.png)
 
-③ De OLED toont de metingen van de XHT11-sensor.
+③ OLEDにXHT11センサーの測定値を表示します。
 
 ![Img](./media/7007.png)
 
-④ Vertraging 500ms (0.5s).
+④ 500ms（0.5秒）遅延させます。
 
 ![Img](./media/cou28.png)
 
-#### 4.2.7.7 Test Resultaat
+#### 4.2.7.7 テスト結果
 
 ![Img](./media/4top.png)
 
-Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-Na het uploaden van de code naar het micro:bit board, toont de OLED de temperatuur en vochtigheid die door de XHT11-sensor in real-time worden gelezen.
+micro:bitボードにコードをアップロードすると、OLEDにXHT11センサーが読み取った温度と湿度がリアルタイムで表示されます。
 
 ![Img](./media/7000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

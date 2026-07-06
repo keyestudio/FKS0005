@@ -1,172 +1,211 @@
-## 5.1 Thonny Development Environment
+## 5.1.1 Thonny IDEのインストール
 
-**Before programming, you need to do some important preparations.**
+⚠️ **以下の手順はWindowsオペレーティングシステムで操作されています。他のオペレーティングシステムを使用している場合は、参考にしてください。**
 
-### 5.1.1 Install Thonny
+Thonnyは、初心者向けのPython IDEです。MicroPythonをmicro:bitボードにロードするのに役立ちます。
 
-Thonny is a free and open source software platform with small size, simple interface, simple operation and rich functions. It is a Python IDE suitable for beginners. In this tutorial, we use this IDE to develop a ESP32. Thonny supports multiple operating systems including Windows, Mac OS, Linux.
+[Thonny IDE](https://thonny.org/)をダウンロードするには、ここをクリックしてください。
 
-**1. Download Thonny**
+![Img](./media/A637.png)
 
-(1)  Enter the website: [https://thonny.org](https://thonny.org) to download the latest version of Thonny. Other versions may not be compatible with microbit functions.
-(2)  Thonny open-source code library: [https://github.com/thonny/thonny](https://github.com/thonny/thonny).
+**手順:**
 
-Please download the one of your operation system.
+1\. ダウンロードしたファイル「**thonny-4.0.2.exe**」をダブルクリックします。
 
-| OS | Download |
-| :-- | :-- |
-| MAC OS： | https://github.com/thonny/thonny/releases/download/v4.1.7/thonny-4.1.7.pkg|
-| Windows： | https://github.com/thonny/thonny/releases/download/v4.1.7/thonny-4.1.7.exe|
+![Img](./media/B001.png)
 
-| OS | Method          | Command |
-| :-- |---------|--------------|
-| Linux | Binary bundle | `bash <(wget -O - https://thonny.org/installer-for-linux)` |
-|       | With pip | `pip3 install thonny` |
-|       | Distro packages | Debian/Ubuntu：`sudo apt install thonny`<br>Fedora：`sudo dnf install thonny` |
+2\. 「**Install for all users (recommended)**」を選択し、「**Next**」をクリックします。
 
-![Img](./media/t001.png)
+![Img](./media/B002.png)
 
-**2. Windows System**
+3\. 「**I accept the agreement**」を選択し、「**Next**」をクリックします。
 
-A.The downloaded Thonny icon is as follows:
+![Img](./media/B003.png)
 
-![Img](./media/t002.png)
+4\. インストールパスを選択し、「**Next**」をクリックします。
 
-B.Double-click “thonny-4.1.7.exe” and select install mode. Here we choose “Install for all users”.
+![Img](./media/B004.png)
 
-![Img](./media/t003.png)
+5\. 「**Next**」をクリックします。
 
-C.You can also keep selecting “Next” to finish install.
+![Img](./media/B005.png)
 
-![Img](./media/t004.png)
+6\. 「**Install**」をクリックします。
 
-![Img](./media/t005.png)
+![Img](./media/B006.png)
 
+7\. インストール中:
 
-D.If you want to change the route of installing Thonny, just click “Browse...” to select a new route. If you not, just keep clicking “Next”.
+![Img](./media/B007.png)
 
-![Img](./media/t006.png)
+8\. 「**Finish**」をクリックします。
 
-![Img](./media/t007.png)
+![Img](./media/B008.png)
 
-E.Tick “Create desktop icon”, you will view Thonny on your desktop.
+## 5.1.2 Thonny IDEでのMicroPythonの書き込み
 
-![Img](./media/t008.png)
+### 5.1.2.1 MicroPythonファームウェアの書き込み
 
-F.“Install”.
+⚠️ **MicroPythonでプログラミングする前に、MicroPythonファームウェアをmicro:bitボードに書き込む必要があります。**
 
-![Img](./media/t009.png)
+**手順:**
 
-G.Wait for a while but don’t click “Cancel”.
-
-![Img](./media/t010.png)
-
-H.When you see the success interface, click “Finish”.
-
-![Img](./media/t011.png)
-
-I.You can see the icon on your desktop if you tick “Create desktop icon”:
-
-![Img](./media/t011.png)                    
-
-### 5.1.2 Thonny Basic Settings
-
-A.Double-click Thonny, choose lanuage and initial settings and click “Let’s go!”.
-
-![Img](./media/t013.png)
-
-![Img](./media/t014.png)
-
-![Img](./media/t015.png)
-
-B.Click “**View**”→“**File**” and “**Shell**”.
-
-![Img](./media/t016.png)
-
-![Img](./media/t017.png)
-
-![Img](./media/t018.png)
-
-### 5.1.3 Burn Micropython Firmware(Important)
-
-To run a Python program on the Micro:bit board, we need to burn the firmware to it first.
-
-**Burn the Micropython firmware:**
-
-Connect the Micro:bit to your PC with a USB cable.
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
 
 ![Img](./media/A800.png)
 
-Make sure the driver has been installed successfully and the COM port can be identified correctly. Open “**Device Manager**” and expand “**Ports**”.
+micro:bitの電源がオンになると、背面にある赤いLEDインジケーターが点灯します。
 
-![Img](./media/t019.png)
+micro:bitボードには、micro USBを介してコンピューターと通信する際に点滅する黄色のLEDインジケーターがあります。
 
-The COM port number may vary from computers.
+Finder(Mac) / デバイスとドライブ(Windows)を開くと、「MICROBIT」という名前のUSBドライブが表示されます。ただし、これは一般的なディスクではありません！
 
-Open Thonny, click “**run**” and “**Configure interpreter...**”
+![Img](./media/A849.png)
 
-![Img](./media/t020.png)
+2\. Thonny IDEを開き、「**Tools**」→「**Options...**」をクリックします。
 
-Select “Micropython (BBC micro:bit)” and “mbeb Serial Port @ COM16” in its interpreter, and click “Install or update firmware”.
+![Img](./media/B009.png)
 
-![Img](./media/t021.png)
+3\. 「**Interpreter**」タブをクリックし、「**MicroPython (micro:bit)**」を選択します。
 
-And you will see the followings. Set “Target volume” to “MICROBIT”, “MicroPython family” to “nRF52”, “variant” to “BBC micro:bit v2 (original simplifiled API)”, “version” to “2.1.2”, and then “Install”. 
+![Img](./media/B010.png)
 
-If the firmware fails to install, press the reset button on the Micro:bit, and click “Install”.
+4\. 「**Install or update firmware**」をクリックします。
 
-![Img](./media/t022.png)
+![Img](./media/B011.png)
 
-After that, click “Close” and “OK”.
+5\. 「**Port**」でmicro:bitボードのポートを選択し、「**Install**」をクリックします。
 
-![Img](./media/t023.png)
+![Img](./media/B012.png)
 
-Turn off all windows and turn to the main page and click “STOP” icon:
+6\. インストール中:
 
-![Img](./media/t024.png)
+![Img](./media/B013.png)
 
-### 5.1.4 Upload Code
+7\. 「**Close**」をクリックします。
 
-**Run the test code(online)**
+![Img](./media/B014.png)
 
-The Micro:bit runs the code online when it needs to be connect to the computer. Users can program and debug programs withThonny.
+8\. 「**OK**」をクリックします。
 
-Open Thonny and click "**Open**".
+![Img](./media/B015.png)
 
-![Img](./media/t025.png)
+### 5.1.2.2 MicroPythonコードの書き込み
 
-When a new window pops up, open ".\MicroPython_Resource\Codes\Heart beat", select “heartbeat&ZeroWidthSpace;.py”, and click “Run current script” (if error reports, click  ![Img](./media/t027.png) first and then “Run current script”), and you can see there is a heart is beating on the Micro:bit.
+**手順:**
 
-![Img](./media/t026.png)
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
 
-Note: When running it online, if you press the reset button, the code will not be executed again. If you want it to run after resetting it, please refer to the offline running instructions below.
+![Img](./media/A800.png)
 
-**Run the test code(offline)**
+micro:bitの電源がオンになると、背面にある赤いLEDインジケーターが点灯します。
 
-After resetting Micro:bit, run the main.py file under the root directory first. 
+micro:bitボードには、micro USBを介してコンピューターと通信する際に点滅する黄色のLEDインジケーターがあります。
 
-Therefore, the file name we upload to the Micro:bit must be changed to main.py if we want it runs the code after reset. Then, upload the file, press the reset button, and the code still be executed.
+Finder(Mac) / デバイスとドライブ(Windows)を開くと、「MICROBIT」という名前のUSBドライブが表示されます。ただし、これは一般的なディスクではありません！
 
-Here we take heartbeat.py as an example. Select **heartbeat&ZeroWidthSpace;.py** to "**rename**" it to main.py, and click "**OK**". Now you can choose to “**Upload to micro:bit**”.
+![Img](./media/A849.png)
 
-![Img](./media/t028.png)
+2\. Thonny IDEを開き、「**File**」→「**Open...**」をクリックします。
 
-![Img](./media/t029.png)
+![Img](./media/B016.png)
 
-![Img](./media/t030.png)
+3\. MicroPythonコードを選択し、「**Open**」をクリックします。
 
-Press the Reset button and you can see the heart is beating on the Micro:bit.
+![Img](./media/B017.png)
 
-If you want to run other code (not libraries), you need first to change its name to main&ZeroWidthSpace;.py before uloading. 
+4\. コードを開いた後、「**Run**」をクリックし、「**Run current script**」を選択します。
 
-As for libraries, right-click to directly “Upload to micro:bit” (Sometime the uploading may fail due to too large size of the library. So you need to simplify it or delete the unused ones).
+![Img](./media/B018.png)
 
-### 5.1.5 Other Common Operations
+5\. 「**MicroPython device**」を選択します。
 
-**Delete file under Micro:bit**
+![Img](./media/B019.png)
 
-In “micro:bit”, select “main&ZeroWidthSpace;.py” to “Delete”, and it will be removed.
+6\. コードがmicro:bitボードに書き込まれます。
 
-![Img](./media/t031.png)
+![Img](./media/B020.png)
 
-The same procedure applies when deleting other files.
+7\. 書き込み後、micro:bitボードのLEDマトリックスに「Hello World!」が表示されます。
+
+![Img](./media/B021.png)
+
+## 5.1.3 Thonny IDEでのMicroPythonライブラリの追加
+
+### 5.1.3.1 ライブラリの追加
+
+⚠️ **各プロジェクトのコードファイル（.py）を提供していますので、Thonny IDEに直接ロードできます。または、必要に応じてコードブロックを自分で構築することもできます。手動で構築する場合はライブラリが必要であることに注意してください。**
+
+**手順:**
+
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
+
+![Img](./media/A800.png)
+
+micro:bitの電源がオンになると、背面にある赤いLEDインジケーターが点灯します。
+
+micro:bitボードには、micro USBを介してコンピューターと通信する際に点滅する黄色のLEDインジケーターがあります。
+
+Finder(Mac) / デバイスとドライブ(Windows)を開くと、「MICROBIT」という名前のUSBドライブが表示されます。ただし、これは一般的なディスクではありません！
+
+![Img](./media/A849.png)
+
+2\. Thonny IDEを開き、「**Tools**」→「**Manage packages...**」をクリックします。
+
+![Img](./media/B022.png)
+
+3\. 「**Install from local file**」をクリックします。
+
+![Img](./media/B023.png)
+
+4\. 「**Browse...**」をクリックします。
+
+![Img](./media/B024.png)
+
+5\. ライブラリファイルを選択し、「**Open**」をクリックします。
+
+![Img](./media/B025.png)
+
+6\. 「**Install**」をクリックします。
+
+![Img](./media/B026.png)
+
+7\. インストール中:
+
+![Img](./media/B027.png)
+
+8\. 「**Close**」をクリックします。
+
+![Img](./media/B028.png)
+
+### 5.1.3.2 ライブラリの削除
+
+**手順:**
+
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
+
+![Img](./media/A800.png)
+
+micro:bitの電源がオンになると、背面にある赤いLEDインジケーターが点灯します。
+
+micro:bitボードには、micro USBを介してコンピューターと通信する際に点滅する黄色のLEDインジケーターがあります。
+
+Finder(Mac) / デバイスとドライブ(Windows)を開くと、「MICROBIT」という名前のUSBドライブが表示されます。ただし、これは一般的なディスクではありません！
+
+![Img](./media/A849.png)
+
+2\. Thonny IDEを開き、「**Tools**」→「**Manage packages...**」をクリックします。
+
+![Img](./media/B022.png)
+
+3\. 削除したいライブラリを選択し、「**Uninstall**」をクリックします。
+
+![Img](./media/B029.png)
+
+4\. 「**Yes**」をクリックします。
+
+![Img](./media/B030.png)
+
+5\. 「**Close**」をクリックします。
+
+![Img](./media/B031.png)

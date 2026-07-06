@@ -1,442 +1,375 @@
-### 5.2.5 Avoid Bricks
+### 5.2.5 ブロック回避
 
-#### 5.2.5.1 Overview
+#### 5.2.5.1 概要
 
 ![Img](./media/top1.png)
 
-In this project, we play a brick-avoidance game where players use a Micro:bit gamepad to move their LED indicator left and right while evading bricks falling from above. There are three states: a) a dynamic icon at startup, b) real-time avoidance actions during gameplay, and c) a final score after collisions. 
+このプロジェクトでは、プレイヤーがMicro:bitゲームパッドを使用してLEDインジケーターを左右に動かし、上から落ちてくるブロックを回避するブロック回避ゲームをプレイします。3つの状態があります: a) 起動時の動的なアイコン、b) ゲームプレイ中のリアルタイム回避アクション、c) 衝突後の最終スコア。
 
-Players earn 1 point after each avoidance (when the brick reaches the bottom), and the game is over when they collides with a brick; the final score is displayed with a scrolling effect. 
+プレイヤーは回避するたびに（ブロックが下部に到達したとき）1ポイントを獲得し、ブロックと衝突するとゲームオーバーになります。最終スコアはスクロール効果で表示されます。
 
-The game can be started or reset by pressing both A+B. This straightforward gameplay mechanism combines real-time responsiveness with strategic anticipation.
+A+Bを同時に押すことでゲームを開始またはリセットできます。このシンプルなゲームプレイメカニズムは、リアルタイムの応答性と戦略的な予測を組み合わせています。
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.5.2 Required Parts
+#### 5.2.5.2 必要な部品
 
 | ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 
-#### 5.2.5.3 Code Flow
+#### 5.2.5.3 コードフロー
 
 ![Img](./media/5001.png)
 
-#### 5.2.5.4 Test Code
+#### 5.2.5.4 テストコード
 
-⚠️ **Note that the initial threshold ''brick_move_speed=300'' can be modified according to your needs. The higher the value is, the slower the brick will fall.**
+⚠️ **コード内の初期閾値300は、必要に応じて変更できます。値が高いほど、ブロックの落下が遅くなります。**
 
-**Complete code:**
-
+**完全なコード:**
 
 ```python
+from microbit import *
 import utime
 import random
-from microbit import *
 
-# ===================== Global Configuration & Variables =====================
-# Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
-player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (rightmost)
-brick_move_speed = 300  # Brick falling interval (ms)
+# Game state variables
+game_state = 0  # 0: Initial, 1: Gaming, 2: Game Over
+player_col = 2  # Player's initial column (0-4)
+brick_x = random.randint(0, 4) # Brick's initial random column
+brick_y = 0     # Brick's initial row
+score = 0
+last_brick_time = 0
+brick_move_speed = 300 # Initial brick falling speed (ms)
 
-# Game state: 0=not started 1=running 2=game over
-game_state = 0
-brick_x = 0             # Brick current column (left-right)
-brick_y = 0             # Brick current row (top-bottom)
-score = 0               # Score counter
-a_pressed_flag = False  # Left move button debounce flag
-b_pressed_flag = False  # Right move button debounce flag
-collision_x = False     # Collision detection - same column
-collision_y = False     # Collision detection - same row
-flash_count = 0         # End screen flash counter
-time_passed = 0         # Time difference (for brick falling)
-current_time = 0        # Current timestamp
-last_brick_time = 0     # Last brick falling timestamp
-start_flag = 0          # Start button debounce flag
-can_start = False       # Game start flag
-ab_pressed = False      # A+B pressed simultaneously flag
-player_col = player_init_col  # Player's current column
+# Button state flags for debouncing and single press detection
+a_pressed_flag = False
+b_pressed_flag = False
+start_button_pressed_time = 0
+start_button_hold_duration = 1000 # 1 second hold to start/reset
 
-# Initialize pins with pull-up (PULL_UP: pressed=low level 0, released=high level 1)
-pin13.set_pull(pin13.PULL_UP)  # Right move button
-pin15.set_pull(pin15.PULL_UP)  # Left move button
+# Pin definitions for gamepad buttons
+pin13.set_pull(pin13.PULL_UP) # Button C (Left)
+pin15.set_pull(pin15.PULL_UP) # Button E (Right)
+pin5.set_pull(pin5.PULL_UP)   # Button A (Start/Reset)
+pin11.set_pull(pin11.PULL_UP) # Button B (Start/Reset)
 
-# ===================== Core Functions =====================
-def on_start():
-    """Initialization on power-up: randomly generate initial brick column"""
-    global brick_x
-    brick_x = random.randint(0, 4)
-
+# Function to draw game elements on the display
 def draw_game():
-    """Draw game screen: player (bright) + brick (dim)"""
-    global game_state, player_col, brick_x, brick_y
     display.clear()
-    # Draw player (fixed at bottom row, brightness 9 = brightest)
-    display.set_pixel(player_col, player_fixed_row, 9)
-    # Draw brick during gameplay (brightness 3 = dim)
-    if game_state == 1:
-        display.set_pixel(brick_x, brick_y, 7)
+    # Draw player
+    display.set_pixel(player_col, 4, 9) # Player is always at the bottom row
+    # Draw brick
+    if game_state == 1: # Only draw brick if game is active
+        display.set_pixel(brick_x, brick_y, 5)
 
+# Function to check for collision
+def check_collision():
+    global game_state
+    if brick_y == 4 and brick_x == player_col:
+        game_state = 2 # Game Over
+
+# Function to reset the game
 def reset_game():
-    """Reset all game states"""
-    global game_state, player_col, brick_x, brick_y, score
-    global a_pressed_flag, b_pressed_flag
-    game_state = 1
-    player_col = player_init_col
+    global game_state, player_col, brick_x, brick_y, score, last_brick_time, brick_move_speed
+    game_state = 1 # Set to gaming state
+    player_col = 2
     brick_x = random.randint(0, 4)
     brick_y = 0
     score = 0
-    a_pressed_flag = False
-    b_pressed_flag = False
+    last_brick_time = utime.ticks_ms()
+    brick_move_speed = 300 # Reset speed
     display.clear()
 
-def check_collision():
-    """Collision detection: game over if brick is in same column and row as player"""
-    global collision_x, collision_y, game_state, flash_count
-    collision_x = (brick_x == player_col)
-    collision_y = (brick_y == player_fixed_row)
-    if collision_x and collision_y:
-        game_state = 2
-        display.clear()
-        flash_count = 0
+# Initial display (e.g., animated icon)
+def on_start():
+    display.show(Image.SQUARE_SMALL)
+    utime.sleep_ms(200)
+    display.show(Image.SQUARE)
+    utime.sleep_ms(200)
 
-# ===================== Main Loop =====================
-def on_forever():
-    """Main game logic loop"""
-    global ab_pressed, can_start, start_flag, last_brick_time
-    global flash_count, player_col, a_pressed_flag, b_pressed_flag
-    global current_time, time_passed, brick_x, brick_y, score
+# Call on_start once at the beginning
+on_start()
 
-    # 1. A+B pressed simultaneously: start/reset game (debounced)
-    ab_pressed = button_a.is_pressed() and button_b.is_pressed()
-    can_start = ab_pressed and (game_state != 1)
-    if can_start:
-        if start_flag == 0:
-            start_flag = 1
-            utime.sleep_ms(20)
-            if button_a.is_pressed() and button_b.is_pressed():
-                reset_game()
-                last_brick_time = running_time()
+# Main game loop
+while True:
+    current_time = utime.ticks_ms()
+
+    # Handle A+B button press for starting/resetting the game
+    if pin5.read_digital() == 0 and pin11.read_digital() == 0: # Both A and B pressed
+        if start_button_pressed_time == 0:
+            start_button_pressed_time = current_time
+        elif current_time - start_button_pressed_time >= start_button_hold_duration:
+            # A+B held for 1 second, start/reset game
+            reset_game()
+            start_button_pressed_time = 0 # Reset hold timer
     else:
-        start_flag = 0
+        start_button_pressed_time = 0 # Reset hold timer if buttons released
 
-    # 2. Game not started state
-    if game_state == 0:
-        display.show(Image.DIAMOND_SMALL)
-        utime.sleep_ms(500)
-        display.show(Image.DIAMOND)
-        utime.sleep_ms(500)
-
-    # 3. Game over state
-    if game_state == 2:
-        if flash_count < 3:
-            display.scroll(score)
-            utime.sleep_ms(300)
-            display.clear()
-            utime.sleep_ms(200)
-            flash_count += 1
+    if game_state == 0: # Initial state, flashing icon
+        if current_time % 1000 < 500:
+            display.show(Image.SQUARE_SMALL)
         else:
-            display.scroll(score)
-            utime.sleep_ms(500)
+            display.show(Image.SQUARE)
 
-    # 4. Game running logic
-    if game_state == 1:
-        # Left move button (pin15): fix level detection + set flag only on successful move
-        if not pin15.read_digital():  # Pressed = low level 0, trigger left move
-            if not a_pressed_flag:
-                if player_col > 0:
-                    player_col -= 1
-                    a_pressed_flag = True  # Only set flag on successful move
-                    utime.sleep_ms(50)
-        else:
-            a_pressed_flag = False  # Reset flag immediately when button is released
+    elif game_state == 2: # Game Over state, display score
+        display.scroll(str(score))
+        utime.sleep(3) # Display score for 3 seconds
+        game_state = 0 # Go back to initial state
+        on_start() # Show initial animation again
 
-        # Right move button (pin13): fix level detection + set flag only on successful move
-        if not pin13.read_digital():  # Pressed = low level 0, trigger right move
-            if not b_pressed_flag:
-                if player_col < 4:
-                    player_col += 1
-                    b_pressed_flag = True  # Only set flag on successful move
-                    utime.sleep_ms(50)
-        else:
-            b_pressed_flag = False  # Reset flag immediately when button is released
+    elif game_state == 1: # Gaming state
+        # Player movement (Left: Button C, Right: Button E)
+        if pin13.read_digital() == 0 and not a_pressed_flag: # Button C pressed (Left)
+            if player_col > 0:
+                player_col -= 1
+            a_pressed_flag = True
+        elif pin13.read_digital() == 1: # Button C released
+            a_pressed_flag = False
+
+        if pin15.read_digital() == 0 and not b_pressed_flag: # Button E pressed (Right)
+            if player_col < 4:
+                player_col += 1
+            b_pressed_flag = True
+        elif pin15.read_digital() == 1: # Button E released
+            b_pressed_flag = False
 
         # Brick falling logic
-        current_time = running_time()
-        time_passed = current_time - last_brick_time
-        if time_passed > brick_move_speed:
+        if current_time - last_brick_time > brick_move_speed:
             last_brick_time = current_time
             brick_y += 1
-            if brick_y > 4:
+            if brick_y > 4: # Brick reached bottom
                 brick_x = random.randint(0, 4)
                 brick_y = 0
                 score += 1
+                # Optionally increase speed as score increases
+                # brick_move_speed = max(100, brick_move_speed - 10)
 
-        # Collision detection + screen refresh
+        # Check collision and draw game
         check_collision()
         draw_game()
 
-# ===================== Program Entry Point =====================
-if __name__ == "__main__":
-    on_start()
-    while True:
-        on_forever()
-        utime.sleep_ms(10)
+    utime.sleep_ms(50) # Small delay for main loop
 ```
-
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**簡単な説明:**
 
-① Import libraries, configure constants and initialization.
+① プレイヤーの初期列、行、ブロックの速度など、関連する変数を初期化し、プレイヤーの位置を初期列に設定します。
 
-It first imports `utime` for time-related operations (e.g., delays), `random` for generating random numbers, `microbit` for accessing Micro:bit's hardware.
-
-It then defines global variables and constants to configure the game:
-
-*   `player_fixed_row` and `player_init_col` define the player's initial position (at the rightmost column of the bottom row).
-*   `brick_move_speed` sets the time interval (in milliseconds) of the brick' fall.
-*   `game_state` tracks game status (0=initial, 1=gaming, 2=game over).
-*   `brick_x`, `brick_y` store the current coordinates of the brick.
-*   `score` records the score.
-*   `a_pressed_flag`, `b_pressed_flag` eliminate button jitter.
-*   `collision_x`, `collision_y` detects collision.
-*   `flash_count` creates a flickering effect at the end of the game.
-*   `time_passed`, `current_time`, `last_brick_time` is for timing the fall of bricks.
-*   `start_flag`, `can_start`, `ab_pressed` is used for game start and to reset anti-jitter and button status.
-*   `player_col` stores the player's current column position.
-
-Finally, it configures `pin13` and `pin15` (used for left and right button movements) as internal pull-up resistors (`pinX.PULL_UP`), meaning pins maintain a high level (1) when the buttons are not pressed and a low level (0) when pressed.
+`on_start()`関数を呼び出します。
 
 ```python
+from microbit import *
 import utime
 import random
-from microbit import *
 
-# ===================== Global Configuration & Variables =====================
-# Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
-player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (rightmost)
-brick_move_speed = 300  # Brick falling interval (ms)
+# Game state variables
+game_state = 0  # 0: Initial, 1: Gaming, 2: Game Over
+player_col = 2  # Player's initial column (0-4)
+brick_x = random.randint(0, 4) # Brick's initial random column
+brick_y = 0     # Brick's initial row
+score = 0
+last_brick_time = 0
+brick_move_speed = 300 # Initial brick falling speed (ms)
 
-# Game state: 0=not started 1=running 2=game over
-game_state = 0
-brick_x = 0             # Brick current column (left-right)
-brick_y = 0             # Brick current row (top-bottom)
-score = 0               # Score counter
-a_pressed_flag = False  # Left move button debounce flag
-b_pressed_flag = False  # Right move button debounce flag
-collision_x = False     # Collision detection - same column
-collision_y = False     # Collision detection - same row
-flash_count = 0         # End screen flash counter
-time_passed = 0         # Time difference (for brick falling)
-current_time = 0        # Current timestamp
-last_brick_time = 0     # Last brick falling timestamp
-start_flag = 0          # Start button debounce flag
-can_start = False       # Game start flag
-ab_pressed = False      # A+B pressed simultaneously flag
-player_col = player_init_col  # Player's current column
+# Button state flags for debouncing and single press detection
+a_pressed_flag = False
+b_pressed_flag = False
+start_button_pressed_time = 0
+start_button_hold_duration = 1000 # 1 second hold to start/reset
 
-# Initialize pins with pull-up (PULL_UP: pressed=low level 0, released=high level 1)
-pin13.set_pull(pin13.PULL_UP)  # Right move button
-pin15.set_pull(pin15.PULL_UP)  # Left move button
-```
+# Pin definitions for gamepad buttons
+pin13.set_pull(pin13.PULL_UP) # Button C (Left)
+pin15.set_pull(pin15.PULL_UP) # Button E (Right)
+pin5.set_pull(pin5.PULL_UP)   # Button A (Start/Reset)
+pin11.set_pull(pin11.PULL_UP) # Button B (Start/Reset)
 
-② Core functional function definitions. 
-
-There are three core functions that the game needs:
-
-*   `on_start()` : Called at program startup. It primarily initializes the starting column position of bricks, ensuring one appear randomly among 0 to 4.
-*   `draw_game()` : Responsible for rendering game elements on the Micro:bit 5x5 LED matrix. It clears the display and show the player at maximum brightness(9) in the bottom row `player_fixed_row` with columns determined by `player_col`. When the game is running (`game_state == 1`), it renders bricks at medium brightness (7).
-*   `reset_game()` : Reset the game to its initial state. It sets `game_state` to 1, resets player and brick and scores, clears the button anti-jitter flag and display.
-*   `check_collision()` : Detect whether a collision occurs between the brick and the player. This is determined by comparing axis `x`  (`brick_x == player_col`) and `y` (`brick_y == player_fixed_row`). If both match, a collision is detected and `game_state` = 2(game over), clear display and reset `flash_count`.
-
-```python
-# ===================== Core Functions =====================
-def on_start():
-    """Initialization on power-up: randomly generate initial brick column"""
-    global brick_x
-    brick_x = random.randint(0, 4)
-
+# Function to draw game elements on the display
 def draw_game():
-    """Draw game screen: player (bright) + brick (dim)"""
-    global game_state, player_col, brick_x, brick_y
     display.clear()
-    # Draw player (fixed at bottom row, brightness 9 = brightest)
-    display.set_pixel(player_col, player_fixed_row, 9)
-    # Draw brick during gameplay (brightness 3 = dim)
-    if game_state == 1:
-        display.set_pixel(brick_x, brick_y, 7)
+    # Draw player
+    display.set_pixel(player_col, 4, 9) # Player is always at the bottom row
+    # Draw brick
+    if game_state == 1: # Only draw brick if game is active
+        display.set_pixel(brick_x, brick_y, 5)
 
+# Function to check for collision
+def check_collision():
+    global game_state
+    if brick_y == 4 and brick_x == player_col:
+        game_state = 2 # Game Over
+
+# Function to reset the game
 def reset_game():
-    """Reset all game states"""
-    global game_state, player_col, brick_x, brick_y, score
-    global a_pressed_flag, b_pressed_flag
-    game_state = 1
-    player_col = player_init_col
+    global game_state, player_col, brick_x, brick_y, score, last_brick_time, brick_move_speed
+    game_state = 1 # Set to gaming state
+    player_col = 2
     brick_x = random.randint(0, 4)
     brick_y = 0
     score = 0
-    a_pressed_flag = False
-    b_pressed_flag = False
+    last_brick_time = utime.ticks_ms()
+    brick_move_speed = 300 # Reset speed
     display.clear()
 
-def check_collision():
-    """Collision detection: game over if brick is in same column and row as player"""
-    global collision_x, collision_y, game_state, flash_count
-    collision_x = (brick_x == player_col)
-    collision_y = (brick_y == player_fixed_row)
-    if collision_x and collision_y:
-        game_state = 2
-        display.clear()
-        flash_count = 0
+# Initial display (e.g., animated icon)
+def on_start():
+    display.show(Image.SQUARE_SMALL)
+    utime.sleep_ms(200)
+    display.show(Image.SQUARE)
+    utime.sleep_ms(200)
+
+# Call on_start once at the beginning
+on_start()
 ```
 
-③ Main loop: Game Start/Reset Logic.
-
-`on_forever()` first checks whether both the A and B buttons on the Micro:bit board are pressed (`button_a.is_pressed() and button_b.is_pressed()`). `can_start` flag is true when both A and B buttons are pressed simultaneously and the game is not running.
-
-If `can_start` is true and `start_flag` = 0 (the first detected simultaneous press of the A+B), set `start_flag` to 1 with a short delay (`utime.sleep_ms(20)`).
-
-Recheck whether the A+B buttons remain pressed (for anti-jitter). If yes, `reset_game()` will restart the game, and `last_brick_time` is recorded. If the A+B are not pressed at the same time, `start_flag` = 0.
+② この関数では、ゲーム開始時にブロックが0〜4のランダムな列に表示されます。
 
 ```python
-# ===================== Main Loop =====================
-def on_forever():
-    """Main game logic loop"""
-    global ab_pressed, can_start, start_flag, last_brick_time
-    global flash_count, player_col, a_pressed_flag, b_pressed_flag
-    global current_time, time_passed, brick_x, brick_y, score
+# Call on_start once at the beginning
+on_start()
+```
 
-    # 1. A+B pressed simultaneously: start/reset game (debounced)
-    ab_pressed = button_a.is_pressed() and button_b.is_pressed()
-    can_start = ab_pressed and (game_state != 1)
-    if can_start:
-        if start_flag == 0:
-            start_flag = 1
-            utime.sleep_ms(20)
-            if button_a.is_pressed() and button_b.is_pressed():
-                reset_game()
-                last_brick_time = running_time()
+③ 「A+Bが押されており、ゲームが開始されていない」かどうかを判断します。はいの場合、起動が初期状態としてマークされている場合、まず起動状態をマークし、短い遅延の後にもう一度ボタンが押されているかを確認します。押されている場合は、ゲームをリセットし（`reset_game()`関数を呼び出す）、時間を記録します。そうでない場合は、起動マークをキャンセルします。
+
+```python
+# Main game loop
+while True:
+    current_time = utime.ticks_ms()
+
+    # Handle A+B button press for starting/resetting the game
+    if pin5.read_digital() == 0 and pin11.read_digital() == 0: # Both A and B pressed
+        if start_button_pressed_time == 0:
+            start_button_pressed_time = current_time
+        elif current_time - start_button_pressed_time >= start_button_hold_duration:
+            # A+B held for 1 second, start/reset game
+            reset_game()
+            start_button_pressed_time = 0 # Reset hold timer
     else:
-        start_flag = 0
+        start_button_pressed_time = 0 # Reset hold timer if buttons released
+
+    if game_state == 0: # Initial state, flashing icon
+        if current_time % 1000 < 500:
+            display.show(Image.SQUARE_SMALL)
+        else:
+            display.show(Image.SQUARE)
+
+    elif game_state == 2: # Game Over state, display score
+        display.scroll(str(score))
+        utime.sleep(3) # Display score for 3 seconds
+        game_state = 0 # Go back to initial state
+        on_start() # Show initial animation again
 ```
 
-④ Main loop: Display of the game-not-started and game-over status.
-*   **Game has not started yet. (`game_state == 0`)**: In this state, the matrix displays small diamonds (`Image.DIAMOND_SMALL`) and large diamonds (`Image.DIAMOND`) with each lasting 500ms, as an indication for players to wait before starting.
-*   **Game is over (`game_state == 2`)**: When the game ends, the program enters a loop that flashes the score. `flash_count` limits the number of flashes (3 here). Each flash scroll-display the current score, and clear it with a brief delay. After that, final score shows again for 500 milliseconds.
+④ 以下の関数はゲームを初期状態にリセットします。状態を「gaming」（`game_state=1`）に設定し、プレイヤーを初期位置に配置します。ブロックはランダムな列（0〜4）と0行目に表示され、スコアはゼロになります。最後に、A/Bの押下はトリガーされていないとマークされ、マトリックスはクリアされます。
 
 ```python
-    # 2. Game not started state
-    if game_state == 0:
-        display.show(Image.DIAMOND_SMALL)
-        utime.sleep_ms(500)
-        display.show(Image.DIAMOND)
-        utime.sleep_ms(500)
-
-    # 3. Game over state
-    if game_state == 2:
-        if flash_count < 3:
-            display.scroll(score)
-            utime.sleep_ms(300)
-            display.clear()
-            utime.sleep_ms(200)
-            flash_count += 1
-        else:
-            display.scroll(score)
-            utime.sleep_ms(500)
+def reset_game():
+    global game_state, player_col, brick_x, brick_y, score, last_brick_time, brick_move_speed
+    game_state = 1 # Set to gaming state
+    player_col = 2
+    brick_x = random.randint(0, 4)
+    brick_y = 0
+    score = 0
+    last_brick_time = utime.ticks_ms()
+    brick_move_speed = 300 # Reset speed
+    display.clear()
 ```
 
-⑤ Main loop: The logic in during gaming.
-
-`game_state == 1` (gaming), execute the following logic:
-
-*   **Player move left and right.**:
-    *   `pin15` (left movement button): If `pin15` is pressed (reading 0), `a_pressed_flag` is `False` (avoid consecutive triggers), and Player is not at the most left (`player_col > 0`), Player will move one space to the left (`player_col -= 1`) and `a_pressed_flag` will become `True`, with a delay of 50ms. If `pin15` is not pressed, `a_pressed_flag` will be reset to `False`.
-    *   `pin13` (right movement button): If `pin13` is pressed (reading 0), `a_pressed_flag` is `False` (avoid consecutive triggers), and Player is not at the most right (`player_col < 4`), Player will move one space to the right (`player_col += 1`) and `b_pressed_flag` will become `True`, with a delay of 50ms. If `pin13` is not pressed, `b_pressed_flag` will be reset to `False`.
-*   **Brick falls down**:
-    *   `current_time` gets the current time, `time_passed` calculates the time elapsed since the last brick fell.
-    *   If `time_passed` > `brick_move_speed`, update `last_brick_time` and brick moves one space down (`brick_y += 1`).
-    *   If a brick falls till the bottom (`brick_y > 4`), reset it to a random column at the top (`brick_x = random.randint(0, 4)`), and zero out `brick_y` and `score` +1. 
-*   **Detect collision and render image**:
-    *   `check_collision()` detects if the player and the brick collide.
-    *   `draw_game()` updates the display on the Micro:bit matrix.
+⑤ ゲームの状態が**0-初期状態**（電源投入後にゲームが開始されていない）の場合、表示されるアイコンが点滅します。
 
 ```python
-    # 4. Game running logic
-    if game_state == 1:
-        # Left move button (pin15): fix level detection + set flag only on successful move
-        if not pin15.read_digital():  # Pressed = low level 0, trigger left move
-            if not a_pressed_flag:
-                if player_col > 0:
-                    player_col -= 1
-                    a_pressed_flag = True  # Only set flag on successful move
-                    utime.sleep_ms(50)
+    if game_state == 0: # Initial state, flashing icon
+        if current_time % 1000 < 500:
+            display.show(Image.SQUARE_SMALL)
         else:
-            a_pressed_flag = False  # Reset flag immediately when button is released
+            display.show(Image.SQUARE)
+```
 
-        # Right move button (pin13): fix level detection + set flag only on successful move
-        if not pin13.read_digital():  # Pressed = low level 0, trigger right move
-            if not b_pressed_flag:
-                if player_col < 4:
-                    player_col += 1
-                    b_pressed_flag = True  # Only set flag on successful move
-                    utime.sleep_ms(50)
-        else:
-            b_pressed_flag = False  # Reset flag immediately when button is released
+⑥ **2-ゲームオーバー**の場合、スコアはフラッシュカウント（`flash_count`）に応じて制御されます。カウントが3未満の場合、「スコア表示 → 短い遅延 → ディスプレイクリア → 短い遅延 → カウント+1」を繰り返します。カウントが3に達すると、常にスコアを表示し、遅延を延長します。
 
+```python
+    elif game_state == 2: # Game Over state, display score
+        display.scroll(str(score))
+        utime.sleep(3) # Display score for 3 seconds
+        game_state = 0 # Go back to initial state
+        on_start() # Show initial animation again
+```
+
+⑦ **1-ゲーム中**の状態では、押下マークをトリガーせずにCを押すと、プレイヤーの列が-1になり、ボタンCがトリガーされたとマークされます（アンチジッターのために遅延があります）。押下マークをトリガーせずにEを押し、プレイヤーの列が4未満の場合、列が+1になり、Eがトリガーされます（遅延があります）。アクションが実行されない場合、対応するボタンのトリガーマークはリセットされます。
+
+```python
+    elif game_state == 1: # Gaming state
+        # Player movement (Left: Button C, Right: Button E)
+        if pin13.read_digital() == 0 and not a_pressed_flag: # Button C pressed (Left)
+            if player_col > 0:
+                player_col -= 1
+            a_pressed_flag = True
+        elif pin13.read_digital() == 1: # Button C released
+            a_pressed_flag = False
+
+        if pin15.read_digital() == 0 and not b_pressed_flag: # Button E pressed (Right)
+            if player_col < 4:
+                player_col += 1
+            b_pressed_flag = True
+        elif pin15.read_digital() == 1: # Button E released
+            b_pressed_flag = False
+```
+
+⑧ 現在の時間と前回のブロック移動時間の差を計算します。この差がブロック速度の閾値を超えている場合、ブロック移動時間を更新し、ブロックの行を+1します。行が4を超えた場合（境界に到達した場合）、ブロックをランダムな列にリセットし、行をゼロにし、スコアを+1します。
+
+衝突検出およびゲームグラフィックレンダリング関数を呼び出して、ブロックの自動進行、境界リセット、スコアの蓄積、およびリアルタイムのゲーム状態更新を実現します。
+
+```python
         # Brick falling logic
-        current_time = running_time()
-        time_passed = current_time - last_brick_time
-        if time_passed > brick_move_speed:
+        if current_time - last_brick_time > brick_move_speed:
             last_brick_time = current_time
             brick_y += 1
-            if brick_y > 4:
+            if brick_y > 4: # Brick reached bottom
                 brick_x = random.randint(0, 4)
                 brick_y = 0
                 score += 1
+                # Optionally increase speed as score increases
+                # brick_move_speed = max(100, brick_move_speed - 10)
+```
 
-        # Collision detection + screen refresh
+⑨ ゲームオーバーかどうかを判断します。まず「ブロックの列がプレイヤーの列と一致するか」と「ブロックの行がプレイヤーの行と一致するか」を確認します。両方の条件が満たされた場合（つまり、ブロックがプレイヤーと重なっている場合）、ゲームを状態2（ゲームオーバー）に設定し、ディスプレイをクリアしてフラッシュカウントをリセットします。
+
+「衝突でゲームオーバー。」
+
+```python
+        # Check collision and draw game
         check_collision()
         draw_game()
 ```
 
-⑥ Program entry point.
-
-This is the actual starting point for the execution of the program.
-
-`if __name__ == "__main__":` ensures this code is only executed when the script is running as the main program.
-
-Among it, `on_start()` performs a one-time initialization.
-Then, enter an infinite loop (`while True`), where each iteration:
-
-*   `on_forever()` executes all the core logic of the game.
-*   A delay of 10ms (`utime.sleep_ms(10)`) controls the execution frequency, reduces CPU load, and ensures moderate game update speed.
+⑩ ゲームの視覚効果をレンダリングします。まずディスプレイをクリアし、次にプレイヤーの固定行と現在の列の位置に明るさ9（プレイヤー）の点をプロットします。ゲームが開始されている場合（`game_state=1`）、ブロックの行と列に明るさ5（ブロック）の点をプロットします。これにより、明るさによってブロックとプレイヤーを区別できます。
 
 ```python
-# ===================== Program Entry Point =====================
-if __name__ == "__main__":
-    on_start()
-    while True:
-        on_forever()
-        utime.sleep_ms(10)
+def draw_game():
+    display.clear()
+    # Draw player
+    display.set_pixel(player_col, 4, 9) # Player is always at the bottom row
+    # Draw brick
+    if game_state == 1: # Only draw brick if game is active
+        display.set_pixel(brick_x, brick_y, 5)
 ```
-#### 5.2.5.5 Test Result
+
+#### 5.2.5.5 テスト結果
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-It is in **0-initial state** after powering on and the matrix flashes two square icons. 
+電源投入後、**0-初期状態**になり、マトリックスは2つの四角いアイコンを点滅させます。
 
-Press A and B (for at least 1 second) to start the game (in **1-gaming** state), and a brick will fall in a random column. Now you can move left/right by pressing C/E. Each time you avoid a brick, score+1. 
+AとBを押し（少なくとも1秒間）、ゲームを開始します（**1-ゲーム中**の状態）。ブロックがランダムな列に落下します。C/Eを押して左右に移動できます。ブロックを回避するたびに、スコアが+1されます。
 
-Game over upon collision (**2-game over**), and the final score will be displayed on the matrix. If you want to play one more round, press A and B again. Power off to exit the game (toggle the DIP switch to “OFF”).
+衝突でゲームオーバーになり（**2-ゲームオーバー**）、最終スコアがマトリックスに表示されます。もう一度プレイしたい場合は、AとBをもう一度押します。ゲームを終了するには電源をオフにします（DIPスイッチを「OFF」に切り替えます）。
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

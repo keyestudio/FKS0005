@@ -1,18 +1,18 @@
-### 4.2.2 Kleurrijke Lichten
+### 4.2.2 カラフルなライト
 
-#### 4.2.2.1 Overzicht
+#### 4.2.2.1 概要
 
 ![Img](./media/top1.png)
 
-RGB LED's zijn een type LED-lichtbron dat beelden creëert door licht te mengen van de drie primaire kleuren: rood, groen en blauw, waarvan de intersectie verschillende tinten produceert. Gangbare methoden omvatten directe menging van de primaire kleuren, het gebruik van een blauwe LED gecombineerd met gele fosfor, of het gebruik van een ultraviolette LED samen met RGB-fosfor. Vergeleken met LED's die direct wit licht uitstralen, bieden RGB LED's een breder scala aan kleurmengmogelijkheden omdat de drie primaire kleuren onafhankelijk kunnen worden geregeld.
+RGB LEDは、赤、緑、青の3原色の光を混ぜ合わせることで画像を作成するLED光源の一種で、その組み合わせにより様々な色合いを生み出します。一般的な方法としては、3原色を直接混合する方法、青色LEDと黄色蛍光体を組み合わせる方法、または紫外線LEDとRGB蛍光体を組み合わせる方法があります。白色光を直接発するLEDと比較して、RGB LEDは3原色を独立して制御できるため、より幅広い色の混合が可能です。
 
-In dit project komt elke knop overeen met een andere modus van de RGB LED's. Wanneer knop C wordt ingedrukt, knipperen de lichten afwisselend in de volgorde van "rood, groen, blauw, geel en paars"; Druk op D om over te schakelen naar ademende lichten; Druk op E voor waterstromende lichten; Druk op F voor markeerlichten.
+このプロジェクトでは、各ボタンがRGB LEDの異なるモードに対応しています。ボタンCを押すと、「赤、緑、青、黄、紫」の順にライトが交互に点滅します。Dを押すと呼吸ライトに切り替わり、Eを押すと水が流れるようなライト、Fを押すとマーキーライトになります。
 
-Kleurrijke lichtslingers voor festivaldecoraties, kerstboomverlichting, RGB-strips voor dagelijkse sfeer, LED-decoratieve verlichting in pretparken en winkelcentra... Dit zijn allemaal veelvoorkomende voorbeelden van multi-mode verlichting in ons dagelijks leven.
+お祭りの飾り付け用のカラフルなライトストリング、クリスマスツリーのライト、日常の雰囲気を演出するRGBストリップ、遊園地やショッピングモールのLED装飾ライトなど、これらはすべて私たちの日常生活におけるマルチモードライトの一般的な例です。
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.2.2 Componentkennis
+#### 4.2.2.2 コンポーネント知識
 
 ![Img](./media/2top.png)
 
@@ -20,101 +20,102 @@ Kleurrijke lichtslingers voor festivaldecoraties, kerstboomverlichting, RGB-stri
 
 | ![Img](./media//2001.png)| ![Img](./media//2002.png)|
 | :--: | :--: |
-| Werkelijk product | Schematisch diagram |
+| 実物 | 回路図 |
 
-De SK6812 is een extern gestuurde LED-lichtbron die besturings- en verlichtingscircuits integreert. Het belangrijkste onderdeel zijn 5x5mm oppervlakte-verlichte LED-kralen, elk functionerend als een onafhankelijke pixel die meerdere kerncircuits omvat: een slim digitaal interface-datalatchcircuit, signaalvormings- en versterkingsaandrijfcircuit, stroomregelcircuit, ingebouwd constant-stroomcircuit en een zeer nauwkeurige RC-oscillator.
+SK6812は、制御回路と照明回路を統合した外部制御型LED光源です。その主要部分は5x5mmの表面実装型LEDビーズで、それぞれが独立したピクセルとして機能し、スマートデジタルインターフェースデータラッチ回路、信号整形および増幅駆動回路、電源調整回路、内蔵定電流回路、高精度RC発振器など、複数のコア回路を内蔵しています。
 
-De communicatie maakt gebruik van een enkelpolig nul-retourcode-protocol. Bij inschakelen/reset ontvangt elke pixel gegevens van de controller via de DIN-poort. De eerste 24 bits aan gegevens worden door de initiële pixel geëxtraheerd en opgeslagen in de interne datalatch, terwijl de resterende bits intern worden gevormd en versterkt voordat ze via de DOUT-poort naar volgende pixels worden verzonden. Met elke verwerkte pixel neemt de grootte van het verzonden signaal met 24 bits af.
+その通信は単極性ゼロリターンコードプロトコルを採用しています。電源投入リセット後、各ピクセルはDINポートを介してコントローラーからデータを受信します。最初の24ビットのデータは最初のピクセルによって抽出され、内部データラッチに保存されます。残りのデータは内部で整形および増幅された後、DOUTポートを介して後続のピクセルに送信されます。各ピクセルが処理されるたびに、送信される信号サイズは24ビット減少します。
 
-Op de gamepad bevinden zich vier SK6812 RGB-lampjes. Deze ondersteunen allemaal 256-niveau helderheidsaanpassing over hun rode, groene en blauwe kanalen, waardoor 256×256×256 kleurencombinaties mogelijk zijn. Hierdoor levert het diverse lichteffecten zoals afwisselende flitsen, ademende gradiënten en scrollende animaties, wat intuïtievere en levendigere interacties biedt.
+ゲームパッドには4つのSK6812 RGBライトがあります。これらはすべて、赤、緑、青の各チャンネルで256段階の明るさ調整をサポートしており、256×256×256の色を組み合わせることができます。これにより、交互点滅、呼吸グラデーション、スクロールアニメーションなど、多様な照明効果を実現し、より直感的で鮮やかなインタラクションを提供します。
 
-**Knop**
+**ボタン**
 
 | ![Img](./media//2003.png)| ![Img](./media//2004.png)|
 | :--: | :--: |
-| Werkelijk product | Schematisch diagram |
+| 実物 | 回路図 |
 
-De knop, voor het eerst verschenen in Japan, werd aangeduid als een gevoelige schakelaar. Tijdens de bediening drukt men op de schakelaar om kracht uit te oefenen om het circuit te sluiten. Bij het loslaten van de druk opent de schakelaar. De interne metalen veer verandert van staat (verbonden/losgekoppeld) als reactie op de uitgeoefende kracht.
+ボタンは、日本で最初に登場し、感圧スイッチと呼ばれていました。操作中、スイッチを押して力を加えることで回路を閉じます。圧力を解放すると、スイッチが開きます。その内部の金属製スプリングリーフは、加えられた力に応じて接続/切断の状態を変化させます。
 
-Er zijn vier knoppen, elk onafhankelijk verbonden met een pin op het micro:bit-bord. Wanneer een knop wordt ingedrukt, genereert het circuit een overeenkomstig laag niveau signaal, waardoor de micro:bit snel kan reageren op commando's en het interactiegemak en de nauwkeurigheid aanzienlijk worden verbeterd.
+4つのボタンがあり、それぞれがmicro:bitボードのピンに独立して接続されています。いずれかのボタンが押されると、回路は対応する低レベル信号を生成し、micro:bitがコマンドに迅速に応答できるようにし、インタラクションの利便性と精度を大幅に向上させます。
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.2.3 Benodigde onderdelen
+#### 4.2.2.3 必要な部品
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2-bord** (zelf meegebracht) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA-batterij** (zelf meegebracht) ×4 |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 
-#### 4.2.2.4 Codestroom
+
+#### 4.2.2.4 コードフロー
 
 ![Img](./media/2006.png)
 
-#### 4.2.2.5 Testcode
+#### 4.2.2.5 テストコード
 
-⚠️ **Let op dat de vertragingstijd van de MODE\*_DELAY in de codes kan worden aangepast aan uw behoeften.**
+⚠️ **コード内のMODE\*_DELAYの遅延時間は、必要に応じて変更できます。**
 
-**Volledige code:**
+**完全なコード:**
 
 ![Img](./media/2005.png)
 
 ![Img](./media/line1.png)
 
-**Korte uitleg:**
+**簡単な説明:**
 
-① Schakel in het begin de functie van de LED's uit (zet led enable op false).
+① 最初はLEDの機能を無効にします（led enableをfalseに設定）。
 
-En definieer 4 LED-vertragingen (zeg, zet 5 in modus 2, zet 500 in modus 1...), stel knop debounce in op 20. Initialiseer vier RGB LED's op pin P8 op geen kleur (zet alle waarden op 0), d.w.z. zet ze uit.
+そして、4つのLED遅延を定義し（例えば、モード2で5、モード1で500など）、ボタンのデバウンスを20に設定します。ピンP8の4つのRGB LEDを無色（すべての値を0に設定）に初期化します。つまり、オフに設定します。
 
 ![Img](./media/2009.png)
 
-② Tijdens de lus wordt een anti-jitter-bewerking geïmplementeerd door te controleren of het verschil tussen de huidige uitvoeringstijd en de vorige druktijd de vooraf ingestelde anti-jitter-drempel (BTN_DEBOUNCE) overschrijdt, waardoor herhaalde drukken veroorzaakt door fysieke jitter worden voorkomen.
+② ループ中、現在の実行時間と前回の押下時間の差がプリセットされたアンチジッター閾値（BTN_DEBOUNCE）を超えているかを確認することで、物理的なジッターによる繰り返しの押下を防ぐアンチジッター操作が実装されます。
 
 
 ![Img](./media/2010.png)
 
 
-③ Wanneer de C(/D/E/F) wordt ingedrukt, wordt de modus ingesteld op 1(2/3/4), terwijl de animatiestappen en timingstartpunten voor de overeenkomstige modus worden gereset, de lichten worden gewist en de knop-tijdstempel wordt bijgewerkt. Dit maakt nauwkeurig schakelen en initiële bediening van verschillende LED-modi mogelijk.
+③ C(/D/E/F)が押されると、モードは1(2/3/4)に設定され、対応するモードのアニメーションステップとタイミング開始点がリセットされ、ライトがクリアされ、ボタンのタイムスタンプが更新されます。これにより、異なるLEDモードの正確な切り替えと初期操作が可能になります。
 
 
 | ![Img](./media/2011.png)|![Img](./media/2012.png)|
 | :--: | :--: |
-|Knop C is ingedrukt|Knop D is ingedrukt|
-| ![Img](./media/2013.png) | ![Img](./media/2014.png) |
-|Knop E is ingedrukt|Knop F is ingedrukt|
+|ボタンCが押された|ボタンDが押された|
+| ![Img](./media/2013.png)    |     ![Img](./media/2014.png)   |
+|ボタンEが押された|ボタンFが押された|
 
-④ Wanneer de modus is ingesteld op 1 en het interval tussen de huidige tijd en de vorige modustijd MODE1Delay overschrijdt, werk dan eerst de modustijdstempel bij en toon de lichten op basis van de verschillende waarden van model_step (0–4) in volgorde: rood, groen, blauw, geel en paars. Na het vernieuwen van de weergave, reset de model_step-lus door een modulo-bewerking om deze vijf kleuren regelmatig te veranderen.
+④ モードが1に設定され、現在の時間と前回のモード時間の間の間隔がMODE1Delayを超えると、まずモードのタイムスタンプを更新し、model_stepの異なる値（0〜4）に基づいてライトを順に表示します：赤、緑、青、黄、紫。表示を更新した後、剰余演算によってmodel_stepループをリセットし、これら5つの色を定期的に変更します。
 
 ![Img](./media/2015.png)
 
-⑤ Wanneer de modus 2 is en het interval tussen de huidige tijd en de vorige modustijd MODE2_DELAY overschrijdt, werk dan eerst de modustijdstempel bij en verhoog de kleurwaarde (tint) cyclisch met modulo (bereik 0–359). Wis vervolgens het licht en toon de overeenkomstige tint met hoge verzadiging (99) en lage helderheid (20), en de gradiëntkleuren zullen vloeiend veranderen. (De helderheids- en verzadigingswaarden in de codes kunnen naar behoefte worden aangepast.)
+⑤ モードが2で、現在の時間と前回のモード時間の間の間隔がMODE2_DELAYを超えると、まずモードのタイムスタンプを更新し、色値（色相）を剰余演算（0〜359の範囲）によって周期的に増加させます。次に、ライトをクリアし、高彩度（99）と低輝度（20）で対応する色相を表示すると、グラデーションカラーがスムーズに変化します。（コード内の輝度と彩度の値は必要に応じて調整できます。）
 
 ![Img](./media/2016.png)
 
-⑥ Wanneer de modus 3 is en het interval tussen de huidige tijd en de vorige modustijd MODE3_DELAY overschrijdt, werk dan eerst de modustijdstempel bij en verschuif alle pixels van de lichtstrip met 1 bit, wijs een willekeurige tint (0–359), hoge verzadiging (99) en lage helderheid (20) toe aan de 0e pixel. Vernieuw de weergave en u ziet een stromend licht: Lichten bewegen sequentieel en veranderen willekeurig van kleur. (De helderheids- en verzadigingswaarden in de code kunnen naar behoefte worden aangepast.)
+⑥ モードが3で、現在の時間と前回のモード時間の間の間隔がMODE3_DELAYを超えると、まずモードのタイムスタンプを更新し、ライトストリップのすべてのピクセルを1ビットシフトし、0番目のピクセルにランダムな色相（0〜359）、高彩度（99）、低輝度（20）を割り当てます。表示を更新すると、流れるようなライトが見えます：ライトが順次移動し、色がランダムに変化します。（コード内の輝度と彩度の値は必要に応じて調整できます。）
 
 ![Img](./media/2017.png)
 
-⑦ Wanneer de modus 4 is en het interval tussen de huidige tijd en de vorige modustijd MODE4_DELAY overschrijdt, werk dan eerst de modustijdstempel bij en wis de lichtstrip, wijs een willekeurige tint (0–359), hoge verzadiging (99) en lage helderheid (20) toe aan de pixels die overeenkomen met model_step, en vernieuw de weergave. Tenslotte, doorloop model_step binnen 0-3 via modulo, en u zult zien dat enkele LED's sequentieel in willekeurige kleuren aangaan. (De helderheids- en verzadigingswaarden in de code kunnen naar behoefte worden aangepast.)
+⑦ モードが4で、現在の時間と前回のモード時間の間の間隔がMODE4_DELAYを超えると、まずモードのタイムスタンプを更新し、ライトストリップをクリアし、model_stepに対応するピクセルにランダムな色相（0〜359）、高彩度（99）、低輝度（20）を割り当て、表示を更新します。最後に、剰余演算によってmodel_stepを0〜3の範囲で循環させると、単一のLEDがランダムな色で順次点灯するのを確認できます。（コード内の輝度と彩度の値は必要に応じて調整できます。）
 
 ![Img](./media/2018.png)
 
-#### 4.2.2.6 Testresultaat
+#### 4.2.2.6 テスト結果
 
 ![Img](./media/4top.png)
 
-Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。
 
-Druk op **C**: de lichten wisselen af tussen **rood-groen-blauw-geel-paars** in volgorde.
+**C**を押す: ライトが**赤-緑-青-黄-紫**の順に交互に点滅します。
 
-Druk op **D**: de kleurtint van de lichten zal toenemen, en uiteindelijk zullen de gradiëntkleuren vloeiend veranderen.
+**D**を押す: ライトの色相が増加し、最終的にグラデーションカラーがスムーズに変化します。
 
-Druk op **E**: de lichten genereren een willekeurige kleur beginnend bij de 0e pixel, en verschuiven de kleur sequentieel één pixel, zodat u een waterstromend licht ziet.
+**E**を押す: ライトが0番目のピクセルからランダムな色を生成し、色を1ピクセルずつ順次シフトするため、水が流れるようなライトが見えます。
 
-Druk op **F**: elke pixel licht sequentieel op in willekeurige kleuren.
+**F**を押す: 各ピクセルがランダムな色で順次点灯します。
 
 ![Img](./media/2019.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

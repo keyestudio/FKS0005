@@ -1,237 +1,238 @@
-## 4.1.1 Over MakeCode
+## 4.1.1 MakeCodeについて
 
-⚠️ **De volgende stappen worden uitgevoerd op het Windows-besturingssysteem. Als u een ander besturingssysteem gebruikt, kunt u deze als referentie nemen. Hier worden ze gedemonstreerd op Google Chrome / Microsoft Edge.**
+⚠️ **以下の手順はWindowsオペレーティングシステムで操作されています。他のオペレーティングシステムを使用している場合は、参考にしてください。ここではGoogle Chrome / Microsoft Edgeで説明されています。**
 
-**MakeCode Programmeeromgeving:**
+**MakeCodeプログラミング環境:**
 
-Open de [online versie van de MakeCode-editor](https://makecode.microbit.org/#editor).
+[MakeCodeエディターのオンライン版](https://makecode.microbit.org/#editor)を開きます。
 
-Hoofdinterface van MakeCode:
+MakeCodeのメインインターフェース:
 
 ![Img](./media/A637.png)
 
-Er zijn blokken "**on start**" en "**forever**" in het codebewerkingsgebied. Wanneer de stroom wordt aangesloten of gereset, betekent "on start" dat de code in het blok slechts één keer wordt uitgevoerd, terwijl "forever" impliceert dat de code cyclisch wordt uitgevoerd.
+コード編集エリアには「**on start**」と「**forever**」のブロックがあります。「on start」は電源投入時またはリセット時にコードが一度だけ実行されることを意味し、「forever」はコードが繰り返し実行されることを意味します。
 
-Klik op "**JS JavaScript**" om de JavaScript-code te zien:
+「**JS JavaScript**」をクリックするとJavaScriptコードが表示されます:
 
 ![Img](./media/A754.png)
 
-Of klik op "**Python**" om over te schakelen naar Python-code:
+または「**Python**」をクリックしてPythonコードに切り替えます:
 
 ![Img](./media/A814.png)
 
-**Taalinstellingen:**
+**言語設定:**
 
 ![Img](./media/Animation-3.gif)
 
-Stappen:
+手順:
 
-Stap 1: Klik op de instellingenknop ![Img](./media/A806.png).
+ステップ1: 設定ボタン ![Img](./media/A806.png) をクリックします。
 
 ![Img](./media/A301.png)
 
-Stap 2: Klik op "Language".
+ステップ2: 「Language」をクリックします。
 
 ![Img](./media/A302.png)
 
-Stap 3: Selecteer de gewenste taal. Hier stellen we deze in op "English".
+ステップ3: 希望する言語を選択します。ここでは「English」に設定します。
 
 ![Img](./media/A303.png)
 
-## 4.1.2 Makecode Uitbreidingsbibliotheek
+## 4.1.2 Makecode拡張ライブラリ
 
-### 4.1.2.1 Bibliotheek Toevoegen
+### 4.1.2.1 ライブラリの追加
 
-⚠️ **Wij leveren codebestanden (.hex) voor elk project, zodat u deze direct kunt laden in de MakeCode-editor. Of als u wilt, kunt u ook zelf codeblokken bouwen. Houd er rekening mee dat bibliotheken vereist zijn wanneer u ze handmatig bouwt.**
+⚠️ **各プロジェクトのコードファイル（.hex）を提供していますので、MakeCodeエディターに直接ロードできます。または、必要に応じてコードブロックを自分で構築することもできます。手動で構築する場合はライブラリが必要であることに注意してください。**
 
-⚠️ **<span style="color: rgb(255, 76, 65);">Opmerking:</span>** Kopieer en plak de link in het zoekvak: `https://github.com/keyestudio2019/pxt-creative-inventors-kit-master.git`.
+⚠️ **<span style="color: rgb(255, 76, 65);">注:</span>** リンクを検索ボックスにコピーして貼り付けます: `https://github.com/keyestudio2019/pxt-creative-inventors-kit-master.git`。
 
 ![Img](./media/Animation-4.gif)
 
-Stappen:
+手順:
 
-1\. Klik op ![Img](./media/A806.png) om "**Extensions**" te selecteren.
+1\. ![Img](./media/A806.png) をクリックして「**Extensions**」を選択します。
 
 ![Img](./media/A842.png)
 
-Of klik op de "**Extensions**" boven de **Advanced** blokken.
+または、**Advanced**ブロックの上にある「**Extensions**」をクリックします。
 
 ![Img](./media/A900.png)
 
-2\. Zoek trefwoorden of plak de GitHub-link.
+2\. キーワードを検索するか、GitHubリンクを貼り付けます。
 
 ![Img](./media/A909.png)
 
-3\. Hier voeren we de URL: `https://github.com/keyestudio2019/KEYES-Smart-Gamepad-master.git` in het zoekvak in en klikken op ![Img](./media/A3257.png), en laden de extensie van "**Smart-Gamepad**".
+3\. ここでは、URL: `https://github.com/keyestudio2019/KEYES-Smart-Gamepad-master.git` を検索ボックスに入力し、![Img](./media/A3257.png) をクリックして「**Smart-Gamepad**」の拡張機能をロードします。
 
 ![Img](./media/A306.png)
 
-4\. Laden:
+4\. ロード中:
 
 ![Img](./media/A3316.png)
 
-5\. Geladen:
+5\. ロード完了:
 
 ![Img](./media/A335.png)
 
-### 4.1.2.2 Bibliotheek Bijwerken/Verwijderen
+### 4.1.2.2 ライブラリの更新/削除
 
-⚠️ **Over het algemeen is het niet nodig om bibliotheken te verwijderen, tenzij ze niet langer nodig zijn.**
+⚠️ **通常、ライブラリは不要な場合を除き、削除する必要はありません。**
 
 ![Img](./media/Animation-4.gif)
 
-Stappen:
+手順:
 
-1\. Klik op "**JavaScript**" om over te schakelen naar tekstcodes.
+1\. 「**JavaScript**」をクリックしてテキストコードに切り替えます。
 
 ![Img](./media/A724.png)
 
-2\. Klik op "**Explorer**".
+2\. 「**Explorer**」をクリックします。
 
 ![Img](./media/A749.png)
 
-3\. Zoek de "**Smart-Gamepad**" en klik op de prullenbak ![Img](./media/A813.png) om deze te verwijderen.
+3\. 「**Smart-Gamepad**」を見つけて、ゴミ箱 ![Img](./media/A813.png) をクリックして削除します。
 
 ![Img](./media/A824.png)
 
-4\. "**Remove it**".
+4\. 「**Remove it**」をクリックします。
 
 ![Img](./media/A727.png)
 
-## 4.1.3 MakeCode Programma
+## 4.1.3 MakeCodeプログラム
 
-### 4.1.3.1 Programma Importeren in MakeCode
+### 4.1.3.1 MakeCodeでのプログラムのインポート
 
-We nemen het project "**heartbeat**" als voorbeeld.
+プロジェクト「**heartbeat**」を例にとります。
 
 ![Img](./media/Animation-2.gif)
 
-Stappen:
+手順:
 
-1\. Verbind het micro:bit-bord met uw computer via een micro USB-kabel.
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
 
 ![Img](./media/A800.png)
 
-Wanneer de micro:bit wordt ingeschakeld, zal de rode LED-indicator aan de achterkant oplichten.
+micro:bitの電源がオンになると、背面にある赤いLEDインジケーターが点灯します。
 
-Op het micro:bit-bord bevindt zich een gele LED-indicator die knippert wanneer het bord communiceert met uw computer via micro USB.
+micro:bitボードには、micro USBを介してコンピューターと通信する際に点滅する黄色のLEDインジケーターがあります。
 
-Open Finder(Mac) / Apparaten en schijven(Windows), en u ziet een USB-station genaamd "MICROBIT". Let wel op dat het geen gewone schijf is!
+Finder(Mac) / デバイスとドライブ(Windows)を開くと、「MICROBIT」という名前のUSBドライブが表示されます。ただし、これは一般的なディスクではありません！
 
 ![Img](./media/A849.png)
 
-2\. Klik op "**Import**":
+2\. 「**Import**」をクリックします:
 
 ![Img](./media/A956.png)
 
-3\. En selecteer "**Import File...**".
+3\. そして「**Import File...**」を選択します。
 
 ![Img](./media/A042.png)
 
-4\. "**Choose File**" om het bestand te openen dat u nodig heeft.
+4\. 「**Choose File**」をクリックして、必要なファイルを開きます。
 
 ![Img](./media/A06.png)
 
-5\. Hier kiezen we "**heartbeat.hex**".
+5\. ここでは「**heartbeat.hex**」を選択します。
 
 ![Img](./media/A28.png)
 
-6\. "**Go ahead √**".
+6\. 「**Go ahead √**」をクリックします。
 
 ![Img](./media/A149.png)
 
-Of u kunt het hex-bestand direct naar de hoofdinterface van Makecode slepen:
+または、hexファイルをMakecodeのメインインターフェースに直接ドラッグすることもできます:
 
 ![Img](./media/A202.png)
 
-7\. Geïmporteerd:
+7\. インポート済み:
 
 ![Img](./media/A217.png)
 
-### 4.1.3.2 Code Downloaden (WebUSB)
+### 4.1.3.2 コードのダウンロード (WebUSB)
 
-Voor browsers zoals **Google Chrome/Microsoft Edge** maakt hun WebUSB directe toegang tot het micro USB-hardwareapparaat mogelijk via een online webpagina. Klik op "Connect Device" om het apparaat te koppelen. Klik daarna op "**Download**" om de code naar het micro:bit-bord te laden.
+**Google Chrome/Microsoft Edge**のようなブラウザでは、WebUSBによりオンラインウェブページを介してmicro USBハードウェアデバイスに直接アクセスできます。「Connect Device」をクリックしてデバイスをペアリングします。その後、「**Download**」をクリックしてコードをmicro:bitボードにロードします。
 
 ![Img](./media/Animation.gif)
 
-Stappen:
+手順:
 
-#### 4.1.3.2.1 Apparaat Koppelen
+#### 4.1.3.2.1 デバイスのペアリング
 
-1\. Verbind het micro:bit-bord met uw computer via een micro USB-kabel.
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
 
 ![Img](./media/A951.png)
 
-2\. Klik op de drie puntjes "**...**" achter de "**Download**" en selecteer "**Connect device**".
+2\. 「**Download**」の横にある3つの点「**...**」をクリックし、「**Connect device**」を選択します。
 
 ![Img](./media/A028.png)
 
-3\. "**Next**".
+3\. 「**Next**」をクリックします。
 
 ![Img](./media/A046.png)
 
-4\. "**Pair**".
+4\. 「**Pair**」をクリックします。
 
 ![Img](./media/A104.png)
 
-5\. Verbind met een "**Device**" en "**Connect**".
+5\. 「**Device**」に接続し、「**Connect**」をクリックします。
 
 ![Img](./media/A127.png)
 
-6\. "**Done**" en verbonden.
+6\. 「**Done**」をクリックすると接続されます。
 
 ![Img](./media/A144.png)
 
-#### 4.1.3.2.2 Code Downloaden
+#### 4.1.3.2.2 コードのダウンロード
 
-Na het verbinden klikt u op "**Download**" en de code wordt gedownload naar het micro:bit-bord, en ![Img](./media/A212.png) wordt ![Img](./media/A220.png).
+接続後、「**Download**」をクリックするとコードがmicro:bitボードにダウンロードされ、![Img](./media/A212.png) が ![Img](./media/A220.png) に変わります。
 
 ![Img](./media/A232.png)
 
-⚠️ **Tips**
+⚠️ **ヒント**
 
-Als er geen apparaat is om te koppelen in de interface, raadpleeg dan de [device-webusb-troubleshoot](https://makecode.microbit.org/device/usb/webusb/troubleshoot).
+インターフェースにペアリングするデバイスがない場合は、[device-webusb-troubleshoot](https://makecode.microbit.org/device/usb/webusb/troubleshoot)を参照してください。
 
-Als de micro:bit-firmware een update vereist, raadpleeg dan [how-to-update-the-firmware](https://microbit.org/guide/firmware/).
+micro:bitファームウェアの更新が必要な場合は、[how-to-update-the-firmware](https://microbit.org/guide/firmware/)を参照してください。
 
-### 4.1.3.3 Code Downloaden (geen WebUSB)
+### 4.1.3.3 コードのダウンロード (WebUSBなし)
 
-1\. Verbind het micro:bit-bord met uw computer via een micro USB-kabel.
+1\. micro USBケーブルを使用して、micro:bitボードをコンピューターに接続します。
 
 ![Img](./media/A800.png)
 
-Wanneer de micro:bit wordt ingeschakeld, zal de rode LED-indicator aan de achterkant oplichten.
+micro:bitの電源がオンになると、背面にある赤いLEDインジケーターが点灯します。
 
-Op het micro:bit-bord bevindt zich een gele LED-indicator die knippert wanneer het bord communiceert met uw computer via micro USB.
+micro:bitボードには、micro USBを介してコンピューターと通信する際に点滅する黄色のLEDインジケーターがあります。
 
-Open Finder(Mac) / Apparaten en schijven(Windows), en u ziet een USB-station genaamd "MICROBIT". Let wel op dat het geen gewone schijf is!
+Finder(Mac) / デバイスとドライブ(Windows)を開くと、「MICROBIT」という名前のUSBドライブが表示されます。ただし、これは一般的なディスクではありません！
 
 ![Img](./media/A849.png)
 
-2\. Voor browsers, laad de code naar het micro:bit-bord als volgt:
+2\. ブラウザの場合、次のようにコードをmicro:bitボードにロードします:
 
 ![Img](./media/Animations-1.gif)
 
-Stappen:
+手順:
 
-① Klik op de "**Download**"-knop en een ".hex"-bestand wordt gedownload, dat kan worden gelezen door het micro:bit-bord. Kopieer en plak het daarna naar het bord.
+① 「**Download**」ボタンをクリックすると、「**.hex**」ファイルがダウンロードされます。これはmicro:bitボードで読み取ることができます。その後、ボードにコピーして貼り付けます。
 
-Voor Windows kunt u "**Send to→MICROBIT**" en de ".hex" naar het micro:bit-bord laden. Tijdens dit proces knippert de gele indicator aan de achterkant van het bord. Wanneer het laden is voltooid, blijft de indicator branden.
+Windowsの場合、「**Send to→MICROBIT**」で「**.hex**」をmicro:bitボードにロードできます。このプロセス中、ボードの背面にある黄色のインジケーターが点滅します。ロードが完了すると、インジケーターは点灯したままになります。
 
 ![Img](./media/A319.png)
 
 ![Img](./media/A449.png)
 
-Of u kunt het ".hex"-bestand direct naar de MICROBIT slepen:
+または、直接「**.hex**」ファイルをMICROBITにドラッグすることもできます:
 
 ![Img](./media/A341.png)
 
 ![Img](./media/A345.png)
 
-② Daarna, verbind het micro:bit-bord met de computer via een micro USB-kabel en schakel het in, en u ziet de ingebouwde 5 x 5 LED-matrix herhaaldelijk ![Img](./media/A903.png) en ![Img](./media/A910.png) tonen.
+② その後、micro USBケーブルでmicro:bitボードをコンピューターに接続して電源をオンにすると、オンボードの5 x 5 LEDマトリックスが ![Img](./media/A903.png) と ![Img](./media/A910.png) を繰り返し表示するのを確認できます。
 
 ![Img](./media/A22.png)
 
 
 
-⚠️ Tijdens elke programmering zal de MICROBIT-schijf automatisch uitwerpen en terugkeren, en de **.hex**-bestanden die u ernaartoe hebt gekopieerd, worden niet weergegeven. Dat komt omdat het micro:bit-bord alleen het laatst geüploade programma ontvangt en uitvoert, in plaats van ze op te slaan.
+⚠️ プログラミング中、MICROBITディスクは自動的に排出されて戻り、コピーした**.hex**ファイルは表示されません。これは、micro:bitボードが最新のアップロードされたプログラムのみを受信して実行し、保存しないためです。
+

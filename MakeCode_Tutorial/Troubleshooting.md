@@ -1,150 +1,152 @@
-## Probleemoplossing
-### 4.3.1 USB-stuurprogramma Installatie (Optioneel)
+## トラブルシューティング
+### 4.3.1 USBドライバーのインストール (オプション)
 
-**Micro:bit is vrij van stuurprogramma-installatie. Echter, in het geval dat uw computer de hoofdboard niet herkent, kunt u het stuurprogramma ook installeren.**
+**Micro:bitはドライバーのインストールは不要です。ただし、コンピューターがメインボードを認識しない場合は、ドライバーをインストールできます。**
 
 
-#### 4.3.1.1 USB-stuurprogramma Downloaden
+#### 4.3.1.1 USBドライバーのダウンロード
 
-Klik om het [USB-stuurprogramma](./USB_driver.7z) te downloaden.
+[USBドライバー](./USB_driver.7z)をダウンロードするには、ここをクリックしてください。
 
-#### 4.3.1.2 USB-stuurprogramma Installatie
+#### 4.3.1.2 USBドライバーのインストール
 
-⚠️ Let op dat we hier demonstreren hoe u het stuurprogramma op Windows installeert, wat als referentie kan dienen voor MacOS-gebruikers.
+⚠️ ここではWindowsでのドライバーのインストール方法を説明します。これはMacOSユーザーの参考になります。
 
-1\. Verbind de micro:bit hoofdboard met de computer via een USB-kabel.
+1\. micro:bitメインボードをUSBケーブルでコンピューターに接続します。
 
 ![Img](./media/A800.png)
 
-2\. Zoek het stuurprogramma-bestand en klik erop om te **Installeren**.
+2\. ドライバーファイルを見つけてクリックし、**Install**をクリックします。
 
 ![Img](./media/A323.png)
 
 ![Img](./media/A327.png)
 
-3\. Klik op “**Install**” en “**Next**”.
+3\. 「**Install**」をクリックし、「**Next**」をクリックします。
 
 ![Img](./media/A347.png)
 
-4\. Klik op “**Install**” en “**Finish**”.
+4\. 「**Install**」をクリックし、「**Finish**」をクリックします。
 
 ![Img](./media/A408.png)
 
 ![Img](./media/A349.png)
 
-5\. Klik op “**Computer**” → “**Properties**” → “**Device manager**” en u zult zien:
+5\. 「**Computer**」→「**Properties**」→「**Device manager**」をクリックすると、次のように表示されます:
 
 ![Img](./media/A427.png)
 
-### 4.3.2 Veelgestelde Vragen
-Oplossingen voor het probleem waarbij Microbit programma's niet kan downloaden en MAINTENANCE weergeeft.
+### 4.3.2 FAQ
+Microbitがプログラムをダウンロードできず、MAINTENANCEと表示される問題の解決策。
 
-#### 4.3.2.1 Problemen
+#### 4.3.2.1 問題
 
-Vele nieuwe gebruikers zijn onlangs dit probleem tegengekomen: Wanneer ze de Micro:bit-board via een Micro USB-kabel op de computer aansluiten en op “**Download**” klikken, kan de code niet worden gedownload en reageert de board niet.
+多くの新規ユーザーが最近この問題に遭遇しています: Micro:bitボードをMicro USBケーブルでコンピューターに接続し、「**Download**」をクリックすると、コードがダウンロードされず、ボードが応答しません。
 
-Als u per ongeluk de resetknop aan de achterkant van de Micro:bit-board ingedrukt hield op het moment dat u het programma erop kopieerde, zou dit de board in de onderhoudsmodus hebben gezet. Of misschien is door uw eigen fouten de firmware op de board verloren gegaan.
+プログラムをコピーする際に誤ってMicro:bitボードの背面にあるリセットボタンを押し続けていた場合、ボードはメンテナンスモードに入ります。または、何らかの誤りにより、ボード上のファームウェアが失われた可能性があります。
 
-Als gevolg hiervan verschijnt er een nieuwe “**MAINTENANCE**”-schijf in uw bestandsbeheerder, waardoor de micro:bit uw gebruikerscode niet accepteert.
+その結果、ファイルマネージャーに新しい「**MAINTENANCE**」ドライブが表示され、micro:bitはユーザーコードを受け付けなくなります。
 
-De MAINTENANCE-schijf zal er zo uitzien, afhankelijk van uw computer:
+MAINTENANCEドライブは、コンピューターによって次のように表示されます:
 
 ![Img](./media/158.png)
 
- #### 4.3.2.2 Oplossingen
+ #### 4.3.2.2 解決策
 
-(1) Download het <span style="color: rgb(255, 76, 65);">.hex</span>-bestand dat geschikt is voor uw versie van de micro:bit van deze pagina naar uw computer.
+(1) このページからmicro:bitのバージョンに適した<span style="color: rgb(255, 76, 65);">.hex</span>ファイルをコンピューターにダウンロードします。
 
-Download [de nieuwste Micro:bit firmware -0255 .hex-bestand](https://www.microbit.org/get-started/user-guide/firmware/), die we ook in de map hebben geleverd.
+[最新のMicro:bitファームウェア -0255 .hexファイル](https://www.microbit.org/get-started/user-guide/firmware/)をダウンロードしてください。これはフォルダーにも提供されています。
 
-(2) Sleep het .hex-bestand dat u van deze pagina hebt gedownload naar de **MAINTENANCE**-schijf. <span style="color: rgb(255, 76, 65);">Let op dat de firmware varieert per model van Micro:bit V2-board. Hier is Firmware voor V2.20_V2.21.</span> Wanneer de upgrade is voltooid, zal de micro:bit resetten, zichzelf uitwerpen van de computer en opnieuw verschijnen in de normale **MICROBIT**-schijfmodus.
+(2) このページからダウンロードした.hexファイルを**MAINTENANCE**ドライブにドラッグアンドドロップします。<span style="color: rgb(255, 76, 65);">注: ファームウェアはMicro:bit V2ボードのモデルによって異なります。ここではV2.20_V2.21用のファームウェアです。</span>アップグレードが完了すると、micro:bitはリセットされ、コンピューターから排出され、通常の**MICROBIT**ドライブモードで再表示されます。
 
 ![Img](./media/326.png)
 
 ![Img](./media/331.png)
 
-#### 4.3.2.3 Vermijd “MAINTENANCE”-modus
+#### 4.3.2.3 「MAINTENANCE」モードを避ける
 
-(1) Druk niet op de resetknop aan de achterkant van de Micro:bit-board wanneer deze is aangesloten op een Micro USB-kabel.
+(1) Micro USBケーブルが接続されているときに、Micro:bitボードの背面にあるリセットボタンを押さないでください。
 
-Als de resetknop wordt ingedrukt tijdens het opstarten, gaat de micro:bit in de onderhoudsmodus. (**<span style="color: rgb(255, 76, 65);">Veelvoorkomende fouten gemaakt door beginners</span>**)
+電源投入時にリセットボタンが押されると、micro:bitはメンテナンスモードに入ります。（**<span style="color: rgb(255, 76, 65);">初心者が犯しやすい間違い</span>**）
 
 ![Img](./media/228.png)
 
-(2) Koppel het niet plotseling los tijdens het downloaden van het programma. Anders kan de firmware verloren gaan en zal de micro:bit in de MAINTENANCE-modus terechtkomen.
+(2) プログラムのダウンロード中に突然抜き差ししないでください。ファームウェアが失われ、micro:bitがMAINTENANCEモードに入る可能性があります。
 
-(3) Tijdens het experiment zal verkeerde bedrading ook leiden tot kortsluiting, waardoor de micro:bit-firmware verloren kan gaan. Beginners moeten hierop letten bij het bedienen.
+(3) 実験中に配線ミスがあると、短絡が発生し、micro:bitファームウェアが失われる可能性があります。初心者は操作時に注意を払う必要があります。
 
-#### 4.3.2.4 Downloaden met WebUSB
+#### 4.3.2.4 WebUSBでのダウンロード
 
-Lijkt uw micro:bit een storing te hebben ontwikkeld met WebUSB (/ device/ usb/ webusb)? Laten we proberen de reden te achterhalen.
+WebUSB（/ device/ usb/ webusb）でmicro:bitに障害が発生したようです。原因を突き止めましょう。
 
-**Stap 1: Test met micro USB-kabel**
+**ステップ1: micro USBケーブルでのテスト**
 
-Sluit de micro:bit met een micro USB-kabel aan op uw computer. Het zou moeten verschijnen als een MICROBIT-schijf.
+micro USBケーブルでmicro:bitをコンピューターに接続します。MICROBITドライブとして表示されるはずです。
 
 ![Img](./media/321.png)
 
-Als MICROBIT verschijnt als een schijf onder Apparaten en schijven, ga dan naar Stap 2.
+デバイスとドライブの下にMICROBITがドライブとして表示される場合は、ステップ2に進みます。
 
-Zo niet, probeer dan: (a) een andere kabel; (b) een andere USB-poort op uw computer; (c) de micro:bit aansluiten op een andere computer.
+そうでない場合は、(a)別のケーブル、(b)コンピューターの別のUSBポート、(c)micro:bitを別のコンピューターに接続してみてください。
 
-Sommige micro USB-kabels bieden mogelijk alleen een stroomverbinding en verzenden geen gegevens, en sommige computers kunnen hun USB-poorten om de een of andere reden uitschakelen.
+一部のmicro USBケーブルは電源接続のみを提供し、実際にはデータを送信しない場合があります。また、一部のコンピューターは、何らかの理由でUSBポートの電源を落とす場合があります。
 
-U ziet de MICROBIT-schijf nog steeds niet? Hmm, er is mogelijk een probleem met uw micro:bit-board. Zie het artikel over [probleemoplossing](https://support.microbit.org/solution/articles/19000024000-fault-finding-with-a-micro-bit) met de microbit.org of open een [supportticket](https://support.microbit.org/support/tickets/new) om de Micro:bit Foundation op de hoogte te stellen van het probleem. En, sla alle volgende stappen over.
+それでもMICROBITドライブが見えませんか？うーん、micro:bitボードに問題があるかもしれません。[トラブルシューティング](https://support.microbit.org/solution/articles/19000024000-fault-finding-with-a-micro-bit)の記事を参照するか、[サポートチケット](https://support.microbit.org/support/tickets/new)を開いてMicro:bit Foundationに問題を通知してください。そして、以下のすべての手順をスキップしてください。
 
-**Stap 2: Uw firmwareversie controleren**
+**ステップ2: ファームウェアバージョンの確認**
 
-Om erachter te komen welke versie van de firmware u op uw micro:bit hebt:
+micro:bitにインストールされているファームウェアのバージョンを確認するには:
 
-① Sluit deze aan op een computer met de USB-kabel en open de **MICROBIT**-schijf.
+① USBケーブルを使用してコンピューターに接続し、**MICROBIT**ドライブを開きます。
 
 ![Img](./media/A8491.png)
 
-② Open het **DETAILS.TXT**-bestand.
+② **DETAILS.TXT**ファイルを開きます。
 
 ![Img](./media/0452.png)
 
-③ Zoek naar het nummer op de regel die begint met “Interface/Bootloader Version”.
+③ 「Interface/Bootloader Version」で始まる行の番号を探します。
 
 ![Img](./media/501.png)
 
-Als het 0234/0241/0243 is, moet u de firmware op uw micro:bit V2-board bijwerken. Ga naar Stap 3 voor de update.
+0234/0241/0243の場合は、micro:bit V2ボードのファームウェアを更新する必要があります。更新についてはステップ3に進みます。
 
-Als het 0249/0257 of hoger is, ga dan naar Stap 4.
+0249/0257以降の場合は、ステップ4に進みます。
 
-**Stap 3: Hoe de firmware bij te werken**
+**ステップ3: ファームウェアの更新方法**
 
-Als u de firmware moet bijwerken om toegang te krijgen tot een nieuwe functie of een probleem op te lossen, kunt u dit als volgt doen:
+新機能にアクセスしたり、問題をトラブルシューティングしたりするためにファームウェアを更新する必要がある場合は、次の手順を実行します:
 
-① Koppel de USB-kabel en het batterijpakket los van de micro:bit.
+① USBケーブルとバッテリーパックをmicro:bitから切断します。
 
-② Houd de resetknop aan de achterkant van de micro:bit ingedrukt en sluit de USB-kabel aan op de micro:bit en uw computer. U zou een schijf moeten zien verschijnen in uw bestandsbeheerder genaamd **MAINTENANCE** (in plaats van MICROBIT) en de gele LED-indicator aan de achterkant zou moeten oplichten.
+② micro:bitの背面にあるリセットボタンを押し続け、USBケーブルをmicro:bitとコンピューターに接続します。ファイルマネージャーに**MAINTENANCE**（MICROBITではなく）というドライブが表示され、背面にある黄色のLEDインジケーターが点灯するはずです。
 
 ![Img](./media/551.png)
 
 ![Img](./media/AAC1.webp)
 
-③ Download [firmware .hex-bestand](https://microbit.org/guide/firmware/) dat geschikt is voor uw versie van de micro:bit. <span style="color: rgb(255, 76, 65);">Hier is Firmware voor V2.20_V2.21.</span>
+③ micro:bitのバージョンに適した[ファームウェア.hexファイル](https://microbit.org/guide/firmware/)をダウンロードします。<span style="color: rgb(255, 76, 65);">ここではV2.20_V2.21用のファームウェアです。</span>
 
 ![Img](./media/0629.png)
 
-④ Sleep het <span style="color: rgb(255, 76, 65);">.hex</span> firmware naar de **MAINTENANCE**-schijf.
+④ <span style="color: rgb(255, 76, 65);">.hex</span>ファームウェアを**MAINTENANCE**ドライブにドラッグアンドドロップします。
 
 ![Img](./media/331.png)
 
-⑤ Wacht tot de gele LED aan de achterkant van het apparaat stopt met knipperen. Na het kopiëren gaat de LED uit en reset de micro:bit. MAINTENANCE zal terugkeren naar MICROBIT.
+⑤ デバイスの背面にある黄色のLEDが点滅を停止するまで待ちます。コピー後、LEDは消灯し、micro:bitはリセットされます。MAINTENANCEはMICROBITに戻ります。
 
-⑥ Controleer ten slotte het <span style="color: rgb(255, 76, 65);">DETAILS.TXT</span>-bestand dat zich op de **MICROBIT**-schijf bevindt en zorg ervoor dat het hetzelfde versienummer heeft als de .hex-firmware.
+⑥ 最後に、**MICROBIT**ドライブにある<span style="color: rgb(255, 76, 65);">DETAILS.TXT</span>ファイルを確認し、.hexファームウェアと同じバージョン番号であることを確認します。
 
-Voor eventuele problemen met de board, onderhoudsmodus en firmware-updates, raadpleeg de [Firmware Gids](https://microbit.org/guide/firmware/).
+ボード、メンテナンスモード、ファームウェアの更新に関する問題については、[ファームウェアガイド](https://microbit.org/guide/firmware/)を参照してください。
 
-**Stap 4: Uw browserversie controleren**
+**ステップ4: ブラウザバージョンの確認**
 
-WebUSB is een relatief nieuwe functie die u mogelijk uw browser moet bijwerken. Controleer of uw browser: (a) compatibel is met Android, Chrome OS; (b) Microsoft Edge; (c) de Chrome 65+ van Linux, macOS en Windows 10.
+WebUSBは比較的新しい機能であり、ブラウザを更新する必要がある場合があります。ブラウザが次のいずれかと互換性があるか確認してください: (a) Android、Chrome OS; (b) Microsoft Edge; (c) Linux、macOS、Windows 10のChrome 65+。
 
-**Stap 5: Een apparaat aansluiten**
+**ステップ5: デバイスの接続**
 
-Open Google Chrome / Microsoft Edge om naar de MakeCode-editor te gaan en klik op de “**Connect Device**”. Voor het koppelen van een apparaat, raadpleeg [WebUSB (/ device/ usb/ webusb)](https://microbit.org/get-started/user-guide/web-usb/).
+Google Chrome / Microsoft Edgeを開いてMakeCodeエディターに移動し、「**Connect Device**」をクリックします。デバイスのペアリング方法については、[WebUSB（/ device/ usb/ webusb）](https://microbit.org/get-started/user-guide/web-usb/)を参照してください。
 
-Geniet van snel downloaden!
+迅速なダウンロードをお楽しみください！
+
+

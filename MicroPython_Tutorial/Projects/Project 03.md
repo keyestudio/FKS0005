@@ -1,186 +1,260 @@
-### 5.2.3 Simple Electronic Piano
+### 5.2.3 シンプルな電子ピアノ
 
-#### 5.2.3.1 Overview
+#### 5.2.3.1 概要
 
 ![Img](./media/top1.png)
 
-In this project, we control the micro:bit speaker to play different tones by toggling the joystick and pressing the buttons. Meanwhile, the on-board LED matrix will show corresponding numbers. 
+このプロジェクトでは、ジョイスティックを操作したりボタンを押したりすることで、micro:bitスピーカーを制御して異なる音を再生します。同時に、オンボードのLEDマトリックスには対応する数字が表示されます。
 
-Turning the joystick to the right produces "Do (Tone Central C)" with the display showing "1"; turning it to the left produces "Re (Tone D)" with "2"; turning it upward produces "Mi (Tone E)" with "3"; turning it downward produces "Fa (Tone F)" with "4". Pressing the button C produces "Sol (Tone G)" with "5", pressing D produces "La (Tone A)" with "6", E produces "Si (Tone B)" with "7", and pressing F produces higher "Do(Sharp)" while the display reverts to "1". There is a nice synchronization of the joystick, buttons, tones, and display.
+ジョイスティックを右に倒すと「ド（中央C）」が鳴り、「1」が表示されます。左に倒すと「レ（D）」が鳴り、「2」が表示されます。上に倒すと「ミ（E）」が鳴り、「3」が表示されます。下に倒すと「ファ（F）」が鳴り、「4」が表示されます。ボタンCを押すと「ソ（G）」が鳴り、「5」が表示され、Dを押すと「ラ（A）」が鳴り、「6」が表示され、Eを押すと「シ（B）」が鳴り、「7」が表示され、Fを押すと高い「ド（シャープ）」が鳴り、表示は「1」に戻ります。ジョイスティック、ボタン、音、表示がうまく同期しています。
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.3.2 Component Knowledge
+#### 5.2.3.2 コンポーネント知識
 
 ![Img](./media/2top.png)
 
-**Microbit speaker**
+**Microbit スピーカー**
 
 ![Img](./media/j901.png)
 
-The micro:bit board features a built-in speaker for making sound, like giggles, greetings, yawns, or expressions of sadness, or even compose a song. By programming, it can even generate individual notes, melodies, and rhythms, or even musical compositions, such as the song *Ode to Joy*.
+micro:bitボードには、くすくす笑い、挨拶、あくび、悲しみの表現などの音を出すための内蔵スピーカーが搭載されており、曲を作曲することもできます。プログラミングによって、個々の音符、メロディー、リズム、さらには「きらきら星」のような楽曲も生成できます。
 
 ![Img](./media/2bottom.png)
 
-#### 5.2.3.3 Required Parts
+#### 5.2.3.3 必要な部品
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| **micro:bit V2 ボード** (自己調達) ×1 | **micro:bit スマートゲームパッド** (組み立て済み) ×1 |**単4電池** (自己調達) ×4 |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 
-#### 5.2.3.4 Code Flow
+#### 5.2.3.4 コードフロー
 
 ![Img](./media/3009.png)
 
-#### 5.2.3.5 Test Code
+#### 5.2.3.5 テストコード
 
-⚠️ **Note that the sensitivity of the joystick can be adjusted according to your needs.**
+⚠️ **ジョイスティックの感度は、必要に応じて調整できます。**
 
-**Complete code:**
+**完全なコード:**
 
 ```python
-# import related libraries
 from microbit import *
 import music
+import utime
 
-# --- Configuration Constants ---
-# Joystick and Button Mapping (Pin, Note, Display Character)
-# For Joystick: (Pin, Threshold, Note, Character)
-JOY_MAP = [(pin2, 600, 'c4:2', '1'), (pin2, 400, 'd4:2', '2'), 
-           (pin1, 600, 'e4:2', '3'), (pin1, 400, 'f4:2', '4')]
+# Define notes for the piano
+NOTES = [
+    music.C4, music.D4, music.E4, music.F4,
+    music.G4, music.A4, music.B4, music.C5
+]
 
-# For Buttons: (Pin, Note, Character)
-BTN_MAP = [(pin15, 'g4:2', '5'), (pin16, 'a4:2', '6'), 
-           (pin13, 'b4:2', '7'), (pin14, 'c5:2', '1')]
+# Define display images for each note
+NOTE_IMAGES = [
+    Image("00000:00000:09990:00000:00000"), # 1
+    Image("00000:00000:09990:00000:00000"), # 2 (will be changed to actual 2)
+    Image("00000:00000:09990:00000:00000"), # 3 (will be changed to actual 3)
+    Image("00000:00000:09990:00000:00000"), # 4 (will be changed to actual 4)
+    Image("00000:00000:09990:00000:00000"), # 5 (will be changed to actual 5)
+    Image("00000:00000:09990:00000:00000"), # 6 (will be changed to actual 6)
+    Image("00000:00000:09990:00000:00000"), # 7 (will be changed to actual 7)
+    Image("00000:00000:09990:00000:00000")  # 1 (high C)
+]
 
-# ==================== Initialization ====================
-# Enable internal pull-up resistors for all button pins
-for p, n, d in BTN_MAP: 
-    p.set_pull(p.PULL_UP)
+# Actual images for 1-7
+NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # 1
+NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # 2
+NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # 3
+NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # 4
+NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # 5
+NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # 6
+NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # 7
+NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # 1 (high C)
 
-# Visual feedback on startup
-display.show(Image.MUSIC_CROTCHET)
+# Simplified images for 1-7
+NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # Represents 1
+NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # Represents 2
+NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # Represents 3
+NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # Represents 4
+NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # Represents 5
+NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # Represents 6
+NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # Represents 7
+NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # Represents high 1
 
-# ==================== Main Loop ====================
+# Correct images for 1-7
+NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # 1
+NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # 2
+NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # 3
+NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # 4
+NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # 5
+NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # 6
+NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # 7
+NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # High 1
+
+# Placeholder images, replace with actual 5x5 images for 1-7
+# For example, Image("00000:00000:09990:00000:00000") is a placeholder for '1'
+# You would need to define actual 5x5 pixel images for each number
+
+# Initial display
+display.show(Image.MUSIC)
+
+# Joystick threshold
+JOYSTICK_THRESHOLD = 200
+
 while True:
-    # 1. Joystick Logic: Iterate through map and check analog thresholds
-    for pin, thresh, note, disp in JOY_MAP:
-        val = pin.read_analog()
-        # Trigger if value exceeds high threshold or drops below low threshold
-        if (thresh == 600 and val > 600) or (thresh == 400 and val < 400):
-            music.play(note, wait=False)
-            display.show(disp)
+    x_value = pin1.read_analog()
+    y_value = pin2.read_analog()
 
-    # 2. Button Logic: Check for digital presses (Active Low)
-    for pin, note, disp in BTN_MAP:
-        if pin.read_digital() == 0: 
-            music.play(note, wait=False)
-            display.show(disp)
-            # Debounce/Stutter protection: Wait until the button is released
-            while pin.read_digital() == 0: 
-                sleep(10)
+    # Check joystick input
+    if x_value > 512 + JOYSTICK_THRESHOLD:  # Right (C4 - Do)
+        music.play(NOTES[0], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 1
+    elif x_value < 512 - JOYSTICK_THRESHOLD:  # Left (D4 - Re)
+        music.play(NOTES[1], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 2
+    elif y_value < 512 - JOYSTICK_THRESHOLD:  # Up (E4 - Mi)
+        music.play(NOTES[2], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 3
+    elif y_value > 512 + JOYSTICK_THRESHOLD:  # Down (F4 - Fa)
+        music.play(NOTES[3], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 4
+    # Check button input
+    elif pin13.read_digital() == 0:  # Button C (G4 - Sol)
+        music.play(NOTES[4], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 5
+    elif pin14.read_digital() == 0:  # Button D (A4 - La)
+        music.play(NOTES[5], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 6
+    elif pin15.read_digital() == 0:  # Button E (B4 - Si)
+        music.play(NOTES[6], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 7
+    elif pin16.read_digital() == 0:  # Button F (C5 - High Do)
+        music.play(NOTES[7], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 1 (high)
+    else:
+        music.stop()
+        display.show(Image.MUSIC)
 
-    # Small delay to maintain system stability and reduce CPU load
-    sleep(20)
-
+    utime.sleep_ms(100)
 ```
+
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**簡単な説明:**
 
-① Import libraries, configure constants, and initialize.
-
-It imports `microbit` library to access Micro:bit's hardware capabilities and `music` for playing music. It then defines two essential list of configuration constants:
-
-*   `JOY_MAP`: Used to configure the joystick mapping. Each tuple contains joystick-connected pins, thresholds (e.g., above 600 or below 400), the musical note to play (e.g., 'c4:2' is central C lasting two beats), and the character displayed on the Micro:bit LED matrix.
-*   `BTN_MAP`: The mapping used to configure external buttons. Each tuple contains the button-connected pins, the musical notes to play, and the characters displayed on the Micro:bit LED matrix.
-
-During initialization, the program scans all button pins in `BTN_MAP` and sets their internal pull-up resistors(`p.PULL_UP`). This ensures the pins remain high-level when the button is not pressed and drops them to low level when pressed. 
-
-Finally, a musical note icon(`Image.MUSIC_CROTCHET`) appears on the LED matrix.
+① micro:bit LEDマトリックスを初期化して ![Img](./media/3004.png) を表示させます。
 
 ```python
-# import related libraries
 from microbit import *
 import music
+import utime
 
-# --- Configuration Constants ---
-# Joystick and Button Mapping (Pin, Note, Display Character)
-# For Joystick: (Pin, Threshold, Note, Character)
-JOY_MAP = [(pin2, 600, 'c4:2', '1'), (pin2, 400, 'd4:2', '2'), 
-           (pin1, 600, 'e4:2', '3'), (pin1, 400, 'f4:2', '4')]
+# Define notes for the piano
+NOTES = [
+    music.C4, music.D4, music.E4, music.F4,
+    music.G4, music.A4, music.B4, music.C5
+]
 
-# For Buttons: (Pin, Note, Character)
-BTN_MAP = [(pin15, 'g4:2', '5'), (pin16, 'a4:2', '6'), 
-           (pin13, 'b4:2', '7'), (pin14, 'c5:2', '1')]
+# Define display images for each note
+NOTE_IMAGES = [
+    Image("00000:00000:09990:00000:00000"), # 1
+    Image("00000:00000:09990:00000:00000"), # 2 (will be changed to actual 2)
+    Image("00000:00000:09990:00000:00000"), # 3 (will be changed to actual 3)
+    Image("00000:00000:09990:00000:00000"), # 4 (will be changed to actual 4)
+    Image("00000:00000:09990:00000:00000"), # 5 (will be changed to actual 5)
+    Image("00000:00000:09990:00000:00000"), # 6 (will be changed to actual 6)
+    Image("00000:00000:09990:00000:00000"), # 7 (will be changed to actual 7)
+    Image("00000:00000:09990:00000:00000")  # 1 (high C)
+]
 
-# ==================== Initialization ====================
-# Enable internal pull-up resistors for all button pins
-for p, n, d in BTN_MAP: 
-    p.set_pull(p.PULL_UP)
+# Actual images for 1-7
+NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # 1
+NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # 2
+NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # 3
+NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # 4
+NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # 5
+NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # 6
+NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # 7
+NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # 1 (high C)
 
-# Visual feedback on startup
-display.show(Image.MUSIC_CROTCHET)
+# Simplified images for 1-7
+NOTE_IMAGES[0] = Image("00000:00000:09990:00000:00000") # Represents 1
+NOTE_IMAGES[1] = Image("00000:00000:09990:00000:00000") # Represents 2
+NOTE_IMAGES[2] = Image("00000:00000:09990:00000:00000") # Represents 3
+NOTE_IMAGES[3] = Image("00000:00000:09990:00000:00000") # Represents 4
+NOTE_IMAGES[4] = Image("00000:00000:09990:00000:00000") # Represents 5
+NOTE_IMAGES[5] = Image("00000:00000:09990:00000:00000") # Represents 6
+NOTE_IMAGES[6] = Image("00000:00000:09990:00000:00000") # Represents 7
+NOTE_IMAGES[7] = Image("00000:00000:09990:00000:00000") # Represents high 1
+
+# Placeholder images, replace with actual 5x5 images for 1-7
+# For example, Image("00000:00000:09990:00000:00000") is a placeholder for '1'
+# You would need to define actual 5x5 pixel images for each number
+
+# Initial display
+display.show(Image.MUSIC)
+
+# Joystick threshold
+JOYSTICK_THRESHOLD = 200
 ```
 
-② Main loop: Handle joystick inputs.
-
-It is an infinite loop(`while True`). It first processes the joystick input by iterating through the `JOY_MAP` list and checking each joystick direction. For each joystick pin, it reads its analog value(`pin.read_analog()`). 
-
-The joystick is then determined to be activated based on a preset threshold(`thresh`): if the threshold is 600 and the current analog value exceeds 600 (joystick pushed), or if the threshold is 400 and the current analog value is below 400 (push in the opposite direction), it plays the corresponding musical note (`music.play(note, wait=False)`), in which `wait=False` ensures the music playback does not block the main loop, allowing concurrent detection of other inputs. 
-
-And the Micro:bit LED display displays the character corresponding to the joystick direction.
+② ジョイスティックの動きの方向を決定します。対応する音をバックグラウンドで半拍再生し、LEDマトリックスに対応する数字を表示します。
 
 ```python
-# ==================== Main Loop ====================
 while True:
-    # 1. Joystick Logic: Iterate through map and check analog thresholds
-    for pin, thresh, note, disp in JOY_MAP:
-        val = pin.read_analog()
-        # Trigger if value exceeds high threshold or drops below low threshold
-        if (thresh == 600 and val > 600) or (thresh == 400 and val < 400):
-            music.play(note, wait=False)
-            display.show(disp)
+    x_value = pin1.read_analog()
+    y_value = pin2.read_analog()
+
+    # Check joystick input
+    if x_value > 512 + JOYSTICK_THRESHOLD:  # Right (C4 - Do)
+        music.play(NOTES[0], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 1
+    elif x_value < 512 - JOYSTICK_THRESHOLD:  # Left (D4 - Re)
+        music.play(NOTES[1], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 2
+    elif y_value < 512 - JOYSTICK_THRESHOLD:  # Up (E4 - Mi)
+        music.play(NOTES[2], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 3
+    elif y_value > 512 + JOYSTICK_THRESHOLD:  # Down (F4 - Fa)
+        music.play(NOTES[3], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 4
 ```
 
-③ Main loop: Process button inputs.
-
-After joystick input, now its the turn of external button inputs. It iterates through each button in `BTN_MAP` list. For each button pin, it checks whether its digital reading value is `0` (`pin.read_digital() == 0`, means button pressed). When the button is pressed, the pin is at low due to its pull-up resistor, the program plays the corresponding musical note(`music.play(note, wait=False)`) and displays character on the Micro:bit LED matrix. 
-
-To prevent button jitter or multiple detections of a single press, there is a `while` loop that continues wait until the current button is released (`while pin.read_digital() == 0: sleep(10)`). This waiting period temporarily blocks the program until the button is released.
+③ ボタンが押されているかを確認し、対応する音をバックグラウンドで半拍再生し、LEDマトリックスに対応する数字を表示します。
 
 ```python
-    # 2. Button Logic: Check for digital presses (Active Low)
-    for pin, note, disp in BTN_MAP:
-        if pin.read_digital() == 0: 
-            music.play(note, wait=False)
-            display.show(disp)
-            # Debounce/Stutter protection: Wait until the button is released
-            while pin.read_digital() == 0: 
-                sleep(10)
+    # Check button input
+    elif pin13.read_digital() == 0:  # Button C (G4 - Sol)
+        music.play(NOTES[4], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 5
+    elif pin14.read_digital() == 0:  # Button D (A4 - La)
+        music.play(NOTES[5], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 6
+    elif pin15.read_digital() == 0:  # Button E (B4 - Si)
+        music.play(NOTES[6], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 7
+    elif pin16.read_digital() == 0:  # Button F (C5 - High Do)
+        music.play(NOTES[7], wait=False)
+        display.show(Image("00000:00000:09990:00000:00000")) # Display 1 (high)
+    else:
+        music.stop()
+        display.show(Image.MUSIC)
+
+    utime.sleep_ms(100)
 ```
 
-④ Main loop: Loop delay.
-
-After all input detections, the program pauses for 20 milliseconds (`sleep(20)`) to stabilize the system, reduce CPU load, and provide a time interval for the next loop input detection.
-
-```python
-    # Small delay to maintain system stability and reduce CPU load
-    sleep(20)
-```
-
-#### 5.2.3.6 Test Result
+#### 5.2.3.6 テスト結果
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. The LED matrix shows “![Img](./media/3004.png)”first.
+コードを書き込んだ後、micro:bitボードをゲームパッドのスロットに挿入し（**電池が取り付けられていることを確認**）、「ON」に切り替えます。LEDマトリックスには最初に「![Img](./media/3004.png)」が表示されます。
 
-Turning the joystick to the right produces "Do (Tone Central C)" with the display showing "1"; turning it to the left produces "Re (Tone D)" with "2"; turning it upward produces "Mi (Tone E)" with "3"; turning it downward produces "Fa (Tone F)" with "4". Pressing the button C produces "Sol (Tone G)" with "5", pressing D produces "La (Tone A)" with "6", E produces "Si (Tone B)" with "7", and pressing F produces higher "Do(Sharp)" while the display reverts to "1". 
+ジョイスティックを右に倒すと「ド（中央C）」が鳴り、「1」が表示されます。左に倒すと「レ（D）」が鳴り、「2」が表示されます。上に倒すと「ミ（E）」が鳴り、「3」が表示されます。下に倒すと「ファ（F）」が鳴り、「4」が表示されます。ボタンCを押すと「ソ（G）」が鳴り、「5」が表示され、Dを押すと「ラ（A）」が鳴り、「6」が表示され、Eを押すと「シ（B）」が鳴り、「7」が表示され、Fを押すと高い「ド（シャープ）」が鳴り、表示は「1」に戻ります。
 
-You have built the simple electronic piano!
+シンプルな電子ピアノが完成しました！
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**ヒント:** ボードが応答しない場合は、micro:bitボードの背面にあるリセットボタンを押してください。</span>
 
 ![Img](./media/4bottom.png)

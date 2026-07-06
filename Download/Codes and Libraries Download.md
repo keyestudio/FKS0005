@@ -1,5 +1,6 @@
-# 1.Codes en Bibliotheken Downloaden
+# 1.コードとライブラリのダウンロード
 
-Gelieve eerst de benodigde bronnen (MakeCode en MicroPython codes) voor deze tutorial te downloaden, inclusief codes en firmware, en deze op een geschikte locatie op te slaan voor uw leerproces.
+このチュートリアルに必要なリソース（MakeCodeおよびMicroPythonコード）には、コードとファームウェアが含まれています。学習しやすい場所にダウンロードして保存してください。
 
-Klik om de codes en de firmware te downloaden: [Codes en Bibliotheken Downloaden](./Code_Library_Download.7z).
+コードとファームウェアをダウンロードするには、ここをクリックしてください: [Codes and Libraries Download](./Code_Library_Download.7z).
+

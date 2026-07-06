@@ -1,6 +1,5 @@
-# 1.Codes and Libraries Download
+# 1.Codes en Bibliotheken Downloaden
 
-Please first download the resources (MakeCode and MicroPython codes) required by this tutorial, including codes and firmware, and save them to a convenient location for you to learn.
+Gelieve eerst de benodigde bronnen (MakeCode en MicroPython codes) voor deze tutorial te downloaden, inclusief codes en firmware, en deze op een geschikte locatie op te slaan voor uw leerproces.
 
-Click to download the codes and the firmware: [Codes and Libraries Download](./Code_Library_Download.7z).
-
+Klik om de codes en de firmware te downloaden: [Codes en Bibliotheken Downloaden](./Code_Library_Download.7z).

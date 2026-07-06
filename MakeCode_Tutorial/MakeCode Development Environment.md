@@ -1,238 +1,237 @@
-## 4.1.1 About MakeCode
+## 4.1.1 Over MakeCode
 
-⚠️ **The following steps are operated on the Windows operating system. If you use another operating system, you can take them as a reference. Here are demonstrated on Google Chrome / Microsoft Edge.**
+⚠️ **De volgende stappen worden uitgevoerd op het Windows-besturingssysteem. Als u een ander besturingssysteem gebruikt, kunt u deze als referentie nemen. Hier worden ze gedemonstreerd op Google Chrome / Microsoft Edge.**
 
-**MakeCode Programming Environment:**
+**MakeCode Programmeeromgeving:**
 
-Open the [online version of MakeCode editor](https://makecode.microbit.org/#editor).
+Open de [online versie van de MakeCode-editor](https://makecode.microbit.org/#editor).
 
-MakeCode main interface:
+Hoofdinterface van MakeCode:
 
 ![Img](./media/A637.png)
 
-There are blocks “**on start**” and “**forever**” in the code editing area. When the power is plugged or reset, “on start” means that the code in the block only executes once, while “forever” implies that the code runs cyclically.
+Er zijn blokken "**on start**" en "**forever**" in het codebewerkingsgebied. Wanneer de stroom wordt aangesloten of gereset, betekent "on start" dat de code in het blok slechts één keer wordt uitgevoerd, terwijl "forever" impliceert dat de code cyclisch wordt uitgevoerd.
 
-Click  “**JS JavaScript**” to see the JavaScript code:
+Klik op "**JS JavaScript**" om de JavaScript-code te zien:
 
 ![Img](./media/A754.png)
 
-Or click “**Python**” to switch to Python code:
+Of klik op "**Python**" om over te schakelen naar Python-code:
 
 ![Img](./media/A814.png)
 
-**Language settings:**
+**Taalinstellingen:**
 
 ![Img](./media/Animation-3.gif)
 
-Steps:
+Stappen:
 
-Step 1: Click the settings button ![Img](./media/A806.png).
+Stap 1: Klik op de instellingenknop ![Img](./media/A806.png).
 
 ![Img](./media/A301.png)
 
-Step 2: Click “Language”.
+Stap 2: Klik op "Language".
 
 ![Img](./media/A302.png)
 
-Step 3: Select the language you want. Here we set it to “English”.
+Stap 3: Selecteer de gewenste taal. Hier stellen we deze in op "English".
 
 ![Img](./media/A303.png)
 
-## 4.1.2 Makecode Extension Library
+## 4.1.2 Makecode Uitbreidingsbibliotheek
 
-### 4.1.2.1 Add Library
+### 4.1.2.1 Bibliotheek Toevoegen
 
-⚠️ **We provide code files (.hex) for each projects, so you can directly load them to the MakeCode editor. Or if you want, you can also build code blocks by yourself. Note that libraries are required when build them manually.**
+⚠️ **Wij leveren codebestanden (.hex) voor elk project, zodat u deze direct kunt laden in de MakeCode-editor. Of als u wilt, kunt u ook zelf codeblokken bouwen. Houd er rekening mee dat bibliotheken vereist zijn wanneer u ze handmatig bouwt.**
 
-⚠️ **<span style="color: rgb(255, 76, 65);">Note:</span>** Copy and paste the link into the search box: `https://github.com/keyestudio2019/pxt-creative-inventors-kit-master.git`.
+⚠️ **<span style="color: rgb(255, 76, 65);">Opmerking:</span>** Kopieer en plak de link in het zoekvak: `https://github.com/keyestudio2019/pxt-creative-inventors-kit-master.git`.
 
 ![Img](./media/Animation-4.gif)
 
-Steps:
+Stappen:
 
-1\. Click ![Img](./media/A806.png) to select “**Extensions**”.
+1\. Klik op ![Img](./media/A806.png) om "**Extensions**" te selecteren.
 
 ![Img](./media/A842.png)
 
-Or click the “**Extensions**” above the **Advanced** blocks.
+Of klik op de "**Extensions**" boven de **Advanced** blokken.
 
 ![Img](./media/A900.png)
 
-2\. Search key words or paste the GitHub link.
+2\. Zoek trefwoorden of plak de GitHub-link.
 
 ![Img](./media/A909.png)
 
-3\. Here we enter the URL: `https://github.com/keyestudio2019/KEYES-Smart-Gamepad-master.git` to the search box and click ![Img](./media/A3257.png), and load the extension of “**Smart-Gamepad**”.
+3\. Hier voeren we de URL: `https://github.com/keyestudio2019/KEYES-Smart-Gamepad-master.git` in het zoekvak in en klikken op ![Img](./media/A3257.png), en laden de extensie van "**Smart-Gamepad**".
 
 ![Img](./media/A306.png)
 
-4\. Loading:
+4\. Laden:
 
 ![Img](./media/A3316.png)
 
-5\. Loaded:
+5\. Geladen:
 
 ![Img](./media/A335.png)
 
-### 4.1.2.2 Update/Delete Library
+### 4.1.2.2 Bibliotheek Bijwerken/Verwijderen
 
-⚠️ **Generally, there is no need to remove libraries, unless they are not required.**
+⚠️ **Over het algemeen is het niet nodig om bibliotheken te verwijderen, tenzij ze niet langer nodig zijn.**
 
 ![Img](./media/Animation-4.gif)
 
-Steps:
+Stappen:
 
-1\. Click “**JavaScript**” to switch to text codes.
+1\. Klik op "**JavaScript**" om over te schakelen naar tekstcodes.
 
 ![Img](./media/A724.png)
 
-2\. Click “**Explorer**”.
+2\. Klik op "**Explorer**".
 
 ![Img](./media/A749.png)
 
-3\. Find the “**Smart-Gamepad**” and click the trash can ![Img](./media/A813.png) to remove it.
+3\. Zoek de "**Smart-Gamepad**" en klik op de prullenbak ![Img](./media/A813.png) om deze te verwijderen.
 
 ![Img](./media/A824.png)
 
-4\. “**Remove it**”.
+4\. "**Remove it**".
 
 ![Img](./media/A727.png)
 
-## 4.1.3 MakeCode Program
+## 4.1.3 MakeCode Programma
 
-### 4.1.3.1 Import Program in MakeCode
+### 4.1.3.1 Programma Importeren in MakeCode
 
-We take the project “**heatbeat**” as an example.
+We nemen het project "**heartbeat**" als voorbeeld.
 
 ![Img](./media/Animation-2.gif)
 
-Steps:
+Stappen:
 
-1\. Connect the micro:bit board to your computer via micro USB cable.
+1\. Verbind het micro:bit-bord met uw computer via een micro USB-kabel.
 
 ![Img](./media/A800.png)
 
-When the micro:bit is powered on, the red LED indicator on its back will light up.
+Wanneer de micro:bit wordt ingeschakeld, zal de rode LED-indicator aan de achterkant oplichten.
 
-On the micro:bit board, there is a yellow LED indicator that will flash when the board communicates with your computer through micro USB. 
+Op het micro:bit-bord bevindt zich een gele LED-indicator die knippert wanneer het bord communiceert met uw computer via micro USB.
 
-Open Finder(Mac) / Devices and drives(Windows), and you can see a USB drive named "MICROBIT". Yet note that it is not a common disk!
+Open Finder(Mac) / Apparaten en schijven(Windows), en u ziet een USB-station genaamd "MICROBIT". Let wel op dat het geen gewone schijf is!
 
 ![Img](./media/A849.png)
 
-2\. Click “**Import**”:
+2\. Klik op "**Import**":
 
 ![Img](./media/A956.png)
 
-3\. And select “**Import File...**”.
+3\. En selecteer "**Import File...**".
 
 ![Img](./media/A042.png)
 
-4\. “**Choose File**” to open the file you need.
+4\. "**Choose File**" om het bestand te openen dat u nodig heeft.
 
 ![Img](./media/A06.png)
 
-5\. Here we choose “**heartbeat.hex**”.
+5\. Hier kiezen we "**heartbeat.hex**".
 
 ![Img](./media/A28.png)
 
-6\. “**Go ahead √**”.
+6\. "**Go ahead √**".
 
 ![Img](./media/A149.png)
 
-Or you can directly drag the hex file to the Makecode main interface:
+Of u kunt het hex-bestand direct naar de hoofdinterface van Makecode slepen:
 
 ![Img](./media/A202.png)
 
-7\. Imported:
+7\. Geïmporteerd:
 
 ![Img](./media/A217.png)
 
-### 4.1.3.2 Download Code (WebUSB)
+### 4.1.3.2 Code Downloaden (WebUSB)
 
-For browsers like **Google Chrome/Microsoft Edge**, their WebUSB allows direct access to the micro USB hardware device through online web page. Click “Connect Device” to pair the device. After that, click “**Download**” to load the code to the micro:bit board.
+Voor browsers zoals **Google Chrome/Microsoft Edge** maakt hun WebUSB directe toegang tot het micro USB-hardwareapparaat mogelijk via een online webpagina. Klik op "Connect Device" om het apparaat te koppelen. Klik daarna op "**Download**" om de code naar het micro:bit-bord te laden.
 
 ![Img](./media/Animation.gif)
 
-Steps:
+Stappen:
 
-#### 4.1.3.2.1 Pair device
+#### 4.1.3.2.1 Apparaat Koppelen
 
-1\. Connect the micro:bit board to your computer via micro USB cable.
+1\. Verbind het micro:bit-bord met uw computer via een micro USB-kabel.
 
 ![Img](./media/A951.png)
 
-2\. Click the three dots “**...**” behind the “**Download**” and select “**Connect device**”.
+2\. Klik op de drie puntjes "**...**" achter de "**Download**" en selecteer "**Connect device**".
 
 ![Img](./media/A028.png)
 
-3\. “**Next**”.
+3\. "**Next**".
 
 ![Img](./media/A046.png)
 
-4\. “**Pair**”.
+4\. "**Pair**".
 
 ![Img](./media/A104.png)
 
-5\. Connect to a “**Device**” and “**Connect**”. 
+5\. Verbind met een "**Device**" en "**Connect**".
 
 ![Img](./media/A127.png)
 
-6\. “**Done**” and connected.
+6\. "**Done**" en verbonden.
 
 ![Img](./media/A144.png)
 
-#### 4.1.3.2.2 Download code
+#### 4.1.3.2.2 Code Downloaden
 
-After connecting, click “**Download**” and the code will be downloaded to the micro:bit board, and ![Img](./media/A212.png) becomes  ![Img](./media/A220.png).
+Na het verbinden klikt u op "**Download**" en de code wordt gedownload naar het micro:bit-bord, en ![Img](./media/A212.png) wordt ![Img](./media/A220.png).
 
 ![Img](./media/A232.png)
 
 ⚠️ **Tips**
 
-If there is no device for pairing in the interface, please see the [device-webusb-troubleshoot](https://makecode.microbit.org/device/usb/webusb/troubleshoot).
+Als er geen apparaat is om te koppelen in de interface, raadpleeg dan de [device-webusb-troubleshoot](https://makecode.microbit.org/device/usb/webusb/troubleshoot).
 
-If the micro:bit firmware requires an update, please see [how-to-update-the-firmware](https://microbit.org/guide/firmware/).
+Als de micro:bit-firmware een update vereist, raadpleeg dan [how-to-update-the-firmware](https://microbit.org/guide/firmware/).
 
-### 4.1.3.3 Download Code (none WebUSB)
+### 4.1.3.3 Code Downloaden (geen WebUSB)
 
-1\. Connect the micro:bit board to your computer via micro USB cable.
+1\. Verbind het micro:bit-bord met uw computer via een micro USB-kabel.
 
 ![Img](./media/A800.png)
 
-When the micro:bit is powered on, the red LED indicator on its back will light up.
+Wanneer de micro:bit wordt ingeschakeld, zal de rode LED-indicator aan de achterkant oplichten.
 
-On the micro:bit board, there is a yellow LED indicator that will flash when the board communicates with your computer through micro USB. 
+Op het micro:bit-bord bevindt zich een gele LED-indicator die knippert wanneer het bord communiceert met uw computer via micro USB.
 
-Open Finder(Mac) / Devices and drives(Windows), and you can see a USB drive named "MICROBIT". Yet note that it is not a common disk!
+Open Finder(Mac) / Apparaten en schijven(Windows), en u ziet een USB-station genaamd "MICROBIT". Let wel op dat het geen gewone schijf is!
 
 ![Img](./media/A849.png)
 
-2\. For browsers, please load the code to the micro:bit board as follows:
+2\. Voor browsers, laad de code naar het micro:bit-bord als volgt:
 
 ![Img](./media/Animations-1.gif)
 
-Steps:
+Stappen:
 
-① Click the “**Download**” button and a “**.hex**” file will be downloaded, which can be read by the micro:bit board. After that, copy and paste it to the board. 
+① Klik op de "**Download**"-knop en een ".hex"-bestand wordt gedownload, dat kan worden gelezen door het micro:bit-bord. Kopieer en plak het daarna naar het bord.
 
-For Windows, you can “**Send to→MICROBIT**” and load the “**.hex**” to the micro:bit board. During this process, the yellow indicator on the back of the board will flash. When done loaded, the indicator remains on.
+Voor Windows kunt u "**Send to→MICROBIT**" en de ".hex" naar het micro:bit-bord laden. Tijdens dit proces knippert de gele indicator aan de achterkant van het bord. Wanneer het laden is voltooid, blijft de indicator branden.
 
 ![Img](./media/A319.png)
 
 ![Img](./media/A449.png)
 
-Or you can directly drag the “**.hex**” file to the MICROBIT:
+Of u kunt het ".hex"-bestand direct naar de MICROBIT slepen:
 
 ![Img](./media/A341.png)
 
 ![Img](./media/A345.png)
 
-② After that, connect the micro: bit board to the computer via micro USB cable and power on, and you can see the on-board 5 x 5 LED matrix repeatedly shows ![Img](./media/A903.png) and ![Img](./media/A910.png).
+② Daarna, verbind het micro:bit-bord met de computer via een micro USB-kabel en schakel het in, en u ziet de ingebouwde 5 x 5 LED-matrix herhaaldelijk ![Img](./media/A903.png) en ![Img](./media/A910.png) tonen.
 
 ![Img](./media/A22.png)
 
 
 
-⚠️ During each programing, the MICROBIT disk will automatically eject and return, and the **.hex** files you have copied to it will not be displayed. That is because the micro:bit board only receives and runs the latest uploaded program rather than stores them.
-
+⚠️ Tijdens elke programmering zal de MICROBIT-schijf automatisch uitwerpen en terugkeren, en de **.hex**-bestanden die u ernaartoe hebt gekopieerd, worden niet weergegeven. Dat komt omdat het micro:bit-bord alleen het laatst geüploade programma ontvangt en uitvoert, in plaats van ze op te slaan.

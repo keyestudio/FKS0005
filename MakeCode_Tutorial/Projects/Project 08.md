@@ -1,92 +1,96 @@
-### 4.2.8 Guess Number
+### 4.2.8 Raad het Getal
 
-#### 4.2.8.1 Overview
+#### 4.2.8.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we play a game of guessing number by a Micro:bit board, a gamepad control board, and an OLED display. When the correct number is guessed, the OLED displays "Great!!!"; if the guess is too high or too low, it shows "To High!"/"To Low!" respectively, along with the corresponding range of possible numbers.
+In dit project spelen we een raadspel met een Micro:bit board, een gamepad-besturingsbord en een OLED-display. Wanneer het juiste getal is geraden, toont de OLED "Great!!!"; als de gok te hoog of te laag is, toont het respectievelijk "To High!"/"To Low!", samen met het corresponderende bereik van mogelijke getallen.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.8.3 Required Parts
+#### 4.2.8.2 Component Kennis
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+Dit project gebruikt hetzelfde OLED-display als Project 07. Raadpleeg sectie 4.2.7.2 voor de componentkennis.
+
+#### 4.2.8.3 Benodigde Onderdelen
+
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**AAA battery** (self-provided) ×4 |
-|![Img](./media/OLED.png)|![Img](./media/7008.png)||
-|**OLED display** (self-provided)×1 |**F-F DuPont wire**(self-provided) x4||
+| **micro:bit V2 board** (zelf meegeleverd) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA batterij** (zelf meegeleverd) ×4 |
+|![Img](./media/OLED.png)|![Img](./media/7008.png)|||
+|**OLED display** (zelf meegeleverd)×1 |**F-F DuPont draad**(zelf meegeleverd) x4||
 
-#### 4.2.8.4 Wiring Diagram
+#### 4.2.8.4 Bedradingsschema
 
 ![Img](./media/jiexian8.png)
 
-**After wiring up as shown above, insert the micro:bit into the slot on the gamepad control board.**
+**Na de bedrading zoals hierboven weergegeven, plaatst u de micro:bit in de sleuf op het gamepad-besturingsbord.**
 
-| OLED display | micro:bit gamepad control board | micro:bit board pin |
+| OLED-display | micro:bit gamepad-besturingsbord | micro:bit board pin |
 | :--: | :--: | :--: |
-| GND |  GND | GND |
-| VCC |  3V | 3V |
-| SDA |  SDA | P20 |
-| SCL |  SCL | P19 |
+| GND | GND | GND |
+| VCC | 3V | 3V |
+| SDA | SDA | P20 |
+| SCL | SCL | P19 |
 
-#### 4.2.8.5 Code Flow
+#### 4.2.8.5 Code Stroom
 
 ![Img](./media/8001.png)
 
 #### 4.2.8.6 Test Code
 
-⚠️ **Note that here OLED library is included, so we need to import: https://github.com/keyestudio/pxt-environment-kit-master**.
+⚠️ **Let op dat hier de OLED-bibliotheek is opgenomen, dus we moeten importeren: https://github.com/keyestudio/pxt-environment-kit-master**.
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/8002.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initialize the screen update flag bit, set mode variable to 0 (0-game readiness, 1-game running), and initialize the OLED screen display.
+① Initialiseer de schermupdate-vlagbit, stel de modusvariabele in op 0 (0-spel klaar, 1-spel actief), en initialiseer de OLED-schermweergave.
 
 ![Img](./media/8003.png)
 
-② During game preparation, set the guess range, initial guess value, target value, and guess.
+② Tijdens de spelvoorbereiding, stel het gokbereik, de initiële gokwaarde, de doelwaarde en de gok in.
 
 ![Img](./media/8004.png)
 
-③ Update the value range and guess value on the OLED. Display corresponding prompts when the result status flag bit changes: "TO High!" when state=1; "TO LOW!" when state=2; and "Great!!!" when state=3. 
+③ Werk het waardebereik en de gokwaarde op de OLED bij. Toon corresponderende prompts wanneer de statusvlagbit van het resultaat verandert: "To High!" wanneer state=1; "To Low!" wanneer state=2; en "Great!!!" wanneer state=3.
 
-And set the mode to game readiness and wait for 1000 milliseconds(1s).
+En stel de modus in op spel klaar en wacht 1000 milliseconden (1s).
 
 ![Img](./media/8005.png)
 
-④ Press C and the guess value temp+1; if the guess value exceeds the maximum, set it as the new maximum. 
+④ Druk op C en de gokwaarde temp+1; als de gokwaarde het maximum overschrijdt, stel deze dan in als het nieuwe maximum.
 
-Press E and the guess value temp-1; if the guess value is smaller than the minimum, set it as the new minimum.
+Druk op E en de gokwaarde temp-1; als de gokwaarde kleiner is dan het minimum, stel deze dan in als het nieuwe minimum.
 
 ![Img](./media/8006.png)
 
-⑤ Press D to compare the guess value with the target value. If temp is greater, record the new maximum max2 and enter State 1; if temp is smaller, record the new minimum min2 and enter State 2; if both values are equal, go to State 3. 
+⑤ Druk op D om de gokwaarde te vergelijken met de doelwaarde. Als temp groter is, registreer dan het nieuwe maximum max2 en ga naar Staat 1; als temp kleiner is, registreer dan het nieuwe minimum min2 en ga naar Staat 2; als beide waarden gelijk zijn, ga dan naar Staat 3.
 
-Finally, update the display with 1000-millisecond delay.
+Werk ten slotte het display bij met een vertraging van 1000 milliseconden.
 
 ![Img](./media/8007.png)
 
-#### 4.2.8.7 Test Result
+#### 4.2.8.7 Test Resultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-After uploading the code, the OLED initialize and shows the value range of “num: 1 ~ 100” and initial guess of 50. You can press C to temp+1(max of 100) or  E to temp-1(min of 1) to change your guess value on the OLED. 
+Na het uploaden van de code, initialiseert de OLED en toont het waardebereik van "num: 1 ~ 100" en de initiële gok van 50. U kunt op C drukken om temp+1 (max van 100) of op E om temp-1 (min van 1) te wijzigen om uw gokwaarde op de OLED te veranderen.
 
-Press D to submit your value, and temp will be compared with the random target value. If temp>value, show “To High!” and assign temp to max2; if temp<value, show “To Low!” and assign it to min2. If you are too lucky that temp=value, you will see “Great!!!” for 1s. 
+Druk op D om uw waarde in te dienen, en temp zal worden vergeleken met de willekeurige doelwaarde. Als temp>value, toon "To High!" en wijs temp toe aan max2; als temp<value, toon "To Low!" en wijs het toe aan min2. Als u geluk heeft dat temp=value, ziet u "Great!!!" gedurende 1s.
 
-After that, the game will be reset and a new target value will be set. Let's play another round!
+Daarna wordt het spel gereset en wordt een nieuwe doelwaarde ingesteld. Laten we nog een ronde spelen!
 
 ![Img](./media/8000.gif)
 
-⚠️ **The building block in Test Result are not included in this product kit.**
+⚠️ **De bouwsteen in Test Resultaat is niet inbegrepen in deze productkit.**
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

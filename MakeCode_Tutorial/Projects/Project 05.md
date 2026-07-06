@@ -1,101 +1,101 @@
-### 4.2.5 Avoid Bricks
+### 4.2.5 Vermijd Bakstenen
 
-#### 4.2.5.1 Overview
+#### 4.2.5.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we play a brick-avoidance game where players use a Micro:bit gamepad to move their LED indicator left and right while evading bricks falling from above. There are three states: a) a dynamic icon at startup, b) real-time avoidance actions during gameplay, and c) a final score after collisions. 
+In dit project spelen we een baksteen-vermijdingsspel waarbij spelers een Micro:bit gamepad gebruiken om hun LED-indicator naar links en rechts te bewegen terwijl ze vallende bakstenen ontwijken. Er zijn drie staten: a) een dynamisch pictogram bij het opstarten, b) real-time vermijdingsacties tijdens het spelen, en c) een eindscore na botsingen.
 
-Players earn 1 point after each avoidance (when the brick reaches the bottom), and the game is over when they collides with a brick; the final score is displayed with a scrolling effect. 
+Spelers verdienen 1 punt na elke ontwijking (wanneer de baksteen de onderkant bereikt), en het spel is voorbij wanneer ze botsen met een baksteen; de eindscore wordt weergegeven met een scrolleffect.
 
-The game can be started or reset by pressing both A+B. This straightforward gameplay mechanism combines real-time responsiveness with strategic anticipation.
+Het spel kan worden gestart of gereset door zowel A+B in te drukken. Dit eenvoudige gameplay-mechanisme combineert real-time responsiviteit met strategische anticipatie.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.5.2 Required Parts
+#### 4.2.5.2 Benodigde Onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf meegeleverd) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA batterij** (zelf meegeleverd) ×4 |
 
-#### 4.2.5.3 Code Flow
+#### 4.2.5.3 Code Stroom
 
 ![Img](./media/5001.png)
 
 #### 4.2.5.4 Test Code
 
-⚠️ **Note that the initial threshold 300 in the code can be modified according to your needs. The higher the value is, the slower the brick will fall.**
+⚠️ **Let op: de initiële drempelwaarde 300 in de code kan naar behoefte worden aangepast. Hoe hoger de waarde, hoe langzamer de baksteen zal vallen.**
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/5002.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initialize related variables, including player initial row, column, and speed of the brick, and set the position of the player to initial row. 
+① Initialiseer gerelateerde variabelen, inclusief de initiële kolom, rij en snelheid van de baksteen van de speler, en stel de positie van de speler in op de initiële kolom.
 
-Call a on_start function.
+Roep een on_start functie aan.
 
 ![Img](./media/5003.png)
 
-② As for this function, it make the brick appears in a random column of 0~4 at the beginning of the game.
+② Wat deze functie betreft, deze zorgt ervoor dat de baksteen aan het begin van het spel in een willekeurige kolom van 0~4 verschijnt.
 
 ![Img](./media/5004.png)
 
-③ Determine whether “A+B is pressed and the game is not started”. If yes and startup is marked as an initial state, mark the startup state first and confirm again whether the buttons are still pressed after a short delay. If they are, reset the game (call the reset_game function) and record the time. Or else, cancel startup mark.
+③ Bepaal of "A+B is ingedrukt en het spel niet is gestart". Zo ja, en het opstarten is gemarkeerd als een initiële staat, markeer dan eerst de opstartstaat en bevestig opnieuw of de knoppen na een korte vertraging nog steeds zijn ingedrukt. Zo ja, reset het spel (roep de reset_game functie aan) en registreer de tijd. Anders, annuleer de opstartmarkering.
 
 ![Img](./media/5005.png)
 
-④ The following function resets the game to initial state. It sets the state to “gaming”(game_state=1) and puts player to initial position. And the brick will appear at a random column(0~4) and 0th row, and the scores will zero out. At last, the pressing of the A/B is marked as not triggered, and the matrix is then cleared.
+④ De volgende functie reset het spel naar de initiële staat. Het stelt de staat in op "gaming" (game_state=1) en plaatst de speler op de initiële positie. En de baksteen verschijnt in een willekeurige kolom (0~4) en de 0e rij, en de scores worden nul. Ten slotte wordt het indrukken van A/B gemarkeerd als niet geactiveerd, en de matrix wordt vervolgens gewist.
 
 ![Img](./media/5006.png)
 
-⑤ When the game state is **0-initial state**(not gaming after powering on), the displayed icon will flash.
+⑤ Wanneer de spelstatus **0-initiële staat** is (niet aan het spelen na het inschakelen), zal het weergegeven pictogram knipperen.
 
 ![Img](./media/5007.png)
 
-⑥ When it is **2-game over**, the score will be controlled according to the flash count (flash_count). If the count<3, repeats “show score → short  delay → clear display → short  delay → count+ 1”; when count reaches 3, it always shows the score and extend the delay.
+⑥ Wanneer het **2-game over** is, wordt de score gecontroleerd volgens het knipperen (flash_count). Als de telling <3 is, herhaalt het "toon score → korte vertraging → wis display → korte vertraging → telling+1"; wanneer de telling 3 bereikt, toont het altijd de score en verlengt het de vertraging.
 
 ![Img](./media/5008.png)
 
-⑦ In **1-gaming** state, when you press C without triggering the press mark and player row > 0, the player row -1 and mark button C as triggered (with delay to anti-jitter); press E without triggering and when player row < 4, and the row +1 with E being triggered (delay); if no action is performed, the trigger mark of the corresponding buttons is reset.
+⑦ In de **1-gaming** staat, wanneer u C indrukt zonder de drukmarkering te activeren en de spelerskolom > 0 is, wordt de spelerskolom -1 en wordt knop C gemarkeerd als geactiveerd (met vertraging om jitter te voorkomen); druk op E zonder te activeren en wanneer de spelerskolom < 4 is, en de kolom +1 met E wordt geactiveerd (vertaging); als er geen actie wordt uitgevoerd, wordt de activeringsmarkering van de corresponderende knoppen gereset.
 
 ![Img](./media/5009.png)
 
-⑧ Calculate the difference between the current time and the last brick movement time. If this difference exceeds the brick speed threshold, update the brick movement time and the brick column +1. If column > 4 (reaching the boundary), reset the brick to a random row with its column=zero, and score+1. 
+⑧ Bereken het verschil tussen de huidige tijd en de tijd van de laatste baksteenbeweging. Als dit verschil de drempelwaarde voor de baksteensnelheid overschrijdt, werk dan de baksteenbewegingstijd en de baksteenrij +1 bij. Als de rij > 4 is (de grens bereikt), reset de baksteen dan naar een willekeurige kolom met zijn rij=nul, en score+1.
 
-Call the collision detection and game graphics rendering functions to drop bricks, reset after reaching the boundary, accumulate score, and update game state in real time.
+Roep de botsingsdetectie- en spelgrafische weergavefuncties aan om bakstenen te laten vallen, te resetten na het bereiken van de grens, score te verzamelen en de spelstatus in real-time bij te werken.
 
-Invoke the collision detection and game graphics rendering functions to achieve automatic brick advancement, boundary reset, score accumulation, and real-time game state updates.
+Roep de botsingsdetectie- en spelgrafische weergavefuncties aan om automatische baksteenbeweging, grensreset, scoreaccumulatie en real-time spelstatusupdates te realiseren.
 
 ![Img](./media/5010.png)
 
-⑨ Determine whether the game is over: it first checks whether “the brick column matches the player's” and “whether the brick row matches the player's”. If both conditions are met (i.e., the bricks overlap with the player), set the game to 2 state (game over), clear the display and reset the flash count is reset. 
+⑨ Bepaal of het spel voorbij is: het controleert eerst of "de baksteenkolom overeenkomt met die van de speler" en "of de baksteenrij overeenkomt met die van de speler". Als aan beide voorwaarden is voldaan (d.w.z. de bakstenen overlappen met de speler), stel het spel dan in op staat 2 (game over), wis het display en reset de knipperteller.
 
-“Game over upon collision.”
+"Game over bij botsing."
 
 ![Img](./media/5011.png)
 
-⑩ Render game visuals: it first clears the display, and then plots points with a brightness of 255 (Player) at the player's initial column and current row positions; if the game is started (game_state=1), it plots points with a brightness of 85 (brick) at the brick's row and column. So we can distinguish bricks from the player according to their brightness.
+⑩ Render spelvisuals: het wist eerst het display en tekent vervolgens punten met een helderheid van 255 (Speler) op de vaste rij en huidige kolomposities van de speler; als het spel is gestart (game_state=1), tekent het punten met een helderheid van 85 (baksteen) op de rij en kolom van de baksteen. Zo kunnen we bakstenen van de speler onderscheiden op basis van hun helderheid.
 
 ![Img](./media/5012.png)
 
-#### 4.2.5.5 Test Result
+#### 4.2.5.5 Test Resultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-It is in **0-initial state** after powering on and the matrix flashes two square icons. 
+Het bevindt zich in **0-initiële staat** na het inschakelen en de matrix knippert twee vierkante pictogrammen.
 
-Press A and B (for at least 1 second) to start the game (in **1-gaming** state), and a brick will fall in a random column. Now you can move left/right by pressing C/E. Each time you avoid a brick, score+1. 
+Druk op A en B (gedurende ten minste 1 seconde) om het spel te starten (in **1-gaming** staat), en een baksteen zal in een willekeurige kolom vallen. Nu kunt u naar links/rechts bewegen door op C/E te drukken. Elke keer dat u een baksteen ontwijkt, score+1.
 
-Game over upon collision (**2-game over**), and the final score will be displayed on the matrix. If you want to play one more round, press A and B again. Power off to exit the game (toggle the DIP switch to “OFF”).
+Game over bij botsing (**2-game over**), en de eindscore wordt weergegeven op de matrix. Als u nog een ronde wilt spelen, drukt u opnieuw op A en B. Schakel uit om het spel te verlaten (zet de DIP-schakelaar op "OFF").
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

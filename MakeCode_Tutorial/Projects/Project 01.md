@@ -1,80 +1,80 @@
-### 4.2.1 Direction Indicator
+### 4.2.1 Richtingaanwijzer
 
-#### 4.2.1.1 Overview
+#### 4.2.1.1 Overzicht
 
 ![Img](./media/top1.png)
 
-When you toggle the joystick, the dot matrix displays arrows in the corresponding direction in real time: left, right, up, down, giving you a clear direction reference.
+Wanneer u de joystick beweegt, toont de puntmatrix in realtime pijlen in de overeenkomstige richting: links, rechts, omhoog, omlaag, waardoor u een duidelijke richtingreferentie krijgt.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.1.2 Component Knowledge
+#### 4.2.1.2 Componentkennis
 
 ![Img](./media/2top.png)
 
-**Micro:bit dot matrix:**
+**Micro:bit puntmatrix:**
 
 ![Img](./media/1001.png)
 
-The LED dot matrix of the micro:bit board consists of a total of 25 light-emitting diodes, a group of 5, corresponding to axis X and Y, forming a 5×5 matrix. Each one is placed at the intersection of the row(X) and the column (Y). We can control one or some of them by setting the coordinate points.
+De LED-puntmatrix van het micro:bit-bord bestaat uit in totaal 25 lichtgevende diodes, een groep van 5, corresponderend met as X en Y, die een 5×5 matrix vormen. Elk is geplaatst op het snijpunt van de rij (X) en de kolom (Y). We kunnen een of enkele ervan bedienen door de coördinatenpunten in te stellen.
 
 **Joystick:**
 
-| ![Img](./media/1002.png)| ![Img](./media/1003.png)  |
+| ![Img](./media/1002.png)| ![Img](./media/1003.png) |
 | :--: | :--: |
-| Real product | Schematic diagram |
+| Werkelijk product | Schematisch diagram |
 
-The internal core structure of this joystick is composed of two adjustable resistors (potentiometers) with a resistance value of 10KΩ each.
+De interne kernstructuur van deze joystick is samengesteld uit twee instelbare weerstanden (potentiometers) met elk een weerstandswaarde van 10KΩ.
 
-It detect directions (and amplitude) of the push through the ADC analog pin of the microcontroller to output the analog electrical signals of the corresponding dimension. During actual signal reading, when the analog values of the joystick X and Y axes are detected within the range of 450~600, it can be determined that the joystick is in a neutral(stationary) state without active toggling.
+Het detecteert richtingen (en amplitude) van de druk via de ADC analoge pin van de microcontroller om de analoge elektrische signalen van de overeenkomstige dimensie uit te voeren. Tijdens het daadwerkelijk uitlezen van signalen, wanneer de analoge waarden van de joystick X- en Y-assen worden gedetecteerd binnen het bereik van 450~600, kan worden vastgesteld dat de joystick zich in een neutrale (stationaire) toestand bevindt zonder actieve beweging.
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.1.3 Required Parts
+#### 4.2.1.3 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png)  |![Img](./media/dianchi.png)|
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**AAA battery** (self-provided) ×4 |
+| **micro:bit V2-bord** (zelf meegebracht) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA-batterij** (zelf meegebracht) ×4 |
 
 
-#### 4.2.1.4 Code Flow
+#### 4.2.1.4 Codestroom
 
 ![Img](./media/1008.png)
 
-#### 4.2.1.5 Test Code
+#### 4.2.1.5 Testcode
 
-⚠️ **Note that the following codes include the Makecode libraries of the Gamepad (the way how to add libraries is mentioned before). The sensitivity of the joystick can be adjusted according to your needs.**
+⚠️ **Let op dat de volgende codes de Makecode-bibliotheken van de Gamepad bevatten (de manier om bibliotheken toe te voegen is eerder vermeld). De gevoeligheid van de joystick kan naar behoefte worden aangepast.**
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/1004.png)
 
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initialize LED matrix to make it show ![Img](./media/1006.png).
+① Initialiseer de LED-matrix om ![Img](./media/1006.png) te tonen.
 
 
 ![Img](./media/1005.png)
 
 
-② Read the values of the axis X and Y to determine the toggling direction. If it is detected, the matrix shows the corresponding arrow. If not, it displays ![Img](./media/1006.png).
+② Lees de waarden van de X- en Y-as om de bewegingsrichting te bepalen. Indien gedetecteerd, toont de matrix de overeenkomstige pijl. Zo niet, dan wordt ![Img](./media/1006.png) weergegeven.
 
 ![Img](./media/1007.png)
 
 
-#### 4.2.1.6 Test Result
+#### 4.2.1.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-When you push the joystick of the gamepad, you can see the corresponding arrows on the matrix. If you raise your finger to bring it back to the center, there will be a house icon on the matrix.
+Wanneer u de joystick van de gamepad beweegt, ziet u de overeenkomstige pijlen op de matrix. Als u uw vinger optilt om deze terug naar het midden te brengen, verschijnt er een huispictogram op de matrix.
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

@@ -278,11 +278,11 @@ Then, `state` is reset to `0`. Since `mode` has already been reset to `0`, upon 
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to "ON".
 
-After uploading the code, the OLED initialize and shows the value range of “num: 1 ~ 100” and initial guess of 50. You can press C to temp+1(max of 100) or  E to temp-1(min of 1) to change your guess value on the OLED. 
+After uploading the code, the OLED initializes and shows the value range of "num: 1 ~ 100" and initial guess of 50. You can press C to temp+1(max of 100) or E to temp-1(min of 1) to change your guess value on the OLED.
 
-Press D to submit your value, and temp will be compared with the random target value. If temp>value, show “To High!” and assign temp to max2; if temp<value, show “To Low!” and assign it to min2. If you are too lucky that temp=value, you will see “Great!!!” for 1s. 
+Press D to submit your value, and temp will be compared with the random target value. If temp>value, show "To High!" and assign temp to max_num; if temp<value, show "To Low!" and assign it to min_num. If you are too lucky that temp=value, you will see "Great!!!" for 1s.
 
 After that, the game will be reset and a new target value will be set. Let's play another round!
 
@@ -290,6 +290,6 @@ After that, the game will be reset and a new target value will be set. Let's pla
 
 ⚠️ **The building block in Test Result are not included in this product kit.**
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

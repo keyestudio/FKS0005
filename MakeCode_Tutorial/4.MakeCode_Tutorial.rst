@@ -2,7 +2,7 @@
 4. MakeCode Tutorial
 =========
 
-4.1 MakeCode Development Environment
+4.1 MakeCode Ontwikkelomgeving
 =========
 
 .. toctree::
@@ -11,7 +11,7 @@
     MakeCode Development Environment
 
 
-4.2 Projects
+4.2 Projecten
 =========
 
 
@@ -29,7 +29,7 @@
     Projects/Project 09
 
   
-4.3 Troubleshooting
+4.3 Probleemoplossing
 =========
 
 .. toctree::

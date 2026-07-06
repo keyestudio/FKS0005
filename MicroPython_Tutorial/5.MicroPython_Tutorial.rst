@@ -2,7 +2,7 @@
 5. MicroPython_Tutorial
 =========
 
-5.1 Thonny Development Environment
+5.1 Thonny Ontwikkelomgeving
 =========
 
 .. toctree::
@@ -11,7 +11,7 @@
     Thonny Development Environment
 
 
-5.2 Projects
+5.2 Projecten
 =========
 
 
@@ -27,7 +27,7 @@
     Projects/Project 07
 
   
-5.3 Troubleshooting
+5.3 Probleemoplossing
 =========
 
 
@@ -36,7 +36,6 @@
 
     Troubleshooting
     
-
 
 
     

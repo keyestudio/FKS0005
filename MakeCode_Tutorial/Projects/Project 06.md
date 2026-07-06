@@ -1,112 +1,111 @@
-### 4.2.6 Rock-Paper-Scissors
+### 4.2.6 Steen-Papier-Schaar
 
-#### 4.2.6.1 Overview
+#### 4.2.6.1 Overzicht
 
 ![Img](./media/top1.png)
 
-Herein, let's play rock-paper-scissors by wireless communication of micro:bit. Players select their move (rock, paper, or scissors) via the buttons, with data exchange between devices. The game follows best-of-three; if all three rounds end in all tie or win-loss-tie, a fourth match is triggered. 
+Hierin spelen we steen-papier-schaar via draadloze communicatie van de micro:bit. Spelers kiezen hun zet (steen, papier of schaar) via de knoppen, met gegevensuitwisseling tussen apparaten. Het spel volgt een best-of-three; als alle drie de rondes eindigen in een gelijkspel of winst-verlies-gelijkspel, wordt een vierde wedstrijd geactiveerd.
 
-Each outcome is displayed on the micro:bit matrix (W for win, L for Loss, = for tie) and revealed by the RGB lights (green for win, red for loss, yellow for tie) at pin P8. Upon completion of a round, the two device resets all data and lights, preparing for the next match. 
+Elke uitkomst wordt weergegeven op de micro:bit matrix (W voor winst, L voor verlies, = voor gelijkspel) en onthuld door de RGB-lampjes (groen voor winst, rood voor verlies, geel voor gelijkspel) op pin P8. Na voltooiing van een ronde resetten de twee apparaten alle gegevens en lampjes, ter voorbereiding op de volgende wedstrijd.
 
-The gameplay seamlessly integrates wireless interaction with the multi-round combat.
+De gameplay integreert naadloos draadloze interactie met de meer-ronde gevechten.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.6.2 Component Knowledge
+#### 4.2.6.2 Component Kennis
 
 ![Img](./media/2top.png)
 
-**Microbit wireless communication**
+**Microbit draadloze communicatie**
 
 ![Img](./media/6001.png)
 
-The micro:bit board integrates two convenient wireless communication capabilities: **2.4GHz radio** and **low-power Bluetooth (BLE)**. Yet they cannot be used simultaneously. 
+Het micro:bit board integreert twee handige draadloze communicatiemogelijkheden: **2.4GHz radio** en **low-power Bluetooth (BLE)**. Ze kunnen echter niet gelijktijdig worden gebruikt.
 
-The former requires no pairing and supports up to 255 independent packets to minimize interference, with a communication range of 10–30 meters, enabling rapid transmission of digital data and strings. While the latter is primarily used for pairing with smartphones, tablets, and other smart devices for IoT applications such as sensor data upload and mobile app remote control. 
+De eerste vereist geen koppeling en ondersteunt tot 255 onafhankelijke pakketten om interferentie te minimaliseren, met een communicatiebereik van 10-30 meter, waardoor snelle overdracht van digitale gegevens en strings mogelijk is. De laatste wordt voornamelijk gebruikt voor koppeling met smartphones, tablets en andere slimme apparaten voor IoT-toepassingen zoals het uploaden van sensorgegevens en afstandsbediening via mobiele apps.
 
-They expands the creative development possibilities of the micro:bit.
+Ze breiden de creatieve ontwikkelingsmogelijkheden van de micro:bit uit.
 
-#### 4.2.6.3 Required Parts
+#### 4.2.6.3 Benodigde Onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×2 | **micro:bit Smart Gamepad** (assembled) ×2 |**AAA battery** (self-provided) ×8 |
+| **micro:bit V2 board** (zelf meegeleverd) ×2 | **micro:bit Smart Gamepad** (gemonteerd) ×2 |**AAA batterij** (zelf meegeleverd) ×8 |
 
-#### 4.2.6.4 Code Flow
+#### 4.2.6.4 Code Stroom
 
 ![Img](./media/6002.png)
 
 #### 4.2.6.5 Test Code
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/6003.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initiate the radio and set the group to '1'; set the number of rounds, status, opponent, and players' rock-paper-scissors result; connect the four RGB lights to pin P8 and refresh the display, set matrix to show ![Img](./media/6004.png).
+① Initialiseer de radio en stel de groep in op \'1\'; stel het aantal rondes, status, tegenstander en de steen-papier-schaar resultaten van de spelers in; verbind de vier RGB-lampjes met pin P8 en ververs het display, stel de matrix in om ![Img](./media/6004.png) te tonen.
 
 ![Img](./media/6005.png)
 
-② Determine the outcome of the current round: if your choice matches the opponent's (**1/2/3 for scissors/rock/paper**), it's a draw; otherwise, select a winner (scissors against paper against rock against scissors), round value +1 and store the result.
+② Bepaal de uitkomst van de huidige ronde: als uw keuze overeenkomt met die van de tegenstander (**1/2/3 voor schaar/steen/papier**), is het een gelijkspel; anders, selecteer een winnaar (schaar tegen papier tegen steen tegen schaar), ronde waarde +1 en sla het resultaat op.
 
 ![Img](./media/6006.png)
 
-③ Store the results in an array and display the corresponding string. If this is the third game, determine whether a fourth game is needed (in all tie or win-loss-tie). If so, display "FINAL" and wait 1 second before clearing the rock-paper-scissors selection.
+③ Sla de resultaten op in een array en toon de corresponderende string. Als dit het derde spel is, bepaal dan of een vierde spel nodig is (bij een volledig gelijkspel of winst-verlies-gelijkspel). Zo ja, toon "FINAL" en wacht 1 seconde voordat de steen-papier-schaar selectie wordt gewist.
 
 ![Img](./media/6007.png)
 
-Otherwise, show "WINNER" for victory, "LOSER" for defeat, and "TIE" for a draw. After a 3-second delay, call the resetGame function to clear all game variables. 
+Anders, toon "WINNER" voor overwinning, "LOSER" voor nederlaag, en "TIE" voor een gelijkspel. Na een vertraging van 3 seconden, roep de resetGame functie aan om alle spelvariabelen te wissen.
 
-If the match consists of four games, display "GAME OVER" and call the resetGame function again after a 3-second delay to reset all game variables.
+Als de wedstrijd uit vier spellen bestaat, toon dan "GAME OVER" en roep de resetGame functie opnieuw aan na een vertraging van 3 seconden om alle spelvariabelen te resetten.
 
 ![Img](./media/6008.png)
 
-If the game is not over, it shows![Img](./media/6004.png) and clears the choices of both.
+Als het spel niet voorbij is, toont het ![Img](./media/6004.png) en wist het de keuzes van beide.
 
 ![Img](./media/6009.png)
 
-④ Press C and the board sends "1" as scissors, and the matrix shows ![Img](./media/6011.png); press D and the board sends "3" as paper, and the matrix shows ![Img](./media/6012.png); Press E and it sends "2" as rock and shows ![Img](./media/6013.png).
+④ Druk op C en het board stuurt "1" als schaar, en de matrix toont ![Img](./media/6011.png); druk op D en het board stuurt "3" als papier, en de matrix toont ![Img](./media/6012.png); Druk op E en het stuurt "2" als steen en toont ![Img](./media/6013.png).
 
 ![Img](./media/6010.png)
 
-⑤ Receive radio data (opponent's choice).
+⑤ Ontvang radio gegevens (keuze van de tegenstander).
 
 ![Img](./media/6014.png)
 
-⑥ Determine whether a fourth round is required. If all three games end in all tie or win-loss-tie, a fourth game is necessary; otherwise, it is not needed.
+⑥ Bepaal of een vierde ronde nodig is. Als alle drie de spellen eindigen in een volledig gelijkspel of winst-verlies-gelijkspel, is een vierde spel noodzakelijk; anders is het niet nodig.
 
 ![Img](./media/6015.png)
 
-⑦ The RGB lights display the corresponding colors based on the outcome: green for victory, red for defeat, and yellow for a draw.
+⑦ De RGB-lampjes tonen de corresponderende kleuren op basis van de uitkomst: groen voor overwinning, rood voor nederlaag, en geel voor een gelijkspel.
 
 ![Img](./media/6016.png)
 
-⑧ When the game ends, clear the display of the four RGB lights.
+⑧ Wanneer het spel eindigt, wis dan de weergave van de vier RGB-lampjes.
 
 ![Img](./media/6017.png)
 
-⑨ Reset the game state, clear all game variable values, reset the RGB lights, and show ![Img](./media/6004.png).
+⑨ Reset de spelstatus, wis alle spelvariabele waarden, reset de RGB-lampjes, en toon ![Img](./media/6004.png).
 
 ![Img](./media/6018.png)
 
-
-#### 4.2.6.6 Test Result
+#### 4.2.6.6 Test Resultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-The matrix shows ![Img](./media/6004.png) initially. Players press buttons to select their move (E for rock, D for paper, or C for scissors), with match data exchange between the two devices. They determine the outcome of the current round: a win is indicated by the "W" with RGB light turning green, a draw by the "=" with yellow light, and a loss by the "L" with red (the first RGB light turns on after the first round, and so on). The next round will follow if the game is not over.
+De matrix toont aanvankelijk ![Img](./media/6004.png). Spelers drukken op knoppen om hun zet te kiezen (E voor steen, D voor papier, of C voor schaar), met uitwisseling van wedstrijdgegevens tussen de twee apparaten. Ze bepalen de uitkomst van de huidige ronde: een overwinning wordt aangegeven door de "W" met groen RGB-licht, een gelijkspel door de "=" met geel licht, en een verlies door de "L" met rood (het eerste RGB-licht gaat aan na de eerste ronde, enzovoort). De volgende ronde volgt als het spel nog niet voorbij is.
 
-The game adopts best-of-three: if all three rounds end in all tie or win-loss-tie, a fourth match is triggered. 
+Het spel hanteert een best-of-three: als alle drie de rondes eindigen in een volledig gelijkspel of winst-verlies-gelijkspel, wordt een vierde wedstrijd geactiveerd.
 
-If there is a winner after three rounds, it will display "WINNER" for victory and "LOSER" for defeat. Once the result is shown, "GAME OVER" will appear to reset the game. If the fourth round remains undecided, the game will also be over.
+Als er na drie rondes een winnaar is, wordt "WINNER" weergegeven voor overwinning en "LOSER" voor nederlaag. Zodra het resultaat wordt getoond, verschijnt "GAME OVER" om het spel te resetten. Als de vierde ronde onbeslist blijft, is het spel ook voorbij.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Wait for the heart icon to appear before continuing the next round. If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Wacht tot het hartpictogram verschijnt voordat u doorgaat met de volgende ronde. Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

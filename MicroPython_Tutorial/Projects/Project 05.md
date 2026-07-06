@@ -37,7 +37,7 @@ from microbit import *
 # ===================== Global Configuration & Variables =====================
 # Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
 player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (center)
+player_init_col = 4     # Player's initial column (rightmost)
 brick_move_speed = 300  # Brick falling interval (ms)
 
 # Game state: 0=not started 1=running 2=game over
@@ -196,7 +196,7 @@ It first imports `utime` for time-related operations (e.g., delays), `random` fo
 
 It then defines global variables and constants to configure the game:
 
-*   `player_fixed_row` and `player_init_col` define the player's initial position (on the middle of the bottom row).
+*   `player_fixed_row` and `player_init_col` define the player's initial position (at the rightmost column of the bottom row).
 *   `brick_move_speed` sets the time interval (in milliseconds) of the brick' fall.
 *   `game_state` tracks game status (0=initial, 1=gaming, 2=game over).
 *   `brick_x`, `brick_y` store the current coordinates of the brick.
@@ -218,7 +218,7 @@ from microbit import *
 # ===================== Global Configuration & Variables =====================
 # Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
 player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (center)
+player_init_col = 4     # Player's initial column (rightmost)
 brick_move_speed = 300  # Brick falling interval (ms)
 
 # Game state: 0=not started 1=running 2=game over

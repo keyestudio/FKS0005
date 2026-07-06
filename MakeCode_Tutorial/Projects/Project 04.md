@@ -1,93 +1,93 @@
-### 4.2.4 Music Player
+### 4.2.4 Muziekspeler
 
-#### 4.2.4.1 Overview
+#### 4.2.4.1 Overzicht
 
 ![Img](./media/top1.png)
 
-Herein we build a music player that generates sound via the built-in buzzer on the micro:bit board (does not play vocal music). It features a library of 20 short tracks and supports both sequential and random playback. 
+Hier bouwen we een muziekspeler die geluid genereert via de ingebouwde buzzer op het micro:bit-bord (speelt geen vocale muziek). Het beschikt over een bibliotheek van 20 korte nummers en ondersteunt zowel sequentiële als willekeurige weergave.
 
-In sequential mode, pressing C(Previous song) or E(Next song) button switches tracks according to a preset sequence until reaching the end of the list; while in random mode, each press selects a track randomly from the 20 sounds with the color lights flashing, and when one song is finishes it stops immediately. 
+In de sequentiële modus schakelt het indrukken van knop C (Vorig nummer) of E (Volgend nummer) nummers volgens een vooraf ingestelde volgorde totdat het einde van de lijst is bereikt; terwijl in de willekeurige modus elke druk een nummer willekeurig selecteert uit de 20 geluiden met knipperende kleurenlichten, en wanneer een nummer is afgelopen, stopt het onmiddellijk.
 
-Meanwhile, the micro:bit LED matrix displays the current playback mode in real time.
+Ondertussen toont de micro:bit LED-matrix de huidige afspeelmodus in realtime.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.4.2 Required Parts
+#### 4.2.4.2 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**AAA battery** (self-provided) ×4 |
+| **micro:bit V2-bord** (zelf meegebracht) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA-batterij** (zelf meegebracht) ×4 |
 
-#### 4.2.4.3 Code Flow
+#### 4.2.4.3 Codestroom
 
 ![Img](./media/4001.png)
 
-#### 4.2.4.4 Test Code
+#### 4.2.4.4 Testcode
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/4002.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initialize the LED matrix and the sound volume, connect the RGB pin to P8 and set the number of RGB to 4.
+① Initialiseer de LED-matrix en het geluidsvolume, verbind de RGB-pin met P8 en stel het aantal RGB in op 4.
 
 ![Img](./media/4003.png)
 
-② Initialize the array of melody to 20 and add their detailed tracks, and set its initial volume.
+② Initialiseer de array van melodieën op 20 en voeg hun gedetailleerde nummers toe, en stel het initiële volume in.
 
 ![Img](./media/4004.png)
 
-③ Determine whether button D or F is pressed. Press D for '0-sequential playback', F for '1-random playback'.
+③ Bepaal of knop D of F is ingedrukt. Druk op D voor '0-sequentiële weergave', F voor '1-willekeurige weergave'.
 
 ![Img](./media/4005.png)
 
-④ In sequential mode, press C to play the previous song, D to skip to the next song. 
+④ In de sequentiële modus, druk op C om het vorige nummer af te spelen, E om naar het volgende nummer te gaan.
 
 ![Img](./media/4006.png)
 
-Since there are only 20 tracks in the array, only music of N.O. 0-19 can be played. So we add an if condition to avoid overruns and underruns of the array.
+Aangezien er slechts 20 nummers in de array zijn, kan alleen muziek van N.O. 0-19 worden afgespeeld. Daarom voegen we een if-conditie toe om overschrijdingen en onderschrijdingen van de array te voorkomen.
 
 ![Img](./media/4007.png)
 
-However, in random mode, press C/E to shuffle all these 20 songs.
+Echter, in de willekeurige modus, druk op C/E om al deze 20 nummers te schudden.
 
 ![Img](./media/4008.png)
 
-⑤ Determine whether the previous song is inconsistent with the current one. If yes, stop the current one first and then play that one.
+⑤ Bepaal of het vorige nummer inconsistent is met het huidige. Zo ja, stop dan eerst het huidige en speel dan dat nummer af.
 
 ![Img](./media/4009.png)
 
-⑥ Check the mode is '0-sequential playback', showing '![Img](./media/4010.png)', or '1-random playback', showing '![Img](./media/4011.png)', with a delay of 100ms.
+⑥ Controleer of de modus '0-sequentiële weergave' is, met '![Img](./media/4010.png)', of '1-willekeurige weergave', met '![Img](./media/4011.png)', met een vertraging van 100ms.
 
 ![Img](./media/4012.png)
 
-⑦ Make the RGB lights breathing in background.
+⑦ Laat de RGB-lampjes op de achtergrond ademen.
 
 ![Img](./media/4013.png)
 
-⑧ Press A to turn up the volume (+10); press B to turn it down (-10). The volume of the micro:bit buzzer is decided by the output voltage of the internal connected pin. We can control the volume by converting digital values 0~255 into analog ones through DAC.
+⑧ Druk op A om het volume te verhogen (+10); druk op B om het te verlagen (-10). Het volume van de micro:bit-buzzer wordt bepaald door de uitgangsspanning van de intern aangesloten pin. We kunnen het volume regelen door digitale waarden 0~255 om te zetten in analoge waarden via DAC.
 
 ![Img](./media/4014.png)
 
-#### 4.2.4.5 Test Result
+#### 4.2.4.5 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-After powering on, it is in sequential mode by default, and will play the song at N.O. “0”. As it is finishes, you can press C for the last song or E for the next one. 
+Na het inschakelen bevindt het zich standaard in de sequentiële modus en speelt het het nummer op N.O. "0" af. Wanneer het is afgelopen, kunt u op C drukken voor het vorige nummer of op E voor het volgende.
 
-Press F to switch to random mode. And you can press D to back to sequential one. In F mode, a random track of these 20 will be played if you press C/E. After finishing, it stops. 
+Druk op F om over te schakelen naar de willekeurige modus. En u kunt op D drukken om terug te gaan naar de sequentiële modus. In de F-modus wordt een willekeurig nummer van deze 20 afgespeeld als u op C/E drukt. Na afloop stopt het.
 
-The RGB lights are always breathing from the moment of powering on. Meanwhile, the micro:bit LED matrix shows “![Img](./media/4010.png)” in sequential mode and “![Img](./media/4011.png)” in random mode. 
+De RGB-lampjes ademen altijd vanaf het moment van inschakelen. Ondertussen toont de micro:bit LED-matrix “![Img](./media/4010.png)” in de sequentiële modus en “![Img](./media/4011.png)” in de willekeurige modus.
 
-For volume, press A to turn up and B to turn down.
+Voor het volume, druk op A om te verhogen en B om te verlagen.
 
 ![Img](./media/4015.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

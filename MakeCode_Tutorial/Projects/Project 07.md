@@ -1,156 +1,156 @@
-### 4.2.7 Temperature and Humidity Meter
+### 4.2.7 Temperatuur- en Vochtigheidsmeter
 
-#### 4.2.7.1 Overview
+#### 4.2.7.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we build a temperature and humidity monitoring system by a Micro:bit board, a gamepad, an XHT11 temperature and humidity sensor, and an OLED display. The XHT11 sensor measures ambient temperature and humidity, while the OLED display updates the readings in real time. The controller board of the game pad facilitates circuit expansion and stable connections, enabling the system to function as a simple thermometer.
+In dit project bouwen we een temperatuur- en vochtigheidsbewakingssysteem met een Micro:bit board, een gamepad, een XHT11 temperatuur- en vochtigheidssensor en een OLED-display. De XHT11-sensor meet de omgevingstemperatuur en -vochtigheid, terwijl het OLED-display de metingen in real-time bijwerkt. Het controllerboard van de gamepad vergemakkelijkt circuituitbreiding en stabiele verbindingen, waardoor het systeem kan functioneren als een eenvoudige thermometer.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.7.2 Component Knowledge
+#### 4.2.7.2 Component Kennis
 
 ![Img](./media/2top.png)
 
-**XHT11 temperature and humidity sensor**
+**XHT11 temperatuur- en vochtigheidssensor**
 
 ![Img](./media/XHT11.png)
 
-The XHT11 temperature and humidity sensor outputs digital signals and employs specialized analog signal acquisition and conversion, advanced temperature and humidity sensing techniques to ensure excellent long-term stability and high reliability. 
+De XHT11 temperatuur- en vochtigheidssensor geeft digitale signalen af en maakt gebruik van gespecialiseerde analoge signaalverwerving en -conversie, geavanceerde temperatuur- en vochtigheidsdetectietechnieken om uitstekende langetermijnstabiliteit en hoge betrouwbaarheid te garanderen.
 
-It incorporates high-precision resistive humidity and thermistor temperature sensors, integrated with an 8-bit high-performance microcontroller.
+Het bevat zeer nauwkeurige resistieve vochtigheids- en thermistor temperatuursensoren, geïntegreerd met een 8-bit high-performance microcontroller.
 
-**XHT11 communication mode:**
+**XHT11 communicatiemodus:**
 
-It employs a simplified single-bus communication. The single bus consists of a single data line, through which all data exchange and control operations within the system are performed.
+Het maakt gebruik van een vereenvoudigde single-bus communicatie. De single bus bestaat uit een enkele datalijn, waardoor alle gegevensuitwisseling en besturingsbewerkingen binnen het systeem worden uitgevoerd.
 
-- Single-bus transmission data bit:
+- Single-bus transmissie databit:
 
-  - Single-bus data format: Transmit 40 bits of data at a time, high bit first.
+  - Single-bus dataformaat: Zend 40 bits aan gegevens tegelijkertijd, hoge bit eerst.
 
-  - 8-bit integer humidity data + 8-bit decimal humidity data + 8-bit integer temperature data + 8-bit decimal temperature data + 8-bit parity bit. 
+  - 8-bit integer vochtigheidsgegevens + 8-bit decimale vochtigheidsgegevens + 8-bit integer temperatuurgegevens + 8-bit decimale temperatuurgegevens + 8-bit pariteitsbit.
 
-    **Note: The decimal part of the humidity is 0**.
+    **Opmerking: Het decimale deel van de vochtigheid is 0**.
 
-- Parity bit:
-  
-  - 8-bit integer humidity data + 8-bit decimal humidity data + 8-bit integer temperature data + 8-bit decimal temperature data
-  
-    The 8-bit parity bit is the last 8 bits of the result.
+- Pariteitsbit:
+
+  - 8-bit integer vochtigheidsgegevens + 8-bit decimale vochtigheidsgegevens + 8-bit integer temperatuurgegevens + 8-bit decimale temperatuurgegevens
+
+    De 8-bit pariteitsbit is de laatste 8 bits van het resultaat.
 
 ![Img](./media/7001.png)
 
-Data sequence diagram of XH11 temperature and humidity sensor:
+Gegevensvolgordediagram van XH11 temperatuur- en vochtigheidssensor:
 
-After the user host (MCU) sends a start signal, the XHT11 switches from low-power mode to high-speed mode, and after this signal ends, the XHT11 sends a response signal and 40-bit data, and triggers a signal acquisition. 
+Nadat de gebruikershost (MCU) een startsignaal heeft verzonden, schakelt de XHT11 van de energiezuinige modus naar de hoge-snelheidsmodus, en nadat dit signaal is beëindigd, verzendt de XHT11 een antwoordsignaal en 40-bit gegevens, en activeert het een signaalverwerving.
 
-The signal is sent as shown in the figure:
+Het signaal wordt verzonden zoals weergegeven in de afbeelding:
 
 ![Img](./media/7002.png)
 
-⚠️ **Tip:** The temperature and humidity data read by the host from the XHT11 sensor are always the values from the previous measurement. If there is a long interval between two measurements, please take two consecutive readings; the value in the second time will be the actual one.
+⚠️ **Tip:** De temperatuur- en vochtigheidsgegevens die door de host van de XHT11-sensor worden gelezen, zijn altijd de waarden van de vorige meting. Als er een lang interval is tussen twee metingen, voer dan twee opeenvolgende metingen uit; de waarde van de tweede keer zal de werkelijke zijn.
 
-**Schematic diagram:**
+**Schematisch diagram:**
 
 ![Img](./media/cou73-2.png)
 
 **Parameters:**
 
-- Operating voltage: DC 3V~5V 
-- Operating current: (Max)2.5mA
-- Maximum power: 0.0125W
-- Temperature range: -25 ~ +60°C (±2℃)
-- Humidity range: 5 ~ 95%RH(Accuracy around 25C° is ±5%RH)
-- Output signal: digital bidirectional single bus
+- Bedrijfsspanning: DC 3V~5V
+- Bedrijfsstroom: (Max)2.5mA
+- Maximaal vermogen: 0.0125W
+- Temperatuurbereik: -25 ~ +60°C (±2℃)
+- Vochtigheidsbereik: 5 ~ 95%RH (Nauwkeurigheid rond 25C° is ±5%RH)
+- Uitgangssignaal: digitaal bidirectioneel single bus
 
-**OLED display**
+**OLED-display**
 
 ![Img](./media/A636.png)
 
-OLED delivers exceptional advantages such as rich color reproduction, high contrast, and wide viewing angles. Images on it are clear and vivid, with particularly outstanding black. Each pixel is self-emissive without needs for a backlight, resulting in relatively low power consumption. The 0.9-inch OLED screen, featuring its compact size, high resolution (128×96 pixels), and low power consumption, is ideal for applications in embedded systems and wearable devices.
+OLED biedt uitzonderlijke voordelen zoals rijke kleurweergave, hoog contrast en brede kijkhoeken. Afbeeldingen erop zijn helder en levendig, met bijzonder uitstekend zwart. Elke pixel is zelflichtgevend zonder dat er achtergrondverlichting nodig is, wat resulteert in een relatief laag stroomverbruik. Het 0.9-inch OLED-scherm, met zijn compacte formaat, hoge resolutie (128×64 pixels) en lage stroomverbruik, is ideaal voor toepassingen in embedded systemen en draagbare apparaten.
 
-⚠️ **Note**: For this OLED display, the SDA interface is connected to pin P20 on the Micro:bit board, while the SCL is connected to pin P19.
+⚠️ **Opmerking**: Voor dit OLED-display is de SDA-interface verbonden met pin P20 op het Micro:bit board, terwijl de SCL is verbonden met pin P19.
 
 **Parameters:**
 
-- Operating voltage: DC 3V - 5V
-- Operating current: 30mA
-- Interface: Pin with a spacing of 2.54mm
-- Communication mode: I2C communication
-- Internal driving chip: SSD1306
-- Resolution: 128×64
-- Viewing angle: Greater than 150°
+- Bedrijfsspanning: DC 3V - 5V
+- Bedrijfsstroom: 30mA
+- Interface: Pin met een afstand van 2.54mm
+- Communicatiemodus: I2C communicatie
+- Interne driverchip: SSD1306
+- Resolutie: 128×64
+- Kijkhoek: Groter dan 150°
 
-#### 4.2.7.3 Required Parts
+#### 4.2.7.3 Benodigde Onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf meegeleverd) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA batterij** (zelf meegeleverd) ×4 |
 |![Img](./media/XHT11.png)|![Img](./media/OLED.png)|![Img](./media/7008.png)|
-|**XHT11 temperature and humidity sensor** (self-provided)×1|**OLED display** (self-provided)×1 |**F-F DuPont wire**(self-provided) x7|
+|**XHT11 temperatuur- en vochtigheidssensor** (zelf meegeleverd)×1|**OLED display** (zelf meegeleverd)×1 |**F-F DuPont draad**(zelf meegeleverd) x7|
 
 
-#### 4.2.7.4 Wiring Diagram
+#### 4.2.7.4 Bedradingsschema
 
 ![Img](./media/jiexian.png)
 
-**After wiring up as shown above, insert the micro:bit into the slot on the gamepad control board.**
+**Na de bedrading zoals hierboven weergegeven, plaatst u de micro:bit in de sleuf op het gamepad-besturingsbord.**
 
-| OLED display | micro:bit gamepad control board |micro:bit board pin |
+| OLED-display | micro:bit gamepad-besturingsbord | micro:bit board pin |
 | :--: | :--: | :--: |
-| GND |  GND | GND |
-| VCC |  3V | 3V |
-| SDA |  SDA | P20 |
-| SCL |  SCL | P19 |
+| GND | GND | GND |
+| VCC | 3V | 3V |
+| SDA | SDA | P20 |
+| SCL | SCL | P19 |
 
-| XHT11 temperature and humidity sensor | micro:bit gamepad control board | micro:bit board pin |
+| XHT11 temperatuur- en vochtigheidssensor | micro:bit gamepad-besturingsbord | micro:bit board pin |
 | :--: | :--: | :--: |
 | G | GND | GND |
-| V |  3V | 3V |
-| S |  12 | P12 |
+| V | 3V | 3V |
+| S | 12 | P12 |
 
 
-#### 4.2.7.5 Code Flow
+#### 4.2.7.5 Code Stroom
 
 ![Img](./media/7003.png)
 
 #### 4.2.7.6 Test Code
-⚠️ **Note that here OLED and DHT11 libraries are included, so we need to import: https://github.com/keyestudio/pxt-environment-kit-master**.
+⚠️ **Let op dat hier OLED- en DHT11-bibliotheken zijn opgenomen, dus we moeten importeren: https://github.com/keyestudio/pxt-environment-kit-master**.
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/7004.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initialize the pixels of the OLED and clear it, set the 5×5LED matrix shows ![Img](./media/1006.png), and define the values of temperature and humidity to 0.
+① Initialiseer de pixels van de OLED en wis deze, stel de 5×5LED matrix in om ![Img](./media/1006.png) te tonen, en definieer de waarden van temperatuur en vochtigheid op 0.
 
 ![Img](./media/7005.png)
 
-② Assign the corresponding readings of the XHT11 sensor to variable temperature and humidity.
+② Wijs de corresponderende metingen van de XHT11-sensor toe aan de variabelen temperatuur en vochtigheid.
 
 ![Img](./media/7006.png)
 
-③ The OLED shows the readings of XHT11 sensor.
+③ De OLED toont de metingen van de XHT11-sensor.
 
 ![Img](./media/7007.png)
 
-④ Delay 500ms(0.5s).
+④ Vertraging 500ms (0.5s).
 
 ![Img](./media/cou28.png)
 
-#### 4.2.7.7 Test Result
+#### 4.2.7.7 Test Resultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit board in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-After uploading the code to micro:bit board, the OLED shows the temperature and humidity read by the XHT11 sensor in real time.
+Na het uploaden van de code naar het micro:bit board, toont de OLED de temperatuur en vochtigheid die door de XHT11-sensor in real-time worden gelezen.
 
 ![Img](./media/7000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het board, druk dan op de resetknop aan de achterkant van het micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

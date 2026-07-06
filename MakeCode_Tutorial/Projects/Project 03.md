@@ -1,74 +1,74 @@
-### 4.2.3 Simple Electronic Piano
+### 4.2.3 Eenvoudige Elektronische Piano
 
-#### 4.2.3.1 Overview
+#### 4.2.3.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we control the micro:bit speaker to play different tones by toggling the joystick and pressing the buttons. Meanwhile, the on-board LED matrix will show corresponding numbers. 
+In dit project besturen we de micro:bit-luidspreker om verschillende tonen af te spelen door de joystick te bewegen en op de knoppen te drukken. Ondertussen zal de ingebouwde LED-matrix overeenkomstige nummers tonen.
 
-Turning the joystick to the right produces "Do (Tone Central C)" with the display showing "1"; turning it to the left produces "Re (Tone D)" with "2"; turning it upward produces "Mi (Tone E)" with "3"; turning it downward produces "Fa (Tone F)" with "4". Pressing the button C produces "Sol (Tone G)" with "5", pressing D produces "La (Tone A)" with "6", E produces "Si (Tone B)" with "7", and pressing F produces higher "Do(Sharp)" while the display reverts to "1". There is a nice synchronization of the joystick, buttons, tones, and display.
+De joystick naar rechts draaien produceert "Do (Toon Centrale C)" met de weergave "1"; naar links draaien produceert "Re (Toon D)" met "2"; naar boven draaien produceert "Mi (Toon E)" met "3"; naar beneden draaien produceert "Fa (Toon F)" met "4". Op knop C drukken produceert "Sol (Toon G)" met "5", op D drukken produceert "La (Toon A)" met "6", E produceert "Si (Toon B)" met "7", en op F drukken produceert een hogere "Do(Sharp)" terwijl de weergave terugkeert naar "1". Er is een mooie synchronisatie van de joystick, knoppen, tonen en weergave.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.3.2 Component Knowledge
+#### 4.2.3.2 Componentkennis
 
 ![Img](./media/2top.png)
 
-**Microbit speaker**
+**Microbit luidspreker**
 
 ![Img](./media/j901.png)
 
-The micro:bit board features a built-in speaker for making sound, like giggles, greetings, yawns, or expressions of sadness, or even compose a song. By programming, it can even generate individual notes, melodies, and rhythms, or even musical compositions, such as the song *Twinkle Twinkle Little Star*.
+Het micro:bit-bord beschikt over een ingebouwde luidspreker voor het maken van geluid, zoals gegiechel, begroetingen, geeuwen of uitingen van verdriet, of zelfs het componeren van een lied. Door te programmeren kan het zelfs individuele noten, melodieën en ritmes genereren, of zelfs muzikale composities, zoals het lied *Twinkle Twinkle Little Star*.
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.3.3 Required Parts
+#### 4.2.3.3 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| **micro:bit V2-bord** (zelf meegebracht) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 |**AAA-batterij** (zelf meegebracht) ×4 |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 |**AAA battery** (self-provided) ×4 |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 
-#### 4.2.3.4 Code Flow
+#### 4.2.3.4 Codestroom
 
 ![Img](./media/3009.png)
 
-#### 4.2.3.5 Test Code
+#### 4.2.3.5 Testcode
 
-⚠️ **Note that the sensitivity of the joystick can be adjusted according to your needs.**
+⚠️ **Let op dat de gevoeligheid van de joystick naar behoefte kan worden aangepast.**
 
-**Complete code:**
+**Volledige code:**
 
 ![Img](./media/3008.png)
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Initialize micro:bit LED matrix to show ![Img](./media/3004.png).
+① Initialiseer de micro:bit LED-matrix om ![Img](./media/3004.png) te tonen.
 
 ![Img](./media/3005.png)
 
-② Determine the direction of the joystick movement; play the corresponding tones for half-beat in the background, and the LED matrix displays the corresponding number.
+② Bepaal de richting van de joystickbeweging; speel de overeenkomstige tonen een halve tel op de achtergrond, en de LED-matrix toont het overeenkomstige nummer.
 
 ![Img](./media/3006.png)
 
-③ Check if a button is pressed, and play the corresponding tone for half-beat in the background, and the LED matrix displays the corresponding number.
+③ Controleer of een knop is ingedrukt, en speel de overeenkomstige toon een halve tel op de achtergrond, en de LED-matrix toont het overeenkomstige nummer.
 
 ![Img](./media/3007.png)
 
 
-#### 4.2.3.6 Test Result
+#### 4.2.3.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. The LED matrix shows “![Img](./media/3004.png)” first.
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON". De LED-matrix toont eerst “![Img](./media/3004.png)”.
 
-Turning the joystick to the right produces "Do (Tone Central C)" with the display showing "1"; turning it to the left produces "Re (Tone D)" with "2"; turning it upward produces "Mi (Tone E)" with "3"; turning it downward produces "Fa (Tone F)" with "4". Pressing the button C produces "Sol (Tone G)" with "5", pressing D produces "La (Tone A)" with "6", E produces "Si (Tone B)" with "7", and pressing F produces higher "Do(Sharp)" while the display reverts to "1". 
+De joystick naar rechts draaien produceert "Do (Toon Centrale C)" met de weergave "1"; naar links draaien produceert "Re (Toon D)" met "2"; naar boven draaien produceert "Mi (Toon E)" met "3"; naar beneden draaien produceert "Fa (Toon F)" met "4". Op knop C drukken produceert "Sol (Toon G)" met "5", op D drukken produceert "La (Toon A)" met "6", E produceert "Si (Toon B)" met "7", en op F drukken produceert een hogere "Do(Sharp)" terwijl de weergave terugkeert naar "1".
 
-You have built the simple electronic piano!
+U hebt de eenvoudige elektronische piano gebouwd!
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

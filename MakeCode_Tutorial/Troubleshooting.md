@@ -1,151 +1,150 @@
-## Troubleshooting
-### 4.3.1 USB Driver Installation (Optional)
+## Probleemoplossing
+### 4.3.1 USB-stuurprogramma Installatie (Optioneel)
 
-**Micro:bit is free of driver installation. However, in case your computer fail to recognize the main board, you can install the diver too.**
+**Micro:bit is vrij van stuurprogramma-installatie. Echter, in het geval dat uw computer de hoofdboard niet herkent, kunt u het stuurprogramma ook installeren.**
 
 
-#### 4.3.1.1 USB Driver Download
+#### 4.3.1.1 USB-stuurprogramma Downloaden
 
-Click to download the [USB driver](./USB_driver.7z).
+Klik om het [USB-stuurprogramma](./USB_driver.7z) te downloaden.
 
-#### 4.3.1.2 USB Driver Installation
+#### 4.3.1.2 USB-stuurprogramma Installatie
 
-⚠️ Note that here we demonstrate how to install the driver on Windows, which can be take as a reference for MacOS users.
+⚠️ Let op dat we hier demonstreren hoe u het stuurprogramma op Windows installeert, wat als referentie kan dienen voor MacOS-gebruikers.
 
-1\. Connect micro:bit main board to computer via USB cable.
+1\. Verbind de micro:bit hoofdboard met de computer via een USB-kabel.
 
 ![Img](./media/A800.png)
 
-2\. Find the driver file and click it and to **Install**.
+2\. Zoek het stuurprogramma-bestand en klik erop om te **Installeren**.
 
 ![Img](./media/A323.png)
 
 ![Img](./media/A327.png)
 
-3\. Click “**Install**” and “**Next**”.
+3\. Klik op “**Install**” en “**Next**”.
 
 ![Img](./media/A347.png)
 
-4\. Click “**Install**” and “**Finish**”.
+4\. Klik op “**Install**” en “**Finish**”.
 
 ![Img](./media/A408.png)
 
 ![Img](./media/A349.png)
 
-5\. Click “**Computer**” → “**Properties**” → “**Device manager**” and you will see:
+5\. Klik op “**Computer**” → “**Properties**” → “**Device manager**” en u zult zien:
 
 ![Img](./media/A427.png)
 
-### 4.3.2 FAQ
-Solutions for the issue where Microbit fails to download programs and displays MAINTENANCE.
+### 4.3.2 Veelgestelde Vragen
+Oplossingen voor het probleem waarbij Microbit programma's niet kan downloaden en MAINTENANCE weergeeft.
 
-#### 4.3.2.1 Problems
+#### 4.3.2.1 Problemen
 
-Many new users have recently encountered this issue: When they plug the Micro:bit board into the computer via a Micro USB cable and click on “**Download**”, the code fails to download and the board shows no response.
+Vele nieuwe gebruikers zijn onlangs dit probleem tegengekomen: Wanneer ze de Micro:bit-board via een Micro USB-kabel op de computer aansluiten en op “**Download**” klikken, kan de code niet worden gedownload en reageert de board niet.
 
-If you were accidentally holding the reset button at the back of the Micro:bit board at the time you copied the program onto it, this would have put the the board into maintenance mode. Or perhaps due to some of your own mistakes, the firmware on the board is lost.
+Als u per ongeluk de resetknop aan de achterkant van de Micro:bit-board ingedrukt hield op het moment dat u het programma erop kopieerde, zou dit de board in de onderhoudsmodus hebben gezet. Of misschien is door uw eigen fouten de firmware op de board verloren gegaan.
 
-As a result, a new “**MAINTENANCE**” drive will appear in your file manager, so the micro:bit will not accept your user code. 
+Als gevolg hiervan verschijnt er een nieuwe “**MAINTENANCE**”-schijf in uw bestandsbeheerder, waardoor de micro:bit uw gebruikerscode niet accepteert.
 
-The MAINTENANCE drive will look like this, depending on your computer:
+De MAINTENANCE-schijf zal er zo uitzien, afhankelijk van uw computer:
 
 ![Img](./media/158.png)
 
- #### 4.3.2.2 Solutions
+ #### 4.3.2.2 Oplossingen
 
-(1) Download the <span style="color: rgb(255, 76, 65);">.hex</span> file appropriate for your version of the micro:bit from this page to your computer.
+(1) Download het <span style="color: rgb(255, 76, 65);">.hex</span>-bestand dat geschikt is voor uw versie van de micro:bit van deze pagina naar uw computer.
 
-Download [the latest Micro:bit firmware -0255 .hex file](https://www.microbit.org/get-started/user-guide/firmware/), which we also provided in the folder.
+Download [de nieuwste Micro:bit firmware -0255 .hex-bestand](https://www.microbit.org/get-started/user-guide/firmware/), die we ook in de map hebben geleverd.
 
-(2) Drag and drop the .hex file you downloaded from this page onto the **MAINTENANCE** drive. <span style="color: rgb(255, 76, 65);">Note that the firmware varies from the model of Micro:bit V2 board. Here is Firmware for V2.20_V2.21.</span> When the upgrade is completed, the micro:bit will reset, ejecting itself from the computer and re-appear in normal **MICROBIT** drive mode.
+(2) Sleep het .hex-bestand dat u van deze pagina hebt gedownload naar de **MAINTENANCE**-schijf. <span style="color: rgb(255, 76, 65);">Let op dat de firmware varieert per model van Micro:bit V2-board. Hier is Firmware voor V2.20_V2.21.</span> Wanneer de upgrade is voltooid, zal de micro:bit resetten, zichzelf uitwerpen van de computer en opnieuw verschijnen in de normale **MICROBIT**-schijfmodus.
 
 ![Img](./media/326.png)
 
 ![Img](./media/331.png)
 
-#### 4.3.2.3 Avoid “MAINTENANCE” Mode
+#### 4.3.2.3 Vermijd “MAINTENANCE”-modus
 
-(1) Do not press the reset button at the back of the Micro:bit board when it is connected to a Micro USB cable.
+(1) Druk niet op de resetknop aan de achterkant van de Micro:bit-board wanneer deze is aangesloten op een Micro USB-kabel.
 
-If the reset button is pressed while powering up, the micro:bit will go into maintenance mode. (**<span style="color: rgb(255, 76, 65);">Common mistakes made by beginners</span>**)
+Als de resetknop wordt ingedrukt tijdens het opstarten, gaat de micro:bit in de onderhoudsmodus. (**<span style="color: rgb(255, 76, 65);">Veelvoorkomende fouten gemaakt door beginners</span>**)
 
 ![Img](./media/228.png)
 
-(2) Do not unplug it suddenly during downloading program. Or the the firmware may be lost, and the micro:bit will then enter the MAINTENANCE mode.
+(2) Koppel het niet plotseling los tijdens het downloaden van het programma. Anders kan de firmware verloren gaan en zal de micro:bit in de MAINTENANCE-modus terechtkomen.
 
-(3) During the experiment, wrong wiring will also result in a short circuit so the micro:bit firmware may be lost. Beginners must pay attention when operating.
+(3) Tijdens het experiment zal verkeerde bedrading ook leiden tot kortsluiting, waardoor de micro:bit-firmware verloren kan gaan. Beginners moeten hierop letten bij het bedienen.
 
-#### 4.3.2.4 Download with WebUSB
+#### 4.3.2.4 Downloaden met WebUSB
 
-Your micro:bit appears to have developed a fault with WebUSB (/ device/ usb/ webusb)? Let's try to figure out the reason.
+Lijkt uw micro:bit een storing te hebben ontwikkeld met WebUSB (/ device/ usb/ webusb)? Laten we proberen de reden te achterhalen.
 
-**Step 1: Test on micro USB cable**
+**Stap 1: Test met micro USB-kabel**
 
-Plug the micro:bit into your computer with a micro USB cable. It should appear as a MICROBIT drive.
+Sluit de micro:bit met een micro USB-kabel aan op uw computer. Het zou moeten verschijnen als een MICROBIT-schijf.
 
 ![Img](./media/321.png)
 
-If MICROBIT appears as a drive under Devices and drives, go to Step 2. 
+Als MICROBIT verschijnt als een schijf onder Apparaten en schijven, ga dan naar Stap 2.
 
-If not, please try: (a) another cable; (b) another USB port on your computer; (c) connecting the micro:bit to another computer. 
+Zo niet, probeer dan: (a) een andere kabel; (b) een andere USB-poort op uw computer; (c) de micro:bit aansluiten op een andere computer.
 
-Some micro USB cables may only offer a power connection and do not actually transmit data, and some computers may power down their USB ports for some reason. 
+Sommige micro USB-kabels bieden mogelijk alleen een stroomverbinding en verzenden geen gegevens, en sommige computers kunnen hun USB-poorten om de een of andere reden uitschakelen.
 
-You still cannot see the MICROBIT drive? Hum, there might be a problem with your micro:bit board. See the article on [troubleshooting](https://support.microbit.org/solution/articles/19000024000-fault-finding-with-a-micro-bit) with the microbit.org or open a [support ticket](https://support.microbit.org/support/tickets/new) to notify the Micro:bit Foundation of the issue. And, skip all the following steps.
+U ziet de MICROBIT-schijf nog steeds niet? Hmm, er is mogelijk een probleem met uw micro:bit-board. Zie het artikel over [probleemoplossing](https://support.microbit.org/solution/articles/19000024000-fault-finding-with-a-micro-bit) met de microbit.org of open een [supportticket](https://support.microbit.org/support/tickets/new) om de Micro:bit Foundation op de hoogte te stellen van het probleem. En, sla alle volgende stappen over.
 
-**Step 2: Checking your firmware version**
+**Stap 2: Uw firmwareversie controleren**
 
-To find out what version of the firmware you have on your micro:bit:
+Om erachter te komen welke versie van de firmware u op uw micro:bit hebt:
 
-① Plug it in to a computer using the USB cable and open **MICROBIT** drive.
+① Sluit deze aan op een computer met de USB-kabel en open de **MICROBIT**-schijf.
 
 ![Img](./media/A8491.png)
 
-② Open the **DETAILS.TXT** file.
+② Open het **DETAILS.TXT**-bestand.
 
 ![Img](./media/0452.png)
 
-③ Look for the number on the line that begins “Interface/Bootloader Version”.
+③ Zoek naar het nummer op de regel die begint met “Interface/Bootloader Version”.
 
 ![Img](./media/501.png)
 
-If it is 0234/0241/0243, you need to update the firmware on your micro:bit V2 board. Go to Step 3 for the update.
+Als het 0234/0241/0243 is, moet u de firmware op uw micro:bit V2-board bijwerken. Ga naar Stap 3 voor de update.
 
-If it is 0249/0257 or higher,  go to Step 4.
+Als het 0249/0257 of hoger is, ga dan naar Stap 4.
 
-**Step 3: How to update the firmware**
+**Stap 3: Hoe de firmware bij te werken**
 
-If you need to update the firmware to access a new feature or troubleshoot a problem, here is how to do it:
+Als u de firmware moet bijwerken om toegang te krijgen tot een nieuwe functie of een probleem op te lossen, kunt u dit als volgt doen:
 
-① Disconnect the USB cable and battery pack from the micro:bit。
+① Koppel de USB-kabel en het batterijpakket los van de micro:bit.
 
-② Hold the reset button at the back of the micro:bit and plug the USB cable into the micro:bit and your computer. You should see a drive appear in your file manager called **MAINTENANCE** (instead of MICROBIT) and the yellow LED indicator on the back should light up.
+② Houd de resetknop aan de achterkant van de micro:bit ingedrukt en sluit de USB-kabel aan op de micro:bit en uw computer. U zou een schijf moeten zien verschijnen in uw bestandsbeheerder genaamd **MAINTENANCE** (in plaats van MICROBIT) en de gele LED-indicator aan de achterkant zou moeten oplichten.
 
 ![Img](./media/551.png)
 
 ![Img](./media/AAC1.webp)
 
-③ Download [firmware .hex file](https://microbit.org/guide/firmware/) appropriate for your version of the micro:bit. <span style="color: rgb(255, 76, 65);">Here is Firmware for V2.20_V2.21.</span>
+③ Download [firmware .hex-bestand](https://microbit.org/guide/firmware/) dat geschikt is voor uw versie van de micro:bit. <span style="color: rgb(255, 76, 65);">Hier is Firmware voor V2.20_V2.21.</span>
 
 ![Img](./media/0629.png)
 
-④ Drag and drop the <span style="color: rgb(255, 76, 65);">.hex</span> firmware onto the **MAINTENANCE** drive.
+④ Sleep het <span style="color: rgb(255, 76, 65);">.hex</span> firmware naar de **MAINTENANCE**-schijf.
 
 ![Img](./media/331.png)
 
-⑤ Wait for the yellow LED on the back of the device to stop flashing. After copying, the LED will turn off and the micro:bit will reset. MAINTENANCE will be back to MICROBIT.
+⑤ Wacht tot de gele LED aan de achterkant van het apparaat stopt met knipperen. Na het kopiëren gaat de LED uit en reset de micro:bit. MAINTENANCE zal terugkeren naar MICROBIT.
 
-⑥ Finally, check the <span style="color: rgb(255, 76, 65);">DETAILS.TXT</span> file that is on the **MICROBIT** drive and make sure that it has the same version number as the .hex firmware.
+⑥ Controleer ten slotte het <span style="color: rgb(255, 76, 65);">DETAILS.TXT</span>-bestand dat zich op de **MICROBIT**-schijf bevindt en zorg ervoor dat het hetzelfde versienummer heeft als de .hex-firmware.
 
-For any issues oof the board, maintenance mode and firmware updates, please refer to the [Firmware Guide](https://microbit.org/guide/firmware/).
+Voor eventuele problemen met de board, onderhoudsmodus en firmware-updates, raadpleeg de [Firmware Gids](https://microbit.org/guide/firmware/).
 
-**Step 4: Checking your browser version**
+**Stap 4: Uw browserversie controleren**
 
-WebUSB is a relatively new function that you may update your browser. Check if your browser is: (a) compatible with Android, Chrome OS; (b) Microsoft Edge; (c) the Chrome 65+ of Linux, macOS and Windows 10.
+WebUSB is een relatief nieuwe functie die u mogelijk uw browser moet bijwerken. Controleer of uw browser: (a) compatibel is met Android, Chrome OS; (b) Microsoft Edge; (c) de Chrome 65+ van Linux, macOS en Windows 10.
 
-**Step 5: Connecting a device**
+**Stap 5: Een apparaat aansluiten**
 
-Open Google Chrome / Microsoft Edge to go to the MakeCode editor, and click on the “**Connect Device**”. For how to pair a device, please refer to [WebUSB (/ device/ usb/ webusb)](https://microbit.org/get-started/user-guide/web-usb/).
+Open Google Chrome / Microsoft Edge om naar de MakeCode-editor te gaan en klik op de “**Connect Device**”. Voor het koppelen van een apparaat, raadpleeg [WebUSB (/ device/ usb/ webusb)](https://microbit.org/get-started/user-guide/web-usb/).
 
-Enjoy quick download!
-
+Geniet van snel downloaden!

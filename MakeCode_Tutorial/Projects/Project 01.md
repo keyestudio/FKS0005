@@ -1,80 +1,80 @@
-### 4.2.1 Indicador de Dirección
+### 4.2.1 Direction Indicator
 
-#### 4.2.1.1 Resumen
+#### 4.2.1.1 Overview
 
 ![Img](./media/top1.png)
 
-Al mover el joystick, la matriz de puntos muestra flechas en la dirección correspondiente en tiempo real: izquierda, derecha, arriba, abajo, lo que le proporciona una clara referencia de dirección.
+Wenn Sie den Joystick kippen, zeigt die Punktmatrix in Echtzeit Pfeile in die entsprechende Richtung an: links, rechts, oben, unten, und bietet Ihnen damit eine klare Richtungsreferenz.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.1.2 Conocimiento de Componentes
+#### 4.2.1.2 Component Knowledge
 
 ![Img](./media/2top.png)
 
-**Matriz de puntos de Micro:bit:**
+**Micro:bit-Punktmatrix:**
 
 ![Img](./media/1001.png)
 
-La matriz de puntos LED de la placa micro:bit consta de un total de 25 diodos emisores de luz, un grupo de 5, correspondientes a los ejes X e Y, formando una matriz de 5×5. Cada uno se coloca en la intersección de la fila (X) y la columna (Y). Podemos controlar uno o algunos de ellos estableciendo los puntos de coordenadas.
+Die LED-Punktmatrix des micro:bit Boards besteht aus insgesamt 25 Leuchtdioden, jeweils in Gruppen zu 5, entsprechend den Achsen X und Y, und bildet so eine 5×5-Matrix. Jede einzelne LED befindet sich an der Schnittstelle der Zeile (X) und der Spalte (Y). Wir können einzelne LEDs durch Festlegen der Koordinatenpunkte ansteuern.
 
 **Joystick:**
 
-| ![Img](./media/1002.png)| ![Img](./media/1003.png) |
+| ![Img](./media/1002.png)| ![Img](./media/1003.png)  |
 | :--: | :--: |
-| Producto real | Diagrama esquemático |
+| Reales Produkt | Schaltbild |
 
-La estructura interna de este joystick está compuesta por dos resistencias ajustables (potenciómetros) con un valor de resistencia de 10KΩ cada una.
+Die innere Kernstruktur dieses Joysticks besteht aus zwei einstellbaren Widerständen (Potentiometern) mit je einem Widerstandswert von 10KΩ.
 
-Detecta las direcciones (y la amplitud) del empuje a través del pin analógico ADC del microcontrolador para emitir las señales eléctricas analógicas de la dimensión correspondiente. Durante la lectura real de la señal, cuando los valores analógicos de los ejes X e Y del joystick se detectan dentro del rango de 450~600, se puede determinar que el joystick está en un estado neutro (estacionario) sin movimiento activo.
+Er erkennt die Richtung (und Auslenkung) des Drucks über den analogen ADC-Pin des Mikrocontrollers und liefert die entsprechenden analogen elektrischen Signale der jeweiligen Dimension. Bei der tatsächlichen Signalabtastung kann festgestellt werden, dass sich der Joystick in einem neutralen (ruhenden) Zustand ohne aktive Betätigung befindet, wenn die analogen Werte der Joystick-Achsen X und Y im Bereich von 450~600 liegen.
 
 ![Img](./media/2bottom.png)
 
-#### 4.2.1.3 Piezas Requeridas
+#### 4.2.1.3 Required Parts
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png)|
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png)  |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 |**Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 board** (selbst bereitgestellt) ×1 | **micro:bit Smart Gamepad** (zusammengebaut) ×1 | **AAA-Batterie** (selbst bereitgestellt) ×4 |
 
 
-#### 4.2.1.4 Flujo del Código
+#### 4.2.1.4 Code Flow
 
 ![Img](./media/1008.png)
 
-#### 4.2.1.5 Código de Prueba
+#### 4.2.1.5 Test Code
 
-⚠️ **Tenga en cuenta que los siguientes códigos incluyen las librerías Makecode del Gamepad (la forma de añadir librerías se mencionó anteriormente). La sensibilidad del joystick se puede ajustar según sus necesidades.**
+⚠️ **Bitte beachten Sie, dass die folgenden Codes die Makecode-Bibliotheken des Gamepad enthalten (die Vorgehensweise zum Hinzufügen von Bibliotheken wurde zuvor beschrieben). Die Empfindlichkeit des Joysticks kann nach Ihren Bedürfnissen angepasst werden.**
 
-**Código completo:**
+**Vollständiger Code:**
 
 ![Img](./media/1004.png)
 
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erläuterung:**
 
-① Inicialice la matriz LED para que muestre ![Img](./media/1006.png).
+① Initialisieren Sie die LED-Matrix, damit sie ![Img](./media/1006.png) anzeigt.
 
 
 ![Img](./media/1005.png)
 
 
-② Lea los valores de los ejes X e Y para determinar la dirección del movimiento. Si se detecta, la matriz muestra la flecha correspondiente. Si no, muestra ![Img](./media/1006.png).
+② Lesen Sie die Werte der Achsen X und Y, um die Betätigungsrichtung zu bestimmen. Wird eine Richtung erkannt, zeigt die Matrix den entsprechenden Pfeil. Andernfalls wird ![Img](./media/1006.png) angezeigt.
 
 ![Img](./media/1007.png)
 
 
-#### 4.2.1.6 Resultado de la Prueba
+#### 4.2.1.6 Test Result
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Aufspielen des Codes stecken Sie das micro:bit Board in den Slot des Gamepads (**Batterien eingelegt**) und schalten dieses auf „ON“.
 
-Cuando mueva el joystick del gamepad, podrá ver las flechas correspondientes en la matriz. Si suelta el dedo para que vuelva al centro, aparecerá un icono de casa en la matriz.
+Wenn Sie den Joystick des Gamepads betätigen, sehen Sie die entsprechenden Pfeile auf der Matrix. Wenn Sie den Finger anheben, sodass der Joystick in die Mitte zurückkehrt, erscheint ein Haus-Symbol auf der Matrix.
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn auf dem Board keine Reaktion erfolgt, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit Boards.</span>
 
 ![Img](./media/4bottom.png)

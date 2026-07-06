@@ -1,156 +1,154 @@
-### 4.2.7 Medidor de Temperatura y Humedad
+### 4.2.7 Temperatur- und Feuchtigkeitsmesser
 
-#### 4.2.7.1 Resumen
+#### 4.2.7.1 Übersicht
 
 ![Img](./media/top1.png)
 
-En este proyecto, construimos un sistema de monitoreo de temperatura y humedad con una placa Micro:bit, un gamepad, un sensor de temperatura y humedad XHT11 y una pantalla OLED. El sensor XHT11 mide la temperatura y humedad ambiente, mientras que la pantalla OLED actualiza las lecturas en tiempo real. La placa controladora del gamepad facilita la expansión del circuito y las conexiones estables, permitiendo que el sistema funcione como un termómetro simple.
+In diesem Projekt bauen wir ein Temperatur- und Feuchtigkeitsüberwachungssystem mit einem Micro:bit board, einem Gamepad, einem XHT11 Temperatur- und Feuchtigkeitssensor und einem OLED display. Der XHT11 Sensor misst die Umgebungstemperatur und -feuchtigkeit, während das OLED display die Messwerte in Echtzeit aktualisiert. Die Steuerplatine des Gamepads erleichtert die Schaltungserweiterung und stabile Verbindungen, wodurch das System als einfaches Thermometer fungieren kann.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.7.2 Conocimiento de Componentes
+#### 4.2.7.2 Komponentenwissen
 
 ![Img](./media/2top.png)
 
-**Sensor de temperatura y humedad XHT11**
+**XHT11 Temperatur- und Feuchtigkeitssensor**
 
 ![Img](./media/XHT11.png)
 
-El sensor de temperatura y humedad XHT11 emite señales digitales y emplea una adquisición y conversión de señal analógica especializada, técnicas avanzadas de detección de temperatura y humedad para garantizar una excelente estabilidad a largo plazo y alta fiabilidad.
+Der XHT11 Temperatur- und Feuchtigkeitssensor gibt digitale Signale aus und verwendet spezielle analoge Signalakquisition und -umwandlung sowie fortschrittliche Temperatur- und Feuchtigkeitssensor-Techniken, um eine ausgezeichnete Langzeitstabilität und hohe Zuverlässigkeit zu gewährleisten.
 
-Incorpora sensores resistivos de humedad y termistores de temperatura de alta precisión, integrados con un microcontrolador de 8 bits de alto rendimiento.
+Er enthält hochpräzise resistive Feuchtigkeits- und Thermistor-Temperatursensoren, integriert mit einem 8-Bit-Hochleistungs-Mikrocontroller.
 
-**Modo de comunicación XHT11:**
+**XHT11 Kommunikationsmodus:**
 
-Emplea una comunicación simplificada de un solo bus. El bus único consta de una sola línea de datos, a través de la cual se realizan todos los intercambios de datos y operaciones de control dentro del sistema.
+Er verwendet eine vereinfachte Single-Bus-Kommunikation. Der Single-Bus besteht aus einer einzigen Datenleitung, über die der gesamte Datenaustausch und die Steueroperationen innerhalb des Systems durchgeführt werden.
 
-- Bit de datos de transmisión de un solo bus:
+- Single-Bus Übertragungsdatenbit:
 
-  - Formato de datos de un solo bus: Transmite 40 bits de datos a la vez, el bit más alto primero.
+  - Single-Bus Datenformat: Überträgt 40 Bit Daten auf einmal, höchstes Bit zuerst.
 
-  - 8 bits de datos de humedad enteros + 8 bits de datos de humedad decimales + 8 bits de datos de temperatura enteros + 8 bits de datos de temperatura decimales + 8 bits de paridad.
+  - 8-Bit Integer Feuchtigkeitsdaten + 8-Bit Dezimal Feuchtigkeitsdaten + 8-Bit Integer Temperaturdaten + 8-Bit Dezimal Temperaturdaten + 8-Bit Paritätsbit.
 
-    **Nota: La parte decimal de la humedad es 0**.
+    **Hinweis: Der Dezimalteil der Feuchtigkeit ist 0**.
 
-- Bit de paridad:
-  
-  - 8 bits de datos de humedad enteros + 8 bits de datos de humedad decimales + 8 bits de datos de temperatura enteros + 8 bits de datos de temperatura decimales
-  
-    El bit de paridad de 8 bits es los últimos 8 bits del resultado.
+- Paritätsbit:
+
+  - 8-Bit Integer Feuchtigkeitsdaten + 8-Bit Dezimal Feuchtigkeitsdaten + 8-Bit Integer Temperaturdaten + 8-Bit Dezimal Temperaturdaten
+
+    Das 8-Bit Paritätsbit ist das letzte 8 Bit des Ergebnisses.
 
 ![Img](./media/7001.png)
 
-Diagrama de secuencia de datos del sensor de temperatura y humedad XH11:
+Datensequenzdiagramm des XH11 Temperatur- und Feuchtigkeitssensors:
 
-Después de que el host de usuario (MCU) envía una señal de inicio, el XHT11 cambia del modo de bajo consumo al modo de alta velocidad, y después de que esta señal finaliza, el XHT11 envía una señal de respuesta y 40 bits de datos, y activa una adquisición de señal.
+Nachdem der Benutzer-Host (MCU) ein Startsignal gesendet hat, wechselt der XHT11 vom Low-Power-Modus in den High-Speed-Modus, und nachdem dieses Signal endet, sendet der XHT11 ein Antwortsignal und 40-Bit-Daten und löst eine Signalakquisition aus.
 
-La señal se envía como se muestra en la figura:
+Das Signal wird wie in der Abbildung gezeigt gesendet:
 
 ![Img](./media/7002.png)
 
-⚠️ **Consejo:** Los datos de temperatura y humedad leídos por el host del sensor XHT11 son siempre los valores de la medición anterior. Si hay un intervalo largo entre dos mediciones, realice dos lecturas consecutivas; el valor de la segunda vez será el real.
+⚠️ **Tipp:** Die vom Host vom XHT11 Sensor gelesenen Temperatur- und Feuchtigkeitsdaten sind immer die Werte der vorherigen Messung. Wenn zwischen zwei Messungen ein langer Intervall liegt, nehmen Sie bitte zwei aufeinanderfolgende Messungen vor; der Wert beim zweiten Mal ist der tatsächliche.
 
-**Diagrama esquemático:**
+**Schaltplan:**
 
 ![Img](./media/cou73-2.png)
 
-**Parámetros:**
+**Parameter:**
 
-- Voltaje de funcionamiento: DC 3V~5V
-- Corriente de funcionamiento: (Máx.) 2.5mA
-- Potencia máxima: 0.0125W
-- Rango de temperatura: -25 ~ +60°C (±2℃)
-- Rango de humedad: 5 ~ 95%RH (Precisión alrededor de 25C° es ±5%RH)
-- Señal de salida: bus único bidireccional digital
+- Betriebsspannung: DC 3V~5V
+- Betriebsstrom: (Max)2.5mA
+- Maximale Leistung: 0.0125W
+- Temperaturbereich: -25 ~ +60°C (±2℃)
+- Feuchtigkeitsbereich: 5 ~ 95%RH (Genauigkeit um 25C° beträgt ±5%RH)
+- Ausgangssignal: digital bidirektionaler Single-Bus
 
-**Pantalla OLED**
+**OLED display**
 
 ![Img](./media/A636.png)
 
-OLED ofrece ventajas excepcionales como una rica reproducción de color, alto contraste y amplios ángulos de visión. Las imágenes en ella son claras y vívidas, con un negro particularmente sobresaliente. Cada píxel es autoemisivo sin necesidad de retroiluminación, lo que resulta en un consumo de energía relativamente bajo. La pantalla OLED de 0.9 pulgadas, con su tamaño compacto, alta resolución (128×64 píxeles) y bajo consumo de energía, es ideal para aplicaciones en sistemas embebidos y dispositivos portátiles.
+OLED bietet außergewöhnliche Vorteile wie reiche Farbwiedergabe, hohen Kontrast und weite Betrachtungswinkel. Bilder darauf sind klar und lebendig, mit besonders herausragendem Schwarz. Jedes Pixel ist selbstleuchtend und benötigt keine Hintergrundbeleuchtung, was zu einem relativ geringen Stromverbrauch führt. Der 0.9-inch OLED Bildschirm ist mit seiner kompakten Größe, hohen Auflösung (128×64 Pixel) und geringem Stromverbrauch ideal für Anwendungen in eingebetteten Systemen und tragbaren Geräten.
 
-⚠️ **Nota**: Para esta pantalla OLED, la interfaz SDA está conectada al pin P20 de la placa Micro:bit, mientras que la SCL está conectada al pin P19.
+⚠️ **Hinweis**: Für dieses OLED display ist die SDA Schnittstelle mit Pin P20 auf dem Micro:bit board verbunden, während die SCL mit Pin P19 verbunden ist.
 
-**Parámetros:**
+**Parameter:**
 
-- Voltaje de funcionamiento: DC 3V - 5V
-- Corriente de funcionamiento: 30mA
-- Interfaz: Pin con una separación de 2.54mm
-- Modo de comunicación: comunicación I2C
-- Chip de controlador interno: SSD1306
-- Resolución: 128×64
-- Ángulo de visión: Mayor de 150°
+- Betriebsspannung: DC 3V - 5V
+- Betriebsstrom: 30mA
+- Schnittstelle: Pin mit einem Abstand von 2.54mm
+- Kommunikationsmodus: I2C communication
+- Interner Treiberchip: SSD1306
+- Auflösung: 128×64
+- Betrachtungswinkel: Größer als 150°
 
-#### 4.2.7.3 Piezas Requeridas
+#### 4.2.7.3 Benötigte Teile
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 board** (selbst mitzubringen) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 |**AAA battery** (selbst mitzubringen) ×4 |
 |![Img](./media/XHT11.png)|![Img](./media/OLED.png)|![Img](./media/7008.png)|
-|**Sensor de temperatura y humedad XHT11** (suministrado por el usuario)×1|**Pantalla OLED** (suministrada por el usuario)×1 |**Cable DuPont F-F**(suministrado por el usuario) x7|
+|**XHT11 temperature and humidity sensor** (selbst mitzubringen)×1|**OLED display** (selbst mitzubringen)×1 |**F-F DuPont wire**(selbst mitzubringen) x7|
 
-
-#### 4.2.7.4 Diagrama de Cableado
+#### 4.2.7.4 Schaltplan
 
 ![Img](./media/jiexian.png)
 
-**Después de cablear como se muestra arriba, inserte la micro:bit en la ranura de la placa de control del gamepad.**
+**Nachdem die Verkabelung wie oben gezeigt abgeschlossen ist, stecken Sie das micro:bit in den Steckplatz auf der Gamepad-Steuerplatine.**
 
-| Pantalla OLED | Placa de control del gamepad micro:bit | Pin de la placa micro:bit |
+| OLED display | micro:bit gamepad control board |micro:bit board pin |
 | :--: | :--: | :--: |
 | GND | GND | GND |
 | VCC | 3V | 3V |
 | SDA | SDA | P20 |
 | SCL | SCL | P19 |
 
-| Sensor de temperatura y humedad XHT11 | Placa de control del gamepad micro:bit | Pin de la placa micro:bit |
+| XHT11 temperature and humidity sensor | micro:bit gamepad control board | micro:bit board pin |
 | :--: | :--: | :--: |
 | G | GND | GND |
 | V | 3V | 3V |
 | S | 12 | P12 |
 
-
-#### 4.2.7.5 Flujo del Código
+#### 4.2.7.5 Code-Ablauf
 
 ![Img](./media/7003.png)
 
-#### 4.2.7.6 Código de Prueba
-⚠️ **Tenga en cuenta que aquí se incluyen las librerías OLED y DHT11, por lo que necesitamos importar: https://github.com/keyestudio/pxt-environment-kit-master**.
+#### 4.2.7.6 Testcode
+⚠️ **Beachten Sie, dass hier OLED und DHT11 libraries enthalten sind, daher müssen wir importieren: https://github.com/keyestudio/pxt-environment-kit-master**.
 
-**Código completo:**
+**Vollständiger Code:**
 
 ![Img](./media/7004.png)
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Inicialice los píxeles de la OLED y bórrelos, establezca la matriz de LED de 5×5 para que muestre ![Img](./media/1006.png), y defina los valores de temperatura y humedad en 0.
+① Initialisieren Sie die Pixel des OLED und löschen Sie es, setzen Sie die 5×5LED matrix so, dass ![Img](./media/1006.png) angezeigt wird, und definieren Sie die Werte für Temperatur und Feuchtigkeit auf 0.
 
 ![Img](./media/7005.png)
 
-② Asigne las lecturas correspondientes del sensor XHT11 a las variables de temperatura y humedad.
+② Weisen Sie die entsprechenden Messwerte des XHT11 sensors den Variablen temperature und humidity zu.
 
 ![Img](./media/7006.png)
 
-③ La OLED muestra las lecturas del sensor XHT11.
+③ Das OLED zeigt die Messwerte des XHT11 sensors an.
 
 ![Img](./media/7007.png)
 
-④ Retraso de 500ms (0.5s).
+④ Verzögerung 500ms (0.5s).
 
 ![Img](./media/cou28.png)
 
-#### 4.2.7.7 Resultado de la Prueba
+#### 4.2.7.7 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie es auf „ON“.
 
-Después de cargar el código en la placa micro:bit, la OLED muestra la temperatura y humedad leídas por el sensor XHT11 en tiempo real.
+Nach dem Hochladen des Codes auf das micro:bit board zeigt das OLED die vom XHT11 sensor gelesene Temperatur und Feuchtigkeit in Echtzeit an.
 
 ![Img](./media/7000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style=\"color: rgb(0, 209, 0);\">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

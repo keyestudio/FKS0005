@@ -1,45 +1,45 @@
-### 5.2.7 Adivina el Número
+### 5.2.7 Zahlenraten
 
-#### 5.2.7.1 Resumen
+#### 5.2.7.1 Übersicht
 
 ![Img](./media/top1.png)
 
-En este proyecto, jugamos un juego de adivinar números con una placa Micro:bit, una placa de control de gamepad y una pantalla OLED. Cuando se adivina el número correcto, la OLED muestra "¡Genial!"; si la suposición es demasiado alta o demasiado baja, muestra "¡Demasiado alto!" / "¡Demasiado bajo!" respectivamente, junto con el rango correspondiente de números posibles.
+In diesem Projekt spielen wir ein Zahlenratespiel mit einem Micro:bit-Board, einem Gamepad-Steuerplatine und einem OLED-Display. Wenn die richtige Zahl erraten wird, zeigt das OLED „Great!!!“ an; wenn die Schätzung zu hoch oder zu niedrig ist, zeigt es „To High!“/„To Low!“ an, zusammen mit dem entsprechenden Bereich der möglichen Zahlen.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.7.2 Piezas Requeridas
+#### 5.2.7.2 Benötigte Teile
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 Board** (selbst mitgebracht) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 | **AAA Batterie** (selbst mitgebracht) ×4 |
 |![Img](./media/OLED.png)|![Img](./media/7008.png)||
-| **Pantalla OLED** (suministrada por el usuario) ×1 | **Cable DuPont F-F** (suministrado por el usuario) x4 ||
+| **OLED Display** (selbst mitgebracht)×1 | **F-F DuPont Kabel** (selbst mitgebracht) x4 ||
 
-#### 5.2.7.3 Diagrama de Cableado
+#### 5.2.7.3 Schaltplan
 
 ![Img](./media/jiexian8.png)
 
-**Después de cablear como se muestra arriba, inserte la micro:bit en la ranura de la placa de control del gamepad.**
+**Nachdem Sie die Verkabelung wie oben gezeigt vorgenommen haben, stecken Sie den micro:bit in den Steckplatz auf der Gamepad-Steuerplatine.**
 
-| Pantalla OLED | Placa de control del gamepad micro:bit | Pin de la placa micro:bit |
-| :--: | :--: | :--: |
+| OLED Display | micro:bit Gamepad-Steuerplatine | micro:bit Board-Pin |
+| :----------: | :-----------------------------: | :-----------------: |
 | GND | GND | GND |
 | VCC | 3V | 3V |
 | SDA | SDA | P20 |
 | SCL | SCL | P19 |
 
-#### 5.2.7.4 Flujo del Código
+#### 5.2.7.4 Codeablauf
 
 ![Img](./media/8001.png)
 
-#### 5.2.7.5 Código de Prueba
+#### 5.2.7.5 Testcode
 
-⚠️ **Tenga en cuenta que aquí se utiliza OLED, por lo que necesitamos importar su librería.**
+⚠️ **Beachten Sie, dass hier OLED verwendet wird, daher müssen wir seine Bibliothek importieren.**
 
 ![Img](./media/t7000.png)
 
-**Código completo:**
+**Vollständiger Code:**
 
 ```python
 # Import required libraries
@@ -106,7 +106,7 @@ while True:
             update_display = True
             sleep(50)  # Debounce delay
 
-    # 3. Update OLED display (only when needed)
+        # 3. Update OLED display (only when needed)
         if update_display:
             clear_oled()  # Clear screen
             # Display number range
@@ -132,17 +132,17 @@ while True:
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Importe librerías, inicialice OLED, defina variables globales y configure pines de botón.
+① Bibliotheken importieren, OLED initialisieren, globale Variablen definieren und Tasten-Pins konfigurieren.
 
-Se requieren tres librerías: `microbit` (para acceder al hardware de Micro:bit), `oled_ssd1306` (para controlar la pantalla OLED conectada), `random` (para generar números aleatorios en el juego).
+Drei Bibliotheken sind erforderlich: `microbit` (für den Zugriff auf die Micro:bit-Hardware), `oled_ssd1306` (zur Steuerung des angeschlossenen OLED-Displays), `random` (zum Generieren von Zufallszahlen im Spiel).
 
-`initialize()` y `clear_oled()` inicializan y borran la OLED.
+`initialize()` und `clear_oled()` initialisieren und löschen das OLED.
 
-Se define una serie de variables globales para gestionar los parámetros del estado del juego, incluyendo el modo de juego (`mode`), el rango de números (`min_num`, `max_num`), el valor de la suposición actual (`current_guess`), el número objetivo (`target_num`), la retroalimentación del juego (`state`) y un indicador que controla las actualizaciones de la pantalla (`update_display`).
+Eine Reihe globaler Variablen wird definiert, um die Spielzustandsparameter zu verwalten, einschließlich Spielmodus (`mode`), Zahlenbereich (`min_num`, `max_num`), des aktuellen Schätzwerts (`current_guess`), der Zielzahl (`target_num`), des Spiel-Feedbacks (`state`) und eines Flags, das die Anzeigeaktualisierungen steuert (`update_display`).
 
-`pin13`, `pin15` y `pin16` están configurados en modo pull-up, manteniendo un nivel alto cuando el botón no está presionado y un nivel bajo cuando está presionado.
+`pin13`, `pin15` und `pin16` werden im Pull-up-Modus konfiguriert – sie bleiben hoch, wenn die Taste nicht gedrückt wird, und niedrig, wenn sie gedrückt wird.
 
 ```python
 # Import required libraries
@@ -168,14 +168,13 @@ pin13.set_pull(pin13.PULL_UP)
 pin15.set_pull(pin15.PULL_UP)
 pin16.set_pull(pin16.PULL_UP)
 ```
+② Spiellogik-Initialisierung in der Hauptschleife.
 
-② Lógica de inicialización del juego en el bucle principal.
+Dies ist der erste logische Block der Hauptschleife des Programms, der speziell für die Spielinitialisierung oder den Neustart verantwortlich ist.
 
-Es el primer bloque lógico del bucle principal del programa, específicamente responsable de la inicialización o reinicio del juego.
+`mode` = `0` : Das Spiel erfordert eine Initialisierung. In diesem Fall setzt es den Schätzbereich auf 1–100 zurück und setzt den aktuellen Schätzwert auf 50. Es verwendet `randint(min_num, max_num)`, um zufällig eine Ganzzahl zwischen 1 und 100 als Zielzahl (`target_num`) zu generieren.
 
-`mode` = `0`: el juego requiere inicialización. En este caso, restablece el rango de adivinanza a 1–100 y establece el valor de adivinanza actual en 50. Utiliza `randint(min_num, max_num)` para generar aleatoriamente un número entero entre 1 y 100 como número objetivo (`target_num`).
-
-Luego, `state` = `0` (estado inicial) y `mode` = `1` (en ejecución). Y establece `update_display` en `True` para asegurar que la OLED actualice la información más reciente del juego inmediatamente durante la ejecución.
+Dann wird `state` = `0` (Anfangszustand) und `mode` = `1` (läuft) gesetzt. Und `update_display` wird auf `True` gesetzt, um sicherzustellen, dass das OLED die neuesten Spielinformationen während des Betriebs sofort aktualisiert.
 
 ```python
 while True:
@@ -189,19 +188,18 @@ while True:
         mode = 1  # Switch to running mode
         update_display = True
 ```
+③ Tasten-Eingaben und Entscheidungsfindung basierend auf der Schätzung verarbeiten.
 
-③ Manejar las entradas de los botones y la toma de decisiones basada en la suposición.
+Wenn das Spiel läuft (`mode == 1`), verwaltet es die Spielerinteraktionen und die Spiellogik. Es erkennt unabhängig die Eingaben von drei externen Tasten:
 
-Cuando el juego está en funcionamiento (`mode == 1`), gestiona las interacciones del jugador y la lógica del juego. Detecta de forma independiente las entradas de tres botones externos:
+*   **`pin15` wird gedrückt**: (niedriger Pegel erkannt); `current_guess` + 1. Um zu verhindern, dass der Wert den Bereich überschreitet, überprüft und begrenzt es `current_guess` < oder = `max_num`.
+*   **`pin13` wird gedrückt**: `current_guess` - 1. Es überprüft auch, ob `current_guess` nicht größer als `min_num` ist.
+*   **`pin16` wird gedrückt**: Wenn `pin16` gedrückt wird, bedeutet dies, dass der Spieler den Schätzwert übermittelt hat. Er wird mit `target_num` verglichen:
+    *   `current_guess` > `target_num` : `state` = `1` (zu hoch) und setzt das Bereichsmaximum `max_num` auf `current_guess`.
+    *   `current_guess` < `target_num `: `state` = `2` (zu niedrig) und setzt das Minimum `min_num` auf `current_guess`.
+    *   `current_guess` = `target_num` : `state` = `3` (Großartig) und setzt `mode` auf `0`, um sich auf die nächste Runde vorzubereiten.
 
-*   **`pin15` está presionado**: (nivel bajo detectado); `current_guess` + 1. Para evitar que el valor exceda el rango, verifica y limita `current_guess` < o = `max_num`.
-*   **`pin13` está presionado**: `current_guess` - 1. También verifica que `current_guess` no sea mayor que `min_num`.
-*   **`pin16` está presionado**: Si `pin16` está presionado, significa que el jugador envió el valor de la suposición. Se comparará con `target_num`:
-    *   `current_guess` > `target_num`: `state` = `1` (demasiado alto) y establece el máximo del rango `max_num` en `current_guess`.
-    *   `current_guess` < `target_num`: `state` = `2` (demasiado bajo) y establece el mínimo del rango `min_num` en `current_guess`.
-    *   `current_guess` = `target_num`: `state` = `3` (¡Genial!) y establece `mode` en `0` para prepararse para la siguiente ronda.
-
-Después de cada pulsación de botón, `update_display` se establece en `True` para actualizar la OLED, con un retraso de 50ms para anti-rebote.
+Nach jedem Tastendruck wird `update_display` auf `True` gesetzt, um das OLED zu aktualisieren, mit einer Verzögerung von 50 ms zur Entprellung.
 
 ```python
     # 2. Game running logic
@@ -234,19 +232,18 @@ Después de cada pulsación de botón, `update_display` se establece en `True` p
             update_display = True
             sleep(50)  # Debounce delay
 ```
+④ OLED-Aktualisierungslogik.
 
-④ Lógica de actualización de OLED.
+Es zeigt den aktuellen Status und die Informationen des Spiels auf dem OLED an. Es wird nur ausgeführt, wenn `update_display` = `True` ist, um unnötige Aktualisierungen zu vermeiden.
 
-Muestra el estado actual del juego y la información en la OLED. Se ejecuta solo cuando `update_display` = `True` para evitar actualizaciones innecesarias.
+Jede Ausführung ruft zuerst `clear_oled()` auf, um die Anzeige zu löschen. Der aktuelle Schätzbereich (z. B. „num:1~100“) erscheint in der ersten Zeile. Die aktuelle Schätzung des Spielers (`current_guess`) wird in der dritten Zeile angezeigt.
 
-Cada ejecución primero llama a `clear_oled()` para borrar la pantalla. El rango de adivinanza actual (por ejemplo, "num:1~100") aparece en la primera línea. La suposición actual del jugador (`current_guess`) se muestra en la tercera línea.
+Basierend auf `state` erscheint die entsprechende Feedback-Nachricht („TO High“, „TO Low“ oder „Great!!!“) in der fünften Zeile.
 
-Basándose en `state`, el mensaje de retroalimentación correspondiente ("¡Demasiado alto!", "¡Demasiado bajo!" o "¡Genial!") aparece en la quinta línea.
-
-Después de completar todas las visualizaciones, `update_display` se restablece a `False` para estar listo para actualizar el siguiente cambio de estado del juego.
+Nach Abschluss aller Anzeigen wird `update_display` auf `False` zurückgesetzt, um bereit zu sein, die nächste Spielzustandsänderung zu aktualisieren.
 
 ```python
-    # 3. Update OLED display (only when needed)
+        # 3. Update OLED display (only when needed)
         if update_display:
             clear_oled()  # Clear screen
             # Display number range
@@ -264,12 +261,11 @@ Después de completar todas las visualizaciones, `update_display` se restablece 
             # Reset update flag
             update_display = False
 ```
+⑤ Verzögerungen nach richtigen Schätzungen behandeln.
 
-⑤ Manejar los retrasos después de las suposiciones correctas.
+Es wird nur ausgeführt, wenn der Spieler die Zielzahl richtig errät (`state == 3`). Dann pausiert es 1000 ms (1 s), damit die Spieler das „Great!!!“ überprüfen können.
 
-Solo se ejecuta cuando el jugador adivina correctamente el número objetivo (`state == 3`). Luego, se pausa 1000ms (1s) para que los jugadores verifiquen el “¡Genial!”.
-
-Luego, `state` se restablece a `0`. Dado que `mode` ya se ha restablecido a `0`, al adivinar correctamente, el juego se reiniciará desde la inicialización.
+Dann wird `state` auf `0` zurückgesetzt. Da `mode` bereits auf `0` zurückgesetzt wurde, wird das Spiel nach einer richtigen Schätzung von der Initialisierung an neu gestartet.
 
 ```python
     # 4. Delay after correct guess to show message
@@ -278,22 +274,22 @@ Luego, `state` se restablece a `0`. Dado que `mode` ya se ha restablecido a `0`,
         state = 0
 ```
 
-#### 5.2.7.6 Resultado de la Prueba
+#### 5.2.7.6 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit-Board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie den Schalter auf „ON“.
 
-Después de cargar el código, la OLED se inicializa y muestra el rango de valores de “num: 1 ~ 100” y la suposición inicial de 50. Puede presionar C para temp+1 (máx. de 100) o E para temp-1 (mín. de 1) para cambiar su valor de suposición en la OLED.
+Nach dem Hochladen des Codes initialisiert sich das OLED und zeigt den Wertebereich von „num: 1 ~ 100“ und die anfängliche Schätzung von 50 an. Sie können C drücken, um temp+1 (max. 100) oder E, um temp-1 (min. 1) zu ändern, um Ihren Schätzwert auf dem OLED zu ändern.
 
-Presione D para enviar su valor, y temp se comparará con el valor objetivo aleatorio. Si temp>valor, muestre "¡Demasiado alto!" y asigne temp a max_num; si temp<valor, muestre "¡Demasiado bajo!" y asígnelo a min_num. Si tiene demasiada suerte y temp=valor, verá "¡Genial!" durante 1s.
+Drücken Sie D, um Ihren Wert zu übermitteln, und temp wird mit dem zufälligen Zielwert verglichen. Wenn temp>Wert, wird „To High!“ angezeigt und temp wird max_num zugewiesen; wenn temp<Wert, wird „To Low!“ angezeigt und es wird min_num zugewiesen. Wenn Sie zu viel Glück haben, dass temp=Wert ist, sehen Sie „Great!!!“ für 1 Sekunde.
 
-Después de eso, el juego se reiniciará y se establecerá un nuevo valor objetivo. ¡Juguemos otra ronda!
+Danach wird das Spiel zurückgesetzt und ein neuer Zielwert festgelegt. Lassen Sie uns eine weitere Runde spielen!
 
 ![Img](./media/t7000.gif)
 
-⚠️ **El bloque de construcción en el Resultado de la Prueba no está incluido en este kit de producto.**
+⚠️ **Die Bausteine im Testergebnis sind nicht in diesem Produktkit enthalten.**
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit-Boards.</span>
 
 ![Img](./media/4bottom.png)

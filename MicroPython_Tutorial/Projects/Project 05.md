@@ -1,32 +1,33 @@
-### 5.2.5 Evitar Ladrillos
+### 5.2.5 Ziegelsteine vermeiden
 
-#### 5.2.5.1 Resumen
+#### 5.2.5.1 Übersicht
 
 ![Img](./media/top1.png)
 
-En este proyecto, jugamos un juego de evitar ladrillos donde los jugadores usan un gamepad Micro:bit para mover su indicador LED a izquierda y derecha mientras evaden ladrillos que caen desde arriba. Hay tres estados: a) un icono dinámico al inicio, b) acciones de evasión en tiempo real durante el juego, y c) una puntuación final después de las colisiones.
+In diesem Projekt spielen wir ein Ziegelstein-Vermeidungsspiel, bei dem die Spieler ein Micro:bit-Gamepad verwenden, um ihren LED-Indikator nach links und rechts zu bewegen, während sie von oben fallenden Ziegelsteinen ausweichen. Es gibt drei Zustände: a) ein dynamisches Symbol beim Start, b) Echtzeit-Vermeidungsaktionen während des Spiels und c) eine Endpunktzahl nach Kollisionen.
 
-Los jugadores ganan 1 punto después de cada evasión (cuando el ladrillo llega al fondo), y el juego termina cuando colisionan con un ladrillo; la puntuación final se muestra con un efecto de desplazamiento.
+Spieler erhalten 1 Punkt nach jeder Vermeidung (wenn der Ziegelstein den Boden erreicht), und das Spiel ist beendet, wenn sie mit einem Ziegelstein kollidieren; die Endpunktzahl wird mit einem Scrolleffekt angezeigt.
 
-El juego se puede iniciar o reiniciar presionando A+B. Este mecanismo de juego sencillo combina la capacidad de respuesta en tiempo real con la anticipación estratégica.
+Das Spiel kann durch gleichzeitiges Drücken von A+B gestartet oder zurückgesetzt werden. Dieser unkomplizierte Spielmechanismus kombiniert Echtzeit-Reaktionsfähigkeit mit strategischer Antizipation.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.5.2 Piezas Requeridas
+#### 5.2.5.2 Benötigte Teile
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 Board** (selbst mitgebracht) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 | **AAA Batterie** (selbst mitgebracht) ×4 |
 
-#### 5.2.5.3 Flujo del Código
+#### 5.2.5.3 Codeablauf
 
 ![Img](./media/5001.png)
 
-#### 5.2.5.4 Código de Prueba
+#### 5.2.5.4 Testcode
 
-⚠️ **Tenga en cuenta que el umbral inicial `brick_move_speed=300` se puede modificar según sus necesidades. Cuanto mayor sea el valor, más lento caerá el ladrillo.**
+⚠️ **Beachten Sie, dass der anfängliche Schwellenwert „brick_move_speed=300“ je nach Bedarf geändert werden kann. Je höher der Wert ist, desto langsamer fällt der Ziegelstein.**
 
-**Código completo:**
+**Vollständiger Code:**
+
 
 ```python
 import utime
@@ -183,30 +184,31 @@ if __name__ == "__main__":
         on_forever()
         utime.sleep_ms(10)
 ```
+
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Importe librerías, configure constantes e inicialización.
+① Bibliotheken importieren, Konstanten konfigurieren und initialisieren.
 
-Primero importa `utime` para operaciones relacionadas con el tiempo (por ejemplo, retrasos), `random` para generar números aleatorios, `microbit` para acceder al hardware de Micro:bit.
+Es importiert zuerst `utime` für zeitbezogene Operationen (z. B. Verzögerungen), `random` zum Generieren von Zufallszahlen, `microbit` für den Zugriff auf die Hardware des Micro:bit.
 
-Luego define variables globales y constantes para configurar el juego:
+Anschließend werden globale Variablen und Konstanten zur Konfiguration des Spiels definiert:
 
-*   `player_fixed_row` y `player_init_col` definen la posición inicial del jugador (en la columna más a la derecha de la fila inferior).
-*   `brick_move_speed` establece el intervalo de tiempo (en milisegundos) de la caída del ladrillo.
-*   `game_state` rastrea el estado del juego (0=no iniciado, 1=jugando, 2=fin del juego).
-*   `brick_x`, `brick_y` almacenan las coordenadas actuales del ladrillo.
-*   `score` registra la puntuación.
-*   `a_pressed_flag`, `b_pressed_flag` eliminan el rebote del botón.
-*   `collision_x`, `collision_y` detectan colisiones.
-*   `flash_count` crea un efecto de parpadeo al final del juego.
-*   `time_passed`, `current_time`, `last_brick_time` son para cronometrar la caída de los ladrillos.
-*   `start_flag`, `can_start`, `ab_pressed` se utilizan para iniciar el juego y restablecer el anti-rebote y el estado del botón.
-*   `player_col` almacena la posición de la columna actual del jugador.
+*   `player_fixed_row` und `player_init_col` definieren die anfängliche Position des Spielers (in der rechtesten Spalte der untersten Reihe).
+*   `brick_move_speed` legt das Zeitintervall (in Millisekunden) des Falls des Ziegelsteins fest.
+*   `game_state` verfolgt den Spielstatus (0=initial, 1=spielend, 2=Spiel vorbei).
+*   `brick_x`, `brick_y` speichern die aktuellen Koordinaten des Ziegelsteins.
+*   `score` zählt die Punkte.
+*   `a_pressed_flag`, `b_pressed_flag` eliminieren Tastenprellen.
+*   `collision_x`, `collision_y` erkennen Kollisionen.
+*   `flash_count` erzeugt einen Flackereffekt am Ende des Spiels.
+*   `time_passed`, `current_time`, `last_brick_time` dienen zur Zeitmessung des Falls der Ziegelsteine.
+*   `start_flag`, `can_start`, `ab_pressed` werden für den Spielstart und zum Zurücksetzen des Anti-Jitters und des Tastenstatus verwendet.
+*   `player_col` speichert die aktuelle Spaltenposition des Spielers.
 
-Finalmente, configura `pin13` y `pin15` (utilizados para los movimientos de los botones izquierdo y derecho) como resistencias pull-up internas (`pinX.PULL_UP`), lo que significa que los pines mantienen un nivel alto (1) cuando los botones no están presionados y un nivel bajo (0) cuando están presionados.
+Schließlich konfiguriert es `pin13` und `pin15` (für linke und rechte Tastenbewegungen verwendet) als interne Pull-up-Widerstände (`pinX.PULL_UP`), was bedeutet, dass die Pins einen hohen Pegel (1) beibehalten, wenn die Tasten nicht gedrückt werden, und einen niedrigen Pegel (0), wenn sie gedrückt werden.
 
 ```python
 import utime
@@ -242,14 +244,14 @@ pin13.set_pull(pin13.PULL_UP)  # Right move button
 pin15.set_pull(pin15.PULL_UP)  # Left move button
 ```
 
-② Definiciones de funciones funcionales principales.
+② Definitionen der Kernfunktionen.
 
-Hay tres funciones principales que el juego necesita:
+Es gibt drei Kernfunktionen, die das Spiel benötigt:
 
-*   `on_start()`: Se llama al inicio del programa. Principalmente inicializa la posición de la columna inicial de los ladrillos, asegurando que aparezca uno aleatoriamente entre 0 y 4.
-*   `draw_game()`: Responsable de renderizar los elementos del juego en la matriz LED 5x5 de Micro:bit. Borra la pantalla y muestra al jugador con el brillo máximo (9) en la fila inferior `player_fixed_row` con columnas determinadas por `player_col`. Cuando el juego está en ejecución (`game_state == 1`), renderiza ladrillos con un brillo medio (7).
-*   `reset_game()`: Reinicia el juego a su estado inicial. Establece `game_state` en 1, reinicia al jugador y al ladrillo y las puntuaciones, borra el indicador anti-rebote del botón y la pantalla.
-*   `check_collision()`: Detecta si ocurre una colisión entre el ladrillo y el jugador. Esto se determina comparando el eje `x` (`brick_x == player_col`) y el `y` (`brick_y == player_fixed_row`). Si ambos coinciden, se detecta una colisión y `game_state` = 2 (fin del juego), borra la pantalla y reinicia `flash_count`.
+*   `on_start()` : Wird beim Programmstart aufgerufen. Es initialisiert hauptsächlich die Startspaltenposition der Ziegelsteine und stellt sicher, dass einer zufällig zwischen 0 und 4 erscheint.
+*   `draw_game()` : Verantwortlich für das Rendern von Spielelementen auf der Micro:bit 5x5 LED-Matrix. Es löscht die Anzeige und zeigt den Spieler mit maximaler Helligkeit (9) in der untersten Reihe `player_fixed_row` mit Spalten, die durch `player_col` bestimmt werden. Wenn das Spiel läuft (`game_state == 1`), rendert es Ziegelsteine mit mittlerer Helligkeit (7).
+*   `reset_game()` : Setzt das Spiel in seinen Ausgangszustand zurück. Es setzt `game_state` auf 1, setzt Spieler und Ziegelstein sowie Punkte zurück, löscht das Tasten-Anti-Jitter-Flag und die Anzeige.
+*   `check_collision()` : Erkennt, ob eine Kollision zwischen dem Ziegelstein und dem Spieler auftritt. Dies wird durch den Vergleich der Achsen `x` (`brick_x == player_col`) und `y` (`brick_y == player_fixed_row`) bestimmt. Wenn beide übereinstimmen, wird eine Kollision erkannt und `game_state` = 2 (Spiel vorbei), die Anzeige wird gelöscht und `flash_count` zurückgesetzt.
 
 ```python
 # ===================== Core Functions =====================
@@ -292,13 +294,13 @@ def check_collision():
         flash_count = 0
 ```
 
-③ Bucle principal: Lógica de inicio/reinicio del juego.
+③ Hauptschleife: Spielstart-/Reset-Logik.
 
-`on_forever()` primero verifica si ambos botones A y B de la placa Micro:bit están presionados (`button_a.is_pressed() and button_b.is_pressed()`). El indicador `can_start` es verdadero cuando ambos botones A y B se presionan simultáneamente y el juego no está en ejecución.
+`on_forever()` überprüft zuerst, ob sowohl die A- als auch die B-Taste auf dem Micro:bit-Board gedrückt sind (`button_a.is_pressed() and button_b.is_pressed()`). Das Flag `can_start` ist wahr, wenn sowohl A als auch B gleichzeitig gedrückt werden und das Spiel nicht läuft.
 
-Si `can_start` es verdadero y `start_flag` = 0 (la primera pulsación simultánea detectada de A+B), establece `start_flag` en 1 con un breve retraso (`utime.sleep_ms(20)`).
+Wenn `can_start` wahr ist und `start_flag` = 0 (der erste erkannte gleichzeitige Druck von A+B), setzen Sie `start_flag` auf 1 mit einer kurzen Verzögerung (`utime.sleep_ms(20)`).
 
-Vuelve a verificar si los botones A+B permanecen presionados (para anti-rebote). Si es así, `reset_game()` reiniciará el juego y se registrará `last_brick_time`. Si A+B no se presionan al mismo tiempo, `start_flag` = 0.
+Überprüfen Sie erneut, ob die A+B-Tasten gedrückt bleiben (zur Entprellung). Wenn ja, startet `reset_game()` das Spiel neu, und `last_brick_time` wird aufgezeichnet. Wenn A+B nicht gleichzeitig gedrückt werden, ist `start_flag` = 0.
 
 ```python
 # ===================== Main Loop =====================
@@ -322,9 +324,9 @@ def on_forever():
         start_flag = 0
 ```
 
-④ Bucle principal: Visualización del estado de juego no iniciado y de fin de juego.
-*   **Juego no iniciado (`game_state == 0`)**: En este estado, la matriz muestra pequeños diamantes (`Image.DIAMOND_SMALL`) y grandes diamantes (`Image.DIAMOND`), cada uno con una duración de 500ms, como indicación para que los jugadores esperen antes de comenzar.
-*   **Juego terminado (`game_state == 2`)**: Cuando el juego termina, el programa entra en un bucle que parpadea la puntuación. `flash_count` limita el número de parpadeos (3 aquí). Cada parpadeo desplaza la puntuación actual y la borra con un breve retraso. Después de eso, la puntuación final se muestra de nuevo durante 500 milisegundos.
+④ Hauptschleife: Anzeige des Spiel-nicht-gestartet- und Spiel-vorbei-Status.
+*   **Spiel noch nicht gestartet (`game_state == 0`)**: In diesem Zustand zeigt die Matrix kleine Diamanten (`Image.DIAMOND_SMALL`) und große Diamanten (`Image.DIAMOND`) an, die jeweils 500 ms dauern, als Hinweis für die Spieler, vor dem Start zu warten.
+*   **Spiel ist vorbei (`game_state == 2`)**: Wenn das Spiel endet, tritt das Programm in eine Schleife ein, die die Punktzahl blinken lässt. `flash_count` begrenzt die Anzahl der Blitze (hier 3). Jeder Blitz scrollt die aktuelle Punktzahl und löscht sie mit einer kurzen Verzögerung. Danach wird die Endpunktzahl für 500 Millisekunden erneut angezeigt.
 
 ```python
     # 2. Game not started state
@@ -347,7 +349,20 @@ def on_forever():
             utime.sleep_ms(500)
 ```
 
-⑤ Lógica de juego en ejecución.
+⑤ Hauptschleife: Die Logik während des Spiels.
+
+`game_state == 1` (spielend), führen Sie die folgende Logik aus:
+
+*   **Spieler bewegt sich nach links und rechts.**:
+    *   `pin15` (linke Bewegungstaste): Wenn `pin15` gedrückt wird (Lesewert 0), `a_pressed_flag` `False` ist (vermeidet aufeinanderfolgende Auslöser) und der Spieler nicht ganz links ist (`player_col > 0`), bewegt sich der Spieler einen Platz nach links (`player_col -= 1`) und `a_pressed_flag` wird `True`, mit einer Verzögerung von 50 ms. Wenn `pin15` nicht gedrückt wird, wird `a_pressed_flag` sofort auf `False` zurückgesetzt.
+    *   `pin13` (rechte Bewegungstaste): Wenn `pin13` gedrückt wird (Lesewert 0), `a_pressed_flag` `False` ist (vermeidet aufeinanderfolgende Auslöser) und der Spieler nicht ganz rechts ist (`player_col < 4`), bewegt sich der Spieler einen Platz nach rechts (`player_col += 1`) und `b_pressed_flag` wird `True`, mit einer Verzögerung von 50 ms. Wenn `pin13` nicht gedrückt wird, wird `b_pressed_flag` sofort auf `False` zurückgesetzt.
+*   **Ziegelstein fällt herunter**:
+    *   `current_time` erhält die aktuelle Zeit, `time_passed` berechnet die seit dem letzten Ziegelsteinfall verstrichene Zeit.
+    *   Wenn `time_passed` > `brick_move_speed`, aktualisieren Sie `last_brick_time` und der Ziegelstein bewegt sich einen Platz nach unten (`brick_y += 1`).
+    *   Wenn ein Ziegelstein bis zum Boden fällt (`brick_y > 4`), setzen Sie ihn auf eine zufällige Spalte oben zurück (`brick_x = random.randint(0, 4)`), und setzen Sie `brick_y` auf Null und `score` +1.
+*   **Kollision erkennen und Bild rendern**:
+    *   `check_collision()` erkennt, ob der Spieler und der Ziegelstein kollidieren.
+    *   `draw_game()` aktualisiert die Anzeige auf der Micro:bit-Matrix.
 
 ```python
     # 4. Game running logic
@@ -388,7 +403,17 @@ def on_forever():
         draw_game()
 ```
 
-⑥ Punto de entrada del programa.
+⑥ Programmeinstiegspunkt.
+
+Dies ist der eigentliche Startpunkt für die Ausführung des Programms.
+
+`if __name__ == "__main__":` stellt sicher, dass dieser Code nur ausgeführt wird, wenn das Skript als Hauptprogramm läuft.
+
+Darunter führt `on_start()` eine einmalige Initialisierung durch.
+Dann tritt es in eine Endlosschleife (`while True`) ein, wobei jede Iteration:
+
+*   `on_forever()` die gesamte Kernlogik des Spiels ausführt.
+*   Eine Verzögerung von 10 ms (`utime.sleep_ms(10)`) steuert die Ausführungsfrequenz, reduziert die CPU-Last und sorgt für eine moderate Spielaktualisierungsgeschwindigkeit.
 
 ```python
 # ===================== Program Entry Point =====================
@@ -398,21 +423,20 @@ if __name__ == "__main__":
         on_forever()
         utime.sleep_ms(10)
 ```
-
-#### 5.2.5.5 Resultado de la Prueba
+#### 5.2.5.5 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit-Board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie den Schalter auf „ON“.
 
-Está en **0-estado inicial** después de encender y la matriz parpadea dos iconos cuadrados.
+Es befindet sich nach dem Einschalten im **0-Initialzustand** und die Matrix blinkt zwei quadratische Symbole.
 
-Presione A y B (durante al menos 1 segundo) para iniciar el juego (en estado **1-jugando**), y un ladrillo caerá en una columna aleatoria. Ahora puede moverse a izquierda/derecha presionando C/E. Cada vez que evite un ladrillo, puntuación +1.
+Drücken Sie A und B (für mindestens 1 Sekunde), um das Spiel zu starten (im **1-Spielzustand**), und ein Ziegelstein fällt in einer zufälligen Spalte. Jetzt können Sie sich durch Drücken von C/E nach links/rechts bewegen. Jedes Mal, wenn Sie einem Ziegelstein ausweichen, erhöht sich die Punktzahl um 1.
 
-Fin del juego al colisionar (**2-fin del juego**), y la puntuación final se mostrará en la matriz. Si desea jugar una ronda más, presione A y B nuevamente. Apague para salir del juego (cambie el interruptor DIP a “OFF”).
+Spiel vorbei bei Kollision (**2-Spiel vorbei**), und die Endpunktzahl wird auf der Matrix angezeigt. Wenn Sie eine weitere Runde spielen möchten, drücken Sie A und B erneut. Schalten Sie das Gerät aus, um das Spiel zu beenden (schalten Sie den DIP-Schalter auf „OFF“).
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit-Boards.</span>
 
 ![Img](./media/4bottom.png)

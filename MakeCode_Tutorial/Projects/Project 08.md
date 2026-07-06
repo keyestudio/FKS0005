@@ -1,96 +1,96 @@
-### 4.2.8 Adivina el Número
+### 4.2.8 Zahlenraten
 
-#### 4.2.8.1 Resumen
+#### 4.2.8.1 Übersicht
 
 ![Img](./media/top1.png)
 
-En este proyecto, jugamos un juego de adivinar números con una placa Micro:bit, una placa de control de gamepad y una pantalla OLED. Cuando se adivina el número correcto, la OLED muestra "¡Genial!"; si la suposición es demasiado alta o demasiado baja, muestra "¡Demasiado alto!" / "¡Demasiado bajo!" respectivamente, junto con el rango correspondiente de números posibles.
+In diesem Projekt spielen wir ein Zahlenratespiel mit einem Micro:bit board, einer Gamepad-Steuerplatine und einem OLED display. Wenn die richtige Zahl erraten wird, zeigt das OLED „Great!!!“ an; wenn die Schätzung zu hoch oder zu niedrig ist, zeigt es „To High!“/„To Low!“ an, zusammen mit dem entsprechenden Bereich der möglichen Zahlen.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.8.2 Conocimiento de Componentes
+#### 4.2.8.2 Komponentenwissen
 
-Este proyecto utiliza la misma pantalla OLED que el Proyecto 07. Consulte la sección 4.2.7.2 para conocer sus componentes.
+Dieses Projekt verwendet dasselbe OLED display wie Projekt 07. Bitte beachten Sie Abschnitt 4.2.7.2 für dessen Komponentenwissen.
 
-#### 4.2.8.3 Piezas Requeridas
+#### 4.2.8.3 Benötigte Teile
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 board** (selbst mitzubringen) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 |**AAA battery** (selbst mitzubringen) ×4 |
 |![Img](./media/OLED.png)|![Img](./media/7008.png)||
-| **Pantalla OLED** (suministrada por el usuario) ×1 | **Cable DuPont F-F** (suministrado por el usuario) x4 ||
+|**OLED display** (selbst mitzubringen)×1 |**F-F DuPont wire**(selbst mitzubringen) x4||
 
-#### 4.2.8.4 Diagrama de Cableado
+#### 4.2.8.4 Schaltplan
 
 ![Img](./media/jiexian8.png)
 
-**Después de cablear como se muestra arriba, inserte la micro:bit en la ranura de la placa de control del gamepad.**
+**Nachdem die Verkabelung wie oben gezeigt abgeschlossen ist, stecken Sie das micro:bit in den Steckplatz auf der Gamepad-Steuerplatine.**
 
-| Pantalla OLED | Placa de control del gamepad micro:bit | Pin de la placa micro:bit |
+| OLED display | micro:bit gamepad control board | micro:bit board pin |
 | :--: | :--: | :--: |
 | GND | GND | GND |
 | VCC | 3V | 3V |
 | SDA | SDA | P20 |
 | SCL | SCL | P19 |
 
-#### 4.2.8.5 Flujo del Código
+#### 4.2.8.5 Code-Ablauf
 
 ![Img](./media/8001.png)
 
-#### 4.2.8.6 Código de Prueba
+#### 4.2.8.6 Testcode
 
-⚠️ **Tenga en cuenta que aquí se incluye la librería OLED, por lo que necesitamos importar: https://github.com/keyestudio/pxt-environment-kit-master**.
+⚠️ **Beachten Sie, dass hier die OLED library enthalten ist, daher müssen wir importieren: https://github.com/keyestudio/pxt-environment-kit-master**.
 
-**Código completo:**
+**Vollständiger Code:**
 
 ![Img](./media/8002.png)
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Inicialice el bit de la bandera de actualización de pantalla, establezca la variable de modo en 0 (0-preparación del juego, 1-juego en ejecución) e inicialice la visualización de la pantalla OLED.
+① Initialisieren Sie das Bildschirmaktualisierungs-Flag-Bit, setzen Sie die Modusvariable auf 0 (0-Spielbereitschaft, 1-Spiel läuft) und initialisieren Sie die OLED-Bildschirmanzeige.
 
 ![Img](./media/8003.png)
 
-② Durante la preparación del juego, establezca el rango de adivinanza, el valor de adivinanza inicial, el valor objetivo y la adivinanza.
+② Während der Spielvorbereitung legen Sie den Ratebereich, den anfänglichen Schätzwert, den Zielwert und die Schätzung fest.
 
 ![Img](./media/8004.png)
 
-③ Actualice el rango de valores y el valor de adivinanza en la OLED. Muestre las indicaciones correspondientes cuando cambie el bit de la bandera de estado del resultado: "¡Demasiado alto!" cuando state=1; "¡Demasiado bajo!" cuando state=2; y "¡Genial!" cuando state=3.
+③ Aktualisieren Sie den Wertebereich und den Schätzwert auf dem OLED. Zeigen Sie entsprechende Hinweise an, wenn sich das Ergebnisstatus-Flag-Bit ändert: „To High!“ wenn state=1; „To Low!“ wenn state=2; und „Great!!!“ wenn state=3.
 
-Y establezca el modo en preparación del juego y espere 1000 milisegundos (1s).
+Und setzen Sie den Modus auf Spielbereitschaft und warten Sie 1000 Millisekunden (1s).
 
 ![Img](./media/8005.png)
 
-④ Presione C y el valor de adivinanza temp+1; si el valor de adivinanza excede el máximo, establézcalo como el nuevo máximo.
+④ Drücken Sie C und der Schätzwert temp+1; wenn der Schätzwert das Maximum überschreitet, setzen Sie ihn als neues Maximum.
 
-Presione E y el valor de adivinanza temp-1; si el valor de adivinanza es menor que el mínimo, establézcalo como el nuevo mínimo.
+Drücken Sie E und der Schätzwert temp-1; wenn der Schätzwert kleiner als das Minimum ist, setzen Sie ihn als neues Minimum.
 
 ![Img](./media/8006.png)
 
-⑤ Presione D para comparar el valor de adivinanza con el valor objetivo. Si temp es mayor, registre el nuevo máximo max2 e ingrese al Estado 1; si temp es menor, registre el nuevo mínimo min2 e ingrese al Estado 2; si ambos valores son iguales, vaya al Estado 3.
+⑤ Drücken Sie D, um den Schätzwert mit dem Zielwert zu vergleichen. Wenn temp größer ist, notieren Sie das neue Maximum max2 und wechseln Sie in Zustand 1; wenn temp kleiner ist, notieren Sie das neue Minimum min2 und wechseln Sie in Zustand 2; wenn beide Werte gleich sind, wechseln Sie in Zustand 3.
 
-Finalmente, actualice la pantalla con un retraso de 1000 milisegundos.
+Aktualisieren Sie abschließend die Anzeige mit einer Verzögerung von 1000 Millisekunden.
 
 ![Img](./media/8007.png)
 
-#### 4.2.8.7 Resultado de la Prueba
+#### 4.2.8.7 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie es auf „ON“.
 
-Después de cargar el código, la OLED se inicializa y muestra el rango de valores de “num: 1 ~ 100” y la suposición inicial de 50. Puede presionar C para temp+1 (máx. de 100) o E para temp-1 (mín. de 1) para cambiar su valor de suposición en la OLED.
+Nach dem Hochladen des Codes initialisiert das OLED und zeigt den Wertebereich von „num: 1 ~ 100“ und die anfängliche Schätzung von 50 an. Sie können C drücken, um temp+1 (max 100) oder E, um temp-1 (min 1) zu ändern, um Ihren Schätzwert auf dem OLED zu ändern.
 
-Presione D para enviar su valor, y temp se comparará con el valor objetivo aleatorio. Si temp>valor, muestre "¡Demasiado alto!" y asigne temp a max2; si temp<valor, muestre "¡Demasiado bajo!" y asígnelo a min2. Si tiene demasiada suerte y temp=valor, verá "¡Genial!" durante 1s.
+Drücken Sie D, um Ihren Wert zu übermitteln, und temp wird mit dem zufälligen Zielwert verglichen. Wenn temp>value, wird „To High!“ angezeigt und temp wird max2 zugewiesen; wenn temp<value, wird „To Low!“ angezeigt und min2 zugewiesen. Wenn Sie zu viel Glück haben und temp=value ist, sehen Sie „Great!!!“ für 1s.
 
-Después de eso, el juego se reiniciará y se establecerá un nuevo valor objetivo. ¡Juguemos otra ronda!
+Danach wird das Spiel zurückgesetzt und ein neuer Zielwert festgelegt. Lassen Sie uns eine weitere Runde spielen!
 
 ![Img](./media/8000.gif)
 
-⚠️ **El bloque de construcción en el Resultado de la Prueba no está incluido en este kit de producto.**
+⚠️ **Die Bausteine im Testergebnis sind nicht in diesem Produktkit enthalten.**
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style=\"color: rgb(0, 209, 0);\">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

@@ -1,188 +1,186 @@
-### 5.2.3 Piano Electrónico Simple
+### 5.2.3 Einfaches elektronisches Klavier
 
-#### 5.2.3.1 Resumen
+#### 5.2.3.1 Übersicht
 
 ![Img](./media/top1.png)
 
-En este proyecto, controlamos el altavoz de la micro:bit para reproducir diferentes tonos moviendo el joystick y presionando los botones. Mientras tanto, la matriz de LED a bordo mostrará los números correspondientes.
+In diesem Projekt steuern wir den micro:bit-Lautsprecher, um verschiedene Töne durch Betätigen des Joysticks und Drücken der Tasten zu spielen. Gleichzeitig zeigt die integrierte LED-Matrix entsprechende Zahlen an.
 
-Al girar el joystick a la derecha se produce "Do (Tono Central C)" con la pantalla mostrando "1"; al girarlo a la izquierda se produce "Re (Tono D)" con "2"; al girarlo hacia arriba se produce "Mi (Tono E)" con "3"; al girarlo hacia abajo se produce "Fa (Tono F)" con "4". Al presionar el botón C se produce "Sol (Tono G)" con "5", al presionar D se produce "La (Tono A)" con "6", E produce "Si (Tono B)" con "7", y al presionar F se produce un "Do(Sostenido)" más alto mientras la pantalla vuelve a "1". Hay una bonita sincronización del joystick, los botones, los tonos y la pantalla.
+Wenn Sie den Joystick nach rechts drehen, ertönt „Do (Ton C)“ und die Anzeige zeigt „1“; wenn Sie ihn nach links drehen, ertönt „Re (Ton D)“ mit „2“; wenn Sie ihn nach oben drehen, ertönt „Mi (Ton E)“ mit „3“; wenn Sie ihn nach unten drehen, ertönt „Fa (Ton F)“ mit „4“. Das Drücken der Taste C erzeugt „Sol (Ton G)“ mit „5“, das Drücken von D erzeugt „La (Ton A)“ mit „6“, E erzeugt „Si (Ton B)“ mit „7“, und das Drücken von F erzeugt ein höheres „Do (Sharp)“, während die Anzeige wieder auf „1“ wechselt. Es gibt eine schöne Synchronisation von Joystick, Tasten, Tönen und Anzeige.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.3.2 Conocimiento de Componentes
+#### 5.2.3.2 Komponentenwissen
 
 ![Img](./media/2top.png)
 
-**Altavoz de Micro:bit**
+**Microbit-Lautsprecher**
 
 ![Img](./media/j901.png)
 
-La placa micro:bit cuenta con un altavoz incorporado para emitir sonidos, como risas, saludos, bostezos o expresiones de tristeza, o incluso componer una canción. Mediante programación, puede incluso generar notas individuales, melodías y ritmos, o incluso composiciones musicales, como la canción *Twinkle Twinkle Little Star*.
+Das micro:bit-Board verfügt über einen eingebauten Lautsprecher zur Klangerzeugung, wie Kichern, Begrüßungen, Gähnen oder Ausdruck von Traurigkeit, oder sogar zum Komponieren eines Liedes. Durch Programmierung kann es sogar einzelne Noten, Melodien und Rhythmen oder sogar musikalische Kompositionen, wie das Lied *Ode an die Freude*, erzeugen.
 
 ![Img](./media/2bottom.png)
 
-#### 5.2.3.3 Piezas Requeridas
+#### 5.2.3.3 Benötigte Teile
 
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 |**Pila AAA** (suministrada por el usuario) ×4 |
-| :--: | :--: | :--: |
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| :--: | :--: | :--: |
+| **micro:bit V2 Board** (selbst mitgebracht) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 | **AAA Batterie** (selbst mitgebracht) ×4 |
 
-#### 5.2.3.4 Flujo del Código
+#### 5.2.3.4 Codeablauf
 
 ![Img](./media/3009.png)
 
-#### 5.2.3.5 Código de Prueba
+#### 5.2.3.5 Testcode
 
-⚠️ **Tenga en cuenta que la sensibilidad del joystick se puede ajustar según sus necesidades.**
+⚠️ **Beachten Sie, dass die Empfindlichkeit des Joysticks je nach Bedarf angepasst werden kann.**
 
-**Código completo:**
+**Vollständiger Code:**
 
 ```python
+# import related libraries
 from microbit import *
+import music
 
-# ===================== Global Configuration & Variables =====================
-# Joystick threshold for movement detection
-JOYSTICK_THRESHOLD = 200
+# --- Configuration Constants ---
+# Joystick and Button Mapping (Pin, Note, Display Character)
+# For Joystick: (Pin, Threshold, Note, Character)
+JOY_MAP = [(pin2, 600, 'c4:2', '1'), (pin2, 400, 'd4:2', '2'), 
+           (pin1, 600, 'e4:2', '3'), (pin1, 400, 'f4:2', '4')]
 
-# Note frequencies (Hz) for C, D, E, F, G, A, B, High C
-NOTES = {
-    "C": 262,
-    "D": 294,
-    "E": 330,
-    "F": 349,
-    "G": 392,
-    "A": 440,
-    "B": 494,
-    "HC": 523  # High C
-}
+# For Buttons: (Pin, Note, Character)
+BTN_MAP = [(pin15, 'g4:2', '5'), (pin16, 'a4:2', '6'), 
+           (pin13, 'b4:2', '7'), (pin14, 'c5:2', '1')]
 
-# ===================== Main Loop =====================
+# ==================== Initialization ====================
+# Enable internal pull-up resistors for all button pins
+for p, n, d in BTN_MAP: 
+    p.set_pull(p.PULL_UP)
+
+# Visual feedback on startup
+display.show(Image.MUSIC_CROTCHET)
+
+# ==================== Main Loop ====================
 while True:
-    # Read joystick X and Y values
-    joystick_x = pin1.read_analog()
-    joystick_y = pin2.read_analog()
+    # 1. Joystick Logic: Iterate through map and check analog thresholds
+    for pin, thresh, note, disp in JOY_MAP:
+        val = pin.read_analog()
+        # Trigger if value exceeds high threshold or drops below low threshold
+        if (thresh == 600 and val > 600) or (thresh == 400 and val < 400):
+            music.play(note, wait=False)
+            display.show(disp)
 
-    # Clear display
-    display.clear()
+    # 2. Button Logic: Check for digital presses (Active Low)
+    for pin, note, disp in BTN_MAP:
+        if pin.read_digital() == 0: 
+            music.play(note, wait=False)
+            display.show(disp)
+            # Debounce/Stutter protection: Wait until the button is released
+            while pin.read_digital() == 0: 
+                sleep(10)
 
-    # Determine direction and play note
-    if joystick_x < 512 - JOYSTICK_THRESHOLD:  # Left (D note)
-        music.play(music.note(NOTES["D"], music.HALF), wait=False)
-        display.show("2")
-    elif joystick_x > 512 + JOYSTICK_THRESHOLD:  # Right (C note)
-        music.play(music.note(NOTES["C"], music.HALF), wait=False)
-        display.show("1")
-    elif joystick_y < 512 - JOYSTICK_THRESHOLD:  # Up (E note)
-        music.play(music.note(NOTES["E"], music.HALF), wait=False)
-        display.show("3")
-    elif joystick_y > 512 + JOYSTICK_THRESHOLD:  # Down (F note)
-        music.play(music.note(NOTES["F"], music.HALF), wait=False)
-        display.show("4")
-    elif not pin13.read_digital():  # Button C (G note)
-        music.play(music.note(NOTES["G"], music.HALF), wait=False)
-        display.show("5")
-    elif not pin15.read_digital():  # Button D (A note)
-        music.play(music.note(NOTES["A"], music.HALF), wait=False)
-        display.show("6")
-    elif not pin16.read_digital():  # Button E (B note)
-        music.play(music.note(NOTES["B"], music.HALF), wait=False)
-        display.show("7")
-    elif not pin14.read_digital():  # Button F (High C note)
-        music.play(music.note(NOTES["HC"], music.HALF), wait=False)
-        display.show("1")
-    else:  # No input, show initial image
-        display.show(Image.MUSIC_CROTCHET)
+    # Small delay to maintain system stability and reduce CPU load
+    sleep(20)
 
-    sleep(100)  # Small delay to prevent flickering and rapid note re-triggering
 ```
-
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Inicialice la matriz de LED de la micro:bit para que muestre ![Img](./media/3004.png).
+① Bibliotheken importieren, Konstanten konfigurieren und initialisieren.
+
+Es importiert die `microbit`-Bibliothek, um auf die Hardwarefunktionen des Micro:bit zuzugreifen, und `music` zum Abspielen von Musik. Anschließend werden zwei wesentliche Listen von Konfigurationskonstanten definiert:
+
+*   `JOY_MAP`: Wird zur Konfiguration der Joystick-Zuordnung verwendet. Jedes Tupel enthält die mit dem Joystick verbundenen Pins, Schwellenwerte (z. B. über 600 oder unter 400), die abzuspielende Musiknote (z. B. 'c4:2' ist das zentrale C, das zwei Schläge dauert) und das auf der Micro:bit-LED-Matrix angezeigte Zeichen.
+*   `BTN_MAP`: Die Zuordnung zur Konfiguration externer Tasten. Jedes Tupel enthält die mit der Taste verbundenen Pins, die abzuspielenden Musiknoten und die auf der Micro:bit-LED-Matrix angezeigten Zeichen.
+
+Während der Initialisierung scannt das Programm alle Tasten-Pins in `BTN_MAP` und stellt deren interne Pull-up-Widerstände (`p.PULL_UP`) ein. Dies stellt sicher, dass die Pins einen hohen Pegel beibehalten, wenn die Taste nicht gedrückt wird, und auf einen niedrigen Pegel fallen, wenn sie gedrückt wird.
+
+Schließlich erscheint ein Musiknotensymbol (`Image.MUSIC_CROTCHET`) auf der LED-Matrix.
 
 ```python
+# import related libraries
 from microbit import *
+import music
 
-# ===================== Global Configuration & Variables =====================
-# Joystick threshold for movement detection
-JOYSTICK_THRESHOLD = 200
+# --- Configuration Constants ---
+# Joystick and Button Mapping (Pin, Note, Display Character)
+# For Joystick: (Pin, Threshold, Note, Character)
+JOY_MAP = [(pin2, 600, 'c4:2', '1'), (pin2, 400, 'd4:2', '2'), 
+           (pin1, 600, 'e4:2', '3'), (pin1, 400, 'f4:2', '4')]
 
-# Note frequencies (Hz) for C, D, E, F, G, A, B, High C
-NOTES = {
-    "C": 262,
-    "D": 294,
-    "E": 330,
-    "F": 349,
-    "G": 392,
-    "A": 440,
-    "B": 494,
-    "HC": 523  # High C
-}
+# For Buttons: (Pin, Note, Character)
+BTN_MAP = [(pin15, 'g4:2', '5'), (pin16, 'a4:2', '6'), 
+           (pin13, 'b4:2', '7'), (pin14, 'c5:2', '1')]
+
+# ==================== Initialization ====================
+# Enable internal pull-up resistors for all button pins
+for p, n, d in BTN_MAP: 
+    p.set_pull(p.PULL_UP)
+
+# Visual feedback on startup
+display.show(Image.MUSIC_CROTCHET)
 ```
 
-② Determine la dirección del movimiento del joystick; reproduzca los tonos correspondientes durante medio tiempo en segundo plano, y la matriz de LED mostrará el número correspondiente.
+② Hauptschleife: Joystick-Eingaben verarbeiten.
+
+Es ist eine Endlosschleife (`while True`). Sie verarbeitet zuerst die Joystick-Eingabe, indem sie die `JOY_MAP`-Liste durchläuft und jede Joystick-Richtung überprüft. Für jeden Joystick-Pin liest sie dessen Analogwert (`pin.read_analog()`).
+
+Der Joystick wird dann basierend auf einem voreingestellten Schwellenwert (`thresh`) als aktiviert bestimmt: Wenn der Schwellenwert 600 beträgt und der aktuelle Analogwert 600 überschreitet (Joystick gedrückt), oder wenn der Schwellenwert 400 beträgt und der aktuelle Analogwert unter 400 liegt (in die entgegengesetzte Richtung gedrückt), spielt es die entsprechende Musiknote (`music.play(note, wait=False)`), wobei `wait=False` sicherstellt, dass die Musikwiedergabe die Hauptschleife nicht blockiert, was die gleichzeitige Erkennung anderer Eingaben ermöglicht.
+
+Und die Micro:bit-LED-Anzeige zeigt das dem Joystick entsprechende Zeichen an.
 
 ```python
-# ===================== Main Loop =====================
+# ==================== Main Loop ====================
 while True:
-    # Read joystick X and Y values
-    joystick_x = pin1.read_analog()
-    joystick_y = pin2.read_analog()
-
-    # Clear display
-    display.clear()
-
-    # Determine direction and play note
-    if joystick_x < 512 - JOYSTICK_THRESHOLD:  # Left (D note)
-        music.play(music.note(NOTES["D"], music.HALF), wait=False)
-        display.show("2")
-    elif joystick_x > 512 + JOYSTICK_THRESHOLD:  # Right (C note)
-        music.play(music.note(NOTES["C"], music.HALF), wait=False)
-        display.show("1")
-    elif joystick_y < 512 - JOYSTICK_THRESHOLD:  # Up (E note)
-        music.play(music.note(NOTES["E"], music.HALF), wait=False)
-        display.show("3")
-    elif joystick_y > 512 + JOYSTICK_THRESHOLD:  # Down (F note)
-        music.play(music.note(NOTES["F"], music.HALF), wait=False)
-        display.show("4")
-    elif not pin13.read_digital():  # Button C (G note)
-        music.play(music.note(NOTES["G"], music.HALF), wait=False)
-        display.show("5")
-    elif not pin15.read_digital():  # Button D (A note)
-        music.play(music.note(NOTES["A"], music.HALF), wait=False)
-        display.show("6")
-    elif not pin16.read_digital():  # Button E (B note)
-        music.play(music.note(NOTES["B"], music.HALF), wait=False)
-        display.show("7")
-    elif not pin14.read_digital():  # Button F (High C note)
-        music.play(music.note(NOTES["HC"], music.HALF), wait=False)
-        display.show("1")
-    else:  # No input, show initial image
-        display.show(Image.MUSIC_CROTCHET)
-
-    sleep(100)  # Small delay to prevent flickering and rapid note re-triggering
+    # 1. Joystick Logic: Iterate through map and check analog thresholds
+    for pin, thresh, note, disp in JOY_MAP:
+        val = pin.read_analog()
+        # Trigger if value exceeds high threshold or drops below low threshold
+        if (thresh == 600 and val > 600) or (thresh == 400 and val < 400):
+            music.play(note, wait=False)
+            display.show(disp)
 ```
 
-③ Compruebe si se presiona un botón, y reproduzca el tono correspondiente durante medio tiempo en segundo plano, y la matriz de LED mostrará el número correspondiente.
+③ Hauptschleife: Tasten-Eingaben verarbeiten.
 
-![Img](./media/3007.png)
+Nach der Joystick-Eingabe sind nun die externen Tasten-Eingaben an der Reihe. Es durchläuft jede Taste in der `BTN_MAP`-Liste. Für jeden Tasten-Pin überprüft es, ob sein digitaler Lesewert `0` ist (`pin.read_digital() == 0`, bedeutet Taste gedrückt). Wenn die Taste gedrückt wird, ist der Pin aufgrund seines Pull-up-Widerstands auf niedrigem Pegel, das Programm spielt die entsprechende Musiknote (`music.play(note, wait=False)`) und zeigt das Zeichen auf der Micro:bit-LED-Matrix an.
 
+Um Tastenprellen oder mehrfache Erkennungen eines einzelnen Tastendrucks zu verhindern, gibt es eine `while`-Schleife, die wartet, bis die aktuelle Taste losgelassen wird (`while pin.read_digital() == 0: sleep(10)`). Diese Wartezeit blockiert das Programm vorübergehend, bis die Taste losgelassen wird.
 
-#### 5.2.3.6 Resultado de la Prueba
+```python
+    # 2. Button Logic: Check for digital presses (Active Low)
+    for pin, note, disp in BTN_MAP:
+        if pin.read_digital() == 0: 
+            music.play(note, wait=False)
+            display.show(disp)
+            # Debounce/Stutter protection: Wait until the button is released
+            while pin.read_digital() == 0: 
+                sleep(10)
+```
+
+④ Hauptschleife: Schleifenverzögerung.
+
+Nach allen Eingabeerkennungen pausiert das Programm für 20 Millisekunden (`sleep(20`), um das System zu stabilisieren, die CPU-Last zu reduzieren und ein Zeitintervall für die nächste Schleifen-Eingabeerkennung bereitzustellen.
+
+```python
+    # Small delay to maintain system stability and reduce CPU load
+    sleep(20)
+```
+
+#### 5.2.3.6 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”. La matriz de LED mostrará “![Img](./media/3004.png)” primero.
+Nach dem Brennen des Codes stecken Sie das micro:bit-Board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie den Schalter auf „ON“. Die LED-Matrix zeigt zuerst „![Img](./media/3004.png)“ an.
 
-Al girar el joystick a la derecha se produce "Do (Tono Central C)" con la pantalla mostrando "1"; al girarlo a la izquierda se produce "Re (Tono D)" con "2"; al girarlo hacia arriba se produce "Mi (Tono E)" con "3"; al girarlo hacia abajo se produce "Fa (Tono F)" con "4". Al presionar el botón C se produce "Sol (Tono G)" con "5", al presionar D se produce "La (Tono A)" con "6", E produce "Si (Tono B)" con "7", y al presionar F se produce un "Do(Sostenido)" más alto mientras la pantalla vuelve a "1".
+Wenn Sie den Joystick nach rechts drehen, ertönt „Do (Ton C)“ und die Anzeige zeigt „1“; wenn Sie ihn nach links drehen, ertönt „Re (Ton D)“ mit „2“; wenn Sie ihn nach oben drehen, ertönt „Mi (Ton E)“ mit „3“; wenn Sie ihn nach unten drehen, ertönt „Fa (Ton F)“ mit „4“. Das Drücken der Taste C erzeugt „Sol (Ton G)“ mit „5“, das Drücken von D erzeugt „La (Ton A)“ mit „6“, E erzeugt „Si (Ton B)“ mit „7“, und das Drücken von F erzeugt ein höheres „Do (Sharp)“, während die Anzeige wieder auf „1“ wechselt.
 
-¡Ha construido el piano electrónico simple!
+Sie haben das einfache elektronische Klavier gebaut!
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit-Boards.</span>
 
 ![Img](./media/4bottom.png)

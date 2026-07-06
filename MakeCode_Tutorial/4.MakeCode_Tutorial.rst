@@ -1,8 +1,8 @@
 =========
-4. Tutorial de MakeCode
+4. MakeCode Anleitung
 =========
 
-4.1 Entorno de Desarrollo MakeCode
+4.1 MakeCode Entwicklungsumgebung
 =========
 
 .. toctree::
@@ -11,7 +11,7 @@
     MakeCode Development Environment
 
 
-4.2 Proyectos
+4.2 Projekte
 =========
 
 
@@ -29,15 +29,10 @@
     Projects/Project 09
 
   
-4.3 Solución de Problemas
+4.3 Fehlerbehebung
 =========
 
 .. toctree::
     :maxdepth: 1
 
     Troubleshooting
-    
-
-
-
-    

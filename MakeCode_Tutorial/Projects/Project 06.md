@@ -1,112 +1,111 @@
-### 4.2.6 Piedra-Papel-Tijera
+### 4.2.6 Schere-Stein-Papier
 
-#### 4.2.6.1 Resumen
+#### 4.2.6.1 Übersicht
 
 ![Img](./media/top1.png)
 
-Aquí, juguemos a piedra-papel-tijera mediante comunicación inalámbrica de micro:bit. Los jugadores seleccionan su movimiento (piedra, papel o tijera) a través de los botones, con intercambio de datos entre dispositivos. El juego sigue el formato al mejor de tres; si las tres rondas terminan en empate total o en victoria-derrota-empate, se activa un cuarto partido.
+Hier spielen wir Schere-Stein-Papier mittels drahtloser Kommunikation von micro:bit. Spieler wählen ihren Zug (Stein, Papier oder Schere) über die Tasten, wobei Daten zwischen den Geräten ausgetauscht werden. Das Spiel folgt dem Best-of-Three-Prinzip; wenn alle drei Runden unentschieden oder Sieg-Niederlage-Unentschieden enden, wird ein viertes Spiel ausgelöst.
 
-Cada resultado se muestra en la matriz de micro:bit (W para victoria, L para derrota, = para empate) y se revela mediante las luces RGB (verde para victoria, rojo para derrota, amarillo para empate) en el pin P8. Al finalizar una ronda, los dos dispositivos reinician todos los datos y luces, preparándose para el siguiente partido.
+Jedes Ergebnis wird auf der micro:bit Matrix angezeigt (W für Sieg, L für Niederlage, = für Unentschieden) und durch die RGB-Lichter (grün für Sieg, rot für Niederlage, gelb für Unentschieden) an Pin P8 enthüllt. Nach Abschluss einer Runde setzen die beiden Geräte alle Daten und Lichter zurück und bereiten sich auf das nächste Spiel vor.
 
-El juego integra a la perfección la interacción inalámbrica con el combate de varias rondas.
+Das Gameplay integriert nahtlos drahtlose Interaktion mit dem Mehrrunden-Kampf.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.6.2 Conocimiento de Componentes
+#### 4.2.6.2 Komponentenwissen
 
 ![Img](./media/2top.png)
 
-**Comunicación inalámbrica de Micro:bit**
+**Microbit drahtlose Kommunikation**
 
 ![Img](./media/6001.png)
 
-La placa micro:bit integra dos cómodas capacidades de comunicación inalámbrica: **radio de 2.4GHz** y **Bluetooth de baja energía (BLE)**. Sin embargo, no se pueden usar simultáneamente.
+Das micro:bit board integriert zwei praktische drahtlose Kommunikationsmöglichkeiten: **2.4GHz radio** und **low-power Bluetooth (BLE)**. Sie können jedoch nicht gleichzeitig verwendet werden.
 
-La primera no requiere emparejamiento y admite hasta 255 paquetes independientes para minimizar las interferencias, con un rango de comunicación de 10 a 30 metros, lo que permite la transmisión rápida de datos digitales y cadenas. Mientras que la segunda se utiliza principalmente para emparejar con teléfonos inteligentes, tabletas y otros dispositivos inteligentes para aplicaciones de IoT, como la carga de datos de sensores y el control remoto de aplicaciones móviles.
+Ersteres erfordert keine Kopplung und unterstützt bis zu 255 unabhängige Pakete, um Interferenzen zu minimieren, mit einer Kommunikationsreichweite von 10–30 Metern, was eine schnelle Übertragung von digitalen Daten und Zeichenketten ermöglicht. Letzteres wird hauptsächlich für die Kopplung mit Smartphones, Tablets und anderen smarten Geräten für IoT-Anwendungen wie Sensor-Daten-Upload und mobile App-Fernsteuerung verwendet.
 
-Amplían las posibilidades de desarrollo creativo de la micro:bit.
+Sie erweitern die kreativen Entwicklungsmöglichkeiten des micro:bit.
 
-#### 4.2.6.3 Piezas Requeridas
+#### 4.2.6.3 Benötigte Teile
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×2 | **Smart Gamepad micro:bit** (ensamblado) ×2 | **Pila AAA** (suministrada por el usuario) ×8 |
+| **micro:bit V2 board** (selbst mitzubringen) ×2 | **micro:bit Smart Gamepad** (montiert) ×2 |**AAA battery** (selbst mitzubringen) ×8 |
 
-#### 4.2.6.4 Flujo del Código
+#### 4.2.6.4 Code-Ablauf
 
 ![Img](./media/6002.png)
 
-#### 4.2.6.5 Código de Prueba
+#### 4.2.6.5 Testcode
 
-**Código completo:**
+**Vollständiger Code:**
 
 ![Img](./media/6003.png)
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Inicie la radio y establezca el grupo en '1'; establezca el número de rondas, el estado, el oponente y el resultado de piedra-papel-tijera de los jugadores; conecte las cuatro luces RGB al pin P8 y actualice la pantalla, establezca la matriz para que muestre ![Img](./media/6004.png).
+① Initialisieren Sie das radio und setzen Sie die Gruppe auf '1'; setzen Sie die Anzahl der Runden, den Status, den Gegner und das Schere-Stein-Papier-Ergebnis der Spieler; verbinden Sie die vier RGB-Lichter mit Pin P8 und aktualisieren Sie die Anzeige, setzen Sie die Matrix so, dass ![Img](./media/6004.png) angezeigt wird.
 
 ![Img](./media/6005.png)
 
-② Determine el resultado de la ronda actual: si su elección coincide con la del oponente (**1/2/3 para tijera/piedra/papel**), es un empate; de lo contrario, seleccione un ganador (tijera contra papel contra piedra contra tijera), el valor de la ronda +1 y almacene el resultado.
+② Bestimmen Sie das Ergebnis der aktuellen Runde: Wenn Ihre Wahl mit der des Gegners übereinstimmt (**1/2/3 für Schere/Stein/Papier**), ist es ein Unentschieden; andernfalls wählen Sie einen Gewinner (Schere gegen Papier gegen Stein gegen Schere), Rundenwert +1 und speichern Sie das Ergebnis.
 
 ![Img](./media/6006.png)
 
-③ Almacene los resultados en un array y muestre la cadena correspondiente. Si este es el tercer juego, determine si se necesita un cuarto juego (en caso de empate total o victoria-derrota-empate). Si es así, muestre "FINAL" y espere 1 segundo antes de borrar la selección de piedra-papel-tijera.
+③ Speichern Sie die Ergebnisse in einem Array und zeigen Sie die entsprechende Zeichenkette an. Wenn dies das dritte Spiel ist, bestimmen Sie, ob ein viertes Spiel benötigt wird (bei komplettem Unentschieden oder Sieg-Niederlage-Unentschieden). Wenn ja, zeigen Sie „FINAL“ an und warten Sie 1 Sekunde, bevor Sie die Schere-Stein-Papier-Auswahl löschen.
 
 ![Img](./media/6007.png)
 
-De lo contrario, muestre "WINNER" para la victoria, "LOSER" para la derrota y "TIE" para un empate. Después de un retraso de 3 segundos, llame a la función resetGame para borrar todas las variables del juego.
+Andernfalls zeigen Sie „WINNER“ für Sieg, „LOSER“ für Niederlage und „TIE“ für ein Unentschieden an. Nach einer 3-sekündigen Verzögerung rufen Sie die resetGame-Funktion auf, um alle Spielvariablen zu löschen.
 
-Si el partido consta de cuatro juegos, muestre "GAME OVER" y llame a la función resetGame nuevamente después de un retraso de 3 segundos para reiniciar todas las variables del juego.
+Wenn das Spiel aus vier Spielen besteht, zeigen Sie „GAME OVER“ an und rufen Sie die resetGame-Funktion nach einer 3-sekündigen Verzögerung erneut auf, um alle Spielvariablen zurückzusetzen.
 
 ![Img](./media/6008.png)
 
-Si el juego no ha terminado, muestra ![Img](./media/6004.png) y borra las elecciones de ambos.
+Wenn das Spiel nicht vorbei ist, wird ![Img](./media/6004.png) angezeigt und die Auswahl beider Spieler gelöscht.
 
 ![Img](./media/6009.png)
 
-④ Presione C y la placa envía "1" como tijera, y la matriz muestra ![Img](./media/6011.png); presione D y la placa envía "3" como papel, y la matriz muestra ![Img](./media/6012.png); presione E y envía "2" como piedra y muestra ![Img](./media/6013.png).
+④ Drücken Sie C und das board sendet „1“ als Schere, und die Matrix zeigt ![Img](./media/6011.png); drücken Sie D und das board sendet „3“ als Papier, und die Matrix zeigt ![Img](./media/6012.png); Drücken Sie E und es sendet „2“ als Stein und zeigt ![Img](./media/6013.png).
 
 ![Img](./media/6010.png)
 
-⑤ Reciba datos de radio (elección del oponente).
+⑤ Empfangen Sie radio Daten (Wahl des Gegners).
 
 ![Img](./media/6014.png)
 
-⑥ Determine si se requiere una cuarta ronda. Si los tres juegos terminan en empate total o victoria-derrota-empate, es necesario un cuarto juego; de lo contrario, no es necesario.
+⑥ Bestimmen Sie, ob eine vierte Runde erforderlich ist. Wenn alle drei Spiele unentschieden oder Sieg-Niederlage-Unentschieden enden, ist ein viertes Spiel notwendig; andernfalls wird es nicht benötigt.
 
 ![Img](./media/6015.png)
 
-⑦ Las luces RGB muestran los colores correspondientes según el resultado: verde para la victoria, rojo para la derrota y amarillo para un empate.
+⑦ Die RGB-Lichter zeigen die entsprechenden Farben basierend auf dem Ergebnis an: grün für Sieg, rot für Niederlage und gelb für ein Unentschieden.
 
 ![Img](./media/6016.png)
 
-⑧ Cuando el juego termina, borre la visualización de las cuatro luces RGB.
+⑧ Wenn das Spiel endet, löschen Sie die Anzeige der vier RGB-Lichter.
 
 ![Img](./media/6017.png)
 
-⑨ Reinicie el estado del juego, borre todos los valores de las variables del juego, reinicie las luces RGB y muestre ![Img](./media/6004.png).
+⑨ Setzen Sie den Spielzustand zurück, löschen Sie alle Spielvariablenwerte, setzen Sie die RGB-Lichter zurück und zeigen Sie ![Img](./media/6004.png) an.
 
 ![Img](./media/6018.png)
 
-
-#### 4.2.6.6 Resultado de la Prueba
+#### 4.2.6.6 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie es auf „ON“.
 
-La matriz muestra ![Img](./media/6004.png) inicialmente. Los jugadores presionan los botones para seleccionar su movimiento (E para piedra, D para papel o C para tijera), con intercambio de datos entre los dos dispositivos. Determinan el resultado de la ronda actual: una victoria se indica con la "W" con la luz RGB volviéndose verde, un empate con el "=" con la luz amarilla y una derrota con la "L" con la luz roja (la primera luz RGB se enciende después de la primera ronda, y así sucesivamente). La siguiente ronda seguirá si el juego no ha terminado.
+Die Matrix zeigt zunächst ![Img](./media/6004.png) an. Spieler drücken Tasten, um ihren Zug auszuwählen (E für Stein, D für Papier oder C für Schere), wobei die Spieldaten zwischen den beiden Geräten ausgetauscht werden. Sie bestimmen das Ergebnis der aktuellen Runde: Ein Sieg wird durch „W“ mit grün leuchtendem RGB-Licht angezeigt, ein Unentschieden durch „=“ mit gelbem Licht und eine Niederlage durch „L“ mit rotem Licht (das erste RGB-Licht leuchtet nach der ersten Runde auf, und so weiter). Die nächste Runde folgt, wenn das Spiel nicht beendet ist.
 
-El juego adopta el formato al mejor de tres: si las tres rondas terminan en empate total o victoria-derrota-empate, se activa un cuarto partido.
+Das Spiel wird im Best-of-Three-Modus gespielt: Wenn alle drei Runden unentschieden oder Sieg-Niederlage-Unentschieden enden, wird ein viertes Spiel ausgelöst.
 
-Si hay un ganador después de tres rondas, mostrará "WINNER" para la victoria y "LOSER" para la derrota. Una vez que se muestre el resultado, aparecerá "GAME OVER" para reiniciar el juego. Si la cuarta ronda sigue sin decidirse, el juego también terminará.
+Wenn es nach drei Runden einen Gewinner gibt, wird „WINNER“ für den Sieg und „LOSER“ für die Niederlage angezeigt. Sobald das Ergebnis angezeigt wird, erscheint „GAME OVER“, um das Spiel zurückzusetzen. Wenn die vierte Runde unentschieden bleibt, ist das Spiel ebenfalls beendet.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Espere a que aparezca el icono del corazón antes de continuar con la siguiente ronda. Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style=\"color: rgb(0, 209, 0);\">**Tipp:** Warten Sie, bis das Herzsymbol erscheint, bevor Sie die nächste Runde fortsetzen. Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

@@ -1,142 +1,138 @@
-### 5.2.1 Indicador de Dirección
+### 5.2.1 Richtungsanzeige
 
-#### 5.2.1.1 Resumen
+#### 5.2.1.1 Übersicht
 
 ![Img](./media/top1.png)
 
-Al mover el joystick, la matriz de puntos muestra flechas en la dirección correspondiente en tiempo real: izquierda, derecha, arriba, abajo, lo que le proporciona una clara referencia de dirección.
+Wenn Sie den Joystick betätigen, zeigt die Punktmatrix in Echtzeit Pfeile in der entsprechenden Richtung an: links, rechts, oben, unten, was Ihnen eine klare Richtungsorientierung gibt.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.1.2 Conocimiento de Componentes
+#### 5.2.1.2 Komponentenwissen
 
 ![Img](./media/2top.png)
 
-**Matriz de puntos de Micro:bit:**
+**Micro:bit Punktmatrix:**
 
-![Img](./media/1001.png)
+![Img](./media//1001.png)
 
-La matriz de puntos LED de la placa micro:bit consta de un total de 25 diodos emisores de luz, un grupo de 5, correspondientes a los ejes X e Y, formando una matriz de 5×5. Cada uno se coloca en la intersección de la fila (X) y la columna (Y). Podemos controlar uno o algunos de ellos estableciendo los puntos de coordenadas.
+Die LED-Punktmatrix des micro:bit-Boards besteht aus insgesamt 25 Leuchtdioden, einer Gruppe von 5, die der X- und Y-Achse entsprechen und eine 5×5-Matrix bilden. Jede befindet sich am Schnittpunkt der Reihe (X) und der Spalte (Y). Wir können eine oder mehrere davon steuern, indem wir die Koordinatenpunkte festlegen.
 
 **Joystick:**
 
-| ![Img](./media/1002.png)| ![Img](./media/1003.png) |
+| ![Img](./media/1002.png)| ![Img](./media//1003.png) |
 | :--: | :--: |
-| Producto real | Diagrama esquemático |
+| Reales Produkt | Schaltplan |
 
-La estructura interna de este joystick está compuesta por dos resistencias ajustables (potenciómetros) con un valor de resistencia de 10KΩ cada una.
+Die interne Kernstruktur dieses Joysticks besteht aus zwei einstellbaren Widerständen (Potentiometern) mit einem Widerstandswert von jeweils 10KΩ.
 
-Detecta las direcciones (y la amplitud) del empuje a través del pin analógico ADC del microcontrolador para emitir las señales eléctricas analógicas de la dimensión correspondiente. Durante la lectura real de la señal, cuando los valores analógicos de los ejes X e Y del joystick se detectan dentro del rango de 450~600, se puede determinar que el joystick está en un estado neutro (estacionario) sin movimiento activo.
+Er erkennt Richtungen (und Amplitude) des Drucks über den ADC-Analogpin des Mikrocontrollers, um die analogen elektrischen Signale der entsprechenden Dimension auszugeben. Beim tatsächlichen Signallesen, wenn die analogen Werte der Joystick-X- und Y-Achsen im Bereich von 450~600 erkannt werden, kann davon ausgegangen werden, dass sich der Joystick in einem neutralen (stationären) Zustand ohne aktive Betätigung befindet.
 
 ![Img](./media/2bottom.png)
 
-#### 5.2.1.3 Piezas Requeridas
+#### 5.2.1.3 Benötigte Teile
 
-| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 Board** (selbst mitgebracht) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 | **AAA Batterie** (selbst mitgebracht) ×4 |
 
-#### 5.2.1.4 Flujo del Código
+#### 5.2.1.4 Codeablauf
 
-![Img](./media/1008.png)
+![Img](./media/1004.png)
 
-#### 5.2.1.5 Código de Prueba
 
-⚠️ **Tenga en cuenta que los siguientes códigos incluyen las librerías Makecode del Gamepad (la forma de añadir librerías se mencionó anteriormente). La sensibilidad del joystick se puede ajustar según sus necesidades.**
+#### 5.2.1.5 Testcode
 
-**Código completo:**
+**Vollständiger Code:**
 
-```python
+```Python
+# import related libraries
 from microbit import *
 
-# ===================== Global Configuration & Variables =====================
-# Joystick threshold for movement detection
-JOYSTICK_THRESHOLD = 200
+display.show(Image.HOUSE)
 
-# ===================== Main Loop =====================
-def on_forever():
-    # Read joystick X and Y values
-    joystick_x = pin1.read_analog()
-    joystick_y = pin2.read_analog()
-
-    # Clear display
-    display.clear()
-
-    # Determine direction and display arrow
-    if joystick_x < 512 - JOYSTICK_THRESHOLD:  # Left
-        display.show(Image.ARROW_WEST)
-    elif joystick_x > 512 + JOYSTICK_THRESHOLD:  # Right
-        display.show(Image.ARROW_EAST)
-    elif joystick_y < 512 - JOYSTICK_THRESHOLD:  # Up
-        display.show(Image.ARROW_NORTH)
-    elif joystick_y > 512 + JOYSTICK_THRESHOLD:  # Down
-        display.show(Image.ARROW_SOUTH)
-    else:  # Center
+while True:
+    #Read the toggle state of the joystick
+    x = pin2.read_analog()
+    y = pin1.read_analog()
+    #Determine the direction in which the joystick is toggled
+    if x > 600 and (400 < y < 600):
+        display.show(Image.ARROW_E)
+    elif x < 400 and (400 < y < 600):
+        display.show(Image.ARROW_W)
+    elif y > 600 and (400 < x < 600):
+        display.show(Image.ARROW_S)
+    elif y < 400 and (400 < x < 600):
+        display.show(Image.ARROW_N)
+    else:
         display.show(Image.HOUSE)
-
-    sleep(100)  # Small delay to prevent flickering
-
-# ===================== Program Entry Point =====================
-if __name__ == "__main__":
-    while True:
-        on_forever()
 ```
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Inicialice la matriz LED para que muestre ![Img](./media/1006.png).
+① Importieren Sie die Bibliothek und zeigen Sie das Startbild an.
+
+Zuerst wird die `microbit`-Bibliothek importiert, die eine notwendige Kernbibliothek von Micro:bit auf MicroPython ist. Sie bietet vollen Zugriff auf die Micro:bit-Hardware (einschließlich LED-Anzeigen und Pins). Nach dem Import wird ein Haussymbol (`Image.HOUSE`) auf der Matrix als Startzustand / Standby-Bildschirm angezeigt.
 
 ```python
+# import related libraries
 from microbit import *
 
-# ===================== Global Configuration & Variables =====================
-# Joystick threshold for movement detection
-JOYSTICK_THRESHOLD = 200
+display.show(Image.HOUSE)
 ```
+② Schleife: Lesen Sie den Analogwert des Joysticks.
 
-② Lea los valores de los ejes X e Y para determinar la dirección del movimiento. Si se detecta, la matriz muestra la flecha correspondiente. Si no, muestra ![Img](./media/1006.png).
+Das Programm tritt in eine Endlosschleife (`while True`) ein. Zu Beginn der Schleife liest es die analogen Eingangswerte von `pin2` und `pin1`, typischerweise die X-Achse (links-rechts) und die Y-Achse (auf-ab) des Joysticks.
+
+`read_analog()` gibt einen ganzzahligen Wert zwischen 0 und 1023 zurück, der die Position des Joysticks entlang dieser Achse darstellt. Er liegt normalerweise nahe bei 511–512, wenn der Joystick zentriert ist.
 
 ```python
-def on_forever():
-    # Read joystick X and Y values
-    joystick_x = pin1.read_analog()
-    joystick_y = pin2.read_analog()
+while True:
+    #Read the toggle state of the joystick
+    x = pin2.read_analog()
+    y = pin1.read_analog()
+```
+③ Bestimmen Sie die Richtung des Joysticks und zeigen Sie den entsprechenden Pfeil an.
 
-    # Clear display
-    display.clear()
+Hier wird die Bewegungsrichtung des Joysticks basierend auf den analogen Werten `x` und `y` bestimmt. Wir legen Schwellenwerte (400 und 600) fest, um zu bestimmen, ob der Joystick betätigt wird.
 
-    # Determine direction and display arrow
-    if joystick_x < 512 - JOYSTICK_THRESHOLD:  # Left
-        display.show(Image.ARROW_WEST)
-    elif joystick_x > 512 + JOYSTICK_THRESHOLD:  # Right
-        display.show(Image.ARROW_EAST)
-    elif joystick_y < 512 - JOYSTICK_THRESHOLD:  # Up
-        display.show(Image.ARROW_NORTH)
-    elif joystick_y > 512 + JOYSTICK_THRESHOLD:  # Down
-        display.show(Image.ARROW_SOUTH)
-    else:  # Center
+*   [ `x` > 600 , 400 < `y` < 600 ] : (an der zentralen Y-Achse) der Joystick ist rechts und zeigt den nach Osten gerichteten Pfeil (`Image.ARROW_E`) an.
+*   [ `x` < 400 , 400 < `y` < 600 ] : der Joystick ist links und zeigt den nach Westen gerichteten Pfeil (`Image.ARROW_W`) an.
+*   [ `y` > 600 , 400 < `x` < 600 ] : der Joystick wird nach unten gedrückt und zeigt den nach Süden gerichteten Pfeil (`Image.ARROW_S`) an.
+*   [ `y` < 400 ,400 < `x` < 600 ] : der Joystick wird nach oben gedrückt und zeigt den nach Norden gerichteten Pfeil (`Image.ARROW_N`) an.
+
+```python
+    #Determine the direction in which the joystick is toggled
+    if x > 600 and (400 < y < 600):
+        display.show(Image.ARROW_E)
+    elif x < 400 and (400 < y < 600):
+        display.show(Image.ARROW_W)
+    elif y > 600 and (400 < x < 600):
+        display.show(Image.ARROW_S)
+    elif y < 400 and (400 < x < 600):
+        display.show(Image.ARROW_N)
+```
+④ Das Hausmuster wird angezeigt, wenn der Joystick zentriert ist.
+
+Wenn keine der oben genannten Bedingungen erfüllt ist – das heißt, der Joystick bewegt sich nicht wesentlich in eine Richtung (was typischerweise anzeigt, dass er sich in der Mittelposition befindet) – zeigt der Micro:bit wieder das „Haus“ (`Image.HOUSE`) an, was bedeutet, dass der Joystick stationär ist.
+
+```python
+    else:
         display.show(Image.HOUSE)
-
-    sleep(100)  # Small delay to prevent flickering
-
-# ===================== Program Entry Point =====================
-if __name__ == "__main__":
-    while True:
-        on_forever()
 ```
 
-#### 5.2.1.6 Resultado de la Prueba
+#### 5.2.1.6 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit-Board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie den Schalter auf „ON“.
 
-Cuando mueva el joystick del gamepad, podrá ver las flechas correspondientes en la matriz. Si suelta el dedo para que vuelva al centro, aparecerá un icono de casa en la matriz.
+Wenn Sie den Joystick des Gamepads drücken, sehen Sie die entsprechenden Pfeile auf der Matrix. Wenn Sie ihn in die Mitte zurückbringen, erscheint ein Haussymbol auf der Matrix.
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit-Boards.</span>
 
 ![Img](./media/4bottom.png)

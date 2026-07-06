@@ -1,101 +1,101 @@
-### 4.2.5 Evitar Ladrillos
+### 4.2.5 Ziegelsteinen ausweichen
 
-#### 4.2.5.1 Resumen
+#### 4.2.5.1 Übersicht
 
 ![Img](./media/top1.png)
 
-En este proyecto, jugamos un juego de evitar ladrillos donde los jugadores usan un gamepad Micro:bit para mover su indicador LED a izquierda y derecha mientras evaden ladrillos que caen desde arriba. Hay tres estados: a) un icono dinámico al inicio, b) acciones de evasión en tiempo real durante el juego, y c) una puntuación final después de las colisiones.
+In diesem Projekt spielen wir ein Ziegelstein-Ausweichspiel, bei dem die Spieler ein Micro:bit Gamepad verwenden, um ihren LED-Indikator nach links und rechts zu bewegen, während sie von oben fallenden Ziegelsteinen ausweichen. Es gibt drei Zustände: a) ein dynamisches Symbol beim Start, b) Echtzeit-Ausweichaktionen während des Spiels und c) eine Endpunktzahl nach Kollisionen.
 
-Los jugadores ganan 1 punto después de cada evasión (cuando el ladrillo llega al fondo), y el juego termina cuando colisionan con un ladrillo; la puntuación final se muestra con un efecto de desplazamiento.
+Spieler erhalten 1 Punkt nach jedem Ausweichen (wenn der Ziegelstein den Boden erreicht), und das Spiel ist beendet, wenn sie mit einem Ziegelstein kollidieren; die Endpunktzahl wird mit einem Scrolleffekt angezeigt.
 
-El juego se puede iniciar o reiniciar presionando A+B. Este mecanismo de juego sencillo combina la capacidad de respuesta en tiempo real con la anticipación estratégica.
+Das Spiel kann durch Drücken von A+B gestartet oder zurückgesetzt werden. Dieser unkomplizierte Spielmechanismus kombiniert Echtzeit-Reaktionsfähigkeit mit strategischer Antizipation.
 
 ![Img](./media/bottom1.png)
 
-#### 4.2.5.2 Piezas Requeridas
+#### 4.2.5.2 Benötigte Teile
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **Placa micro:bit V2** (suministrada por el usuario) ×1 | **Smart Gamepad micro:bit** (ensamblado) ×1 | **Pila AAA** (suministrada por el usuario) ×4 |
+| **micro:bit V2 board** (selbst mitzubringen) ×1 | **micro:bit Smart Gamepad** (montiert) ×1 |**AAA battery** (selbst mitzubringen) ×4 |
 
-#### 4.2.5.3 Flujo del Código
+#### 4.2.5.3 Code-Ablauf
 
 ![Img](./media/5001.png)
 
-#### 4.2.5.4 Código de Prueba
+#### 4.2.5.4 Testcode
 
-⚠️ **Tenga en cuenta que el umbral inicial 300 en el código se puede modificar según sus necesidades. Cuanto mayor sea el valor, más lento caerá el ladrillo.**
+⚠️ **Beachten Sie, dass der anfängliche Schwellenwert 300 im Code je nach Ihren Bedürfnissen geändert werden kann. Je höher der Wert ist, desto langsamer fällt der Ziegelstein.**
 
-**Código completo:**
+**Vollständiger Code:**
 
 ![Img](./media/5002.png)
 
 ![Img](./media/line1.png)
 
-**Breve explicación:**
+**Kurze Erklärung:**
 
-① Inicialice las variables relacionadas, incluyendo la columna inicial del jugador, la fila y la velocidad del ladrillo, y establezca la posición del jugador en la columna inicial.
+① Initialisieren Sie die zugehörigen Variablen, einschließlich der anfänglichen Spalte, Zeile und Geschwindigkeit des Ziegelsteins des Spielers, und setzen Sie die Position des Spielers auf die anfängliche Spalte.
 
-Llame a una función on_start.
+Rufen Sie eine on_start-Funktion auf.
 
 ![Img](./media/5003.png)
 
-② En cuanto a esta función, hace que el ladrillo aparezca en una columna aleatoria de 0~4 al comienzo del juego.
+② Bei dieser Funktion erscheint der Ziegelstein zu Beginn des Spiels in einer zufälligen Spalte von 0~4.
 
 ![Img](./media/5004.png)
 
-③ Determine si “A+B está presionado y el juego no ha comenzado”. Si es así y el inicio está marcado como un estado inicial, marque el estado de inicio primero y confirme nuevamente si los botones aún están presionados después de un breve retraso. De lo contrario, cancele la marca de inicio.
+③ Ermitteln Sie, ob „A+B gedrückt und das Spiel nicht gestartet“ ist. Wenn ja und der Start als Anfangszustand markiert ist, markieren Sie zuerst den Startzustand und bestätigen Sie nach einer kurzen Verzögerung erneut, ob die Tasten noch gedrückt sind. Wenn ja, setzen Sie das Spiel zurück (rufen Sie die reset_game-Funktion auf) und zeichnen Sie die Zeit auf. Andernfalls brechen Sie die Startmarkierung ab.
 
 ![Img](./media/5005.png)
 
-④ La siguiente función reinicia el juego a su estado inicial. Establece el estado en “jugando” (game_state=1) y coloca al jugador en la posición inicial. Y el ladrillo aparecerá en una columna aleatoria (0~4) y en la fila 0, y las puntuaciones se pondrán a cero. Por último, la pulsación de A/B se marca como no activada, y la matriz se borra.
+④ Die folgende Funktion setzt das Spiel in den Anfangszustand zurück. Sie setzt den Zustand auf „Gaming“ (game_state=1) und platziert den Spieler in die Ausgangsposition. Und der Ziegelstein erscheint in einer zufälligen Spalte (0~4) und der 0. Zeile, und die Punktzahlen werden auf Null gesetzt. Zuletzt wird das Drücken von A/B als nicht ausgelöst markiert, und die Matrix wird dann gelöscht.
 
 ![Img](./media/5006.png)
 
-⑤ Cuando el estado del juego es **0-estado inicial** (no jugando después de encender), el icono mostrado parpadeará.
+⑤ Wenn der Spielzustand **0-Anfangszustand** ist (nicht spielend nach dem Einschalten), blinkt das angezeigte Symbol.
 
 ![Img](./media/5007.png)
 
-⑥ Cuando está en **2-fin del juego**, la puntuación se controlará según el recuento de parpadeos (flash_count). Si el recuento < 3, repite “mostrar puntuación → breve retraso → borrar pantalla → breve retraso → recuento + 1”; cuando el recuento llega a 3, siempre muestra la puntuación y extiende el retraso.
+⑥ Wenn es **2-Spiel vorbei** ist, wird die Punktzahl entsprechend der Blinkanzahl (flash_count) gesteuert. Wenn die Anzahl <3 ist, wiederholt sich „Punktzahl anzeigen → kurze Verzögerung → Anzeige löschen → kurze Verzögerung → Anzahl+1“; wenn die Anzahl 3 erreicht, wird immer die Punktzahl angezeigt und die Verzögerung verlängert.
 
 ![Img](./media/5008.png)
 
-⑦ En el estado **1-jugando**, cuando presiona C sin activar la marca de presión y la columna del jugador > 0, la columna del jugador -1 y marca el botón C como activado (con retraso para anti-jitter); presiona E sin activar y cuando la columna del jugador < 4, y la columna +1 con E activado (retraso); si no se realiza ninguna acción, la marca de activación de los botones correspondientes se restablece.
+⑦ Im Zustand **1-Gaming**, wenn Sie C drücken, ohne die Druckmarkierung auszulösen und die Spielerspalte > 0 ist, wird die Spielerspalte -1 und die Taste C als ausgelöst markiert (mit Verzögerung zur Entprellung); drücken Sie E, ohne auszulösen, und wenn die Spielerspalte < 4 ist, und die Spalte +1, wobei E ausgelöst wird (Verzögerung); wenn keine Aktion ausgeführt wird, wird die Auslösemarkierung der entsprechenden Tasten zurückgesetzt.
 
 ![Img](./media/5009.png)
 
-⑧ Calcule la diferencia entre el tiempo actual y el último tiempo de movimiento del ladrillo. Si esta diferencia excede el umbral de velocidad del ladrillo, actualice el tiempo de movimiento del ladrillo y la fila del ladrillo +1. Si la fila > 4 (alcanzando el límite), reinicie el ladrillo a una columna aleatoria con su fila = cero, y puntuación +1.
+⑧ Berechnen Sie die Differenz zwischen der aktuellen Zeit und der letzten Ziegelsteinbewegungszeit. Wenn diese Differenz den Schwellenwert der Ziegelsteingeschwindigkeit überschreitet, aktualisieren Sie die Ziegelsteinbewegungszeit und die Ziegelsteinzeile +1. Wenn die Zeile > 4 ist (Grenze erreicht), setzen Sie den Ziegelstein auf eine zufällige Spalte mit Zeile=Null zurück und Punktzahl+1.
 
-Invoque las funciones de detección de colisiones y renderizado de gráficos del juego para dejar caer ladrillos, reiniciar después de alcanzar el límite, acumular puntuación y actualizar el estado del juego en tiempo real.
+Rufen Sie die Kollisionserkennungs- und Spielgrafik-Rendering-Funktionen auf, um Ziegelsteine fallen zu lassen, nach Erreichen der Grenze zurückzusetzen, Punkte zu sammeln und den Spielzustand in Echtzeit zu aktualisieren.
 
-Invoque las funciones de detección de colisiones y renderizado de gráficos del juego para lograr el avance automático de ladrillos, el reinicio de límites, la acumulación de puntuación y las actualizaciones del estado del juego en tiempo real.
+Die Kollisionserkennungs- und Spielgrafik-Rendering-Funktionen werden aufgerufen, um den automatischen Ziegelsteinfortschritt, das Zurücksetzen der Grenze, die Punktesammlung und die Echtzeit-Aktualisierung des Spielzustands zu erreichen.
 
 ![Img](./media/5010.png)
 
-⑨ Determine si el juego ha terminado: primero comprueba si “la columna del ladrillo coincide con la del jugador” y “si la fila del ladrillo coincide con la del jugador”. Si se cumplen ambas condiciones (es decir, los ladrillos se superponen con el jugador), establezca el juego en estado 2 (fin del juego), borre la pantalla y reinicie el contador de parpadeos.
+⑨ Ermitteln Sie, ob das Spiel vorbei ist: Es wird zuerst geprüft, ob „die Ziegelsteinspalte mit der des Spielers übereinstimmt“ und „ob die Ziegelsteinzeile mit der des Spielers übereinstimmt“. Wenn beide Bedingungen erfüllt sind (d.h. die Ziegelsteine überlappen sich mit dem Spieler), wird das Spiel auf Zustand 2 (Spiel vorbei) gesetzt, die Anzeige gelöscht und die Blinkanzahl zurückgesetzt.
 
-“Fin del juego al colisionar.”
+„Spiel vorbei bei Kollision.“
 
 ![Img](./media/5011.png)
 
-⑩ Renderice los elementos visuales del juego: primero borra la pantalla y luego traza puntos con un brillo de 255 (Jugador) en la fila fija del jugador y en las posiciones de la columna actual; si el juego se inicia (game_state=1), traza puntos con un brillo de 85 (ladrillo) en la fila y columna del ladrillo. Así podemos distinguir los ladrillos del jugador según su brillo.
+⑩ Rendern Sie die Spielgrafik: Zuerst wird die Anzeige gelöscht, und dann werden Punkte mit einer Helligkeit von 255 (Spieler) an der festen Zeile und den aktuellen Spaltenpositionen des Spielers gezeichnet; wenn das Spiel gestartet ist (game_state=1), werden Punkte mit einer Helligkeit von 85 (Ziegelstein) an der Zeile und Spalte des Ziegelsteins gezeichnet. So können wir Ziegelsteine vom Spieler anhand ihrer Helligkeit unterscheiden.
 
 ![Img](./media/5012.png)
 
-#### 4.2.5.5 Resultado de la Prueba
+#### 4.2.5.5 Testergebnis
 
 ![Img](./media/4top.png)
 
-Después de grabar el código, inserte la placa micro:bit en la ranura del gamepad (**pilas instaladas**), y active el interruptor a “ON”.
+Nach dem Brennen des Codes stecken Sie das micro:bit board in den Steckplatz des Gamepads (**Batterien eingelegt**) und schalten Sie es auf „ON“.
 
-Está en **0-estado inicial** después de encender y la matriz parpadea dos iconos cuadrados.
+Es befindet sich nach dem Einschalten im **0-Anfangszustand** und die Matrix blinkt zwei quadratische Symbole.
 
-Presione A y B (durante al menos 1 segundo) para iniciar el juego (en estado **1-jugando**), y un ladrillo caerá en una columna aleatoria. Ahora puede moverse a izquierda/derecha presionando C/E. Cada vez que evite un ladrillo, puntuación +1.
+Drücken Sie A und B (für mindestens 1 Sekunde), um das Spiel zu starten (im **1-Gaming**-Zustand), und ein Ziegelstein fällt in eine zufällige Spalte. Jetzt können Sie sich durch Drücken von C/E nach links/rechts bewegen. Jedes Mal, wenn Sie einem Ziegelstein ausweichen, erhöht sich die Punktzahl um 1.
 
-Fin del juego al colisionar (**2-fin del juego**), y la puntuación final se mostrará en la matriz. Si desea jugar una ronda más, presione A y B nuevamente. Apague para salir del juego (cambie el interruptor DIP a “OFF”).
+Spiel vorbei bei Kollision (**2-Spiel vorbei**), und die Endpunktzahl wird auf der Matrix angezeigt. Wenn Sie eine weitere Runde spielen möchten, drücken Sie A und B erneut. Schalten Sie das Gerät aus, um das Spiel zu beenden (schalten Sie den DIP-Schalter auf „OFF“).
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Consejo:** Si no hay respuesta en la placa, presione el botón de reinicio en la parte posterior de la placa micro:bit.</span>
+<span style="color: rgb(0, 209, 0);">**Tipp:** Wenn das Board nicht reagiert, drücken Sie bitte die Reset-Taste auf der Rückseite des micro:bit board.</span>
 
 ![Img](./media/4bottom.png)

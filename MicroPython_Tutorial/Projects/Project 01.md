@@ -1,49 +1,49 @@
-### 5.2.1 Direction Indicator
+### 5.2.1 Richtingaanwijzer
 
-#### 5.2.1.1 Overview
+#### 5.2.1.1 Overzicht
 
 ![Img](./media/top1.png)
 
-When you toggle the joystick, the dot matrix displays arrows in the corresponding direction in real time: left, right, up, down, giving you a clear direction reference.
+Wanneer u de joystick beweegt, toont de puntmatrix in realtime pijlen in de overeenkomstige richting: links, rechts, omhoog, omlaag, wat u een duidelijke richtingsreferentie geeft.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.1.2 Component Knowledge
+#### 5.2.1.2 Componentenkennis
 
 ![Img](./media/2top.png)
 
-**Micro:bit dot matrix:**
+**Micro:bit puntmatrix:**
 
 ![Img](./media//1001.png)
 
-The LED dot matrix of the micro:bit board consists of a total of 25 light-emitting diodes, a group of 5, corresponding to axis X and Y, forming a 5×5 matrix. Each one is placed at the intersection of the row(X) and the column (Y). We can control one or some of them by setting the coordinate points.
+De LED-puntmatrix van het micro:bit-bord bestaat uit in totaal 25 lichtgevende diodes, een groep van 5, corresponderend met as X en Y, die een 5×5 matrix vormen. Elk is geplaatst op het snijpunt van de rij (X) en de kolom (Y). We kunnen een of enkele ervan besturen door de coördinaatpunten in te stellen.
 
 **Joystick:**
 
 | ![Img](./media/1002.png)| ![Img](./media//1003.png)  |
 | :--: | :--: |
-|       Real product       |     Schematic diagram     |
+|       Werkelijk product       |     Schematisch diagram     |
 
-The internal core structure of this joystick is composed of two adjustable resistors (potentiometers) with a resistance value of 10KΩ each.
+De interne kernstructuur van deze joystick is samengesteld uit twee instelbare weerstanden (potentiometers) met elk een weerstandswaarde van 10KΩ.
 
-It detect directions (and amplitude) of the push through the ADC analog pin of the microcontroller to output the analog electrical signals of the corresponding dimension. During actual signal reading, when the analog values of the joystick X and Y axes are detected within the range of 450~600, it can be determined that the joystick is in a neutral(stationary) state without active toggling.
+Het detecteert richtingen (en amplitude) van de druk via de ADC analoge pin van de microcontroller om de analoge elektrische signalen van de corresponderende dimensie uit te voeren. Tijdens het daadwerkelijke uitlezen van het signaal, wanneer de analoge waarden van de X- en Y-assen van de joystick worden gedetecteerd binnen het bereik van 450~600, kan worden vastgesteld dat de joystick zich in een neutrale (stationaire) toestand bevindt zonder actieve beweging.
 
 ![Img](./media/2bottom.png)
 
-#### 5.2.1.3 Required Parts
+#### 5.2.1.3 Benodigde onderdelen
 
 | ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png)  |![Img](./media/dianchi.png)|
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf mee te nemen) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 | **AAA batterij** (zelf mee te nemen) ×4 |
 
-#### 5.2.1.4 Code Flow
+#### 5.2.1.4 Codestroom
 
 ![Img](./media/1004.png)
 
 
-#### 5.2.1.5 Test Code
+#### 5.2.1.5 Testcode
 
-**Complete code:**
+**Volledige code:**
 
 ```Python
 # import related libraries
@@ -70,11 +70,11 @@ while True:
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import the library and display the initial image.
+① Importeer de bibliotheek en toon de initiële afbeelding.
 
-First import `microbit` library, which is a necessary core library of Micro:bit on MicroPython. It provides full access to the Micro:bit hardware (including LED displays and pins). Upon import, a house icon(`Image.HOUSE`) shows on the matrix as the initial state / standby screen.
+Importeer eerst de `microbit`-bibliotheek, een noodzakelijke kernbibliotheek van Micro:bit op MicroPython. Het biedt volledige toegang tot de Micro:bit-hardware (inclusief LED-displays en pinnen). Na import wordt een huispictogram (`Image.HOUSE`) op de matrix getoond als de initiële status / stand-byscherm.
 
 ```python
 # import related libraries
@@ -82,11 +82,11 @@ from microbit import *
 
 display.show(Image.HOUSE)
 ```
-② Loop: Read the analog value of the joystick.
+② Lus: Lees de analoge waarde van de joystick.
 
-The program enters an infinite loop (`while True`). At the start of the loop, it reads the analog input values from `pin2` and `pin1`, typically the joystick's X-axis (left-right) and the Y-axis (up-down).
+Het programma gaat een oneindige lus in (`while True`). Aan het begin van de lus leest het de analoge invoerwaarden van `pin2` en `pin1`, typisch de X-as (links-rechts) en de Y-as (omhoog-omlaag) van de joystick.
 
-`read_analog()` returns an integer value within 0~1023, representing the joystick's position along that axis. It is usually close to 511–512 when the joystick is centered.
+`read_analog()` retourneert een geheel getal tussen 0 en 1023, dat de positie van de joystick langs die as vertegenwoordigt. Het ligt meestal dicht bij 511-512 wanneer de joystick gecentreerd is.
 
 ```python
 while True:
@@ -94,14 +94,14 @@ while True:
     x = pin2.read_analog()
     y = pin1.read_analog()
 ```
-③ Determine the direction of the joystick and display the corresponding arrow.
+③ Bepaal de richting van de joystick en toon de overeenkomstige pijl.
 
-Here it determines the joystick's movement direction based on the analog `x` and `y`. We set thresholds (400 and 600) to determine whether the joystick is toggled.
+Hier wordt de bewegingsrichting van de joystick bepaald op basis van de analoge `x` en `y`. We stellen drempels (400 en 600) in om te bepalen of de joystick wordt bewogen.
 
-*   [ `x` > 600 , 400 <  `y` < 600 ] : (at central Y-axis) the joystick is at right and display the east-facing arrow (`Image.ARROW_E`).
-*   [ `x` < 400 , 400 <  `y` < 600 ] : the joystick is at left and display the west-facing arrow (`Image.ARROW_W`).
-*   [ `y` >  600 , 400 < `x` < 600 ] : the joystick is push down and display the south-facing arrow (`Image.ARROW_S`).
-*   [ `y` < 400 ,400 < `x` < 600 ] : the joystick is push up and display the north-facing arrow (`Image.ARROW_N`).
+*   [ `x` > 600 , 400 <  `y` < 600 ] : (op centrale Y-as) de joystick is naar rechts en toont de pijl naar het oosten (`Image.ARROW_E`).
+*   [ `x` < 400 , 400 <  `y` < 600 ] : de joystick is naar links en toont de pijl naar het westen (`Image.ARROW_W`).
+*   [ `y` >  600 , 400 < `x` < 600 ] : de joystick wordt naar beneden geduwd en toont de pijl naar het zuiden (`Image.ARROW_S`).
+*   [ `y` < 400 ,400 < `x` < 600 ] : de joystick wordt naar boven geduwd en toont de pijl naar het noorden (`Image.ARROW_N`).
 
 ```python
     #Determine the direction in which the joystick is toggled
@@ -114,25 +114,25 @@ Here it determines the joystick's movement direction based on the analog `x` and
     elif y < 400 and (400 < x < 600):
         display.show(Image.ARROW_N)
 ```
-④ The house pattern is displayed when the joystick is centered.
+④ Het huispatroon wordt weergegeven wanneer de joystick gecentreerd is.
 
-If none of the above conditions are met—that is, the joystick does not move significantly in any direction (which typically indicates it is in the center position)—the Micro:bit will again show the "house" (`Image.HOUSE`), which means the joystick is stationary.
+Als geen van de bovenstaande voorwaarden is voldaan – dat wil zeggen, de joystick beweegt niet significant in welke richting dan ook (wat typisch aangeeft dat deze in de middenpositie is) – zal de Micro:bit opnieuw het "huis" (`Image.HOUSE`) tonen, wat betekent dat de joystick stilstaat.
 
 ```python
     else:
         display.show(Image.HOUSE)
 ```
 
-#### 5.2.1.6 Test Result
+#### 5.2.1.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**) en zet u de schakelaar op “ON”. 
 
-When you push the joystick of the gamepad, you can see the corresponding arrows on the matrix. If you bring it back to the center, there will be a house icon on the matrix.
+Wanneer u de joystick van de gamepad beweegt, ziet u de overeenkomstige pijlen op de matrix. Als u deze terugbrengt naar het midden, verschijnt er een huispictogram op de matrix.
 
 ![Img](./media/1009.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, drukt u op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

@@ -1,33 +1,32 @@
-### 5.2.5 Avoid Bricks
+### 5.2.5 Vermijd stenen
 
-#### 5.2.5.1 Overview
+#### 5.2.5.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we play a brick-avoidance game where players use a Micro:bit gamepad to move their LED indicator left and right while evading bricks falling from above. There are three states: a) a dynamic icon at startup, b) real-time avoidance actions during gameplay, and c) a final score after collisions. 
+In dit project spelen we een spel om stenen te ontwijken, waarbij spelers een Micro:bit-gamepad gebruiken om hun LED-indicator naar links en rechts te bewegen terwijl ze stenen ontwijken die van bovenaf vallen. Er zijn drie staten: a) een dynamisch pictogram bij het opstarten, b) real-time ontwijkingsacties tijdens het spelen, en c) een eindscore na botsingen.
 
-Players earn 1 point after each avoidance (when the brick reaches the bottom), and the game is over when they collides with a brick; the final score is displayed with a scrolling effect. 
+Spelers verdienen 1 punt na elke ontwijking (wanneer de steen de onderkant bereikt), en het spel is afgelopen wanneer ze botsen met een steen; de eindscore wordt weergegeven met een scrolleffect.
 
-The game can be started or reset by pressing both A+B. This straightforward gameplay mechanism combines real-time responsiveness with strategic anticipation.
+Het spel kan worden gestart of gereset door zowel A+B in te drukken. Dit eenvoudige gameplay-mechanisme combineert real-time responsiviteit met strategische anticipatie.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.5.2 Required Parts
+#### 5.2.5.2 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf mee te nemen) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 | **AAA battery** (zelf mee te nemen) ×4 |
 
-#### 5.2.5.3 Code Flow
+#### 5.2.5.3 Codestroom
 
 ![Img](./media/5001.png)
 
-#### 5.2.5.4 Test Code
+#### 5.2.5.4 Testcode
 
-⚠️ **Note that the initial threshold ''brick_move_speed=300'' can be modified according to your needs. The higher the value is, the slower the brick will fall.**
+⚠️ **Merk op dat de initiële drempel `brick_move_speed=300` kan worden aangepast aan uw behoeften. Hoe hoger de waarde, hoe langzamer de steen zal vallen.**
 
-**Complete code:**
-
+**Volledige code:**
 
 ```python
 import utime
@@ -36,8 +35,8 @@ from microbit import *
 
 # ===================== Global Configuration & Variables =====================
 # Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
-player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (rightmost)
+player_fixed_row = 4    # Player\'s fixed row (bottom row)
+player_init_col = 4     # Player\'s initial column (rightmost)
 brick_move_speed = 300  # Brick falling interval (ms)
 
 # Game state: 0=not started 1=running 2=game over
@@ -56,7 +55,7 @@ last_brick_time = 0     # Last brick falling timestamp
 start_flag = 0          # Start button debounce flag
 can_start = False       # Game start flag
 ab_pressed = False      # A+B pressed simultaneously flag
-player_col = player_init_col  # Player's current column
+player_col = player_init_col  # Player\'s current column
 
 # Initialize pins with pull-up (PULL_UP: pressed=low level 0, released=high level 1)
 pin13.set_pull(pin13.PULL_UP)  # Right move button
@@ -184,31 +183,30 @@ if __name__ == "__main__":
         on_forever()
         utime.sleep_ms(10)
 ```
-
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import libraries, configure constants and initialization.
+① Importeer bibliotheken, configureer constanten en initialisatie.
 
-It first imports `utime` for time-related operations (e.g., delays), `random` for generating random numbers, `microbit` for accessing Micro:bit's hardware.
+Het importeert eerst `utime` voor tijdgerelateerde bewerkingen (bijv. vertragingen), `random` voor het genereren van willekeurige getallen, `microbit` voor toegang tot de hardware van de Micro:bit.
 
-It then defines global variables and constants to configure the game:
+Vervolgens definieert het globale variabelen en constanten om het spel te configureren:
 
-*   `player_fixed_row` and `player_init_col` define the player's initial position (at the rightmost column of the bottom row).
-*   `brick_move_speed` sets the time interval (in milliseconds) of the brick' fall.
-*   `game_state` tracks game status (0=initial, 1=gaming, 2=game over).
-*   `brick_x`, `brick_y` store the current coordinates of the brick.
-*   `score` records the score.
-*   `a_pressed_flag`, `b_pressed_flag` eliminate button jitter.
-*   `collision_x`, `collision_y` detects collision.
-*   `flash_count` creates a flickering effect at the end of the game.
-*   `time_passed`, `current_time`, `last_brick_time` is for timing the fall of bricks.
-*   `start_flag`, `can_start`, `ab_pressed` is used for game start and to reset anti-jitter and button status.
-*   `player_col` stores the player's current column position.
+*   `player_fixed_row` en `player_init_col` definiëren de initiële positie van de speler (in de meest rechtse kolom van de onderste rij).
+*   `brick_move_speed` stelt het tijdsinterval (in milliseconden) van de val van de steen in.
+*   `game_state` houdt de spelstatus bij (0=initieel, 1=spelend, 2=game over).
+*   `brick_x`, `brick_y` slaan de huidige coördinaten van de steen op.
+*   `score` registreert de score.
+*   `a_pressed_flag`, `b_pressed_flag` elimineren knopjitter.
+*   `collision_x`, `collision_y` detecteert botsing.
+*   `flash_count` creëert een flikkereffect aan het einde van het spel.
+*   `time_passed`, `current_time`, `last_brick_time` is voor het timen van de val van stenen.
+*   `start_flag`, `can_start`, `ab_pressed` wordt gebruikt voor het starten van het spel en om anti-jitter en knopstatus te resetten.
+*   `player_col` slaat de huidige kolompositie van de speler op.
 
-Finally, it configures `pin13` and `pin15` (used for left and right button movements) as internal pull-up resistors (`pinX.PULL_UP`), meaning pins maintain a high level (1) when the buttons are not pressed and a low level (0) when pressed.
+Ten slotte configureert het `pin13` en `pin15` (gebruikt voor linker- en rechterknopbewegingen) als interne pull-up-weerstanden (`pinX.PULL_UP`), wat betekent dat pinnen een hoog niveau (1) behouden wanneer de knoppen niet zijn ingedrukt en een laag niveau (0) wanneer ze zijn ingedrukt.
 
 ```python
 import utime
@@ -217,8 +215,8 @@ from microbit import *
 
 # ===================== Global Configuration & Variables =====================
 # Player initial configuration (micro:bit pixel coordinates: col=column(0-4, left-right), row=row(0-4, top-bottom))
-player_fixed_row = 4    # Player's fixed row (bottom row)
-player_init_col = 4     # Player's initial column (rightmost)
+player_fixed_row = 4    # Player\'s fixed row (bottom row)
+player_init_col = 4     # Player\'s initial column (rightmost)
 brick_move_speed = 300  # Brick falling interval (ms)
 
 # Game state: 0=not started 1=running 2=game over
@@ -237,21 +235,21 @@ last_brick_time = 0     # Last brick falling timestamp
 start_flag = 0          # Start button debounce flag
 can_start = False       # Game start flag
 ab_pressed = False      # A+B pressed simultaneously flag
-player_col = player_init_col  # Player's current column
+player_col = player_init_col  # Player\'s current column
 
 # Initialize pins with pull-up (PULL_UP: pressed=low level 0, released=high level 1)
 pin13.set_pull(pin13.PULL_UP)  # Right move button
 pin15.set_pull(pin15.PULL_UP)  # Left move button
 ```
 
-② Core functional function definitions. 
+② Definitie van kernfunctionele functies.
 
-There are three core functions that the game needs:
+Er zijn drie kernfuncties die het spel nodig heeft:
 
-*   `on_start()` : Called at program startup. It primarily initializes the starting column position of bricks, ensuring one appear randomly among 0 to 4.
-*   `draw_game()` : Responsible for rendering game elements on the Micro:bit 5x5 LED matrix. It clears the display and show the player at maximum brightness(9) in the bottom row `player_fixed_row` with columns determined by `player_col`. When the game is running (`game_state == 1`), it renders bricks at medium brightness (7).
-*   `reset_game()` : Reset the game to its initial state. It sets `game_state` to 1, resets player and brick and scores, clears the button anti-jitter flag and display.
-*   `check_collision()` : Detect whether a collision occurs between the brick and the player. This is determined by comparing axis `x`  (`brick_x == player_col`) and `y` (`brick_y == player_fixed_row`). If both match, a collision is detected and `game_state` = 2(game over), clear display and reset `flash_count`.
+*   `on_start()`: Wordt aangeroepen bij het opstarten van het programma. Het initialiseert voornamelijk de startkolompositie van stenen, zodat er willekeurig één verschijnt tussen 0 en 4.
+*   `draw_game()`: Verantwoordelijk voor het weergeven van spelelementen op de Micro:bit 5x5 LED-matrix. Het wist het display en toont de speler met maximale helderheid (9) in de onderste rij `player_fixed_row` met kolommen bepaald door `player_col`. Wanneer het spel draait (`game_state == 1`), worden stenen weergegeven met gemiddelde helderheid (7).
+*   `reset_game()`: Reset het spel naar de oorspronkelijke staat. Het stelt `game_state` in op 1, reset speler en steen en scores, wist de knop-anti-jitter-vlag en het display.
+*   `check_collision()`: Detecteert of er een botsing plaatsvindt tussen de steen en de speler. Dit wordt bepaald door de as `x` (`brick_x == player_col`) en `y` (`brick_y == player_fixed_row`) te vergelijken. Als beide overeenkomen, wordt een botsing gedetecteerd en wordt `game_state` = 2 (game over), wordt het display gewist en wordt `flash_count` gereset.
 
 ```python
 # ===================== Core Functions =====================
@@ -294,13 +292,13 @@ def check_collision():
         flash_count = 0
 ```
 
-③ Main loop: Game Start/Reset Logic.
+③ Hoofdloop: Spel Start/Reset Logica.
 
-`on_forever()` first checks whether both the A and B buttons on the Micro:bit board are pressed (`button_a.is_pressed() and button_b.is_pressed()`). `can_start` flag is true when both A and B buttons are pressed simultaneously and the game is not running.
+`on_forever()` controleert eerst of zowel de A- als de B-knoppen op het Micro:bit-bord zijn ingedrukt (`button_a.is_pressed() and button_b.is_pressed()`). De `can_start`-vlag is waar wanneer zowel de A- als de B-knoppen tegelijkertijd zijn ingedrukt en het spel niet draait.
 
-If `can_start` is true and `start_flag` = 0 (the first detected simultaneous press of the A+B), set `start_flag` to 1 with a short delay (`utime.sleep_ms(20)`).
+Als `can_start` waar is en `start_flag` = 0 (de eerste gedetecteerde gelijktijdige druk op A+B), stel `start_flag` in op 1 met een korte vertraging (`utime.sleep_ms(20)`).
 
-Recheck whether the A+B buttons remain pressed (for anti-jitter). If yes, `reset_game()` will restart the game, and `last_brick_time` is recorded. If the A+B are not pressed at the same time, `start_flag` = 0.
+Controleer opnieuw of de A+B-knoppen ingedrukt blijven (voor anti-jitter). Zo ja, dan zal `reset_game()` het spel opnieuw starten, en `last_brick_time` wordt vastgelegd. Als de A+B niet tegelijkertijd worden ingedrukt, is `start_flag` = 0.
 
 ```python
 # ===================== Main Loop =====================
@@ -324,9 +322,9 @@ def on_forever():
         start_flag = 0
 ```
 
-④ Main loop: Display of the game-not-started and game-over status.
-*   **Game has not started yet. (`game_state == 0`)**: In this state, the matrix displays small diamonds (`Image.DIAMOND_SMALL`) and large diamonds (`Image.DIAMOND`) with each lasting 500ms, as an indication for players to wait before starting.
-*   **Game is over (`game_state == 2`)**: When the game ends, the program enters a loop that flashes the score. `flash_count` limits the number of flashes (3 here). Each flash scroll-display the current score, and clear it with a brief delay. After that, final score shows again for 500 milliseconds.
+④ Hoofdloop: Weergave van de niet-gestarte en game-over status van het spel.
+*   **Spel is nog niet gestart. (`game_state == 0`)**: In deze staat toont de matrix kleine diamanten (`Image.DIAMOND_SMALL`) en grote diamanten (`Image.DIAMOND`) die elk 500 ms duren, als een indicatie voor spelers om te wachten voordat ze beginnen.
+*   **Spel is afgelopen (`game_state == 2`)**: Wanneer het spel eindigt, gaat het programma een lus in die de score laat knipperen. `flash_count` beperkt het aantal flitsen (hier 3). Elke flits toont de huidige score, en wist deze met een korte vertraging. Daarna wordt de eindscore opnieuw 500 milliseconden weergegeven.
 
 ```python
     # 2. Game not started state
@@ -348,21 +346,20 @@ def on_forever():
             display.scroll(score)
             utime.sleep_ms(500)
 ```
+⑤ Hoofdloop: De logica tijdens het spelen.
 
-⑤ Main loop: The logic in during gaming.
+`game_state == 1` (spelend), voer de volgende logica uit:
 
-`game_state == 1` (gaming), execute the following logic:
-
-*   **Player move left and right.**:
-    *   `pin15` (left movement button): If `pin15` is pressed (reading 0), `a_pressed_flag` is `False` (avoid consecutive triggers), and Player is not at the most left (`player_col > 0`), Player will move one space to the left (`player_col -= 1`) and `a_pressed_flag` will become `True`, with a delay of 50ms. If `pin15` is not pressed, `a_pressed_flag` will be reset to `False`.
-    *   `pin13` (right movement button): If `pin13` is pressed (reading 0), `a_pressed_flag` is `False` (avoid consecutive triggers), and Player is not at the most right (`player_col < 4`), Player will move one space to the right (`player_col += 1`) and `b_pressed_flag` will become `True`, with a delay of 50ms. If `pin13` is not pressed, `b_pressed_flag` will be reset to `False`.
-*   **Brick falls down**:
-    *   `current_time` gets the current time, `time_passed` calculates the time elapsed since the last brick fell.
-    *   If `time_passed` > `brick_move_speed`, update `last_brick_time` and brick moves one space down (`brick_y += 1`).
-    *   If a brick falls till the bottom (`brick_y > 4`), reset it to a random column at the top (`brick_x = random.randint(0, 4)`), and zero out `brick_y` and `score` +1. 
-*   **Detect collision and render image**:
-    *   `check_collision()` detects if the player and the brick collide.
-    *   `draw_game()` updates the display on the Micro:bit matrix.
+*   **Speler beweegt naar links en rechts.**:
+    *   `pin15` (linkerbewegingsknop): Als `pin15` wordt ingedrukt (leest 0), `a_pressed_flag` is `False` (voorkom opeenvolgende triggers), en de speler is niet helemaal links (`player_col > 0`), zal de speler één spatie naar links bewegen (`player_col -= 1`) en `a_pressed_flag` wordt `True`, met een vertraging van 50 ms. Als `pin15` niet wordt ingedrukt, wordt `a_pressed_flag` gereset naar `False`.
+    *   `pin13` (rechterbewegingsknop): Als `pin13` wordt ingedrukt (leest 0), `a_pressed_flag` is `False` (voorkom opeenvolgende triggers), en de speler is niet helemaal rechts (`player_col < 4`), zal de speler één spatie naar rechts bewegen (`player_col += 1`) en `b_pressed_flag` wordt `True`, met een vertraging van 50 ms. Als `pin13` niet wordt ingedrukt, wordt `b_pressed_flag` gereset naar `False`.
+*   **Steen valt naar beneden**:
+    *   `current_time` krijgt de huidige tijd, `time_passed` berekent de verstreken tijd sinds de laatste steen viel.
+    *   Als `time_passed` > `brick_move_speed`, werk `last_brick_time` bij en de steen beweegt één spatie naar beneden (`brick_y += 1`).
+    *   Als een steen tot de bodem valt (`brick_y > 4`), reset deze dan naar een willekeurige kolom bovenaan (`brick_x = random.randint(0, 4)`), en zet `brick_y` op nul en `score` +1.
+*   **Detecteer botsing en render afbeelding**:
+    *   `check_collision()` detecteert of de speler en de steen botsen.
+    *   `draw_game()` werkt het display op de Micro:bit-matrix bij.
 
 ```python
     # 4. Game running logic
@@ -403,17 +400,17 @@ def on_forever():
         draw_game()
 ```
 
-⑥ Program entry point.
+⑥ Programma-ingangspunt.
 
-This is the actual starting point for the execution of the program.
+Dit is het daadwerkelijke startpunt voor de uitvoering van het programma.
 
-`if __name__ == "__main__":` ensures this code is only executed when the script is running as the main program.
+`if __name__ == "__main__":` zorgt ervoor dat deze code alleen wordt uitgevoerd wanneer het script als hoofdprogramma draait.
 
-Among it, `on_start()` performs a one-time initialization.
-Then, enter an infinite loop (`while True`), where each iteration:
+Daarin voert `on_start()` een eenmalige initialisatie uit.
+Vervolgens wordt een oneindige lus (`while True`) ingegaan, waarbij elke iteratie:
 
-*   `on_forever()` executes all the core logic of the game.
-*   A delay of 10ms (`utime.sleep_ms(10)`) controls the execution frequency, reduces CPU load, and ensures moderate game update speed.
+*   `on_forever()` alle kernlogica van het spel uitvoert.
+*   Een vertraging van 10 ms (`utime.sleep_ms(10)`) regelt de uitvoeringsfrequentie, vermindert de CPU-belasting en zorgt voor een matige updatesnelheid van het spel.
 
 ```python
 # ===================== Program Entry Point =====================
@@ -423,20 +420,20 @@ if __name__ == "__main__":
         on_forever()
         utime.sleep_ms(10)
 ```
-#### 5.2.5.5 Test Result
+#### 5.2.5.5 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op “ON”.
 
-It is in **0-initial state** after powering on and the matrix flashes two square icons. 
+Het bevindt zich in de **0-initiële staat** na het inschakelen en de matrix knippert twee vierkante pictogrammen.
 
-Press A and B (for at least 1 second) to start the game (in **1-gaming** state), and a brick will fall in a random column. Now you can move left/right by pressing C/E. Each time you avoid a brick, score+1. 
+Druk op A en B (gedurende ten minste 1 seconde) om het spel te starten (in de **1-spelende** staat), en een steen zal in een willekeurige kolom vallen. Nu kunt u naar links/rechts bewegen door op C/E te drukken. Elke keer dat u een steen ontwijkt, score+1.
 
-Game over upon collision (**2-game over**), and the final score will be displayed on the matrix. If you want to play one more round, press A and B again. Power off to exit the game (toggle the DIP switch to “OFF”).
+Game over bij botsing (**2-game over**), en de eindscore wordt weergegeven op de matrix. Als u nog een ronde wilt spelen, drukt u opnieuw op A en B. Schakel uit om het spel te verlaten (zet de DIP-schakelaar op “OFF”).
 
 ![Img](./media/5000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

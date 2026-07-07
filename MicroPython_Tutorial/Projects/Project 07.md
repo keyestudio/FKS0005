@@ -1,26 +1,26 @@
-### 5.2.7 Guess Number
+### 5.2.7 Raad het nummer
 
-#### 5.2.7.1 Overview
+#### 5.2.7.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we play a game of guessing number by a Micro:bit board, a gamepad control board, and an OLED display. When the correct number is guessed, the OLED displays "Great!!!"; if the guess is too high or too low, it shows "To High!"/"To Low!" respectively, along with the corresponding range of possible numbers.
+In dit project spelen we een nummerspel met een Micro:bit-bord, een gamepad-besturingsbord en een OLED-display. Wanneer het juiste nummer is geraden, toont de OLED "Great!!!"; als de gok te hoog of te laag is, toont het respectievelijk "To High!"/"To Low!", samen met het corresponderende bereik van mogelijke nummers.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.7.2 Required Parts
+#### 5.2.7.2 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
-|![Img](./media/OLED.png)|![Img](./media/7008.png)||
-|    **OLED display** (self-provided)×1     |   **F-F DuPont wire**(self-provided) x4    ||
+| **micro:bit V2 board** (zelf mee te nemen) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 | **AAA battery** (zelf mee te nemen) ×4 |
+|![Img](./media/OLED.png)|![Img](./media/7008.png)|
+|    **OLED display** (zelf mee te nemen)×1     |   **F-F DuPont wire**(zelf mee te nemen) x4    |
 
-#### 5.2.7.3 Wiring Diagram
+#### 5.2.7.3 Bedradingsschema
 
 ![Img](./media/jiexian8.png)
 
-**After wiring up as shown above, insert the micro:bit into the slot on the gamepad control board.**
+**Na het bedraden zoals hierboven weergegeven, plaatst u de micro:bit in de sleuf op het gamepad-besturingsbord.**
 
 | OLED display | micro:bit gamepad control board | micro:bit board pin |
 | :----------: | :-----------------------------: | :-----------------: |
@@ -29,17 +29,17 @@ In this project, we play a game of guessing number by a Micro:bit board, a gamep
 |     SDA      |               SDA               |         P20         |
 |     SCL      |               SCL               |         P19         |
 
-#### 5.2.7.4 Code Flow
+#### 5.2.7.4 Codestroom
 
 ![Img](./media/8001.png)
 
-#### 5.2.7.5 Test Code
+#### 5.2.7.5 Testcode
 
-⚠️ **Note that here OLED is used, so we need to import its library.**
+⚠️ **Merk op dat hier OLED wordt gebruikt, dus we moeten de bibliotheek importeren.**
 
 ![Img](./media/t7000.png)
 
-**Complete code:**
+**Volledige code:**
 
 ```python
 # Import required libraries
@@ -132,17 +132,17 @@ while True:
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import libraries, initialize OLED, define global variables, and configure button pins.
+① Importeer bibliotheken, initialiseer OLED, definieer globale variabelen en configureer knoppinnen.
 
-Three libraries are required: `microbit`(for accessing Micro:bit hardware), `oled_ssd1306`(for controlling the connected OLED display), `random`(for generating random numbers in the game).
+Drie bibliotheken zijn vereist: `microbit` (voor toegang tot Micro:bit-hardware), `oled_ssd1306` (voor het aansturen van het aangesloten OLED-display), `random` (voor het genereren van willekeurige nummers in het spel).
 
-`initialize()` and `clear_oled()` initializes and clears the OLED. 
+`initialize()` en `clear_oled()` initialiseren en wissen de OLED.
 
-A series of global variables are defined to manage game state parameters, including game mode (`mode`), number range (`min_num`, `max_num`), the current guess value (`current_guess`), the target number (`target_num`), game feedback (`state`) and a flag controlling display updates (`update_display`).
+Een reeks globale variabelen wordt gedefinieerd om spelstatusparameters te beheren, waaronder spelmodus (`mode`), nummerbereik (`min_num`, `max_num`), de huidige gokwaarde (`current_guess`), het doelnummer (`target_num`), spelfeedback (`state`) en een vlag die display-updates regelt (`update_display`).
 
-`pin13`, `pin15` and `pin16` are configured in pull-up mode—maintaining high when button is not pressed and low when pressed. 
+`pin13`, `pin15` en `pin16` zijn geconfigureerd in pull-up-modus – hoog blijven wanneer de knop niet is ingedrukt en laag wanneer deze is ingedrukt.
 
 ```python
 # Import required libraries
@@ -168,13 +168,13 @@ pin13.set_pull(pin13.PULL_UP)
 pin15.set_pull(pin15.PULL_UP)
 pin16.set_pull(pin16.PULL_UP)
 ```
-② Game initialization logic in the main loop.
+② Spelinitialisatielogica in de hoofdloop.
 
-It is the first logical block of the program's main loop, specifically responsible for game initialization or restart. 
+Het is het eerste logische blok van de hoofdloop van het programma, specifiek verantwoordelijk voor spelinitialisatie of herstart.
 
-`mode` = `0` : the game requires initialization. In this case, it resets the guess range to 1–100 and sets the current guess value to 50. It uses `randint(min_num, max_num)` to randomly generate an integer within 1 to 100 as the target number (`target_num`)
+`mode` = `0`: het spel vereist initialisatie. In dit geval reset het het gokbereik naar 1–100 en stelt het de huidige gokwaarde in op 50. Het gebruikt `randint(min_num, max_num)` om willekeurig een geheel getal tussen 1 en 100 te genereren als het doelnummer (`target_num`).
 
-Then,  `state` = `0` (initial state) and `mode` = `1` (running). And set `update_display` to `True` to ensure the OLED updates the latest game information immediately during running.
+Vervolgens, `state` = `0` (initiële staat) en `mode` = `1` (lopend). En stel `update_display` in op `True` om ervoor te zorgen dat de OLED de nieuwste spelinformatie onmiddellijk bijwerkt tijdens het draaien.
 
 ```python
 while True:
@@ -188,18 +188,18 @@ while True:
         mode = 1  # Switch to running mode
         update_display = True
 ```
-③ Handle button inputs and decision-making based on guess.
+③ Verwerk knopinvoer en besluitvorming op basis van de gok.
 
-When the game is in operation (`mode == 1`), it manages player interactions and game logic. It independently detects inputs from three external buttons:
+Wanneer het spel in werking is (`mode == 1`), beheert het spelerinteracties en spellogica. Het detecteert onafhankelijk invoer van drie externe knoppen:
 
-*   **`pin15` is pressed**: (low level detected); `current_guess` + 1. To prevent the value from exceeding the range, it checks and limits `current_guess` < or = `max_num`.
-*   **`pin13` is pressed**: `current_guess` - 1. It also checks  `current_guess` no greater than `min_num`。
-*   **`pin16` is pressed**: If `pin16` is pressed，表示The player submitted the guess value. It will be compared with `target_num`:
-    *   `current_guess` > `target_num` : `state` = `1` (too high) and set range maximum `max_num` to  `current_guess`.
-    *   `current_guess` < `target_num `: `state` = `2` (too low) and set the minimum `min_num` to `current_guess`.
-    *   `current_guess` = `target_num` : `state` = `3` (Great) and set `mode` to `0` to prepare for next round.
+*   **`pin15` is ingedrukt**: (laag niveau gedetecteerd); `current_guess` + 1. Om te voorkomen dat de waarde het bereik overschrijdt, controleert en beperkt het `current_guess` < of = `max_num`.
+*   **`pin13` is ingedrukt**: `current_guess` - 1. Het controleert ook `current_guess` niet groter dan `min_num`.
+*   **`pin16` is ingedrukt**: Als `pin16` is ingedrukt, betekent dit dat de speler de gokwaarde heeft ingediend. Deze wordt vergeleken met `target_num`:
+    *   `current_guess` > `target_num`: `state` = `1` (te hoog) en stel het bereikmaximum `max_num` in op `current_guess`.
+    *   `current_guess` < `target_num`: `state` = `2` (te laag) en stel het minimum `min_num` in op `current_guess`.
+    *   `current_guess` = `target_num`: `state` = `3` (Geweldig) en stel `mode` in op `0` om je voor te bereiden op de volgende ronde.
 
-After each button press, `update_display` is set to `True` to update OLED, with a delay of 50ms for anti-jitter. 
+Na elke knopdruk wordt `update_display` ingesteld op `True` om de OLED bij te werken, met een vertraging van 50 ms voor anti-jitter.
 
 ```python
     # 2. Game running logic
@@ -232,15 +232,15 @@ After each button press, `update_display` is set to `True` to update OLED, with 
             update_display = True
             sleep(50)  # Debounce delay
 ```
-④ OLED update logic.
+④ OLED-updatelogica.
 
-It displays the game's current status and information on the OLED. It executes only when `update_display` = `True` to avoid unnecessary refreshes. 
+Het toont de huidige status en informatie van het spel op de OLED. Het wordt alleen uitgevoerd wanneer `update_display` = `True` om onnodige vernieuwingen te voorkomen.
 
-Each execution first calls `clear_oled()` to clear the display. The current guess range (e.g., "num:1~100") appears on the first line. The player's current guess (`current_guess`) is displayed on the third line. 
+Elke uitvoering roept eerst `clear_oled()` aan om het display te wissen. Het huidige gokbereik (bijv. "num:1~100") verschijnt op de eerste regel. De huidige gok van de speler (`current_guess`) wordt weergegeven op de derde regel.
 
-Based on `state`,  the corresponding feedback message ("TO High,"  "TO Low," or "Great!!!") appears on the fifth line. 
+Op basis van `state` verschijnt het corresponderende feedbackbericht ("TO High," "TO Low," of "Great!!!") op de vijfde regel.
 
-After completing all displays, `update_display` is reset to `False` to ready to update the next game state change.
+Na het voltooien van alle weergaven wordt `update_display` gereset naar `False` om klaar te zijn om de volgende spelstatuswijziging bij te werken.
 
 ```python
         # 3. Update OLED display (only when needed)
@@ -261,11 +261,11 @@ After completing all displays, `update_display` is reset to `False` to ready to 
             # Reset update flag
             update_display = False
 ```
-⑤ Handle delays after correct guesses.
+⑤ Verwerk vertragingen na correcte gissingen.
 
-It only executes when the player correctly guesses the target number (`state == 3`). Then, it pauses 1000ms(1s) for players to check the “Great!!!”.
+Het wordt alleen uitgevoerd wanneer de speler het doelnummer correct raadt (`state == 3`). Vervolgens pauzeert het 1000 ms (1 s) zodat spelers de "Great!!!" kunnen controleren.
 
-Then, `state` is reset to `0`. Since `mode` has already been reset to `0`, upon correct guess, the game will restart from the initialization.
+Vervolgens wordt `state` gereset naar `0`. Aangezien `mode` al is gereset naar `0`, zal het spel bij een correcte gok opnieuw starten vanaf de initialisatie.
 
 ```python
     # 4. Delay after correct guess to show message
@@ -274,22 +274,22 @@ Then, `state` is reset to `0`. Since `mode` has already been reset to `0`, upon 
         state = 0
 ```
 
-#### 5.2.7.6 Test Result
+#### 5.2.7.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to "ON".
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op "ON".
 
-After uploading the code, the OLED initializes and shows the value range of "num: 1 ~ 100" and initial guess of 50. You can press C to temp+1(max of 100) or E to temp-1(min of 1) to change your guess value on the OLED.
+Na het uploaden van de code initialiseert de OLED en toont het het waardebereik van "num: 1 ~ 100" en de initiële gok van 50. U kunt op C drukken om temp+1 (maximaal 100) of op E om temp-1 (minimaal 1) om uw gokwaarde op de OLED te wijzigen.
 
-Press D to submit your value, and temp will be compared with the random target value. If temp>value, show "To High!" and assign temp to max_num; if temp<value, show "To Low!" and assign it to min_num. If you are too lucky that temp=value, you will see "Great!!!" for 1s.
+Druk op D om uw waarde in te dienen, en temp wordt vergeleken met de willekeurige doelwaarde. Als temp>waarde, toon "To High!" en wijs temp toe aan max_num; als temp<waarde, toon "To Low!" en wijs het toe aan min_num. Als u te veel geluk heeft dat temp=waarde, ziet u "Great!!!" gedurende 1s.
 
-After that, the game will be reset and a new target value will be set. Let's play another round!
+Daarna wordt het spel gereset en wordt een nieuwe doelwaarde ingesteld. Laten we nog een ronde spelen!
 
 ![Img](./media/t7000.gif)
 
-⚠️ **The building block in Test Result are not included in this product kit.**
+⚠️ **De bouwsteen in Testresultaat is niet inbegrepen in deze productkit.**
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

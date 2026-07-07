@@ -1,42 +1,42 @@
-### 5.2.3 Simple Electronic Piano
+### 5.2.3 Eenvoudige Elektronische Piano
 
-#### 5.2.3.1 Overview
+#### 5.2.3.1 Overzicht
 
 ![Img](./media/top1.png)
 
-In this project, we control the micro:bit speaker to play different tones by toggling the joystick and pressing the buttons. Meanwhile, the on-board LED matrix will show corresponding numbers. 
+In dit project bedienen we de micro:bit-luidspreker om verschillende tonen af te spelen door de joystick te bewegen en op de knoppen te drukken. Tegelijkertijd zal de ingebouwde LED-matrix overeenkomstige nummers tonen.
 
-Turning the joystick to the right produces "Do (Tone Central C)" with the display showing "1"; turning it to the left produces "Re (Tone D)" with "2"; turning it upward produces "Mi (Tone E)" with "3"; turning it downward produces "Fa (Tone F)" with "4". Pressing the button C produces "Sol (Tone G)" with "5", pressing D produces "La (Tone A)" with "6", E produces "Si (Tone B)" with "7", and pressing F produces higher "Do(Sharp)" while the display reverts to "1". There is a nice synchronization of the joystick, buttons, tones, and display.
+De joystick naar rechts draaien produceert "Do (Toon Centrale C)" met de weergave "1"; naar links draaien produceert "Re (Toon D)" met "2"; naar boven draaien produceert "Mi (Toon E)" met "3"; naar beneden draaien produceert "Fa (Toon F)" met "4". Op knop C drukken produceert "Sol (Toon G)" met "5", op D drukken produceert "La (Toon A)" met "6", E produceert "Si (Toon B)" met "7", en op F drukken produceert een hogere "Do(Scherp)" terwijl de weergave terugkeert naar "1". Er is een mooie synchronisatie van de joystick, knoppen, tonen en weergave.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.3.2 Component Knowledge
+#### 5.2.3.2 Componentenkennis
 
 ![Img](./media/2top.png)
 
-**Microbit speaker**
+**Microbit luidspreker**
 
 ![Img](./media/j901.png)
 
-The micro:bit board features a built-in speaker for making sound, like giggles, greetings, yawns, or expressions of sadness, or even compose a song. By programming, it can even generate individual notes, melodies, and rhythms, or even musical compositions, such as the song *Ode to Joy*.
+Het micro:bit-bord beschikt over een ingebouwde luidspreker voor het maken van geluid, zoals gegiechel, groeten, geeuwen of uitingen van verdriet, of zelfs het componeren van een lied. Door te programmeren kan het zelfs individuele noten, melodieën en ritmes genereren, of zelfs muzikale composities, zoals het lied *Ode aan de Vreugde*.
 
 ![Img](./media/2bottom.png)
 
-#### 5.2.3.3 Required Parts
+#### 5.2.3.3 Benodigde onderdelen
 
 | ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf mee te nemen) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 | **AAA batterij** (zelf mee te nemen) ×4 |
 
-#### 5.2.3.4 Code Flow
+#### 5.2.3.4 Codestroom
 
 ![Img](./media/3009.png)
 
-#### 5.2.3.5 Test Code
+#### 5.2.3.5 Testcode
 
-⚠️ **Note that the sensitivity of the joystick can be adjusted according to your needs.**
+⚠️ **Let op: de gevoeligheid van de joystick kan naar behoefte worden aangepast.**
 
-**Complete code:**
+**Volledige code:**
 
 ```python
 # import related libraries
@@ -86,18 +86,18 @@ while True:
 ```
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import libraries, configure constants, and initialize.
+① Bibliotheken importeren, constanten configureren en initialiseren.
 
-It imports `microbit` library to access Micro:bit's hardware capabilities and `music` for playing music. It then defines two essential list of configuration constants:
+Het importeert de `microbit`-bibliotheek om toegang te krijgen tot de hardwaremogelijkheden van Micro:bit en `music` voor het afspelen van muziek. Vervolgens definieert het twee essentiële lijsten met configuratieconstanten:
 
-*   `JOY_MAP`: Used to configure the joystick mapping. Each tuple contains joystick-connected pins, thresholds (e.g., above 600 or below 400), the musical note to play (e.g., 'c4:2' is central C lasting two beats), and the character displayed on the Micro:bit LED matrix.
-*   `BTN_MAP`: The mapping used to configure external buttons. Each tuple contains the button-connected pins, the musical notes to play, and the characters displayed on the Micro:bit LED matrix.
+*   `JOY_MAP`: Wordt gebruikt om de joystick-mapping te configureren. Elke tuple bevat joystick-verbonden pinnen, drempels (bijv. boven 600 of onder 400), de af te spelen muzieknoot (bijv. 'c4:2' is centrale C die twee tellen duurt), en het teken dat wordt weergegeven op de Micro:bit LED-matrix.
+*   `BTN_MAP`: De mapping die wordt gebruikt om externe knoppen te configureren. Elke tuple bevat de knop-verbonden pinnen, de af te spelen muzieknoten en de tekens die worden weergegeven op de Micro:bit LED-matrix.
 
-During initialization, the program scans all button pins in `BTN_MAP` and sets their internal pull-up resistors(`p.PULL_UP`). This ensures the pins remain high-level when the button is not pressed and drops them to low level when pressed. 
+Tijdens de initialisatie scant het programma alle knoppinnen in `BTN_MAP` en stelt hun interne pull-up weerstanden (`p.PULL_UP`) in. Dit zorgt ervoor dat de pinnen hoog blijven wanneer de knop niet wordt ingedrukt en naar een laag niveau vallen wanneer deze wordt ingedrukt.
 
-Finally, a musical note icon(`Image.MUSIC_CROTCHET`) appears on the LED matrix.
+Ten slotte verschijnt er een muzieknootpictogram (`Image.MUSIC_CROTCHET`) op de LED-matrix.
 
 ```python
 # import related libraries
@@ -123,13 +123,13 @@ for p, n, d in BTN_MAP:
 display.show(Image.MUSIC_CROTCHET)
 ```
 
-② Main loop: Handle joystick inputs.
+② Hoofdlus: Verwerk joystick-ingangen.
 
-It is an infinite loop(`while True`). It first processes the joystick input by iterating through the `JOY_MAP` list and checking each joystick direction. For each joystick pin, it reads its analog value(`pin.read_analog()`). 
+Het is een oneindige lus (`while True`). Het verwerkt eerst de joystick-ingang door de `JOY_MAP`-lijst te doorlopen en elke joystick-richting te controleren. Voor elke joystick-pin leest het de analoge waarde (`pin.read_analog()`).
 
-The joystick is then determined to be activated based on a preset threshold(`thresh`): if the threshold is 600 and the current analog value exceeds 600 (joystick pushed), or if the threshold is 400 and the current analog value is below 400 (push in the opposite direction), it plays the corresponding musical note (`music.play(note, wait=False)`), in which `wait=False` ensures the music playback does not block the main loop, allowing concurrent detection of other inputs. 
+De joystick wordt vervolgens geacht geactiveerd te zijn op basis van een vooraf ingestelde drempel (`thresh`): als de drempel 600 is en de huidige analoge waarde 600 overschrijdt (joystick ingedrukt), of als de drempel 400 is en de huidige analoge waarde onder 400 ligt (in de tegenovergestelde richting geduwd), speelt het de overeenkomstige muzieknoot af (`music.play(note, wait=False)`), waarbij `wait=False` ervoor zorgt dat het afspelen van muziek de hoofdlus niet blokkeert, waardoor gelijktijdige detectie van andere ingangen mogelijk is.
 
-And the Micro:bit LED display displays the character corresponding to the joystick direction.
+En de Micro:bit LED-display toont het teken dat overeenkomt met de joystick-richting.
 
 ```python
 # ==================== Main Loop ====================
@@ -143,11 +143,11 @@ while True:
             display.show(disp)
 ```
 
-③ Main loop: Process button inputs.
+③ Hoofdlus: Verwerk knop-ingangen.
 
-After joystick input, now its the turn of external button inputs. It iterates through each button in `BTN_MAP` list. For each button pin, it checks whether its digital reading value is `0` (`pin.read_digital() == 0`, means button pressed). When the button is pressed, the pin is at low due to its pull-up resistor, the program plays the corresponding musical note(`music.play(note, wait=False)`) and displays character on the Micro:bit LED matrix. 
+Na de joystick-ingang is het nu de beurt aan de externe knop-ingangen. Het doorloopt elke knop in de `BTN_MAP`-lijst. Voor elke knop-pin controleert het of de digitale uitleeswaarde `0` is (`pin.read_digital() == 0`, betekent knop ingedrukt). Wanneer de knop wordt ingedrukt, is de pin laag vanwege de pull-up weerstand, speelt het programma de overeenkomstige muzieknoot af (`music.play(note, wait=False)`) en toont het teken op de Micro:bit LED-matrix.
 
-To prevent button jitter or multiple detections of a single press, there is a `while` loop that continues wait until the current button is released (`while pin.read_digital() == 0: sleep(10)`). This waiting period temporarily blocks the program until the button is released.
+Om knopjitter of meerdere detecties van een enkele druk te voorkomen, is er een `while`-lus die blijft wachten totdat de huidige knop wordt losgelaten (`while pin.read_digital() == 0: sleep(10)`). Deze wachttijd blokkeert het programma tijdelijk totdat de knop wordt losgelaten.
 
 ```python
     # 2. Button Logic: Check for digital presses (Active Low)
@@ -160,27 +160,27 @@ To prevent button jitter or multiple detections of a single press, there is a `w
                 sleep(10)
 ```
 
-④ Main loop: Loop delay.
+④ Hoofdlus: Lusvertraging.
 
-After all input detections, the program pauses for 20 milliseconds (`sleep(20)`) to stabilize the system, reduce CPU load, and provide a time interval for the next loop input detection.
+Na alle ingangsdetecties pauzeert het programma 20 milliseconden (`sleep(20)`) om het systeem te stabiliseren, de CPU-belasting te verminderen en een tijdsinterval te bieden voor de volgende lus-ingangsdetectie.
 
 ```python
     # Small delay to maintain system stability and reduce CPU load
     sleep(20)
 ```
 
-#### 5.2.3.6 Test Result
+#### 5.2.3.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. The LED matrix shows “![Img](./media/3004.png)”first.
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**) en zet u de schakelaar op “ON”. De LED-matrix toont eerst “![Img](./media/3004.png)”.
 
-Turning the joystick to the right produces "Do (Tone Central C)" with the display showing "1"; turning it to the left produces "Re (Tone D)" with "2"; turning it upward produces "Mi (Tone E)" with "3"; turning it downward produces "Fa (Tone F)" with "4". Pressing the button C produces "Sol (Tone G)" with "5", pressing D produces "La (Tone A)" with "6", E produces "Si (Tone B)" with "7", and pressing F produces higher "Do(Sharp)" while the display reverts to "1". 
+De joystick naar rechts draaien produceert "Do (Toon Centrale C)" met de weergave "1"; naar links draaien produceert "Re (Toon D)" met "2"; naar boven draaien produceert "Mi (Toon E)" met "3"; naar beneden draaien produceert "Fa (Toon F)" met "4". Op knop C drukken produceert "Sol (Toon G)" met "5", op D drukken produceert "La (Toon A)" met "6", E produceert "Si (Toon B)" met "7", en op F drukken produceert een hogere "Do(Scherp)" terwijl de weergave terugkeert naar "1".
 
-You have built the simple electronic piano!
+U hebt de eenvoudige elektronische piano gebouwd!
 
 ![Img](./media/3010.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, drukt u op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

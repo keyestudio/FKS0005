@@ -1,18 +1,18 @@
-### 5.2.2 Colorful Lights
+### 5.2.2 Kleurrijke Lichten
 
-#### 5.2.2.1 Overview
+#### 5.2.2.1 Overzicht
 
 ![Img](./media/top1.png)
 
-RGB LEDs are a type of LED light source that creates images by mixing light from the three primary colors: red, green, and blue, whose intersection produces various hues. Common methods include direct mixing of the primary colors, using a blue LED combined with yellow phosphor, or employing an ultraviolet LED together with RGB phosphor. Compared to LEDs that emit white light directly, RGB LEDs offer a wider range of color mixing possibilities because the three primary colors can be controlled independently.
+RGB-LED's zijn een type LED-lichtbron dat beelden creëert door licht van de drie primaire kleuren te mengen: rood, groen en blauw, waarvan de combinatie verschillende tinten produceert. Veelvoorkomende methoden omvatten directe menging van de primaire kleuren, het gebruik van een blauwe LED gecombineerd met gele fosfor, of het gebruik van een ultraviolette LED samen met RGB-fosfor. Vergeleken met LED's die direct wit licht uitstralen, bieden RGB-LED's een breder scala aan kleurmengmogelijkheden omdat de drie primaire kleuren onafhankelijk kunnen worden geregeld.
 
-In this project, each button corresponds to a different mode of the RGB LEDs. When the button C is pressed, the lights flash alternately in the order of "red, green, blue, yellow, and purple"; Press D to switch to breathing lights; Press E for water flowing lights; Press F for marquee lights.
+In dit project komt elke knop overeen met een andere modus van de RGB-LED's. Wanneer knop C wordt ingedrukt, knipperen de lichten afwisselend in de volgorde "rood, groen, blauw, geel en paars"; Druk op D om over te schakelen naar ademende lichten; Druk op E voor waterstromende lichten; Druk op F voor markeerlichten.
 
-Colorful light strings for festival decorations, Christmas tree lights, RGB strips for daily ambiance, LED decorative lights in amusement parks and shopping malls... They are all common examples of multi-mode lights in our daily lives.
+Kleurrijke lichtslingers voor feestdecoraties, kerstboomverlichting, RGB-strips voor dagelijkse sfeer, LED-decoratieve verlichting in pretparken en winkelcentra... Dit zijn allemaal veelvoorkomende voorbeelden van multimode verlichting in ons dagelijks leven.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.2.2 Component Knowledge
+#### 5.2.2.2 Componentenkennis
 
 ![Img](./media/2top.png)
 
@@ -20,42 +20,42 @@ Colorful light strings for festival decorations, Christmas tree lights, RGB stri
 
 | ![Img](./media//2001.png)| ![Img](./media//2002.png)|
 | :--: | :--: |
-|       Real product        |     Schematic diagram     |
+|       Werkelijk product        |     Schematisch diagram     |
 
-The SK6812 is an external-controlled LED light source that integrates control and lighting circuits. Its main part is 5x5mm surface-illuminated LED beads, each functioning as an independent pixel that incorporates multiple core circuits: a smart digital interface data latch circuit, signal shaping and amplification drive circuit, power regulation circuit, built-in constant-current circuit, and high-precision RC oscillator. 
+De SK6812 is een extern gestuurde LED-lichtbron die besturings- en verlichtingscircuits integreert. Het belangrijkste onderdeel zijn 5x5mm oppervlakte-verlichte LED-kralen, elk functionerend als een onafhankelijke pixel die meerdere kerncircuits bevat: een slim digitaal interface-datalatchcircuit, signaalvormings- en versterkingsaandrijfcircuit, stroomregelcircuit, ingebouwd constantstroomcircuit en een zeer nauwkeurige RC-oscillator.
 
-Its communication employs a single-polarity zero-return code protocol. Upon power-on reset, each pixel receives data from the controller via the DIN port. The first 24 bits of data are extracted by the initial pixel and stored in the internal data latch, while the remaining ones are shaped and amplified internally before being transmitted through the DOUT port to subsequent pixels. With each pixel processed, the transmitted signal size decreases by 24 bits.
+De communicatie maakt gebruik van een enkelpolig nul-retourcode protocol. Na het opstarten ontvangt elke pixel gegevens van de controller via de DIN-poort. De eerste 24 bits aan gegevens worden door de initiële pixel geëxtraheerd en opgeslagen in de interne datalatch, terwijl de overige intern worden gevormd en versterkt voordat ze via de DOUT-poort naar volgende pixels worden verzonden. Bij elke verwerkte pixel neemt de verzonden signaalgrootte met 24 bits af.
 
-On the gamepad, there are four SK6812 RGB lights. These all support 256-level brightness adjustment across their red, green, and blue channels, enabling 256×256×256 color combinations. Due to this, it delivers diverse lighting effects such as alternating flashes, breathing gradients, and scrolling animations, providing more intuitive and vivid interactions.
+Op de gamepad bevinden zich vier SK6812 RGB-lampjes. Deze ondersteunen allemaal 256-niveaus helderheidsaanpassing over hun rode, groene en blauwe kanalen, waardoor 256×256×256 kleurencombinaties mogelijk zijn. Hierdoor levert het diverse lichteffecten zoals afwisselende flitsen, ademende gradiënten en scrollende animaties, wat zorgt voor meer intuïtieve en levendige interacties.
 
-**Button**
+**Knop**
 
 | ![Img](./media//2003.png)| ![Img](./media//2004.png)|
 | :--: | :--: |
-|       Real product        |     Schematic diagram     |
+|       Werkelijk product        |     Schematisch diagram     |
 
-The button, first emerged in Japan, was referred to as a sensitive switch. During operation, press the switch to apply force to close the circuit. Upon release of the pressure, the switch opens. Its internal metal spring leaf changes its state of being connected/disconnected in response to applied force.
+De knop, voor het eerst verschenen in Japan, werd aangeduid als een gevoelige schakelaar. Tijdens de bediening drukt u op de schakelaar om kracht uit te oefenen om het circuit te sluiten. Bij het loslaten van de druk opent de schakelaar. De interne metalen veerklem verandert van verbonden/niet-verbonden toestand als reactie op de uitgeoefende kracht.
 
-There are four buttons, each independently connected to a pin on the micro:bit board. When one button is pressed, the circuit generates a corresponding low-level signal, enabling the micro:bit to respond rapidly to commands and significantly enhancing interaction convenience and accuracy.
+Er zijn vier knoppen, elk onafhankelijk verbonden met een pin op het micro:bit-bord. Wanneer een knop wordt ingedrukt, genereert het circuit een overeenkomstig laag niveau signaal, waardoor de micro:bit snel kan reageren op commando's en de interactie gemak en nauwkeurigheid aanzienlijk verbetert.
 
 ![Img](./media/2bottom.png)
 
-#### 5.2.2.3 Required Parts
+#### 5.2.2.3 Benodigde onderdelen
 
 | ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf mee te nemen) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 | **AAA batterij** (zelf mee te nemen) ×4 |
 
 
-#### 5.2.2.4 Code Flow
+#### 5.2.2.4 Codestroom
 
 ![Img](./media/2006.png)
 
-#### 5.2.2.5 Test Code
+#### 5.2.2.5 Testcode
 
-⚠️ **Note that the delay time of the MODE\*_DELAY in the codes can be modified according to your needs.**
+⚠️ **Let op: de vertragingstijd van de MODE\*_DELAY in de codes kan naar behoefte worden aangepast.**
 
-**Complete code:**
+**Volledige code:**
 
 ```python
 # import related libraries
@@ -154,17 +154,17 @@ while True:
         utime.sleep_ms(20)
 
 ```
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import libraries, configure constants, initialize NeoPixel strips, and buttons pins.
+① Bibliotheken importeren, constanten configureren, NeoPixel-strips en knoppinnen initialiseren.
 
-It first imports the core library `microbit` required for MicroPython, `neopixel` to control NeoPixel LED lights, `random` for generating random numbers, and `utime` for time-related operations (such as obtaining the current timestamp and delaying time).
+Het importeert eerst de kernbibliotheek `microbit` die nodig is voor MicroPython, `neopixel` om NeoPixel LED-lampjes te bedienen, `random` voor het genereren van willekeurige getallen en `utime` voor tijdgerelateerde bewerkingen (zoals het verkrijgen van de huidige tijdstempel en het vertragen van de tijd).
 
-Then, several key configuration constants are defined: `BRIGHTNESS` controls the global brightness of the LED (0.0~0.9), `NP_NUM` specifies the number of LEDs on the NeoPixel strip (in this case, 4), and `strip` object is initialized, connected to `pin8` and contains `NP_NUM` LEDs.
+Vervolgens worden verschillende belangrijke configuratieconstanten gedefinieerd: `BRIGHTNESS` regelt de globale helderheid van de LED (0.0~0.9), `NP_NUM` specificeert het aantal LED's op de NeoPixel-strip (in dit geval 4), en het `strip`-object wordt geïnitialiseerd, verbonden met `pin8` en bevat `NP_NUM` LED's.
 
-`KEYS` list specifies the Micro:bit pins corresponding to the four buttons connected to the JoyBit expansion board. By applying pull-up resistors(`p.PULL_UP`)to these pins in a loop, the pins maintain a high level when the buttons are not pressed and a low level when pressed (for easy detection).
+De `KEYS`-lijst specificeert de Micro:bit-pinnen die overeenkomen met de vier knoppen die zijn verbonden met het JoyBit-uitbreidingsbord. Door pull-up weerstanden (`p.PULL_UP`) op deze pinnen in een lus toe te passen, behouden de pinnen een hoog niveau wanneer de knoppen niet worden ingedrukt en een laag niveau wanneer ze worden ingedrukt (voor eenvoudige detectie).
 
-Finally, the following global state variables are defined: `mode` tracks the currently active lighting mode (0 for standby; 1–4 are different lighting effects), `last_btn_time` stores the timestamp for button anti-jitter, and `mode_data` is a dictionary that holds state information shared or maintained across modes (e.g., index, last update time, value).
+Ten slotte worden de volgende globale statusvariabelen gedefinieerd: `mode` houdt de momenteel actieve verlichtingsmodus bij (0 voor stand-by; 1–4 zijn verschillende lichteffecten), `last_btn_time` slaat de tijdstempel op voor knop-ontdemping, en `mode_data` is een woordenboek dat statusinformatie bevat die wordt gedeeld of onderhouden tussen modi (bijv. index, laatste update tijd, waarde).
 
 ```python
 # import related libraries
@@ -189,12 +189,12 @@ last_btn_time = 0       # Global timestamp for button debouncing
 mode_data = {"idx": 0, "last_t": 0, "val": 0} 
 ```
 
-② Tool function: Convert HSL colors to RGB and switches among different color modes.
+② Hulpprogrammafunctie: Converteert HSL-kleuren naar RGB en schakelt tussen verschillende kleurmodi.
 
-This part defines two helper functions:
+Dit deel definieert twee hulpfuncties:
 
-*   `get_rgb(h, s, l)` : convert colors. It accepts HSL (Hue, Saturation, Lightness) values and converts them to RGB format. It also applies a global brightness factor `BRIGHTNESS`, ensuring all colors are adjusted according to the brightness limit. This function makes it very convenient to generate lighting effects in various colors.
-*   `update_mode(new_mode)` : enable secure switching between lighting modes. Call it to switch to a new mode, and it will update the global `mode` variable, reset the `idx` and `val` in `mode_data` dictionary to 0, and set `last_t` to the current time so the new mode can start timing from scratch. Additionally, it clears the NeoPixel light strip to ensure no residual old lighting effects remain during the mode switch.
+*   `get_rgb(h, s, l)`: converteert kleuren. Het accepteert HSL (Hue, Saturation, Lightness) waarden en converteert deze naar RGB-formaat. Het past ook een globale helderheidsfactor `BRIGHTNESS` toe, zodat alle kleuren worden aangepast aan de helderheidslimiet. Deze functie maakt het erg handig om lichteffecten in verschillende kleuren te genereren.
+*   `update_mode(new_mode)`: maakt veilig schakelen tussen verlichtingsmodi mogelijk. Roep het aan om naar een nieuwe modus te schakelen, en het zal de globale `mode`-variabele bijwerken, de `idx` en `val` in het `mode_data`-woordenboek resetten naar 0, en `last_t` instellen op de huidige tijd zodat de nieuwe modus vanaf nul kan beginnen met timen. Bovendien wist het de NeoPixel-lichtstrip om ervoor te zorgen dat er geen resterende oude lichteffecten achterblijven tijdens de modusschakeling.
 
 ```python
 # ==================== Utility Functions ====================
@@ -219,16 +219,16 @@ def update_mode(new_mode):
     strip.show()
 ```
 
-③ Light pattern behavior definition and pattern mapping.
+③ Lichtpatroon gedragsdefinitie en patroonmapping.
 
-There are four different lighting mode functions, each of which implements a unique lighting effect:
+Er zijn vier verschillende verlichtingsmodusfuncties, die elk een uniek lichteffect implementeren:
 
-*   `run_m1()` (Mode 1: Solid Color Cycling): The strip regularly displays a preset set of solid colors (red, green, blue, yellow, purple), switching one color at a time.
-*   `run_m2()` (Mode 2: Smooth Rainbow Gradient): The strip displays a smooth rainbow gradient by constantly changing hues(`mode_data["val"]`).
-*   `run_m3()` (Mode 3: Pixel Shifting with Random Colors): The pixels on the strip will move to the right, and the leftmost pixel will be filled with a new random color, like flowing.
-*   `run_m4()` (Mode 4: Chasing Single Pixel): Only one pixel on the strip lights up and moves around the light strip, with a random color each time it is lit.
+*   `run_m1()` (Modus 1: Effen kleurcyclus): De strip toont regelmatig een vooraf ingestelde reeks effen kleuren (rood, groen, blauw, geel, paars), waarbij één kleur tegelijk wordt gewisseld.
+*   `run_m2()` (Modus 2: Vloeiende regenbooggradiënt): De strip toont een vloeiende regenbooggradiënt door constant van tint te veranderen (`mode_data["val"]`).
+*   `run_m3()` (Modus 3: Pixelverschuiving met willekeurige kleuren): De pixels op de strip bewegen naar rechts, en de meest linkse pixel wordt gevuld met een nieuwe willekeurige kleur, als een stromende beweging.
+*   `run_m4()` (Modus 4: Jagende enkele pixel): Slechts één pixel op de strip licht op en beweegt rond de lichtstrip, telkens met een willekeurige kleur wanneer deze wordt verlicht.
 
-Finally, the `MODES` dictionary maps each mode ID (1–4) to its corresponding execution function and updates each delay time (in milliseconds), so the main loop will be convenient to call an appropriate function based on the current mode and control its update frequency.
+Ten slotte koppelt het `MODES`-woordenboek elke modus-ID (1–4) aan de bijbehorende uitvoeringsfunctie en werkt het elke vertragingstijd (in milliseconden) bij, zodat de hoofdlus gemakkelijk een geschikte functie kan aanroepen op basis van de huidige modus en de updatefrequentie ervan kan regelen.
 
 ```python
 # ==================== Mode Behavior Definitions ====================
@@ -261,10 +261,10 @@ MODES = {
 }
 ```
 
-④ Main loop: button scanning, mode execution, and standby processing.
-1.  Button scanning: It scans each button pin in the `KEYS` list to detect whether a button is pressed (pin reading is `0`). To prevent multiple triggers caused by button jitter, a software anti-jitter mechanism is employed: a new button press is only detected if more than 200 milliseconds have passed since the previous operation. Upon detecting a valid press, it calls the `update_mode()` for a corresponding lighting mode (the mode ID is obtained by adding 1 to the button index `i`) and updates `last_btn_time`.
-2.  Mode execution: If the current `mode` is listed in the `MODES` dictionary (i.e., not a standby mode), it retrieves the corresponding execution function and update delay. It then checks whether the specified delay period has elapsed since the last update of that mode. If so, it updates `mode_data["last_t"]`, calls the mode's `func()` to update the color data, and sends the updates to the light strip via `strip.show()`.
-3.  Standby processing: If `mode` = `0` (standby), it clears the light strip (`strip.fill((0,0,0))`), displays an off state, with a brief delay via `utime.sleep_ms(20)` to conserve CPU resources.
+④ Hoofdlus: knopscanning, modusuitvoering en stand-by verwerking.
+1.  Knopscanning: Het scant elke knoppin in de `KEYS`-lijst om te detecteren of een knop is ingedrukt (pin-uitlezing is `0`). Om meerdere triggers veroorzaakt door knopjitter te voorkomen, wordt een softwarematig anti-jittermechanisme gebruikt: een nieuwe knopdruk wordt alleen gedetecteerd als er meer dan 200 milliseconden zijn verstreken sinds de vorige bewerking. Bij detectie van een geldige druk, roept het `update_mode()` aan voor een overeenkomstige verlichtingsmodus (de modus-ID wordt verkregen door 1 toe te voegen aan de knopindex `i`) en werkt het `last_btn_time` bij.
+2.  Modusuitvoering: Als de huidige `mode` in het `MODES`-woordenboek staat (d.w.z. geen stand-bymodus), haalt het de overeenkomstige uitvoeringsfunctie en updatevertraging op. Het controleert vervolgens of de opgegeven vertragingsperiode is verstreken sinds de laatste update van die modus. Zo ja, dan werkt het `mode_data["last_t"]` bij, roept het de `func()` van de modus aan om de kleurgegevens bij te werken, en stuurt het de updates naar de lichtstrip via `strip.show()`.
+3.  Stand-by verwerking: Als `mode` = `0` (stand-by), wist het de lichtstrip (`strip.fill((0,0,0))`), toont het een uit-status, met een korte vertraging via `utime.sleep_ms(20)` om CPU-cycli te besparen.
 
 ```python
 # ==================== Main Loop (Non-Blocking) ====================
@@ -292,22 +292,22 @@ while True:
         utime.sleep_ms(20)
 ```
 
-#### 5.2.2.6 Test Result
+#### 5.2.2.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**) en zet u de schakelaar op “ON”. 
 
-Press **C**: the lights alternates among **red-green-blue-yellow-purple** in sequence. 
+Druk op **C**: de lichten wisselen af tussen **rood-groen-blauw-geel-paars** in volgorde. 
 
-Press **D**: the color hue of the lights will increase, and eventually the gradient colors will smoothly change. 
+Druk op **D**: de kleurtint van de lichten zal toenemen, en uiteindelijk zullen de gradiëntkleuren vloeiend veranderen. 
 
-Press **E**: the lights generate a random color starting from the 0th pixel, and shift the color one pixel sequentially, so you can see a water flowing light.
+Druk op **E**: de lichten genereren een willekeurige kleur beginnend bij de 0e pixel, en verschuiven de kleur sequentieel één pixel, zodat u een waterstromend licht ziet.
 
-Press **F**: each pixel lights up in random colors in sequence.
+Druk op **F**: elke pixel licht op in willekeurige kleuren in volgorde.
 
 ![Img](./media/2019.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, drukt u op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

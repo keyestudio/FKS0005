@@ -1,77 +1,77 @@
-## 5.1 Thonny Development Environment
+## 5.1 Thonny Ontwikkelomgeving
 
-**Before programming, you need to do some important preparations.**
+**Voordat u begint met programmeren, zijn er enkele belangrijke voorbereidingen nodig.**
 
-### 5.1.1 Install Thonny
+### 5.1.1 Thonny installeren
 
-Thonny is a free and open source software platform with small size, simple interface, simple operation and rich functions. It is a Python IDE suitable for beginners. In this tutorial, we use this IDE to develop a ESP32. Thonny supports multiple operating systems including Windows, Mac OS, Linux.
+Thonny is een gratis en open-source softwareplatform met een klein formaat, eenvoudige interface, gemakkelijke bediening en rijke functionaliteit. Het is een Python IDE die geschikt is voor beginners. In deze tutorial gebruiken we deze IDE om een ESP32 te ontwikkelen. Thonny ondersteunt meerdere besturingssystemen, waaronder Windows, Mac OS en Linux.
 
-**1. Download Thonny**
+**1. Thonny downloaden**
 
-(1)  Enter the website: [https://thonny.org](https://thonny.org) to download the latest version of Thonny. Other versions may not be compatible with microbit functions.
-(2)  Thonny open-source code library: [https://github.com/thonny/thonny](https://github.com/thonny/thonny).
+(1) Ga naar de website: [https://thonny.org](https://thonny.org) om de nieuwste versie van Thonny te downloaden. Andere versies zijn mogelijk niet compatibel met microbit-functies.
+(2) Thonny open-source codebibliotheek: [https://github.com/thonny/thonny](https://github.com/thonny/thonny).
 
-Please download the one of your operation system.
+Download de versie die geschikt is voor uw besturingssysteem.
 
 | OS | Download |
 | :-- | :-- |
 | MAC OS： | https://github.com/thonny/thonny/releases/download/v4.1.7/thonny-4.1.7.pkg|
 | Windows： | https://github.com/thonny/thonny/releases/download/v4.1.7/thonny-4.1.7.exe|
 
-| OS | Method          | Command |
+| OS | Methode          | Commando |
 | :-- |---------|--------------|
-| Linux | Binary bundle | `bash <(wget -O - https://thonny.org/installer-for-linux)` |
-|       | With pip | `pip3 install thonny` |
-|       | Distro packages | Debian/Ubuntu：`sudo apt install thonny`<br>Fedora：`sudo dnf install thonny` |
+| Linux | Binair pakket | `bash <(wget -O - https://thonny.org/installer-for-linux)` |
+|       | Met pip | `pip3 install thonny` |
+|       | Distro pakketten | Debian/Ubuntu：`sudo apt install thonny`<br>Fedora：`sudo dnf install thonny` |
 
 ![Img](./media/t001.png)
 
-**2. Windows System**
+**2. Windows Systeem**
 
-A.The downloaded Thonny icon is as follows:
+A. Het gedownloade Thonny-pictogram ziet er als volgt uit:
 
 ![Img](./media/t002.png)
 
-B.Double-click “thonny-4.1.7.exe” and select install mode. Here we choose “Install for all users”.
+B. Dubbelklik op “thonny-4.1.7.exe” en selecteer de installatiemodus. Hier kiezen we voor “Install for all users”.
 
 ![Img](./media/t003.png)
 
-C.You can also keep selecting “Next” to finish install.
+C. U kunt ook blijven klikken op “Next” om de installatie te voltooien.
 
 ![Img](./media/t004.png)
 
 ![Img](./media/t005.png)
 
 
-D.If you want to change the route of installing Thonny, just click “Browse...” to select a new route. If you not, just keep clicking “Next”.
+D. Als u de installatielocatie van Thonny wilt wijzigen, klikt u op “Browse...” om een nieuwe locatie te selecteren. Zo niet, dan blijft u gewoon op “Next” klikken.
 
 ![Img](./media/t006.png)
 
 ![Img](./media/t007.png)
 
-E.Tick “Create desktop icon”, you will view Thonny on your desktop.
+E. Vink “Create desktop icon” aan, dan ziet u Thonny op uw bureaublad.
 
 ![Img](./media/t008.png)
 
-F.“Install”.
+F. “Installeren”.
 
 ![Img](./media/t009.png)
 
-G.Wait for a while but don’t click “Cancel”.
+G. Wacht even, maar klik niet op “Cancel”.
 
 ![Img](./media/t010.png)
 
-H.When you see the success interface, click “Finish”.
+H. Wanneer u het succesvolle installatiescherm ziet, klikt u op “Finish”.
 
 ![Img](./media/t011.png)
 
-I.You can see the icon on your desktop if you tick “Create desktop icon”:
+I. U ziet het pictogram op uw bureaublad als u “Create desktop icon” hebt aangevinkt:
 
 ![Img](./media/t011.png)                    
 
-### 5.1.2 Thonny Basic Settings
+### 5.1.2 Thonny Basisinstellingen
 
-A.Double-click Thonny, choose lanuage and initial settings and click “Let’s go!”.
+A. Dubbelklik op Thonny, kies de taal en de initiële instellingen en klik op “Let’s go!”.
 
 ![Img](./media/t013.png)
 
@@ -79,7 +79,7 @@ A.Double-click Thonny, choose lanuage and initial settings and click “Let’s 
 
 ![Img](./media/t015.png)
 
-B.Click “**View**”→“**File**” and “**Shell**”.
+B. Klik op “**View**”→“**File**” en “**Shell**”.
 
 ![Img](./media/t016.png)
 
@@ -87,67 +87,67 @@ B.Click “**View**”→“**File**” and “**Shell**”.
 
 ![Img](./media/t018.png)
 
-### 5.1.3 Burn Micropython Firmware(Important)
+### 5.1.3 MicroPython Firmware branden (Belangrijk)
 
-To run a Python program on the Micro:bit board, we need to burn the firmware to it first.
+Om een Python-programma op het Micro:bit-bord uit te voeren, moeten we eerst de firmware erop branden.
 
-**Burn the Micropython firmware:**
+**De MicroPython firmware branden:**
 
-Connect the Micro:bit to your PC with a USB cable.
+Verbind de Micro:bit met uw pc met een USB-kabel.
 
 ![Img](./media/A800.png)
 
-Make sure the driver has been installed successfully and the COM port can be identified correctly. Open “**Device Manager**” and expand “**Ports**”.
+Zorg ervoor dat het stuurprogramma succesvol is geïnstalleerd en dat de COM-poort correct kan worden geïdentificeerd. Open “**Apparaatbeheer**” en vouw “**Poorten**” uit.
 
 ![Img](./media/t019.png)
 
-The COM port number may vary from computers.
+Het COM-poortnummer kan per computer verschillen.
 
-Open Thonny, click “**run**” and “**Configure interpreter...**”
+Open Thonny, klik op “**run**” en “**Configure interpreter...**”
 
 ![Img](./media/t020.png)
 
-Select “Micropython (BBC micro:bit)” and “mbeb Serial Port @ COM16” in its interpreter, and click “Install or update firmware”.
+Selecteer “Micropython (BBC micro:bit)” en “mbeb Serial Port @ COM16” in de interpreter, en klik op “Install or update firmware”.
 
 ![Img](./media/t021.png)
 
-And you will see the followings. Set “Target volume” to “MICROBIT”, “MicroPython family” to “nRF52”, “variant” to “BBC micro:bit v2 (original simplifiled API)”, “version” to “2.1.2”, and then “Install”. 
+En u ziet het volgende. Stel “Target volume” in op “MICROBIT”, “MicroPython family” op “nRF52”, “variant” op “BBC micro:bit v2 (original simplifiled API)”, “version” op “2.1.2”, en vervolgens “Install”. 
 
-If the firmware fails to install, press the reset button on the Micro:bit, and click “Install”.
+Als de firmware niet kan worden geïnstalleerd, drukt u op de resetknop op de Micro:bit en klikt u op “Install”.
 
 ![Img](./media/t022.png)
 
-After that, click “Close” and “OK”.
+Klik daarna op “Close” en “OK”.
 
 ![Img](./media/t023.png)
 
-Turn off all windows and turn to the main page and click “STOP” icon:
+Sluit alle vensters en ga naar de hoofdpagina en klik op het “STOP”-pictogram:
 
 ![Img](./media/t024.png)
 
-### 5.1.4 Upload Code
+### 5.1.4 Code uploaden
 
-**Run the test code(online)**
+**De testcode uitvoeren (online)**
 
-The Micro:bit runs the code online when it needs to be connect to the computer. Users can program and debug programs withThonny.
+De Micro:bit voert de code online uit wanneer deze met de computer moet worden verbonden. Gebruikers kunnen programma's programmeren en debuggen met Thonny.
 
-Open Thonny and click "**Open**".
+Open Thonny en klik op "**Open**".
 
 ![Img](./media/t025.png)
 
-When a new window pops up, open ".\MicroPython_Resource\Codes\Heart beat", select “heartbeat&ZeroWidthSpace;.py”, and click “Run current script” (if error reports, click  ![Img](./media/t027.png) first and then “Run current script”), and you can see there is a heart is beating on the Micro:bit.
+Wanneer een nieuw venster verschijnt, opent u ".\MicroPython_Resource\Codes\Heart beat", selecteert u “heartbeat&ZeroWidthSpace;.py”, en klikt u op “Run current script” (als er een foutmelding verschijnt, klikt u eerst op ![Img](./media/t027.png) en vervolgens op “Run current script”), en u ziet een kloppend hart op de Micro:bit.
 
 ![Img](./media/t026.png)
 
-Note: When running it online, if you press the reset button, the code will not be executed again. If you want it to run after resetting it, please refer to the offline running instructions below.
+Opmerking: Wanneer u het online uitvoert, wordt de code niet opnieuw uitgevoerd als u op de resetknop drukt. Als u wilt dat het na het resetten wordt uitgevoerd, raadpleegt u de onderstaande instructies voor offline uitvoeren.
 
-**Run the test code(offline)**
+**De testcode uitvoeren (offline)**
 
-After resetting Micro:bit, run the main.py file under the root directory first. 
+Na het resetten van de Micro:bit, voert u eerst het bestand main.py uit in de hoofdmap. 
 
-Therefore, the file name we upload to the Micro:bit must be changed to main.py if we want it runs the code after reset. Then, upload the file, press the reset button, and the code still be executed.
+Daarom moet de bestandsnaam die we uploaden naar de Micro:bit worden gewijzigd in main.py als we willen dat deze de code na het resetten uitvoert. Upload vervolgens het bestand, druk op de resetknop en de code wordt nog steeds uitgevoerd.
 
-Here we take heartbeat.py as an example. Select **heartbeat&ZeroWidthSpace;.py** to "**rename**" it to main.py, and click "**OK**". Now you can choose to “**Upload to micro:bit**”.
+Hier nemen we heartbeat.py als voorbeeld. Selecteer **heartbeat&ZeroWidthSpace;.py** om het te "**hernoemen**" naar main.py, en klik op "**OK**". Nu kunt u kiezen om te “**Upload to micro:bit**”.
 
 ![Img](./media/t028.png)
 
@@ -155,18 +155,18 @@ Here we take heartbeat.py as an example. Select **heartbeat&ZeroWidthSpace;.py**
 
 ![Img](./media/t030.png)
 
-Press the Reset button and you can see the heart is beating on the Micro:bit.
+Druk op de Reset-knop en u ziet het hart kloppen op de Micro:bit.
 
-If you want to run other code (not libraries), you need first to change its name to main&ZeroWidthSpace;.py before uloading. 
+Als u andere code (geen bibliotheken) wilt uitvoeren, moet u eerst de naam wijzigen in main&ZeroWidthSpace;.py voordat u uploadt. 
 
-As for libraries, right-click to directly “Upload to micro:bit” (Sometime the uploading may fail due to too large size of the library. So you need to simplify it or delete the unused ones).
+Wat betreft bibliotheken, klik met de rechtermuisknop om direct “Upload to micro:bit” (Soms kan het uploaden mislukken vanwege een te grote bibliotheek. U moet deze dan vereenvoudigen of ongebruikte bibliotheken verwijderen).
 
-### 5.1.5 Other Common Operations
+### 5.1.5 Andere veelvoorkomende bewerkingen
 
-**Delete file under Micro:bit**
+**Bestand verwijderen onder Micro:bit**
 
-In “micro:bit”, select “main&ZeroWidthSpace;.py” to “Delete”, and it will be removed.
+In “micro:bit” selecteert u “main&ZeroWidthSpace;.py” om te “Delete”, en het wordt verwijderd.
 
 ![Img](./media/t031.png)
 
-The same procedure applies when deleting other files.
+Dezelfde procedure is van toepassing bij het verwijderen van andere bestanden.

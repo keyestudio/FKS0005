@@ -1,30 +1,30 @@
-### 5.2.4 Music Player
+### 5.2.4 Muziekspeler
 
-#### 5.2.4.1 Overview
+#### 5.2.4.1 Overzicht
 
 ![Img](./media/top1.png)
 
-Herein we build a music player that generates sound via the built-in buzzer on the micro:bit board (does not play vocal music). It features a library of 20 short tracks and supports both sequential and random playback. 
+Hierin bouwen we een muziekspeler die geluid genereert via de ingebouwde buzzer op het micro:bit-bord (speelt geen vocale muziek af). Het beschikt over een bibliotheek van 20 korte nummers en ondersteunt zowel sequentiële als willekeurige weergave.
 
-In sequential mode, pressing C(Previous song) or E(Next song) button switches tracks according to a preset sequence until reaching the end of the list; while in random mode, each press selects a track randomly from the 20 sounds with the color lights flashing, and when one song is finishes it stops immediately. 
+In de sequentiële modus schakelt het indrukken van knop C (Vorig nummer) of E (Volgend nummer) nummers volgens een vooraf ingestelde volgorde totdat het einde van de lijst is bereikt; terwijl in de willekeurige modus elke druk een nummer willekeurig selecteert uit de 20 geluiden met knipperende kleurenlichten, en wanneer een nummer is afgelopen, stopt het onmiddellijk.
 
-Meanwhile, the micro:bit LED matrix displays the current playback mode in real time.
+Ondertussen geeft de micro:bit LED-matrix de huidige afspeelmodus in realtime weer.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.4.2 Required Parts
+#### 5.2.4.2 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×1 | **micro:bit Smart Gamepad** (assembled) ×1 | **AAA battery** (self-provided) ×4 |
+| **micro:bit V2 board** (zelf mee te nemen) ×1 | **micro:bit Smart Gamepad** (gemonteerd) ×1 | **AAA battery** (zelf mee te nemen) ×4 |
 
-#### 5.2.4.3 Code Flow
+#### 5.2.4.3 Codestroom
 
 ![Img](./media/4001.png)
 
-#### 5.2.4.4 Test Code
+#### 5.2.4.4 Testcode
 
-**Complete code:**
+**Volledige code:**
 
 ```python
 # import related libraries
@@ -102,17 +102,17 @@ while True:
 ```
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import libraries, configure constants and initialization.
+① Importeer bibliotheken, configureer constanten en initialisatie.
 
-It first imports `microbit` library to access Micro:bit's core functions, `music` for playing built-in music, `neopixel` for controlling the NeoPixel LED strip, and `random` for generating random numbers.
+Het importeert eerst de `microbit`-bibliotheek om toegang te krijgen tot de kernfuncties van de Micro:bit, `music` voor het afspelen van ingebouwde muziek, `neopixel` voor het aansturen van de NeoPixel LED-strip en `random` voor het genereren van willekeurige getallen.
 
-It then defines a series of global variables and constants: `vol` sets the initial volume to 50; `mode` controls the music playback mode (0 for manual selection, 1 for random playback); `idx` stores the current music index; tracks the previous playback index to avoid duplicate plays; `hue` controls the color of the NeoPixel strip; `strip` initializes a NeoPixel strip connected to `pin8` of four LEDs; and `melodies` lists all MicroPython `music` titles.
+Vervolgens definieert het een reeks globale variabelen en constanten: `vol` stelt het initiële volume in op 50; `mode` regelt de afspeelmodus van de muziek (0 voor handmatige selectie, 1 voor willekeurige weergave); `idx` slaat de huidige muziekindex op; houdt de vorige afspeelindex bij om dubbele afspeelacties te voorkomen; `hue` regelt de kleur van de NeoPixel-strip; `strip` initialiseert een NeoPixel-strip die is aangesloten op `pin8` van vier LED\'s; en `melodies` geeft alle `music`-titels van MicroPython weer.
 
-Next, the `btns` list defines the four external button pins from `pin13` to `pin16`, assigning internal pull-up resistors(`p.PULL_UP`) to them in a loop—resulting in high-level pins when buttons are released and low-level pins when pressed.
+Daarna definieert de `btns`-lijst de vier externe knoppinnen van `pin13` tot `pin16`, en wijst deze in een lus interne pull-up-weerstanden (`p.PULL_UP`) toe – wat resulteert in hoog-niveau pinnen wanneer knoppen worden losgelaten en laag-niveau pinnen wanneer ze worden ingedrukt.
 
-`set_volume (vol)` sets the volume to its default value.
+`set_volume (vol)` stelt het volume in op de standaardwaarde.
 
 ```python
 # import related libraries
@@ -136,11 +136,11 @@ for p in btns: p.set_pull(p.PULL_UP)
 set_volume(vol)
 ```
 
-② Color conversion function and stabilization variable.
+② Kleurconversiefunctie en stabilisatievariabele.
 
-`get_rgb(h)` is a simplified HSL (Hue, Saturation, Lightness) to RGB color conversion function. It accepts a hue value `h` (0–359) and converts it into an RGB triplet. The brightness `v` is fixed at 76 (approximately 255 × 0.3, corresponding to the `BRIGHTNESS` coefficient). This function facilitates the generation of rainbow colors based on the hue value.
+`get_rgb(h)` is een vereenvoudigde HSL (Hue, Saturation, Lightness) naar RGB-kleurconversiefunctie. Het accepteert een tintwaarde `h` (0–359) en converteert deze naar een RGB-triplet. De helderheid `v` is vastgesteld op 76 (ongeveer 255 × 0.3, overeenkomend met de `BRIGHTNESS`-coëfficiënt). Deze functie vergemakkelijkt het genereren van regenboogkleuren op basis van de tintwaarde.
 
-`last_states` list stores the previous states of the four buttons, initially all set to 1 (high level for not pressed). `last_press_t` records the time of the last button press. Together, these variables implement software anti-jitter to prevent multiple detections of a single button press.
+De `last_states`-lijst slaat de vorige statussen van de vier knoppen op, aanvankelijk allemaal ingesteld op 1 (hoog niveau voor niet ingedrukt). `last_press_t` registreert de tijd van de laatste knopdruk. Samen implementeren deze variabelen software-anti-jitter om meerdere detecties van een enkele knopdruk te voorkomen.
 
 ```python
 def get_rgb(h):
@@ -158,14 +158,14 @@ last_states = [1] * 4
 last_press_t = 0
 ```
 
-③ Main loop: Volume control.
+③ Hoofdloop: Volumeregeling.
 
-There is an infinite loop (`while True`) that retrieves the current runtime `curr_t`. Then, it handles the A and B buttons on the Micro:bit board:
+Er is een oneindige lus (`while True`) die de huidige looptijd `curr_t` ophaalt. Vervolgens verwerkt het de A- en B-knoppen op het Micro:bit-bord:
 
-*   If `button_a` is pressed (`button_a.was_pressed()`), the volume `vol` + 10, but not exceeding 250. `set_volume(vol)` is followed to update the system volume.
-*   If `button_b` is pressed (`button_b.was_pressed()`), `vol` - 10, but remains no less than 20. `set_volume(vol)` is followed to update the system volume.
+*   Als `button_a` wordt ingedrukt (`button_a.was_pressed()`), wordt het volume `vol` + 10, maar niet meer dan 250. `set_volume(vol)` wordt vervolgens gebruikt om het systeemvolume bij te werken.
+*   Als `button_b` wordt ingedrukt (`button_b.was_pressed()`), wordt `vol` - 10, maar blijft het niet minder dan 20. `set_volume(vol)` wordt vervolgens gebruikt om het systeemvolume bij te werken.
 
-`was_pressed()` returns `True` only once when the button transitions from an unpressed to a pressed state, providing inherent anti-jitter.
+`was_pressed()` retourneert slechts één keer `True` wanneer de knop overgaat van een niet-ingedrukte naar een ingedrukte staat, wat een inherente anti-jitter biedt.
 
 ```python
 while True:
@@ -176,16 +176,16 @@ while True:
     if button_b.was_pressed(): vol = max(20, vol - 10); set_volume(vol)
 ```
 
-④ Main loop: button input detection and mode switching.
+④ Hoofdloop: detectie van knopinvoer en moduswisseling.
 
-It iterates through the four external buttons(`pin13` to `pin16`) in `btns` list, detecting their pressed states. The button is only responded when it is from high(unpressed) to low(pressed) and it has been more than 50 milliseconds since the last valid key press.
+Het doorloopt de vier externe knoppen (`pin13` tot `pin16`) in de `btns`-lijst en detecteert hun ingedrukte statussen. De knop wordt alleen gereageerd wanneer deze van hoog (niet ingedrukt) naar laag (ingedrukt) gaat en het meer dan 50 milliseconden geleden is sinds de laatste geldige toetsaanslag.
 
-*   If `pin16` is pressed(`i == 3`), `mode` = 0(manual mode) and pause for 500 ms.
-*   If `pin14` is pressed(`i == 1`), `mode` = 1(random mode) and pause for 500 ms.
-*   If `pin15` is pressed(`i == 2`), update the music index `idx` according to the current pattern: one music is randomly selected in random mode; the next music is played in manual mode.
-*   If `pin13` is pressed(`i == 0`), update the music index `idx` according to the current pattern: one music is randomly selected in random mode; the next music is played in manual mode.
+*   Als `pin16` wordt ingedrukt (`i == 3`), wordt `mode` = 0 (handmatige modus) en pauzeert het 500 ms.
+*   Als `pin14` wordt ingedrukt (`i == 1`), wordt `mode` = 1 (willekeurige modus) en pauzeert het 500 ms.
+*   Als `pin15` wordt ingedrukt (`i == 2`), wordt de muziekindex `idx` bijgewerkt volgens het huidige patroon: één muziek wordt willekeurig geselecteerd in de willekeurige modus; de volgende muziek wordt afgespeeld in de handmatige modus.
+*   Als `pin13` wordt ingedrukt (`i == 0`), wordt de muziekindex `idx` bijgewerkt volgens het huidige patroon: één muziek wordt willekeurig geselecteerd in de willekeurige modus; de volgende muziek wordt afgespeeld in de handmatige modus.
 
-At the end of each loop, `last_states[i] = v` updates the current status of button in preparation for the next stabilization check.
+Aan het einde van elke lus werkt `last_states[i] = v` de huidige status van de knop bij ter voorbereiding op de volgende stabiliteitscontrole.
 
 ```python
     # 2. Joystick/Button Input Detection (with debouncing)
@@ -202,14 +202,14 @@ At the end of each loop, `last_states[i] = v` updates the current status of butt
         last_states[i] = v
 ```
 
-⑤ Main loop: music playback logic.
+⑤ Hoofdloop: logica voor het afspelen van muziek.
 
-It controls the playback of the music by checking if the current music index `idx` is different from the last one `last_idx`. If they are, the music needs to be switched:
+Het regelt het afspelen van de muziek door te controleren of de huidige muziekindex `idx` verschilt van de vorige `last_idx`. Als dit het geval is, moet de muziek worden gewisseld:
 
-1.  `music.stop()` stops the music that is currently playing.
-2.  `music.play(getattr(music, melodies[idx]), wait=False)` tries to play a new music. `getattr(music, melodies[idx])` dynamically obtains the music data of the corresponding name in `music`, and `wait=False` ensures that the music playback does not block the main loop.
-3.  If the playback is successful, update `last_idx = idx`.
-4.  `try...except` captures potential errors; for example, there might be invalid music titles in the `melodies` list.
+1.  `music.stop()` stopt de muziek die momenteel wordt afgespeeld.
+2.  `music.play(getattr(music, melodies[idx]), wait=False)` probeert een nieuwe muziek af te spelen. `getattr(music, melodies[idx])` verkrijgt dynamisch de muziekgegevens van de overeenkomstige naam in `music`, en `wait=False` zorgt ervoor dat het afspelen van muziek de hoofdloop niet blokkeert.
+3.  Als het afspelen succesvol is, werk `last_idx = idx` bij.
+4.  `try...except` vangt potentiële fouten op; er kunnen bijvoorbeeld ongeldige muziektitels in de `melodies`-lijst staan.
 
 ```python
     # 3. Music Playback Logic
@@ -221,16 +221,17 @@ It controls the playback of the music by checking if the current music index `id
         except: pass
 ```
 
-⑥ Main loop: Light and display updates.
+⑥ Hoofdloop: Licht- en display-updates.
 
-Here is an update on the color of the NeoPixel strip and the display of the Micro:bit LED matrix:
+Hier is een update over de kleur van de NeoPixel-strip en de weergave van de Micro:bit LED-matrix:
 
-1.  `hue = (hue + 1) % 360` continuously increases `hue` to make it cycle among 0 to 359  for a rainbow gradient light.
-2.  `strip.fill(get_rgb(hue))` adopts `get_rgb` to generate a color based on the current `hue` and fill the entire NeoPixel strip with this color.
-3.  `strip.show()` sends the updated color to the NeoPixel strip for display.
-4.  `display.show(...)` displays display depending on the current `mode`. `mode` = 1(random): show a custom “X”; `mode` = 0(manual), show an arrow pointing to the right (`Image.ARROW_E`).
+1.  `hue = (hue + 1) % 360` verhoogt `hue` continu om het te laten cyclen tussen 0 en 359 voor een regenbooggradiëntlicht.
+2.  `strip.fill(get_rgb(hue))` gebruikt `get_rgb` om een kleur te genereren op basis van de huidige `hue` en vult de hele NeoPixel-strip met deze kleur.
+3.  `strip.show()` stuurt de bijgewerkte kleur naar de NeoPixel-strip voor weergave.
+4.  `display.show(...)` geeft het display weer, afhankelijk van de huidige `mode`. `mode` = 1 (willekeurig): toon een aangepaste 
+X”; `mode` = 0 (handmatig), toon een pijl die naar rechts wijst (`Image.ARROW_E`).
 
-Then, `sleep(10)` introduces a short delay for suitable execution speed, lower CPU load, and smoother effect.
+Vervolgens introduceert `sleep(10)` een korte vertraging voor een geschikte uitvoeringssnelheid, lagere CPU-belasting en een vloeiender effect.
 
 ```python
     # 4. Lighting & Display Updates
@@ -243,22 +244,23 @@ Then, `sleep(10)` introduces a short delay for suitable execution speed, lower C
     
     sleep(10)
 ```
-#### 5.2.4.5 Test Result
+#### 5.2.4.5 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op 
+“ON”.
 
-After powering on, it is in sequential mode by default, and will play the song at N.O. “0”. As it is finishes, you can press C for the last song or E for the next one. 
+Na het inschakelen bevindt het zich standaard in de sequentiële modus en speelt het het nummer op N.O. “0” af. Zodra het is afgelopen, kunt u op C drukken voor het vorige nummer of op E voor het volgende. 
 
-Press F to switch to random mode. And you can press D to back to sequential one. In F mode, a random track of these 20 will be played if you press C/E. After finishing, it stops. 
+Druk op F om over te schakelen naar de willekeurige modus. En u kunt op D drukken om terug te gaan naar de sequentiële modus. In de F-modus wordt een willekeurig nummer van deze 20 afgespeeld als u op C/E drukt. Nadat het is afgelopen, stopt het. 
 
-The RGB lights are always breathing from the moment of powering on. Meanwhile, the micro:bit LED matrix shows “![Img](./media/4010.png)” in sequential mode and “![Img](./media/4011.png)”in random mode. 
+De RGB-lampjes ademen altijd vanaf het moment van inschakelen. Ondertussen toont de micro:bit LED-matrix “![Img](./media/4010.png)” in de sequentiële modus en “![Img](./media/4011.png)” in de willekeurige modus. 
 
-For volume, press A to turn up and B to turn down.
+Voor het volume drukt u op A om het volume te verhogen en op B om het te verlagen.
 
 ![Img](./media/4015.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

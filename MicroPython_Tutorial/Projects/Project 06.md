@@ -1,45 +1,44 @@
-### 5.2.6 Rock-Paper-Scissors
+### 5.2.6 Steen-papier-schaar
 
-#### 5.2.6.1 Overview
+#### 5.2.6.1 Overzicht
 
 ![Img](./media/top1.png)
 
-Herein, let's play rock-paper-scissors by wireless communication of micro:bit. Players select their move (rock, paper, or scissors) via the buttons, with data exchange between devices. The game follows best-of-three; if all three rounds end in all tie or win-loss-tie, a fourth match is triggered. 
+Hierin spelen we steen-papier-schaar via draadloze communicatie van micro:bit. Spelers selecteren hun zet (steen, papier of schaar) via de knoppen, met gegevensuitwisseling tussen apparaten. Het spel volgt best-of-three; als alle drie de rondes eindigen in een gelijkspel of winst-verlies-gelijkspel, wordt een vierde wedstrijd geactiveerd.
 
-Each outcome is displayed on the micro:bit matrix (W for win, L for Loss, = for tie) and revealed by the RGB lights (green for win, red for loss, yellow for tie) at pin P8. Upon completion of a round, the two device resets all data and lights, preparing for the next match. 
+Elke uitkomst wordt weergegeven op de micro:bit-matrix (W voor winst, L voor verlies, = voor gelijkspel) en onthuld door de RGB-lampjes (groen voor winst, rood voor verlies, geel voor gelijkspel) op pin P8. Na voltooiing van een ronde resetten de twee apparaten alle gegevens en lampjes, ter voorbereiding op de volgende wedstrijd.
 
-The gameplay seamlessly integrates wireless interaction with the multi-round combat.
+De gameplay integreert naadloos draadloze interactie met de meer-ronde gevechten.
 
 ![Img](./media/bottom1.png)
 
-#### 5.2.6.2 Component Knowledge
+#### 5.2.6.2 Componentkennis
 
 ![Img](./media/2top.png)
 
-**Microbit wireless communication**
+**Microbit draadloze communicatie**
 
 ![Img](./media/6001.png)
 
-The micro:bit board integrates two convenient wireless communication capabilities: **2.4GHz radio** and **low-power Bluetooth (BLE)**. Yet they cannot be used simultaneously. 
+Het micro:bit-bord integreert twee handige draadloze communicatiemogelijkheden: **2.4GHz radio** en **low-power Bluetooth (BLE)**. Ze kunnen echter niet gelijktijdig worden gebruikt.
 
-The former requires no pairing and supports up to 255 independent packets to minimize interference, with a communication range of 10–30 meters, enabling rapid transmission of digital data and strings. While the latter is primarily used for pairing with smartphones, tablets, and other smart devices for IoT applications such as sensor data upload and mobile app remote control. 
+De eerste vereist geen koppeling en ondersteunt tot 255 onafhankelijke pakketten om interferentie te minimaliseren, met een communicatiebereik van 10-30 meter, waardoor snelle overdracht van digitale gegevens en strings mogelijk is. De laatste wordt voornamelijk gebruikt voor koppeling met smartphones, tablets en andere slimme apparaten voor IoT-toepassingen zoals het uploaden van sensorgegevens en afstandsbediening via mobiele apps.
 
-They expands the creative development possibilities of the micro:bit.
+Ze breiden de creatieve ontwikkelingsmogelijkheden van de micro:bit uit.
 
-#### 5.2.6.3 Required Parts
+#### 5.2.6.3 Benodigde onderdelen
 
-| ![Img](./media/microbitV2.png)|  ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
+| ![Img](./media/microbitV2.png)| ![Img](./media/shoubin.png) |![Img](./media/dianchi.png) |
 | :--: | :--: | :--: |
-| **micro:bit V2 board** (self-provided) ×2 | **micro:bit Smart Gamepad** (assembled) ×2 | **AAA battery** (self-provided) ×8 |
+| **micro:bit V2 board** (zelf mee te nemen) ×2 | **micro:bit Smart Gamepad** (gemonteerd) ×2 | **AAA battery** (zelf mee te nemen) ×8 |
 
-#### 5.2.6.4 Code Flow
+#### 5.2.6.4 Codestroom
 
 ![Img](./media/6002.png)
 
-#### 5.2.6.5 Test Code
+#### 5.2.6.5 Testcode
 
-**Complete code:**
-
+**Volledige code:**
 
 ```python
 from microbit import *
@@ -50,10 +49,8 @@ import radio
 round2 = 1
 check = 1
 me = 0
-you = 0
-wins = 0
-loses = 0
-draws = 0
+you = 0	wins = 0
+loses = 0	draws = 0
 gameResults = []
 strip = None
 
@@ -77,14 +74,14 @@ def resetGame():
     resetLights()
     display.show(Image.HEART)
 
-# Receive opponent's choice via radio
+# Receive opponent\'s choice via radio
 def on_received_message(receivedMsg):
     global you
     if you == 0:
         # Convert string to integer if needed
-        if isinstance(receivedMsg, str) and receivedMsg in ['1', '2', '3']:
+        if isinstance(receivedMsg, str) and receivedMsg in [\'1\', \'2\', \'3\']:
             you = int(receivedMsg)
-        # Use directly if it's an integer
+        # Use directly if it\'s an integer
         elif isinstance(receivedMsg, int) and receivedMsg in [1, 2, 3]:
             you = receivedMsg
 
@@ -204,26 +201,26 @@ while True:
     # Check button input
     if check == 1:
         if pin13.read_digital() == 0:
-            # Paper -> send '3'
-            radio.send('3')
+            # Paper -> send \'3\'
+            radio.send(\'3\')
             display.show(Image.SQUARE)
             me = 3
             check = 0
             sleep(200)
         elif pin15.read_digital() == 0:
-            # Scissors -> send '1'
-            radio.send('1')
-            display.show(Image('99009:'
-                                '99090:'
-                                '00900:'
-                                '99090:'
-                                '99009'))
+            # Scissors -> send \'1\'
+            radio.send(\'1\')
+            display.show(Image(\'99009:\'
+                                \'99090:\'
+                                \'00900:\'
+                                \'99090:\'
+                                \'99009\'))
             me = 1
             check = 0
             sleep(200)
         elif pin16.read_digital() == 0:
-            # Rock -> send '2'
-            radio.send('2')
+            # Rock -> send \'2\'
+            radio.send(\'2\')
             display.show(Image.SQUARE_SMALL)
             me = 2
             check = 0
@@ -240,14 +237,14 @@ while True:
     sleep(100)
 
 
-# Receive opponent's choice via radio
+# Receive opponent\'s choice via radio
 def on_received_message(receivedMsg):
     global you
     if you == 0:
         # Convert string to integer if needed
-        if isinstance(receivedMsg, str) and receivedMsg in ['1', '2', '3']:
+        if isinstance(receivedMsg, str) and receivedMsg in [\'1\', \'2\', \'3\']:
             you = int(receivedMsg)
-        # Use directly if it's an integer
+        # Use directly if it\'s an integer
         elif isinstance(receivedMsg, int) and receivedMsg in [1, 2, 3]:
             you = receivedMsg
 
@@ -367,26 +364,26 @@ while True:
     # Check button input
     if check == 1:
         if pin13.read_digital() == 0:
-            # Paper -> send '3'
-            radio.send('3')
+            # Paper -> send \'3\'
+            radio.send(\'3\')
             display.show(Image.SQUARE)
             me = 3
             check = 0
             sleep(200)
         elif pin15.read_digital() == 0:
-            # Scissors -> send '1'
-            radio.send('1')
-            display.show(Image('99009:'
-                                '99090:'
-                                '00900:'
-                                '99090:'
-                                '99009'))
+            # Scissors -> send \'1\'
+            radio.send(\'1\')
+            display.show(Image(\'99009:\'
+                                \'99090:\'
+                                \'00900:\'
+                                \'99090:\'
+                                \'99009\'))
             me = 1
             check = 0
             sleep(200)
         elif pin16.read_digital() == 0:
-            # Rock -> send '2'
-            radio.send('2')
+            # Rock -> send \'2\'
+            radio.send(\'2\')
             display.show(Image.SQUARE_SMALL)
             me = 2
             check = 0
@@ -401,14 +398,13 @@ while True:
         pass
 
     sleep(100)
-```
 
 
 ![Img](./media/line1.png)
 
-**Brief explanation:**
+**Korte uitleg:**
 
-① Import the relevant libraries, initialize global variables, and configure pins.
+① Importeer de relevante bibliotheken, initialiseer globale variabelen en configureer pinnen.
 ```python
 from microbit import *
 import neopixel
@@ -418,10 +414,8 @@ import radio
 round2 = 1
 check = 1
 me = 0
-you = 0
-wins = 0
-loses = 0
-draws = 0
+you = 0	wins = 0
+loses = 0	draws = 0
 gameResults = []
 strip = None
 
@@ -431,11 +425,11 @@ pin16.set_pull(pin16.PULL_UP)
 # Initialize LED strip (4 LEDs, connected to pin P8)
 strip = neopixel.NeoPixel(pin8, 4)
 ```
-② `resetGame` resets all game states.
+② `resetGame` reset alle spelstatussen.
 
-It usually be called at the start of a game or after a round concludes to reset all global variables related to the game progress—including player selections, turn counts, win/loss/tie counts, and historical results—to their initial values. 
+Het wordt meestal aangeroepen aan het begin van een spel of nadat een ronde is afgelopen om alle globale variabelen met betrekking tot de spelvoortgang – inclusief spelerkeuzes, beurtentellingen, winst-/verlies-/gelijkspeltellingen en historische resultaten – terug te zetten naar hun beginwaarden.
 
-`resetLights()` turns off all NeoPixel LEDs and display a heart icon (`Image.HEART`), indicating the game is ready to begin.
+`resetLights()` schakelt alle NeoPixel-LEDs uit en toont een hartpictogram (`Image.HEART`), wat aangeeft dat het spel klaar is om te beginnen.
 
 ```python
 # Reset game state
@@ -453,28 +447,28 @@ def resetGame():
     display.show(Image.HEART)
 ```
 
-③ `on_received_message` processes the opponent's selection received via radio. It handles radio messages from another Micro:bit (scissors, rock, or paper). 
+③ `on_received_message` verwerkt de selectie van de tegenstander die via radio is ontvangen. Het verwerkt radioberichten van een andere Micro:bit (schaar, steen of papier).
 
-To ensure accuracy, it verifies the message type: if the message is a string ('1', '2', or '3'), convert it to an integer; if it is an integer (1, 2, or 3), directly use it . 
+Om nauwkeurigheid te garanderen, controleert het het berichttype: als het bericht een string is (\'1\', \'2\' of \'3\'), converteer het dan naar een geheel getal; als het een geheel getal is (1, 2 of 3), gebruik het dan direct.
 
-The value of the `you` is updated only when `you`=0 (no opponent choice is received), preventing multiple reception.
+De waarde van `you` wordt alleen bijgewerkt wanneer `you`=0 (er is geen keuze van de tegenstander ontvangen), waardoor meervoudige ontvangst wordt voorkomen.
 
 ```python
-# Receive opponent's choice via radio
+# Receive opponent\'s choice via radio
 def on_received_message(receivedMsg):
     global you
     if you == 0:
         # Convert string to integer if needed
-        if isinstance(receivedMsg, str) and receivedMsg in ['1', '2', '3']:
+        if isinstance(receivedMsg, str) and receivedMsg in [\'1\', \'2\', \'3\']:
             you = int(receivedMsg)
-        # Use directly if it's an integer
+        # Use directly if it\'s an integer
         elif isinstance(receivedMsg, int) and receivedMsg in [1, 2, 3]:
             you = receivedMsg
 ```
 
-④ `resetLights` turns off all NeoPixel LEDs. It iterates through all four LEDs to set their colors to black (`(0, 0, 0)`), i.e., off. 
+④ `resetLights` schakelt alle NeoPixel-LEDs uit. Het doorloopt alle vier de LEDs om hun kleuren in te stellen op zwart (`(0, 0, 0)`), d.w.z. uit.
 
-`strip.show()` sends these color updates to the light strip to ensure all LEDs off.
+`strip.show()` stuurt deze kleurupdates naar de lichtstrip om ervoor te zorgen dat alle LEDs uit zijn.
 
 ```python
 # Turn off all LEDs
@@ -484,9 +478,9 @@ def resetLights():
     strip.show()
 ```
 
-⑤ `needFourthRound` determines whether a fourth round is required after the three rounds.
+⑤ `needFourthRound` bepaalt of een vierde ronde nodig is na de drie rondes.
 
-It handles two special cases: if all three rounds end in draws (`wins == 0 and loses == 0 and draws == 3`), return `2` for a fourth round --- the final decisive game; If there is a win-loss-tie (`wins == 1 and loses == 1 and draws == 1`), return `1` for an additional round as well. In all other cases (where there is a clear winner/loser),  return `0` (No 4th round needed).
+Het behandelt twee speciale gevallen: als alle drie de rondes eindigen in gelijkspel (`wins == 0 and loses == 0 and draws == 3`), retourneer dan `2` voor een vierde ronde --- het uiteindelijke beslissende spel; als er een winst-verlies-gelijkspel is (`wins == 1 and loses == 1 and draws == 1`), retourneer dan ook `1` voor een extra ronde. In alle andere gevallen (waarbij er een duidelijke winnaar/verliezer is), retourneer dan `0` (geen 4e ronde nodig).
 
 ```python
 # Check if a 4th round is needed
@@ -501,11 +495,11 @@ def needFourthRound():
     return 0
 ```
 
-⑥ `showRoundResult` displays the result of each round on the LED strip.
+⑥ `showRoundResult` toont het resultaat van elke ronde op de LED-strip.
 
-It accepts the current round number (`roundNum`) and the result (`result`: 1 for win, 0 for draw, -1 for loss). Based on the result, it lights up different colors on the corresponding LED: green for win, yellow for draw, and red for loss. 
+Het accepteert het huidige rondenummer (`roundNum`) en het resultaat (`result`: 1 voor winst, 0 voor gelijkspel, -1 voor verlies). Op basis van het resultaat licht het verschillende kleuren op de corresponderende LED op: groen voor winst, geel voor gelijkspel en rood voor verlies.
 
-`roundNum-1` converts the round number into a zero-based index for the LEDs.
+`roundNum-1` converteert het rondenummer naar een nulgebaseerde index voor de LEDs.
 
 ```python
 # Show round result on LED strip
@@ -522,11 +516,11 @@ def showRoundResult(roundNum, result):
             strip[roundNum - 1] = (255, 0, 0)
         strip.show()
 ```
-⑦ Initialization when the game starts.
+⑦ Initialisatie wanneer het spel begint.
 
-It runs once when the program starts. It activates the Micro:bit radio function and set `group=1`. Next, it sets `check` to `1` (selective for Player), `me` and `you` to `0`(waiting for Player and Opponent choices). 
+Het wordt één keer uitgevoerd wanneer het programma start. Het activeert de Micro:bit radiofunctie en stelt `group=1` in. Vervolgens stelt het `check` in op `1` (selectief voor speler), `me` en `you` op `0` (wachtend op keuzes van speler en tegenstander).
 
-The NeoPixel light strip is cleared and updated to turn off all LEDs. And Micro:bit shows a heart icon (`Image.HEART`) as the initial prompt awaiting Player input.
+De NeoPixel lichtstrip wordt gewist en bijgewerkt om alle LEDs uit te schakelen. En Micro:bit toont een hartpictogram (`Image.HEART`), wat aangeeft dat het spel klaar is om te beginnen.
 
 ```python
 # Game initialization
@@ -540,19 +534,19 @@ strip.show()
 display.show(Image.HEART)
 ```
 
-⑧ Process the turn results and control the game flow.
+⑧ Verwerk de beurtresultaten en beheer de spelstroom.
 
-This code represents the core logic of the game, running in an infinite loop. It first checks whether both Player and Opponent have made their choices (`me != 0 and you != 0`). 
+Deze code vertegenwoordigt de kernlogica van het spel, die in een oneindige lus draait. Het controleert eerst of zowel de speler als de tegenstander hun keuzes hebben gemaakt (`me != 0 and you != 0`).
 
-If yes, it determines the outcome of the current round according to the rock-paper-scissors rules, updates `wins`, `loses`, `draws` counters, and displays the corresponding icon("W", "L", "=") on the matrix.
+Zo ja, dan bepaalt het de uitkomst van de huidige ronde volgens de steen-papier-schaar-regels, werkt de tellers `wins`, `loses`, `draws` bij en toont het corresponderende pictogram ("W", "L", "=") op de matrix.
 
-`showRoundResult` turns on LED on the NeoPixel in related colors for the previous round
+`showRoundResult` schakelt de LED op de NeoPixel in de gerelateerde kleuren in voor de vorige ronde.
 
-After displaying the results for 3s, the game will proceed based on the current turn count:
+Na het weergeven van de resultaten gedurende 3 seconden, zal het spel doorgaan op basis van het huidige beurtentelling:
 
-*   If it is currently the 3rd round (`round2 == 3`), `needFourthRound()` will determine whether the final decisive round is required. If so, the fourth round proceeds; otherwise, based on the overall outcome, show a WINNER/LOSER/TIE and reset the game.
-*   If it is currently the fourth round (`round2 == 4`), declare "GAME OVER" and reset the game.
-*   If it is the first or second round, round +1 (`round2 += 1`), display the heart icon, reset choices and prepare to enter the next round.
+*   Als het momenteel de 3e ronde is (`round2 == 3`), zal `needFourthRound()` bepalen of de uiteindelijke beslissende ronde nodig is. Zo ja, dan gaat de vierde ronde door; anders, op basis van de algehele uitkomst, toont het een WINNAAR/VERLIEZER/GELIJKSPEL en reset het spel.
+*   Als het momenteel de vierde ronde is (`round2 == 4`), verklaar dan "GAME OVER" en reset het spel.
+*   Als het de eerste of tweede ronde is, ronde +1 (`round2 += 1`), toon het hartpictogram, reset keuzes en bereid je voor op de volgende ronde.
 ```python
 # Main game loop
 while True:
@@ -627,53 +621,53 @@ while True:
             you = 0
 ```
 
-⑨ Process player button input.
+⑨ Verwerk de knopinvoer van de speler.
 
-It detects players' choices via external buttons (connected to `pin13`, `pin15`, `pin16`). It detects button press only when `check` = `1` (Choices are allowed).
+Het detecteert de keuzes van spelers via externe knoppen (verbonden met `pin13`, `pin15`, `pin16`). Het detecteert alleen knopdrukken wanneer `check` = `1` (keuzes zijn toegestaan).
 
-*   If `pin13` is pressed(low), a Paper is chosen(`3`), and Micro:bit sends `'3'` and shows a big square.
-*   If `pin15` is pressed, a Scissors is chosen(`1`), send `'1'` and show a scissors icon.
-*   If `pin16` is pressed, a Rock is chosen(`2`), send `'2'` and show a small square.
+*   Als `pin13` wordt ingedrukt (laag), wordt een papier gekozen (`3`), en Micro:bit stuurt `3` en toont een groot vierkant.
+*   Als `pin15` wordt ingedrukt, wordt een schaar gekozen (`1`), stuurt `1` en toont een schaarpictogram.
+*   Als `pin16` wordt ingedrukt, wordt een steen gekozen (`2`), stuurt `2` en toont een klein vierkant.
 
-After choosing, update `me`, `check` = `0`(avoid repeat choice) and delay 200ms for anti-jitter.
+Na het kiezen, werk `me` bij, `check` = `0` (voorkom herhaalde keuze) en vertraag 200 ms voor anti-jitter.
 
 ```python
     # Check button input
     if check == 1:
         if pin13.read_digital() == 0:
-            # Paper -> send '3'
-            radio.send('3')
+            # Paper -> send \'3\'
+            radio.send(\'3\')
             display.show(Image.SQUARE)
             me = 3
             check = 0
             sleep(200)
         elif pin15.read_digital() == 0:
-            # Scissors -> send '1'
-            radio.send('1')
-            display.show(Image('99009:'
-                                '99090:'
-                                '00900:'
-                                '99090:'
-                                '99009'))
+            # Scissors -> send \'1\'
+            radio.send(\'1\')
+            display.show(Image(\'99009:\'
+                                \'99090:\'
+                                \'00900:\'
+                                \'99090:\'
+                                \'99009\'))
             me = 1
             check = 0
             sleep(200)
         elif pin16.read_digital() == 0:
-            # Rock -> send '2'
-            radio.send('2')
+            # Rock -> send \'2\'
+            radio.send(\'2\')
             display.show(Image.SQUARE_SMALL)
             me = 2
             check = 0
             sleep(200)
 ```
 
-⑩ Handle radio data reception and loop delay.
+⑩ Verwerk radiogegevensontvangst en lusvertraging.
 
-It attempts to receive radio data during each main loop. `radio.receive()` capture any incoming messages. If a message is received (`received is not None`), call `on_received_message()` to handle the Opponent's choise.
+Het probeert radiogegevens te ontvangen tijdens elke hoofdloop. `radio.receive()` vangt alle inkomende berichten op. Als een bericht wordt ontvangen (`received is not None`), roep dan `on_received_message()` aan om de keuze van de tegenstander te verwerken.
 
-To prevent the program blocked due to missing messages, `try-except` catches possible anomalies (although `radio.receive()` usually does not throw exceptions directly in MicroPython, it's a good programming habit)
+Om te voorkomen dat het programma blokkeert door ontbrekende berichten, vangt `try-except` mogelijke afwijkingen op (hoewel `radio.receive()` meestal geen uitzonderingen direct in MicroPython genereert, is het een goede programmeer gewoonte).
 
-`sleep(100)` pauses the program for 100s, regulating the main loop execution frequency to avoid excessive processor consumption and allowing time for button detection and display refreshing.
+`sleep(100)` pauzeert het programma gedurende 100 ms, reguleert de uitvoeringsfrequentie van de hoofdloop om overmatig processorverbruik te voorkomen en geeft tijd voor knopdetectie en schermvernieuwing.
 
 ```python
     # Receive radio data
@@ -686,20 +680,20 @@ To prevent the program blocked due to missing messages, `try-except` catches pos
 
     sleep(100)
 ```
-#### 5.2.6.6 Test Result
+#### 5.2.6.6 Testresultaat
 
 ![Img](./media/4top.png)
 
-After burning the code, insert the micro:bit board into the slot of the gamepad (**batteries installed**), and toggle the switch on it to “ON”. 
+Na het branden van de code, plaatst u het micro:bit-bord in de sleuf van de gamepad (**batterijen geïnstalleerd**), en zet u de schakelaar op “ON”.
 
-The matrix shows ![Img](./media/6004.png) initially. Players press buttons to select their move (E for rock, D for paper, or C for scissors), with match data exchange between the two devices. They determine the outcome of the current round: a win is indicated by the "W" with RGB light turning green, a draw by the "=" with yellow light, and a loss by the "L" with red (the first RGB light turns on after the first round, and so on). The next round will follow if the game is not over.
+De matrix toont aanvankelijk ![Img](./media/6004.png). Spelers drukken op knoppen om hun zet te kiezen (E voor steen, D voor papier of C voor schaar), waarbij matchgegevens worden uitgewisseld tussen de twee apparaten. Ze bepalen de uitkomst van de huidige ronde: een overwinning wordt aangegeven door de "W" met groen RGB-licht, een gelijkspel door de "=" met geel licht, en een verlies door de "L" met rood (het eerste RGB-licht gaat aan na de eerste ronde, enzovoort). De volgende ronde volgt als het spel nog niet voorbij is.
 
-The game adopts best-of-three: if all three rounds end in all tie or win-loss-tie, a fourth match is triggered. 
+Het spel hanteert best-of-three: als alle drie de rondes eindigen in een gelijkspel of winst-verlies-gelijkspel, wordt een vierde wedstrijd geactiveerd.
 
-If there is a winner after three rounds, it will display "WINNER" for victory and "LOSER" for defeat. Once the result is shown, "GAME OVER" will appear to reset the game. If the fourth round remains undecided, the game will also be over.
+Als er een winnaar is na drie rondes, wordt "WINNER" weergegeven voor overwinning en "LOSER" voor nederlaag. Zodra het resultaat wordt getoond, verschijnt "GAME OVER" om het spel te resetten. Als de vierde ronde onbeslist blijft, is het spel ook voorbij.
 
 ![Img](./media/6000.gif)
 
-<span style="color: rgb(0, 209, 0);">**Tip:** Wait for the heart icon to appear before continuing the next round. If there is no response on the board, please press the reset button on the back of the micro:bit board.</span>
+<span style="color: rgb(0, 209, 0);">**Tip:** Wacht tot het hartpictogram verschijnt voordat u doorgaat met de volgende ronde. Als er geen reactie is op het bord, druk dan op de resetknop aan de achterkant van het micro:bit-bord.</span>
 
 ![Img](./media/4bottom.png)

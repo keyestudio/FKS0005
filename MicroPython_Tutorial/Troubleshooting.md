@@ -1,21 +1,22 @@
-## Troubleshooting
+## Probleemoplossing
 
-1\. After uploading the code, the micro:bit 5x5 matrix shows a crying face, and it will display error messages in a scrolling manner.
+1\. Nadat de code is geüpload, toont de micro:bit 5x5 matrix een huilend gezicht en worden er foutmeldingen in een scrollende beweging weergegeven.
 
-2\. If the uploaded code has characters added or deleted by mistake, you can check it according to the prompts in the shell.
+2\. Als de geüploade code per ongeluk tekens heeft toegevoegd of verwijderd, kunt u dit controleren aan de hand van de aanwijzingen in de shell.
 
 ![Img](./media/g002.png)
 
-3\. If the uploaded code contains third-party library files, first check whether the corresponding libraries have been uploaded to the micro:bit board. For how to import library, please refer to “**5.1.4 Upload Code**”. 
+3\. Als de geüploade code bibliotheekbestanden van derden bevat, controleer dan eerst of de corresponderende bibliotheken naar het micro:bit-bord zijn geüpload. Voor informatie over het importeren van bibliotheken, raadpleeg “**5.1.4 Code uploaden**”. 
 
-4\. After uploading the code, no data is printed. You need to click "![Img](./media/t027.png)"first, and then press the reset button on the back of the Micro:bit board, after which the data prints normally.
+4\. Nadat de code is geüpload, worden er geen gegevens afgedrukt. U moet eerst op "![Img](./media/t027.png)" klikken en vervolgens op de resetknop aan de achterkant van het Micro:bit-bord drukken, waarna de gegevens normaal worden afgedrukt.
 
 ![Img](./media/g001.png)
 
-5\.  The micropython firmware will be lost after burning the Makecode code, and the shell will prints the error messages:
+5\. De micropython firmware gaat verloren na het branden van de Makecode code, en de shell zal de foutmeldingen afdrukken:
 
 ![Img](./media/g000.png)
 
-At this moment, you need to burn the firmware again, referring to **5.2.3 Burn Micropython Firmware (Important)**.
+Op dit moment moet u de firmware opnieuw branden, raadpleeg **5.2.3 MicroPython Firmware branden (Belangrijk)**.
+
 
 
